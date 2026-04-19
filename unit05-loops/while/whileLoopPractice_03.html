@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 03 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 03</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #C0392B;   /* לדוגמה: #C0392B */
+      --color-light:  #FCE8E8;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #8B1A1A;   /* לדוגמה: #8B1A1A */
+      --color-border: #F5C0C0; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול לולאת while ב-Java</div>
+      <div class="home-title-ar">تدريب على حلقة while في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 03 &nbsp;|&nbsp; المستوى 03</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 03</span>
+          תרגול לולאת while ב-Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 03</span>
+          تدريب على حلقة while في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "תנאי לולאה מורכב עם &&",
+    "text": "?מה יודפס כאשר מפעילים את הקוד הבא עם הקלט 3",
+    "code": "Scanner scan = new Scanner(System.in);\nint num = scan.nextInt();\nint result = 1;\nwhile (num > 0 && result < 100) {\n    result = result * num;\n    num--;\n}\nSystem.out.println(result);",
+    "options": [
+      "6",
+      "24",
+      "100",
+      "3"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "מתחילים עם num=3 ו־result=1."
+      },
+      {
+        "type": "code",
+        "text": "result = 1*3 = 3, num = 2"
+      },
+      {
+        "type": "code",
+        "text": "result = 3*2 = 6, num = 1"
+      },
+      {
+        "type": "code",
+        "text": "result = 6*1 = 6, num = 0"
+      },
+      {
+        "type": "he",
+        "text": "כאשר num מגיע ל־0 התנאי num > 0 כבר לא מתקיים, ולכן הלולאה נעצרת."
+      },
+      {
+        "type": "code",
+        "text": "6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס כאשר מפעילים את הקוד הבא עם הקלט 3"
+      }
+    ]
+  },
+  {
+    "topic": "סדר פקודות בגוף הלולאה",
+    "text": "?שתי גרסאות שונות רק בסדר הפקודות — מה נכון",
+    "code": "// Version A              // Version B\nint n = 123;             int n = 123;\nint rev = 0;             int rev = 0;\nwhile (n != 0) {         while (n != 0) {\n    rev = rev*10 + n%10;     n = n / 10;\n    n = n / 10;              rev = rev*10 + n%10;\n}                        }\nSystem.out.println(rev); System.out.println(rev);",
+    "options": [
+      "A מדפיסה 321, B מדפיסה 210",
+      "A מדפיסה 321, B מדפיסה 321",
+      "A מדפיסה 210, B מדפיסה 321",
+      "A מדפיסה 123, B מדפיסה 210"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ב־Version A מחלצים את ספרת היחידות לפני שמחלקים את המספר."
+      },
+      {
+        "type": "code",
+        "text": "3 → 32 → 321"
+      },
+      {
+        "type": "he",
+        "text": "ב־Version B מחלקים קודם את המספר, ולכן הספרה האחרונה הולכת לאיבוד."
+      },
+      {
+        "type": "code",
+        "text": "2 → 21 → 210"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?שתי גרסאות שונות רק בסדר הפקודות — מה נכון"
+      }
+    ]
+  },
+  {
+    "topic": "זיהוי לולאה אינסופית",
+    "text": "?איזה קוד יוצר לולאה אינסופית",
+    "code": "// A                  // B                  // C\nint i = 2;           int i = 1;           int i = 10;\nint j = 32;          int n = 16;          while (i > 0) {\nwhile (i != j) {     while (i != n) {         i = i - 3;\n    i = i * 2;           i = i * 2;       }\n    j = j + 4;       }\n}",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "גם A וגם C"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ב־A: i מוכפל כל פעם (2,4,8,16,32...), בעוד j גדל בקצב אחר (32,36,40...). הם לעולם לא יהיו שווים."
+      },
+      {
+        "type": "he",
+        "text": "ב־B: i מגיע בסופו של דבר לערך 16 ולכן הלולאה נעצרת."
+      },
+      {
+        "type": "he",
+        "text": "ב־C: i קטן עד שהוא עובר את 0, ואז התנאי i > 0 כבר לא מתקיים."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?איזה קוד יוצר לולאה אינסופית"
+      }
+    ]
+  },
+  {
+    "topic": "break בתוך לולאה",
+    "text": "?מה יודפס",
+    "code": "int i = 1;\nint sum = 0;\nwhile (i <= 10) {\n    if (sum + i > 15) {\n        break;\n    }\n    sum += i;\n    i++;\n}\nSystem.out.println(sum + \" \" + i);",
+    "options": [
+      "15 6",
+      "15 5",
+      "21 6",
+      "10 5"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הסכום נבנה בהדרגה: 1 → 3 → 6 → 10 → 15."
+      },
+      {
+        "type": "he",
+        "text": "כאשר i מגיע ל־6 מתקיים התנאי sum + i > 15 ולכן מתבצע break."
+      },
+      {
+        "type": "he",
+        "text": "הסכום נשאר 15 והערך של i הוא 6."
+      },
+      {
+        "type": "code",
+        "text": "15 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "continue בתוך לולאה",
+    "text": "?מה יודפס",
+    "code": "int i = 10;\nwhile (i > 0) {\n    i--;\n    if (i % 3 == 0) {\n        continue;\n    }\n    System.out.print(i + \" \");\n}",
+    "options": [
+      "8 7 5 4 2 1",
+      "9 8 7 6 5 4 3 2 1",
+      "8 7 5 4 2 1 0",
+      "9 8 6 5 3 2"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בכל איטרציה הערך של i קטן תחילה (i--)."
+      },
+      {
+        "type": "he",
+        "text": "כאשר i מתחלק ב־3, הפקודה continue מדלגת על ההדפסה וממשיכה לאיטרציה הבאה."
+      },
+      {
+        "type": "he",
+        "text": "הערכים 9, 6, 3, 0 אינם מודפסים."
+      },
+      {
+        "type": "code",
+        "text": "8 7 5 4 2 1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "תחום הגדרה של משתנים",
+    "text": "?מה תהיה תוצאת הקוד הבא",
+    "code": "int i = 1;\nwhile (i <= 3) {\n    int x = i * 2;\n    i++;\n}\nSystem.out.println(x);",
+    "options": [
+      "שגיאת קומפילציה",
+      "6",
+      "2",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "המשתנה x מוגדר בתוך גוף הלולאה בלבד."
+      },
+      {
+        "type": "he",
+        "text": "מחוץ ללולאה המשתנה x אינו מוכר ולכן תתקבל שגיאת קומפילציה."
+      },
+      {
+        "type": "code",
+        "text": "Undeclared variable: x"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה תהיה תוצאת הקוד הבא"
+      }
+    ]
+  },
+  {
+    "topic": "sentinel value עם שגיאה סמויה",
+    "text": "?מה הבעיה בקוד שמטרתו לחשב ממוצע של מספרים עד הזנת 0",
+    "code": "Scanner scan = new Scanner(System.in);\nint sum = 0;\nint count = 0;\nint num = scan.nextInt();\nwhile (num != 0) {\n    sum += num;\n    count++;\n    num = scan.nextInt();\n}\nSystem.out.println((double) sum / count);",
+    "options": [
+      "אם הקלט הראשון הוא 0 תתקבל חלוקה ב־0",
+      "הקוד תקין לחלוטין",
+      "sum לא מתעדכן נכון בגוף הלולאה",
+      "הלולאה לא תיעצר לעולם"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אם המשתמש מזין 0 כבר בקלט הראשון, הלולאה לא תתבצע כלל."
+      },
+      {
+        "type": "he",
+        "text": "במקרה זה count נשאר 0."
+      },
+      {
+        "type": "he",
+        "text": "בסיום מתבצעת חלוקה ב־count ולכן מתקבלת חלוקה ב־0."
+      },
+      {
+        "type": "code",
+        "text": "ArithmeticException: / by zero"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה הבעיה בקוד שמטרתו לחשב ממוצע של מספרים עד הזנת 0"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה אחרי לולאה",
+    "text": "?מה מחזירה השיטה עבור הקלט 132",
+    "code": "public static int calc(int num) {\n    int rev = 0;\n    while (num != 0) {\n        rev = rev * 10 + num % 10;\n        num = num / 10;\n    }\n    return rev;\n}",
+    "options": [
+      "231",
+      "132",
+      "312",
+      "213"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השיטה הופכת את סדר הספרות של המספר."
+      },
+      {
+        "type": "code",
+        "text": "rev = 2, num = 13"
+      },
+      {
+        "type": "code",
+        "text": "rev = 23, num = 1"
+      },
+      {
+        "type": "code",
+        "text": "rev = 231, num = 0"
+      },
+      {
+        "type": "code",
+        "text": "231"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה מחזירה השיטה עבור הקלט 132"
+      }
+    ]
+  },
+  {
+    "topic": "boolean כמועמד עם תנאי מורכב",
+    "text": "?מה תחזיר השיטה עבור num = 248",
+    "code": "public static boolean check(int num) {\n    boolean res = true;\n    while (num != 0 && res) {\n        int digit = num % 10;\n        if (digit % 2 == 1) {\n            res = false;\n        }\n        num = num / 10;\n    }\n    return res;\n}",
+    "options": [
+      "true",
+      "false",
+      "0",
+      "שגיאת קומפילציה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השיטה בודקת האם כל הספרות זוגיות."
+      },
+      {
+        "type": "he",
+        "text": "הספרות של 248 הן 8, 4, 2 — כולן זוגיות."
+      },
+      {
+        "type": "he",
+        "text": "לכן המשתנה res נשאר true לאורך כל הלולאה."
+      },
+      {
+        "type": "code",
+        "text": "true"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה תחזיר השיטה עבור num = 248"
+      }
+    ]
+  },
+  {
+    "topic": "השוואת יעילות לולאות",
+    "text": "?מדוע Version B יעילה יותר מ־Version A לבדיקת ראשוניות",
+    "code": "// Version A                    // Version B\npublic static boolean           public static boolean\nisPrime(int n) {                isPrime(int n) {\n    boolean res = true;             int i = 2;\n    int i = 2;                      while (i * i <= n) {\n    while (i < n) {                     if (n % i == 0) {\n        if (n % i == 0) {                   return false;\n            res = false;                }\n        }                               i++;\n        i++;                        }\n    }                               return true;\n    return res;                 }\n}",
+    "options": [
+      "B עוצרת ב־i*i<=n וגם יוצאת מיד עם return false",
+      "B בודקת יותר מחלקים ולכן מדויקת יותר",
+      "A ו-B זהות לחלוטין בביצועים",
+      "A מהירה יותר כי היא לא משתמשת ב-return"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ב־Version B הלולאה רצה רק עד √n במקום עד n."
+      },
+      {
+        "type": "he",
+        "text": "בנוסף, ברגע שנמצא מחלק מתבצע return false והלולאה נעצרת מיד."
+      },
+      {
+        "type": "he",
+        "text": "ב־Version A הלולאה ממשיכה גם אחרי שנמצא מחלק, ולכן היא פחות יעילה."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מדוע Version B יעילה יותר מ־Version A לבדיקת ראשוניות"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "شرط حلقة مركب مع &&",
+    "text": "?ماذا سيطبع عند تشغيل الكود التالي مع الإدخال 3",
+    "code": "Scanner scan = new Scanner(System.in);\nint num = scan.nextInt();\nint result = 1;\nwhile (num > 0 && result < 100) {\n    result = result * num;\n    num--;\n}\nSystem.out.println(result);",
+    "options": [
+      "6",
+      "24",
+      "100",
+      "3"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نبدأ مع num=3 و result=1."
+      },
+      {
+        "type": "code",
+        "text": "result = 1*3 = 3, num = 2"
+      },
+      {
+        "type": "code",
+        "text": "result = 3*2 = 6, num = 1"
+      },
+      {
+        "type": "code",
+        "text": "result = 6*1 = 6, num = 0"
+      },
+      {
+        "type": "he",
+        "text": "عندما يصل num إلى 0، الشرط num > 0 لم يعد يتحقق، لذلك تتوقف الحلقة."
+      },
+      {
+        "type": "code",
+        "text": "6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع عند تشغيل الكود التالي مع الإدخال 3"
+      }
+    ]
+  },
+  {
+    "topic": "ترتيب الأوامر في جسم الحلقة",
+    "text": "?نسختان مختلفتان فقط في ترتيب الأوامر — ما الصحيح",
+    "code": "// Version A              // Version B\nint n = 123;             int n = 123;\nint rev = 0;             int rev = 0;\nwhile (n != 0) {         while (n != 0) {\n    rev = rev*10 + n%10;     n = n / 10;\n    n = n / 10;              rev = rev*10 + n%10;\n}                        }\nSystem.out.println(rev); System.out.println(rev);",
+    "options": [
+      "A تطبع 321، B تطبع 210",
+      "A تطبع 321، B تطبع 321",
+      "A تطبع 210، B تطبع 321",
+      "A تطبع 123، B تطبع 210"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في النسخة A يتم استخراج رقم الوحدات قبل تقسيم الرقم."
+      },
+      {
+        "type": "code",
+        "text": "3 → 32 → 321"
+      },
+      {
+        "type": "he",
+        "text": "في النسخة B يتم تقسيم الرقم أولاً، وبالتالي يتم فقدان الرقم الأخير."
+      },
+      {
+        "type": "code",
+        "text": "2 → 21 → 210"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?نسختان مختلفتان فقط في ترتيب الأوامر — ما الصحيح"
+      }
+    ]
+  },
+  {
+    "topic": "تحديد حلقة لانهائية",
+    "text": "?أي كود ينشئ حلقة لانهائية",
+    "code": "// A                  // B                  // C\nint i = 2;           int i = 1;           int i = 10;\nint j = 32;          int n = 16;          while (i > 0) {\nwhile (i != j) {     while (i != n) {         i = i - 3;\n    i = i * 2;           i = i * 2;       }\n    j = j + 4;       }\n}",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "كلا A و C"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في A: يتم ضرب i في كل مرة (2,4,8,16,32...)، بينما j يزيد بمعدل مختلف (32,36,40...). لن يكونا متساويين أبداً."
+      },
+      {
+        "type": "he",
+        "text": "في B: تصل i في النهاية إلى القيمة 16 وبالتالي تتوقف الحلقة."
+      },
+      {
+        "type": "he",
+        "text": "في C: تقل i حتى تتجاوز 0، ثم الشرط i > 0 لم يعد قائماً."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?أي كود ينشئ حلقة لانهائية"
+      }
+    ]
+  },
+  {
+    "topic": "break داخل حلقة",
+    "text": "?ماذا سيطبع",
+    "code": "int i = 1;\nint sum = 0;\nwhile (i <= 10) {\n    if (sum + i > 15) {\n        break;\n    }\n    sum += i;\n    i++;\n}\nSystem.out.println(sum + \" \" + i);",
+    "options": [
+      "15 6",
+      "15 5",
+      "21 6",
+      "10 5"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "المجموع يتكون تدريجياً: 1 → 3 → 6 → 10 → 15."
+      },
+      {
+        "type": "he",
+        "text": "عندما يصل i إلى 6 يتحقق الشرط sum + i > 15 وبالتالي يتم تنفيذ break."
+      },
+      {
+        "type": "he",
+        "text": "المجموع يبقى 15 وقيمة i هي 6."
+      },
+      {
+        "type": "code",
+        "text": "15 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "continue داخل حلقة",
+    "text": "?ماذا سيطبع",
+    "code": "int i = 10;\nwhile (i > 0) {\n    i--;\n    if (i % 3 == 0) {\n        continue;\n    }\n    System.out.print(i + \" \");\n}",
+    "options": [
+      "8 7 5 4 2 1",
+      "9 8 7 6 5 4 3 2 1",
+      "8 7 5 4 2 1 0",
+      "9 8 6 5 3 2"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في كل تكرار، قيمة i تنقص أولاً (i--)."
+      },
+      {
+        "type": "he",
+        "text": "عندما تكون i قابلة للقسمة على 3، الأمر continue يتخطى الطباعة ويستمر إلى التكرار التالي."
+      },
+      {
+        "type": "he",
+        "text": "القيم 9، 6، 3، 0 لا تُطبع."
+      },
+      {
+        "type": "code",
+        "text": "8 7 5 4 2 1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "مجال تعريف المتغيرات",
+    "text": "?ما ستكون نتيجة الكود التالي",
+    "code": "int i = 1;\nwhile (i <= 3) {\n    int x = i * 2;\n    i++;\n}\nSystem.out.println(x);",
+    "options": [
+      "خطأ في الترجمة",
+      "6",
+      "2",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "المتغير x معرف داخل جسم الحلقة فقط."
+      },
+      {
+        "type": "he",
+        "text": "خارج الحلقة المتغير x غير معروف وبالتالي ستحصل على خطأ في الترجمة."
+      },
+      {
+        "type": "code",
+        "text": "Undeclared variable: x"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما ستكون نتيجة الكود التالي"
+      }
+    ]
+  },
+  {
+    "topic": "قيمة الحارس مع خطأ مخفي",
+    "text": "?ما المشكلة في الكود الذي يهدف إلى حساب متوسط الأعداد حتى إدخال 0",
+    "code": "Scanner scan = new Scanner(System.in);\nint sum = 0;\nint count = 0;\nint num = scan.nextInt();\nwhile (num != 0) {\n    sum += num;\n    count++;\n    num = scan.nextInt();\n}\nSystem.out.println((double) sum / count);",
+    "options": [
+      "إذا كانت الإدخال الأول هو 0 سيتم الحصول على قسمة على 0",
+      "الكود صحيح تمامًا",
+      "sum لا يتم تحديثه بشكل صحيح داخل الحلقة",
+      "الحلقة لن تتوقف أبدًا"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "إذا أدخل المستخدم 0 بالفعل في الإدخال الأول، فلن يتم تنفيذ الحلقة على الإطلاق."
+      },
+      {
+        "type": "he",
+        "text": "في هذه الحالة يبقى count 0."
+      },
+      {
+        "type": "he",
+        "text": "في النهاية يتم القسمة على count وبالتالي يتم الحصول على قسمة على 0."
+      },
+      {
+        "type": "code",
+        "text": "ArithmeticException: / by zero"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما المشكلة في الكود الذي يهدف إلى حساب متوسط الأعداد حتى إدخال 0"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع الحلقة",
+    "text": "?ماذا تعيد الدالة للإدخال 132",
+    "code": "public static int calc(int num) {\n    int rev = 0;\n    while (num != 0) {\n        rev = rev * 10 + num % 10;\n        num = num / 10;\n    }\n    return rev;\n}",
+    "options": [
+      "231",
+      "132",
+      "312",
+      "213"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الدالة تعكس ترتيب الأرقام في العدد."
+      },
+      {
+        "type": "code",
+        "text": "rev = 2, num = 13"
+      },
+      {
+        "type": "code",
+        "text": "rev = 23, num = 1"
+      },
+      {
+        "type": "code",
+        "text": "rev = 231, num = 0"
+      },
+      {
+        "type": "code",
+        "text": "231"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا تعيد الدالة للإدخال 132"
+      }
+    ]
+  },
+  {
+    "topic": "boolean كمرشح مع شرط معقد",
+    "text": "?ماذا ستعيد الطريقة بالنسبة لـ num = 248",
+    "code": "public static boolean check(int num) {\n    boolean res = true;\n    while (num != 0 && res) {\n        int digit = num % 10;\n        if (digit % 2 == 1) {\n            res = false;\n        }\n        num = num / 10;\n    }\n    return res;\n}",
+    "options": [
+      "true",
+      "false",
+      "0",
+      "خطأ في التجميع"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الطريقة تتحقق مما إذا كانت جميع الأرقام زوجية."
+      },
+      {
+        "type": "he",
+        "text": "الأرقام في 248 هي 8، 4، 2 — كلها زوجية."
+      },
+      {
+        "type": "he",
+        "text": "لذا فإن المتغير res يبقى true طوال الحلقة."
+      },
+      {
+        "type": "code",
+        "text": "true"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا ستعيد الطريقة بالنسبة لـ num = 248"
+      }
+    ]
+  },
+  {
+    "topic": "مقارنة كفاءة الحلقات",
+    "text": "?لماذا النسخة B أكثر كفاءة من النسخة A لاختبار أولية الأعداد",
+    "code": "// Version A                    // Version B\npublic static boolean           public static boolean\nisPrime(int n) {                isPrime(int n) {\n    boolean res = true;             int i = 2;\n    int i = 2;                      while (i * i <= n) {\n    while (i < n) {                     if (n % i == 0) {\n        if (n % i == 0) {                   return false;\n            res = false;                }\n        }                               i++;\n        i++;                        }\n    }                               return true;\n    return res;                 }\n}",
+    "options": [
+      "B تتوقف عند i*i<=n وتخرج فوراً مع return false",
+      "B تتحقق من أكثر من عوامل وبالتالي هي أكثر دقة",
+      "A وB متطابقتان تماماً في الأداء",
+      "A أسرع لأنها لا تستخدم return"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في النسخة B، الحلقة تعمل فقط حتى √n بدلاً من n."
+      },
+      {
+        "type": "he",
+        "text": "بالإضافة إلى ذلك، بمجرد العثور على عامل يتم تنفيذ return false وتتوقف الحلقة على الفور."
+      },
+      {
+        "type": "he",
+        "text": "في النسخة A، تستمر الحلقة حتى بعد العثور على عامل، لذلك هي أقل كفاءة."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?لماذا النسخة B أكثر كفاءة من النسخة A لاختبار أولية الأعداد"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${o}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
