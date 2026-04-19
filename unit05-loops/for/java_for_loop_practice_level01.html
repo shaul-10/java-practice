@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תרגול לולאת for ב-Java</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ─── מסך בחירת שפה ─── */
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: #FFF3CD;
+      color: #856404;
+      border: 1px solid #FFEAA7;
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 1rem;
+      direction: rtl;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he {
+      display: block;
+      direction: rtl;
+    }
+
+    .home-sub .ar {
+      display: block;
+      direction: rtl;
+    }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: #7F77DD;
+      box-shadow: 0 2px 12px rgba(127, 119, 221, 0.15);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* ─── מסך תרגול ─── */
+    #screen-he,
+    #screen-ar {
+      display: none;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: #7F77DD;
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #EEEDFE;
+      color: #3C3489;
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) {
+      background: #f8f8f8;
+    }
+
+    .opt.correct {
+      background: #EAF3DE;
+      border-color: #3B6D11;
+      color: #27500A;
+    }
+
+    .opt.wrong {
+      background: #FCEBEB;
+      border-color: #A32D2D;
+      color: #791F1F;
+    }
+
+    .opt.disabled {
+      pointer-events: none;
+    }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid #7F77DD;
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show {
+      display: block;
+    }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid #7F77DD;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: #534AB7;
+      font-family: inherit;
+    }
+
+    .next-btn:hover {
+      background: #EEEDFE;
+    }
+
+    .next-btn.show {
+      display: inline-block;
+    }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid #7F77DD;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #534AB7;
+    }
+
+    .home-return-btn:hover {
+      background: #EEEDFE;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך 1 — בחירת שפה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+
+      <div class="home-title-he">תרגול לולאת <code>for</code> ב-Java</div>
+      <div class="home-title-ar">تدريب على حلقة <code>for</code> في Java</div>
+
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+
+      <div class="home-level-badge">
+        רמה 01 &nbsp;|&nbsp; المستوى 01
+      </div>
+
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מסך 2 — תרגול עברית -->
+  <div id="screen-he" dir="rtl" class="container">
+    <div class="quiz-header">
+      <h1 class="quiz-title">תרגול לולאת <code>for</code> ב-Java</h1>
+      <button class="back-btn" onclick="goHome()">← חזור לתפריט</button>
+    </div>
+    <div id="app-he"></div>
+  </div>
+
+  <!-- מסך 3 — تدريب عربي -->
+  <div id="screen-ar" dir="rtl" class="container">
+    <div class="quiz-header">
+      <h1 class="quiz-title">تدريب على حلقة <code>for</code> في Java</h1>
+      <button class="back-btn" onclick="goHome()">← العودة للقائمة</button>
+    </div>
+    <div id="app-ar"></div>
+  </div>
+
+  </div>
+  <script>
+    const questionsHe = [
+      {
+        topic: "לולאה עולה", text: "מה יודפס?",
+        code: `for (int i = 0; i < 5; i++) {\n    System.out.print(i + " ");\n}`,
+        options: ["0 1 2 3 4", "1 2 3 4 5", "0 1 2 3 4 5", "1 2 3 4"], answer: 0,
+        explanation: [{ type: "he", text: "i מתחיל ב-0, התנאי הוא:" }, { type: "code", text: "i < 5" }, { type: "he", text: "ולכן 5 לא מודפס. הפלט:" }, { type: "code", text: "0 1 2 3 4" }]
+      },
+      {
+        topic: "לולאה יורדת", text: "מה יודפס?",
+        code: `for (int i = 5; i > 0; i--) {\n    System.out.print(i + " ");\n}`,
+        options: ["5 4 3 2 1 0", "4 3 2 1 0", "5 4 3 2 1", "6 5 4 3 2 1"], answer: 2,
+        explanation: [{ type: "he", text: "i מתחיל ב-5 ויורד ב-1 בכל איטרציה. התנאי הוא:" }, { type: "code", text: "i > 0" }, { type: "he", text: "ולכן 0 לא מודפס. הפלט:" }, { type: "code", text: "5 4 3 2 1" }]
+      },
+      {
+        topic: "דילוגים", text: "מה יודפס?",
+        code: `for (int i = 0; i <= 10; i += 3) {\n    System.out.print(i + " ");\n}`,
+        options: ["0 3 6 9 12", "0 3 6 9", "3 6 9 12", "0 3 6 9 10"], answer: 1,
+        explanation: [{ type: "he", text: "הצעד הוא +3, לכן i עובר על:" }, { type: "code", text: "0 → 3 → 6 → 9 → 12" }, { type: "he", text: "כאשר i=12 התנאי i<=10 נכשל, הלולאה עוצרת. הפלט:" }, { type: "code", text: "0 3 6 9" }]
+      },
+      {
+        topic: "סכימה", text: "מה יודפס?",
+        code: `int sum = 0;\nfor (int i = 1; i <= 4; i++) {\n    sum += i;\n}\nSystem.out.println(sum);`,
+        options: ["6", "10", "15", "4"], answer: 1,
+        explanation: [{ type: "he", text: "הלולאה רצה 4 פעמים ומחברת את i לתוך sum:" }, { type: "code", text: "1 + 2 + 3 + 4 = 10" }, { type: "he", text: "הפלט:" }, { type: "code", text: "10" }]
+      },
+      {
+        topic: "כפל בצעד", text: "מה יודפס?",
+        code: `for (int i = 2; i < 10; i *= 2) {\n    System.out.print(i + " ");\n}`,
+        options: ["2 4 6 8 10", "2 4 8 16", "2 4 8", "1 2 4 8"], answer: 2,
+        explanation: [{ type: "he", text: "i מוכפל ב-2 בכל איטרציה:" }, { type: "code", text: "2 → 4 → 8 → 16" }, { type: "he", text: "כאשר i=16 התנאי i<10 נכשל. הפלט:" }, { type: "code", text: "2 4 8" }]
+      },
+      {
+        topic: "דילוגים יורדים", text: "מה יודפס?",
+        code: `for (int i = 10; i >= 1; i -= 3) {\n    System.out.print(i + " ");\n}`,
+        options: ["10 7 4 1", "10 7 4", "9 6 3", "10 7 4 2"], answer: 0,
+        explanation: [{ type: "he", text: "i יורד ב-3 בכל פעם:" }, { type: "code", text: "10 → 7 → 4 → 1 → -2" }, { type: "he", text: "כאשר i=-2 התנאי i>=1 נכשל. הפלט:" }, { type: "code", text: "10 7 4 1" }]
+      },
+      {
+        topic: "ערך אחרי הלולאה", text: "מה יודפס?",
+        code: `int i;\nfor (i = 0; i < 5; i++) { }\nSystem.out.println(i);`,
+        options: ["4", "5", "0", "compilation error"], answer: 1,
+        explanation: [{ type: "he", text: "i הוגדר מחוץ ללולאה ולכן נגיש אחריה. הלולאה עוצרת כאשר i=5 (התנאי i<5 נכשל). הפלט:" }, { type: "code", text: "5" }]
+      },
+      {
+        topic: "לולאה ריקה", text: "מה יודפס?",
+        code: `for (int i = 5; i < 5; i++) {\n    System.out.print(i + " ");\n}\nSystem.out.println("done");`,
+        options: ["5 done", "done", "nothing printed", "5"], answer: 1,
+        explanation: [{ type: "he", text: "התנאי הראשוני הוא:" }, { type: "code", text: "5 < 5  →  false" }, { type: "he", text: "הלולאה לא מתבצעת אפילו פעם אחת. מודפס רק:" }, { type: "code", text: "done" }]
+      },
+      {
+        topic: "תנאי בתוך לולאה", text: "מה יודפס?",
+        code: `for (int i = 1; i <= 5; i++) {\n    if (i % 2 == 0)\n        System.out.print(i + " ");\n}`,
+        options: ["1 3 5", "2 4", "1 2 3 4 5", "2 4 6"], answer: 1,
+        explanation: [{ type: "he", text: "מודפסים רק ערכים שעבורם התנאי מתקיים:" }, { type: "code", text: "i % 2 == 0  →  i זוגי" }, { type: "he", text: "בטווח 1 עד 5 הזוגיים הם 2 ו-4. הפלט:" }, { type: "code", text: "2 4" }]
+      },
+      {
+        topic: "חלוקה בצעד", text: "מה יודפס?",
+        code: `int count = 0;\nfor (int i = 100; i > 0; i /= 2) {\n    count++;\n}\nSystem.out.println(count);`,
+        options: ["6", "7", "8", "50"], answer: 1,
+        explanation: [{ type: "he", text: "i מחולק ב-2 בכל פעם:" }, { type: "code", text: "100→50→25→12→6→3→1→0" }, { type: "he", text: "7 איטרציות עד שi=0 והתנאי i>0 נכשל. הפלט:" }, { type: "code", text: "7" }]
+      }
+    ];
+
+    const questionsAr = [
+      {
+        topic: "حلقة تصاعدية", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 0; i < 5; i++) {\n    System.out.print(i + " ");\n}`,
+        options: ["0 1 2 3 4", "1 2 3 4 5", "0 1 2 3 4 5", "1 2 3 4"], answer: 0,
+        explanation: [{ type: "ar", text: "تبدأ i من 0، والشرط هو:" }, { type: "code", text: "i < 5" }, { type: "ar", text: "لذلك لا تُطبع 5. الناتج:" }, { type: "code", text: "0 1 2 3 4" }]
+      },
+      {
+        topic: "حلقة تنازلية", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 5; i > 0; i--) {\n    System.out.print(i + " ");\n}`,
+        options: ["5 4 3 2 1 0", "4 3 2 1 0", "5 4 3 2 1", "6 5 4 3 2 1"], answer: 2,
+        explanation: [{ type: "ar", text: "تبدأ i من 5 وتنقص بمقدار 1 في كل تكرار. الشرط هو:" }, { type: "code", text: "i > 0" }, { type: "ar", text: "لذلك لا تُطبع 0. الناتج:" }, { type: "code", text: "5 4 3 2 1" }]
+      },
+      {
+        topic: "خطوات القفز", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 0; i <= 10; i += 3) {\n    System.out.print(i + " ");\n}`,
+        options: ["0 3 6 9 12", "0 3 6 9", "3 6 9 12", "0 3 6 9 10"], answer: 1,
+        explanation: [{ type: "ar", text: "الخطوة هي +3، لذلك تمر i على:" }, { type: "code", text: "0 → 3 → 6 → 9 → 12" }, { type: "ar", text: "عندما تصبح i=12 يفشل الشرط i<=10، وتتوقف الحلقة. الناتج:" }, { type: "code", text: "0 3 6 9" }]
+      },
+      {
+        topic: "الجمع التراكمي", text: "ما الذي سيُطبع؟",
+        code: `int sum = 0;\nfor (int i = 1; i <= 4; i++) {\n    sum += i;\n}\nSystem.out.println(sum);`,
+        options: ["6", "10", "15", "4"], answer: 1,
+        explanation: [{ type: "ar", text: "تعمل الحلقة 4 مرات وتضيف i إلى sum:" }, { type: "code", text: "1 + 2 + 3 + 4 = 10" }, { type: "ar", text: "الناتج:" }, { type: "code", text: "10" }]
+      },
+      {
+        topic: "الضرب في الخطوة", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 2; i < 10; i *= 2) {\n    System.out.print(i + " ");\n}`,
+        options: ["2 4 6 8 10", "2 4 8 16", "2 4 8", "1 2 4 8"], answer: 2,
+        explanation: [{ type: "ar", text: "تُضرب i في 2 في كل تكرار:" }, { type: "code", text: "2 → 4 → 8 → 16" }, { type: "ar", text: "عندما تصبح i=16 يفشل الشرط i<10. الناتج:" }, { type: "code", text: "2 4 8" }]
+      },
+      {
+        topic: "قفزات تنازلية", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 10; i >= 1; i -= 3) {\n    System.out.print(i + " ");\n}`,
+        options: ["10 7 4 1", "10 7 4", "9 6 3", "10 7 4 2"], answer: 0,
+        explanation: [{ type: "ar", text: "تنقص i بمقدار 3 في كل مرة:" }, { type: "code", text: "10 → 7 → 4 → 1 → -2" }, { type: "ar", text: "عندما تصبح i=-2 يفشل الشرط i>=1. الناتج:" }, { type: "code", text: "10 7 4 1" }]
+      },
+      {
+        topic: "القيمة بعد الحلقة", text: "ما الذي سيُطبع؟",
+        code: `int i;\nfor (i = 0; i < 5; i++) { }\nSystem.out.println(i);`,
+        options: ["4", "5", "0", "compilation error"], answer: 1,
+        explanation: [{ type: "ar", text: "تم تعريف i خارج الحلقة فيمكن الوصول إليها بعدها. تتوقف الحلقة عندما تصبح i=5 (يفشل الشرط i<5). الناتج:" }, { type: "code", text: "5" }]
+      },
+      {
+        topic: "حلقة فارغة", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 5; i < 5; i++) {\n    System.out.print(i + " ");\n}\nSystem.out.println("done");`,
+        options: ["5 done", "done", "nothing printed", "5"], answer: 1,
+        explanation: [{ type: "ar", text: "الشرط الأولي هو:" }, { type: "code", text: "5 < 5  →  false" }, { type: "ar", text: "لا تُنفَّذ الحلقة ولو مرة واحدة. يُطبع فقط:" }, { type: "code", text: "done" }]
+      },
+      {
+        topic: "شرط داخل حلقة", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 1; i <= 5; i++) {\n    if (i % 2 == 0)\n        System.out.print(i + " ");\n}`,
+        options: ["1 3 5", "2 4", "1 2 3 4 5", "2 4 6"], answer: 1,
+        explanation: [{ type: "ar", text: "تُطبع فقط القيم التي يتحقق فيها الشرط:" }, { type: "code", text: "i % 2 == 0  →  i زوجي" }, { type: "ar", text: "في النطاق من 1 إلى 5، الأعداد الزوجية هي 2 و4. الناتج:" }, { type: "code", text: "2 4" }]
+      },
+      {
+        topic: "القسمة في الخطوة", text: "ما الذي سيُطبع؟",
+        code: `int count = 0;\nfor (int i = 100; i > 0; i /= 2) {\n    count++;\n}\nSystem.out.println(count);`,
+        options: ["6", "7", "8", "50"], answer: 1,
+        explanation: [{ type: "ar", text: "تُقسم i على 2 في كل مرة:" }, { type: "code", text: "100→50→25→12→6→3→1→0" }, { type: "ar", text: "7 تكرارات حتى تصبح i=0 ويفشل الشرط i>0. الناتج:" }, { type: "code", text: "7" }]
+      }
+    ];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון ←' : 'לשאלה הבאה ←',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש', home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة ←' : 'السؤال التالي ←',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد', home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? questionsHe : questionsAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+      <div class="score-num">${s.score}/${total}</div>
+      <div class="score-label">${t.scoreLabel(s.score)}</div>
+      <div class="score-actions">
+        <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+        <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+      </div>
+    </div>`;
+        return;
+      }
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+      app.innerHTML = `
+    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+        <span class="q-topic">${q.topic}</span>
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="code-block">${q.code}</div>
+      <div class="options" id="opts-${lang}">
+        ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${o}</button>`).join('')}
+      </div>
+      <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+      <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+    </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? questionsHe : questionsAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) { state[lang] = { current: 0, score: 0 }; render(lang); }
+
+    function startQuiz(lang) {
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+  </script>
+</body>
+
+</html>

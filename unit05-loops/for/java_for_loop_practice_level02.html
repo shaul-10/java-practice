@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תרגול לולאת for ב-Java — רמה 02</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ─── מסך בחירת שפה ─── */
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: #FFF3CD;
+      color: #856404;
+      border: 1px solid #FFEAA7;
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he {
+      display: block;
+      direction: rtl;
+    }
+
+    .home-sub .ar {
+      display: block;
+      direction: rtl;
+    }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: #D4900A;
+      box-shadow: 0 2px 12px rgba(212, 144, 10, 0.15);
+    }
+
+    .lang-btn .flag {
+      font-size: 32px;
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* ─── מסך תרגול ─── */
+    #screen-he,
+    #screen-ar {
+      display: none;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: #FFF3CD;
+      color: #856404;
+      border: 1px solid #FFEAA7;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: #D4900A;
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #FFF3CD;
+      color: #856404;
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) {
+      background: #f8f8f8;
+    }
+
+    .opt.correct {
+      background: #EAF3DE;
+      border-color: #3B6D11;
+      color: #27500A;
+    }
+
+    .opt.wrong {
+      background: #FCEBEB;
+      border-color: #A32D2D;
+      color: #791F1F;
+    }
+
+    .opt.disabled {
+      pointer-events: none;
+    }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid #D4900A;
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show {
+      display: block;
+    }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid #D4900A;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: #9A6500;
+      font-family: inherit;
+    }
+
+    .next-btn:hover {
+      background: #FFF3CD;
+    }
+
+    .next-btn.show {
+      display: inline-block;
+    }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid #D4900A;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #9A6500;
+    }
+
+    .home-return-btn:hover {
+      background: #FFF3CD;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך 1 — בחירת שפה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול לולאת <code>for</code> ב-Java</div>
+      <div class="home-title-ar">تدريب على حلقة <code>for</code> في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <div class="home-level-badge">רמה 02 &nbsp;|&nbsp; المستوى 02</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="flag">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="flag">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך 2 — תרגול עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">רמה 02</span>
+          תרגול לולאת <code>for</code> ב-Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">← חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך 3 — تدريب عربي -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">المستوى 02</span>
+          تدريب على حلقة <code>for</code> في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">← العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+  <script>
+
+    /* ═══════════════════════════════════════════
+       שאלות עברית — רמה 02
+    ═══════════════════════════════════════════ */
+    const questionsHe = [
+
+      {
+        topic: "שדה אתחול ריק", text: "מה יודפס?",
+        code: `int i = 5;\nfor ( ; i < 10; i++) {\n    System.out.print(i + " ");\n}`,
+        options: ["5 6 7 8 9", "6 7 8 9 10", "0 1 2 3 4", "שגיאת קומפילציה"],
+        answer: 0,
+        explanation: [
+          { type: "he", text: "שדה האתחול ריק — הלולאה מדלגת עליו ומתחילה ישירות בבדיקת התנאי." },
+          { type: "he", text: "i כבר מאותחל ל-5 מחוץ ללולאה. התנאי הוא:" },
+          { type: "code", text: "i < 10" },
+          { type: "he", text: "הלולאה רצה עם הערכים 5,6,7,8,9. כאשר i=10 התנאי נכשל. הפלט:" },
+          { type: "code", text: "5 6 7 8 9" }
+        ]
+      },
+
+      {
+        topic: "שדה קידום ריק", text: "מה יודפס?",
+        code: `for (int i = 0; i < 4; ) {\n    System.out.print(i + " ");\n    i += 2;\n}`,
+        options: ["0 1 2 3", "0 2", "0 2 4", "לולאה אינסופית"],
+        answer: 1,
+        explanation: [
+          { type: "he", text: "שדה הקידום ריק — הקידום מתבצע בתוך גוף הלולאה בפקודה:" },
+          { type: "code", text: "i += 2" },
+          { type: "he", text: "ערכי i הם: 0 → 2 → 4. כאשר i=4 התנאי i<4 נכשל ועוצר. הפלט:" },
+          { type: "code", text: "0 2" }
+        ]
+      },
+
+      {
+        topic: "לולאה for(;;) עם break", text: "מה יודפס?",
+        code: `int i = 1;\nfor ( ; ; ) {\n    if (i > 4) {\n        break;\n    }\n    System.out.print(i + " ");\n    i++;\n}`,
+        options: ["1 2 3 4 5", "1 2 3 4", "0 1 2 3 4", "לולאה אינסופית"],
+        answer: 1,
+        explanation: [
+          { type: "he", text: "for(;;) — כל שלושת השדות ריקים. ערך ברירת המחדל של התנאי הוא true, כלומר הלולאה אינסופית ללא break." },
+          { type: "he", text: "בכל איטרציה נבדק אם i > 4. כאשר i=5 התנאי מתקיים ומתבצע break." },
+          { type: "he", text: "מודפסים הערכים 1,2,3,4 לפני ה-break. הפלט:" },
+          { type: "code", text: "1 2 3 4" }
+        ]
+      },
+
+      {
+        topic: "שתי פקודות קידום", text: "מה יודפס?",
+        code: `for (int i = 0, j = 10; i < j; i++, j--) {\n    System.out.print(i + " ");\n}`,
+        options: ["0 1 2 3 4 5 6 7 8 9", "0 1 2 3 4 5", "0 1 2 3 4", "0 1 2 3 4 5 6"],
+        answer: 2,
+        explanation: [
+          { type: "he", text: "הלולאה מכילה שני משתני אתחול ושתי פקודות קידום (מופרדות בפסיק)." },
+          { type: "he", text: "i עולה ב-1 ו-j יורד ב-1 בכל איטרציה:" },
+          { type: "code", text: "(i=0,j=10) → (1,9) → (2,8) → (3,7) → (4,6) → (5,5)" },
+          { type: "he", text: "כאשר i=5 ו-j=5 התנאי i<j נכשל. מודפסים: 0,1,2,3,4. הפלט:" },
+          { type: "code", text: "0 1 2 3 4" }
+        ]
+      },
+
+      {
+        topic: "תחום הגדרה", text: "מה יודפס?",
+        code: `for (int i = 0; i < 3; i++) {\n    System.out.print(i + " ");\n}\nSystem.out.println(i);`,
+        options: ["0 1 2 3", "0 1 2 ואחר כך 3", "0 1 2 ואחר כך 0", "שגיאת קומפילציה"],
+        answer: 3,
+        explanation: [
+          { type: "he", text: "המשתנה i הוגדר בתוך הצהרת הלולאה (בשדה האתחול)." },
+          { type: "he", text: "לכן תחום הגדרתו מוגבל לגוף הלולאה בלבד — הוא אינו מוכר מחוץ לה." },
+          { type: "he", text: "הפקודה System.out.println(i) נמצאת מחוץ ללולאה ולכן תגרום לשגיאת קומפילציה:" },
+          { type: "code", text: "Undeclared variable: i" }
+        ]
+      },
+
+      {
+        topic: "break — יציאה מוקדמת", text: "מה יודפס?",
+        code: `for (int i = 1; i <= 10; i++) {\n    if (i % 3 == 0) {\n        break;\n    }\n    System.out.print(i + " ");\n}`,
+        options: ["1 2 3", "3 6 9", "1 2", "1 2 4 5 7 8 10"],
+        answer: 2,
+        explanation: [
+          { type: "he", text: "הלולאה בודקת בכל איטרציה אם i מתחלק ב-3." },
+          { type: "he", text: "כאשר i=3 התנאי i%3==0 מתקיים — מתבצע break לפני ההדפסה." },
+          { type: "he", text: "רק 1 ו-2 מודפסים לפני עצירת הלולאה. הפלט:" },
+          { type: "code", text: "1 2" }
+        ]
+      },
+
+      {
+        topic: "continue — דילוג", text: "מה יודפס?",
+        code: `for (int i = 1; i <= 6; i++) {\n    if (i % 2 == 0) {\n        continue;\n    }\n    System.out.print(i + " ");\n}`,
+        options: ["2 4 6", "1 3 5", "1 2 3 4 5 6", "1 3 5 7"],
+        answer: 1,
+        explanation: [
+          { type: "he", text: "continue מסיים את האיטרציה הנוכחית וקופץ לשלב הקידום (i++)." },
+          { type: "he", text: "כאשר i זוגי (2,4,6) — ה-continue מדלג על ההדפסה." },
+          { type: "he", text: "מודפסים רק הערכים האי-זוגיים. הפלט:" },
+          { type: "code", text: "1 3 5" }
+        ]
+      },
+
+      {
+        topic: "break ושמירת ערך", text: "מה יודפס?",
+        code: `int result = -1;\nfor (int i = 2; i <= 20; i++) {\n    if (i * i > 50) {\n        result = i;\n        break;\n    }\n}\nSystem.out.println(result);`,
+        options: ["6", "7", "8", "−1"],
+        answer: 2,
+        explanation: [
+          { type: "he", text: "הלולאה מחפשת את המספר הקטן ביותר שריבועו גדול מ-50." },
+          { type: "he", text: "נבדוק את הערכים:" },
+          { type: "code", text: "7*7 = 49  →  49 > 50  →  false\n8*8 = 64  →  64 > 50  →  true" },
+          { type: "he", text: "כאשר i=8 התנאי מתקיים: result=8 ומתבצע break. הפלט:" },
+          { type: "code", text: "8" }
+        ]
+      },
+
+      {
+        topic: "continue וספירה", text: "מה יודפס?",
+        code: `int count = 0;\nfor (int i = 1; i <= 10; i++) {\n    if (i % 3 == 0) {\n        continue;\n    }\n    count++;\n}\nSystem.out.println(count);`,
+        options: ["3", "6", "7", "10"],
+        answer: 2,
+        explanation: [
+          { type: "he", text: "הלולאה רצה מ-1 עד 10. כאשר i מתחלק ב-3 — continue מדלג על count++." },
+          { type: "he", text: "הערכים המתחלקים ב-3 בטווח זה הם:" },
+          { type: "code", text: "3, 6, 9  →  3 ערכים מדולגים" },
+          { type: "he", text: "נספרים 10 - 3 = 7 ערכים. הפלט:" },
+          { type: "code", text: "7" }
+        ]
+      },
+
+      {
+        topic: "כפל מצטבר ו-break", text: "מה יודפס?",
+        code: `int product = 1;\nfor (int i = 1; i <= 6; i++) {\n    product *= i;\n    if (product > 20) {\n        break;\n    }\n}\nSystem.out.println(product);`,
+        options: ["6", "24", "120", "720"],
+        answer: 1,
+        explanation: [
+          { type: "he", text: "product מוכפל ב-i בכל איטרציה. נעקוב אחרי הערכים:" },
+          { type: "code", text: "i=1: product = 1\ni=2: product = 2\ni=3: product = 6\ni=4: product = 24  →  24 > 20  →  break" },
+          { type: "he", text: "הלולאה עוצרת כאשר product=24. הפלט:" },
+          { type: "code", text: "24" }
+        ]
+      }
+
+    ];
+
+    /* ═══════════════════════════════════════════
+       أسئلة عربية — المستوى 02
+    ═══════════════════════════════════════════ */
+    const questionsAr = [
+
+      {
+        topic: "حقل تهيئة فارغ", text: "ما الذي سيُطبع؟",
+        code: `int i = 5;\nfor ( ; i < 10; i++) {\n    System.out.print(i + " ");\n}`,
+        options: ["5 6 7 8 9", "6 7 8 9 10", "0 1 2 3 4", "خطأ في الترجمة"],
+        answer: 0,
+        explanation: [
+          { type: "ar", text: "حقل التهيئة فارغ — تتخطى الحلقة هذه الخطوة وتبدأ مباشرة بفحص الشرط." },
+          { type: "ar", text: "تمت تهيئة i بقيمة 5 خارج الحلقة. الشرط هو:" },
+          { type: "code", text: "i < 10" },
+          { type: "ar", text: "تعمل الحلقة بالقيم 5,6,7,8,9. عندما تصبح i=10 يفشل الشرط. الناتج:" },
+          { type: "code", text: "5 6 7 8 9" }
+        ]
+      },
+
+      {
+        topic: "حقل تقدم فارغ", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 0; i < 4; ) {\n    System.out.print(i + " ");\n    i += 2;\n}`,
+        options: ["0 1 2 3", "0 2", "0 2 4", "حلقة لا نهائية"],
+        answer: 1,
+        explanation: [
+          { type: "ar", text: "حقل التقدم فارغ — يتم التقدم داخل جسم الحلقة بالأمر:" },
+          { type: "code", text: "i += 2" },
+          { type: "ar", text: "قيم i هي: 0 → 2 → 4. عندما تصبح i=4 يفشل الشرط i<4 ويتوقف. الناتج:" },
+          { type: "code", text: "0 2" }
+        ]
+      },
+
+      {
+        topic: "حلقة for(;;) مع break", text: "ما الذي سيُطبع؟",
+        code: `int i = 1;\nfor ( ; ; ) {\n    if (i > 4) {\n        break;\n    }\n    System.out.print(i + " ");\n    i++;\n}`,
+        options: ["1 2 3 4 5", "1 2 3 4", "0 1 2 3 4", "حلقة لا نهائية"],
+        answer: 1,
+        explanation: [
+          { type: "ar", text: "for(;;) — الحقول الثلاثة فارغة. القيمة الافتراضية للشرط هي true، أي الحلقة لا نهائية بدون break." },
+          { type: "ar", text: "في كل تكرار يُفحص إذا كانت i > 4. عندما تصبح i=5 يتحقق الشرط وينفَّذ break." },
+          { type: "ar", text: "تُطبع القيم 1,2,3,4 قبل break. الناتج:" },
+          { type: "code", text: "1 2 3 4" }
+        ]
+      },
+
+      {
+        topic: "أمران للتقدم", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 0, j = 10; i < j; i++, j--) {\n    System.out.print(i + " ");\n}`,
+        options: ["0 1 2 3 4 5 6 7 8 9", "0 1 2 3 4 5", "0 1 2 3 4", "0 1 2 3 4 5 6"],
+        answer: 2,
+        explanation: [
+          { type: "ar", text: "تحتوي الحلقة على متغيرَي تهيئة وأمرَي تقدم (مفصولَين بفاصلة)." },
+          { type: "ar", text: "يزداد i بمقدار 1 وينقص j بمقدار 1 في كل تكرار:" },
+          { type: "code", text: "(i=0,j=10) → (1,9) → (2,8) → (3,7) → (4,6) → (5,5)" },
+          { type: "ar", text: "عندما تصبح i=5 و j=5 يفشل الشرط i<j. تُطبع: 0,1,2,3,4. الناتج:" },
+          { type: "code", text: "0 1 2 3 4" }
+        ]
+      },
+
+      {
+        topic: "نطاق التعريف", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 0; i < 3; i++) {\n    System.out.print(i + " ");\n}\nSystem.out.println(i);`,
+        options: ["0 1 2 3", "0 1 2 ثم 3", "0 1 2 ثم 0", "خطأ في الترجمة"],
+        answer: 3,
+        explanation: [
+          { type: "ar", text: "تم تعريف المتغير i داخل تصريح الحلقة (في حقل التهيئة)." },
+          { type: "ar", text: "لذلك نطاق تعريفه محدود بجسم الحلقة فقط — لا يُعرف خارجها." },
+          { type: "ar", text: "الأمر System.out.println(i) خارج الحلقة وسيُسبب خطأ في الترجمة:" },
+          { type: "code", text: "Undeclared variable: i" }
+        ]
+      },
+
+      {
+        topic: "break — خروج مبكر", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 1; i <= 10; i++) {\n    if (i % 3 == 0) {\n        break;\n    }\n    System.out.print(i + " ");\n}`,
+        options: ["1 2 3", "3 6 9", "1 2", "1 2 4 5 7 8 10"],
+        answer: 2,
+        explanation: [
+          { type: "ar", text: "تفحص الحلقة في كل تكرار إذا كانت i تقبل القسمة على 3." },
+          { type: "ar", text: "عندما تصبح i=3 يتحقق الشرط i%3==0 — يُنفَّذ break قبل الطباعة." },
+          { type: "ar", text: "تُطبع فقط 1 و 2 قبل توقف الحلقة. الناتج:" },
+          { type: "code", text: "1 2" }
+        ]
+      },
+
+      {
+        topic: "continue — تخطي", text: "ما الذي سيُطبع؟",
+        code: `for (int i = 1; i <= 6; i++) {\n    if (i % 2 == 0) {\n        continue;\n    }\n    System.out.print(i + " ");\n}`,
+        options: ["2 4 6", "1 3 5", "1 2 3 4 5 6", "1 3 5 7"],
+        answer: 1,
+        explanation: [
+          { type: "ar", text: "ينهي continue التكرار الحالي وينتقل إلى خطوة التقدم (i++)." },
+          { type: "ar", text: "عندما تكون i زوجية (2,4,6) — يتخطى continue الطباعة." },
+          { type: "ar", text: "تُطبع فقط القيم الفردية. الناتج:" },
+          { type: "code", text: "1 3 5" }
+        ]
+      },
+
+      {
+        topic: "break وحفظ القيمة", text: "ما الذي سيُطبع؟",
+        code: `int result = -1;\nfor (int i = 2; i <= 20; i++) {\n    if (i * i > 50) {\n        result = i;\n        break;\n    }\n}\nSystem.out.println(result);`,
+        options: ["6", "7", "8", "−1"],
+        answer: 2,
+        explanation: [
+          { type: "ar", text: "تبحث الحلقة عن أصغر عدد يكون مربعه أكبر من 50." },
+          { type: "ar", text: "نتتبع القيم:" },
+          { type: "code", text: "7*7 = 49  →  49 > 50  →  false\n8*8 = 64  →  64 > 50  →  true" },
+          { type: "ar", text: "عندما تصبح i=8 يتحقق الشرط: result=8 وينفَّذ break. الناتج:" },
+          { type: "code", text: "8" }
+        ]
+      },
+
+      {
+        topic: "continue والعدّ", text: "ما الذي سيُطبع؟",
+        code: `int count = 0;\nfor (int i = 1; i <= 10; i++) {\n    if (i % 3 == 0) {\n        continue;\n    }\n    count++;\n}\nSystem.out.println(count);`,
+        options: ["3", "6", "7", "10"],
+        answer: 2,
+        explanation: [
+          { type: "ar", text: "تعمل الحلقة من 1 إلى 10. عندما تقبل i القسمة على 3 — يتخطى continue أمر count++." },
+          { type: "ar", text: "القيم القابلة للقسمة على 3 في هذا النطاق هي:" },
+          { type: "code", text: "3, 6, 9  →  3 قيم متخطاة" },
+          { type: "ar", text: "يُحسب 10 - 3 = 7 قيمة. الناتج:" },
+          { type: "code", text: "7" }
+        ]
+      },
+
+      {
+        topic: "ضرب تراكمي و-break", text: "ما الذي سيُطبع؟",
+        code: `int product = 1;\nfor (int i = 1; i <= 6; i++) {\n    product *= i;\n    if (product > 20) {\n        break;\n    }\n}\nSystem.out.println(product);`,
+        options: ["6", "24", "120", "720"],
+        answer: 1,
+        explanation: [
+          { type: "ar", text: "يُضرب product في i في كل تكرار. نتتبع القيم:" },
+          { type: "code", text: "i=1: product = 1\ni=2: product = 2\ni=3: product = 6\ni=4: product = 24  →  24 > 20  →  break" },
+          { type: "ar", text: "تتوقف الحلقة عندما تصبح product=24. الناتج:" },
+          { type: "code", text: "24" }
+        ]
+      }
+
+    ];
+
+    /* ═══════════════════════════════════════════
+       מצב ולוגיקה
+    ═══════════════════════════════════════════ */
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון ←' : 'לשאלה הבאה ←',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש', home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة ←' : 'السؤال التالي ←',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد', home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? questionsHe : questionsAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+      <div class="score-num">${s.score}/${total}</div>
+      <div class="score-label">${t.scoreLabel(s.score)}</div>
+      <div class="score-actions">
+        <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+        <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+      </div>
+    </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+        <span class="q-topic">${q.topic}</span>
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="code-block">${q.code}</div>
+      <div class="options" id="opts-${lang}">
+        ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${o}</button>`).join('')}
+      </div>
+      <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+      <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+    </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? questionsHe : questionsAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) {
+        opts[q.answer].classList.add('correct');
+      }
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) {
+        state[lang].score++;
+      }
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) { state[lang] = { current: 0, score: 0 }; render(lang); }
+
+    function startQuiz(lang) {
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+  </script>
+</body>
+
+</html>
