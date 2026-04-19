@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 04 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 04</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #27AE60;   /* לדוגמה: #C0392B */
+      --color-light:  #E8F8EE;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #1A5E35;   /* לדוגמה: #8B1A1A */
+      --color-border: #9FE1CB; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול לולאת chars & Strings ב-Java</div>
+      <div class="home-title-ar">تدريب على حلقة  chars & Strings في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 04 &nbsp;|&nbsp; المستوى 04</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 04</span>
+          תרגול לולאת chars & Strings ב-Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 04</span>
+          تدريب على حلقة  chars & Strings في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "while עם ספירת תווים",
+    "text": "?מה יודפס",
+    "code": "String s = \"hello world\";\nint count = 0;\nint i = 0;\nwhile (i < s.length()) {\n    if (s.charAt(i) == 'l')\n        count++;\n    i++;\n}\nSystem.out.println(count);",
+    "options": [
+      "3",
+      "2",
+      "1",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה סופרת כמה פעמים מופיע התו 'l'"
+      },
+      {
+        "type": "code",
+        "text": "he[l][l]o wor[l]d → 3 פעמים"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "break בסריקת מחרוזת",
+    "text": "?מה יודפס",
+    "code": "String s = \"abXcd\";\nString result = \"\";\nint i = 0;\nwhile (i < s.length()) {\n    if (s.charAt(i) == 'X') break;\n    result += s.charAt(i);\n    i++;\n}\nSystem.out.println(result);",
+    "options": [
+      "\"ab\"",
+      "\"abXcd\"",
+      "\"abcd\"",
+      "\"abX\""
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה בונה מחרוזת עד שנתקלת ב־'X' ואז מפסיקה"
+      },
+      {
+        "type": "code",
+        "text": "a→b→X → break → result = \"ab\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "continue בסריקת מחרוזת",
+    "text": "?מה יודפס",
+    "code": "String s = \"a1b2c3\";\nString result = \"\";\nfor (int i = 0; i < s.length(); i++) {\n    char ch = s.charAt(i);\n    if (ch >= '0' && ch <= '9') continue;\n    result += ch;\n}\nSystem.out.println(result);",
+    "options": [
+      "\"abc\"",
+      "\"123\"",
+      "\"a1b2c3\"",
+      "\"ab\""
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "continue מדלג על כל תו שהוא ספרה"
+      },
+      {
+        "type": "code",
+        "text": "a→ נשמר, 1→ מדולג, b→ נשמר, 2→ מדולג, c→ נשמר, 3→ מדולג → \"abc\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "while שבונה מחרוזת",
+    "text": "?מה יודפס",
+    "code": "String result = \"\";\nchar ch = 'a';\nwhile (ch <= 'e') {\n    result = ch + result;\n    ch++;\n}\nSystem.out.println(result);",
+    "options": [
+      "\"edcba\"",
+      "\"abcde\"",
+      "\"aeiou\"",
+      "\"eabcd\""
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כל תו מתווסף לתחילת המחרוזת ולא לסופה"
+      },
+      {
+        "type": "code",
+        "text": "a→\"a\", b→\"ba\", c→\"cba\", d→\"dcba\", e→\"edcba\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "מתי עדיף while על for",
+    "text": "?מתי עדיף להשתמש בלולאת while על פני for בסריקת מחרוזת",
+    "code": null,
+    "options": [
+      "כשלא יודעים מראש כמה איטרציות יהיו",
+      "כשצריך לסרוק את כל תווי המחרוזת",
+      "כשיש אינדקס שמתחיל ב־0",
+      "for תמיד עדיפה על while"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "for עדיפה כשיודעים את מספר הצעדים מראש (למשל לסרוק כל תווי מחרוזת)"
+      },
+      {
+        "type": "he",
+        "text": "while עדיפה כשהעצירה תלויה בתנאי דינמי — למשל עצירה בתו מיוחד"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מתי עדיף להשתמש בלולאת while על פני for בסריקת מחרוזת"
+      }
+    ]
+  },
+  {
+    "topic": "שני אינדקסים — כמה איטרציות",
+    "text": "?כמה פעמים תרוץ הלולאה",
+    "code": "String s = \"abcdef\";\nint left = 0, right = s.length() - 1;\nwhile (left < right) {\n    left++;\n    right--;\n}",
+    "options": [
+      "3",
+      "6",
+      "2",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "left ו־right מתקרבים זה לזה — left עולה, right יורד"
+      },
+      {
+        "type": "code",
+        "text": "(0,5)→(1,4)→(2,3)→(3,3) עצירה → 3 איטרציות"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?כמה פעמים תרוץ הלולאה"
+      }
+    ]
+  },
+  {
+    "topic": "איתור באג בהצפנה",
+    "text": "?מה הבאג בקוד ההצפנה הבא",
+    "code": "public static String encrypt(String msg, int k) {\n    String result = \"\";\n    for (int i = 0; i < msg.length(); i++) {\n        char ch = msg.charAt(i);\n        ch += k;\n        result += ch;\n    }\n    return result;\n}",
+    "options": [
+      "אין בדיקת חריגה מעבר ל־'z'",
+      "הלולאה לא עוברת על כל התווים",
+      "result לא מאותחל נכון",
+      "הקוד תקין לחלוטין"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הקוד מוסיף k לכל תו ללא בדיקה האם חרגנו מ־'z'"
+      },
+      {
+        "type": "he",
+        "text": "צריך להוסיף: if (ch > 'z') ch -= 26;"
+      },
+      {
+        "type": "code",
+        "text": "למשל 'y'+3 = '|' במקום 'b'"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה הבאג בקוד ההצפנה הבא"
+      }
+    ]
+  },
+  {
+    "topic": "לולאה עם תכונה מספרית",
+    "text": "?מה יודפס",
+    "code": "String s = \"Hello World\";\nint upper = 0, lower = 0;\nfor (int i = 0; i < s.length(); i++) {\n    char ch = s.charAt(i);\n    if (ch >= 'A' && ch <= 'Z') upper++;\n    else if (ch >= 'a' && ch <= 'z') lower++;\n}\nSystem.out.println(upper + \" \" + lower);",
+    "options": [
+      "2 8",
+      "2 9",
+      "3 8",
+      "2 10"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "\"Hello World\": H,W = 2 גדולות; e,l,l,o,o,r,l,d = 8 קטנות; רווח לא נספר"
+      },
+      {
+        "type": "code",
+        "text": "upper=2, lower=8 → \"2 8\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "sentinel — קלט עד תו מיוחד",
+    "text": "?אם הקלט הוא: a b c * — מה יודפס",
+    "code": "Scanner scan = new Scanner(System.in);\nString result = \"\";\nString input = scan.next();\nwhile (!input.equals(\"*\")) {\n    result += input;\n    input = scan.next();\n}\nSystem.out.println(result);",
+    "options": [
+      "\"abc\"",
+      "\"abc*\"",
+      "\"a b c\"",
+      "שגיאה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה מצרפת קלטים עד שמגיעים לתו הסיום '*'"
+      },
+      {
+        "type": "code",
+        "text": "a→b→c→* עצירה → result = \"abc\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?אם הקלט הוא: a b c * — מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "השוואת יעילות חיפוש תו",
+    "text": "?מדוע גרסה B יעילה יותר לחיפוש תו במחרוזת",
+    "code": "// Version A\npublic static boolean contains(String s, char c) {\n    boolean found = false;\n    for (int i = 0; i < s.length(); i++)\n        if (s.charAt(i) == c) found = true;\n    return found;\n}\n// Version B\npublic static boolean contains(String s, char c) {\n    for (int i = 0; i < s.length(); i++)\n        if (s.charAt(i) == c) return true;\n    return false;\n}",
+    "options": [
+      "B עוצרת מיד עם return true כשמוצאת את התו",
+      "B בודקת יותר תווים ולכן מדויקת יותר",
+      "A ו-B זהות לחלוטין בביצועים",
+      "A מהירה יותר כי היא לא משתמשת ב-return"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ב־Version A הלולאה ממשיכה עד הסוף גם אחרי שנמצא התו"
+      },
+      {
+        "type": "he",
+        "text": "ב־Version B ברגע שנמצא התו מתבצע return true והלולאה נעצרת מיד"
+      },
+      {
+        "type": "he",
+        "text": "לכן B יעילה יותר כאשר התו נמצא בתחילת המחרוזת"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מדוע גרסה B יעילה יותר לחיפוש תו במחרוזת"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "while مع عد الحروف",
+    "text": "?ماذا سيطبع",
+    "code": "String s = \"hello world\";\nint count = 0;\nint i = 0;\nwhile (i < s.length()) {\n    if (s.charAt(i) == 'l')\n        count++;\n    i++;\n}\nSystem.out.println(count);",
+    "options": [
+      "3",
+      "2",
+      "1",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تحسب عدد مرات ظهور الحرف 'l'"
+      },
+      {
+        "type": "code",
+        "text": "he[l][l]o wor[l]d → 3 مرات"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "كسر في مسح السلسلة",
+    "text": "?ماذا سيطبع",
+    "code": "String s = \"abXcd\";\nString result = \"\";\nint i = 0;\nwhile (i < s.length()) {\n    if (s.charAt(i) == 'X') break;\n    result += s.charAt(i);\n    i++;\n}\nSystem.out.println(result);",
+    "options": [
+      "\"ab\"",
+      "\"abXcd\"",
+      "\"abcd\"",
+      "\"abX\""
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تبني سلسلة حتى تصادف 'X' ثم تتوقف"
+      },
+      {
+        "type": "code",
+        "text": "a→b→X → break → result = \"ab\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "استمرار في مسح السلسلة",
+    "text": "?ماذا سيطبع",
+    "code": "String s = \"a1b2c3\";\nString result = \"\";\nfor (int i = 0; i < s.length(); i++) {\n    char ch = s.charAt(i);\n    if (ch >= '0' && ch <= '9') continue;\n    result += ch;\n}\nSystem.out.println(result);",
+    "options": [
+      "\"abc\"",
+      "\"123\"",
+      "\"a1b2c3\"",
+      "\"ab\""
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "استمرار يتخطى كل حرف هو رقم"
+      },
+      {
+        "type": "code",
+        "text": "a→ محفوظ، 1→ متخطى، b→ محفوظ، 2→ متخطى، c→ محفوظ، 3→ متخطى → \"abc\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "بينما تبني سلسلة",
+    "text": "?ماذا سيطبع",
+    "code": "String result = \"\";\nchar ch = 'a';\nwhile (ch <= 'e') {\n    result = ch + result;\n    ch++;\n}\nSystem.out.println(result);",
+    "options": [
+      "\"edcba\"",
+      "\"abcde\"",
+      "\"aeiou\"",
+      "\"eabcd\""
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "كل حرف يضاف إلى بداية السلسلة وليس إلى نهايتها"
+      },
+      {
+        "type": "code",
+        "text": "a→\"a\", b→\"ba\", c→\"cba\", d→\"dcba\", e→\"edcba\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "متى يُفضل استخدام while على for",
+    "text": "?متى يُفضل استخدام حلقة while بدلاً من for في مسح سلسلة نصية",
+    "code": null,
+    "options": [
+      "عندما لا نعرف مسبقًا عدد التكرارات التي ستكون",
+      "عندما نحتاج إلى مسح جميع أحرف السلسلة النصية",
+      "عندما يكون هناك فهرس يبدأ من 0",
+      "for دائمًا أفضل من while"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "for أفضل عندما نعرف عدد الخطوات مسبقًا (على سبيل المثال لمسح جميع أحرف سلسلة نصية)"
+      },
+      {
+        "type": "he",
+        "text": "while أفضل عندما تعتمد الإيقاف على شرط ديناميكي — على سبيل المثال الإيقاف عند حرف خاص"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?متى يُفضل استخدام حلقة while بدلاً من for في مسح سلسلة نصية"
+      }
+    ]
+  },
+  {
+    "topic": "مؤشران — كم عدد التكرارات",
+    "text": "?كم مرة ستعمل الحلقة",
+    "code": "String s = \"abcdef\";\nint left = 0, right = s.length() - 1;\nwhile (left < right) {\n    left++;\n    right--;\n}",
+    "options": [
+      "3",
+      "6",
+      "2",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "left و־right يقتربان من بعضهما البعض — left يرتفع، right ينخفض"
+      },
+      {
+        "type": "code",
+        "text": "(0,5)→(1,4)→(2,3)→(3,3) توقف → 3 تكرارات"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?كم مرة ستعمل الحلقة"
+      }
+    ]
+  },
+  {
+    "topic": "تحديد خطأ في التشفير",
+    "text": "?ما الخطأ في كود التشفير التالي",
+    "code": "public static String encrypt(String msg, int k) {\n    String result = \"\";\n    for (int i = 0; i < msg.length(); i++) {\n        char ch = msg.charAt(i);\n        ch += k;\n        result += ch;\n    }\n    return result;\n}",
+    "options": [
+      "لا يوجد فحص لتجاوز 'z'",
+      "الحلقة لا تمر على جميع الأحرف",
+      "result لم يتم تهيئته بشكل صحيح",
+      "الكود صحيح تمامًا"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الكود يضيف k لكل حرف دون التحقق مما إذا كنا قد تجاوزنا 'z'"
+      },
+      {
+        "type": "he",
+        "text": "يجب إضافة: if (ch > 'z') ch -= 26;"
+      },
+      {
+        "type": "code",
+        "text": "على سبيل المثال 'y'+3 = '|' بدلاً من 'b'"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما الخطأ في كود التشفير التالي"
+      }
+    ]
+  },
+  {
+    "topic": "حلقة مع خاصية عددية",
+    "text": "?ماذا سيطبع",
+    "code": "String s = \"Hello World\";\nint upper = 0, lower = 0;\nfor (int i = 0; i < s.length(); i++) {\n    char ch = s.charAt(i);\n    if (ch >= 'A' && ch <= 'Z') upper++;\n    else if (ch >= 'a' && ch <= 'z') lower++;\n}\nSystem.out.println(upper + \" \" + lower);",
+    "options": [
+      "2 8",
+      "2 9",
+      "3 8",
+      "2 10"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "\"Hello World\": H,W = 2 أحرف كبيرة; e,l,l,o,o,r,l,d = 8 أحرف صغيرة; الفراغ لا يُحتسب"
+      },
+      {
+        "type": "code",
+        "text": "upper=2, lower=8 → \"2 8\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "sentinel — إدخال حتى حرف خاص",
+    "text": "?إذا كان الإدخال هو: a b c * — ماذا سيطبع",
+    "code": "Scanner scan = new Scanner(System.in);\nString result = \"\";\nString input = scan.next();\nwhile (!input.equals(\"*\")) {\n    result += input;\n    input = scan.next();\n}\nSystem.out.println(result);",
+    "options": [
+      "\"abc\"",
+      "\"abc*\"",
+      "\"a b c\"",
+      "خطأ"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تضيف الإدخالات حتى تصل إلى حرف النهاية '*'"
+      },
+      {
+        "type": "code",
+        "text": "a→b→c→* توقف → result = \"abc\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?إذا كان الإدخال هو: a b c * — ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "مقارنة كفاءة البحث عن حرف",
+    "text": "?لماذا النسخة B أكثر كفاءة في البحث عن حرف في سلسلة",
+    "code": "// Version A\npublic static boolean contains(String s, char c) {\n    boolean found = false;\n    for (int i = 0; i < s.length(); i++)\n        if (s.charAt(i) == c) found = true;\n    return found;\n}\n// Version B\npublic static boolean contains(String s, char c) {\n    for (int i = 0; i < s.length(); i++)\n        if (s.charAt(i) == c) return true;\n    return false;\n}",
+    "options": [
+      "B تتوقف فوراً عند return true عند العثور على الحرف",
+      "B تتحقق من المزيد من الأحرف وبالتالي فهي أكثر دقة",
+      "A و B متطابقتان تماماً في الأداء",
+      "A أسرع لأنها لا تستخدم return"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في النسخة A، تستمر الحلقة حتى النهاية حتى بعد العثور على الحرف"
+      },
+      {
+        "type": "he",
+        "text": "في النسخة B، بمجرد العثور على الحرف يتم تنفيذ return true وتتوقف الحلقة فوراً"
+      },
+      {
+        "type": "he",
+        "text": "لذلك B أكثر كفاءة عندما يكون الحرف موجوداً في بداية السلسلة"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?لماذا النسخة B أكثر كفاءة في البحث عن حرف في سلسلة"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${o}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>

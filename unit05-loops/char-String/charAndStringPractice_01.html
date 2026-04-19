@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 01 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 01</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #7F77DD;   /* לדוגמה: #C0392B */
+      --color-light:  #EEEDFE;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #3C3489;   /* לדוגמה: #8B1A1A */
+      --color-border: #CECBF6; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול לולאת chars & Strings ב-Java</div>
+      <div class="home-title-ar">تدريب على حلقة  chars & Strings في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 01 &nbsp;|&nbsp; المستوى 01</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 01</span>
+          תרגול לולאת chars & Strings ב-Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 01</span>
+          تدريب على حلقة  chars & Strings في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "ערך ASCII של תו",
+    "text": "?מהו הערך המספרי של התו 'A' בטבלת ASCII",
+    "code": null,
+    "options": [
+      "65",
+      "60",
+      "97",
+      "90"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לפי טבלת ASCII האותיות הגדולות מתחילות ב־65"
+      },
+      {
+        "type": "code",
+        "text": "'A' = 65, 'B' = 66, ..., 'Z' = 90"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מהו הערך המספרי של התו 'A' בטבלת ASCII"
+      }
+    ]
+  },
+  {
+    "topic": "סוג נתונים תו",
+    "text": "?מהו סוג הנתונים של משתנה שמחזיק תו בודד ב־Java",
+    "code": null,
+    "options": [
+      "char",
+      "String",
+      "int",
+      "letter"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "char הוא הסוג הפרימיטיבי לתו בודד ב־Java"
+      },
+      {
+        "type": "he",
+        "text": "String הוא מחרוזת — רצף של תווים, לא תו בודד"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מהו סוג הנתונים של משתנה שמחזיק תו בודד ב־Java"
+      }
+    ]
+  },
+  {
+    "topic": "המרת תו למספר",
+    "text": "?מה יודפס",
+    "code": "System.out.println((int)'a');",
+    "options": [
+      "97",
+      "65",
+      "a",
+      "1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האותיות הקטנות בטבלת ASCII מתחילות ב־97"
+      },
+      {
+        "type": "code",
+        "text": "'a' = 97, 'b' = 98, ..., 'z' = 122"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  },
+  {
+    "topic": "אורך מחרוזת",
+    "text": "?מה תחזיר הקריאה str.length() עבור str = \"hello\"",
+    "code": "String str = \"hello\";\nSystem.out.println(str.length());",
+    "options": [
+      "5",
+      "4",
+      "6",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "המחרוזת \"hello\" מכילה 5 תווים"
+      },
+      {
+        "type": "code",
+        "text": "h-e-l-l-o → 5"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה תחזיר הקריאה str.length() עבור str = \"hello\""
+      }
+    ]
+  },
+  {
+    "topic": "המרת מספר לתו",
+    "text": "?מה יהיה ערך ch לאחר הפקודה",
+    "code": "char ch = (char)66;",
+    "options": [
+      "'B'",
+      "'A'",
+      "'C'",
+      "66"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "66 בטבלת ASCII הוא התו 'B'"
+      },
+      {
+        "type": "code",
+        "text": "A=65, B=66, C=67"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יהיה ערך ch לאחר הפקודה"
+      }
+    ]
+  },
+  {
+    "topic": "בדיקת ספרה",
+    "text": "?איזו בדיקה נכונה לבדיקה האם תו ch הוא ספרה",
+    "code": null,
+    "options": [
+      "ch >= '0' && ch <= '9'",
+      "ch >= 0 && ch <= 9",
+      "ch.isDigit()",
+      "digit(ch)"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הספרות בטבלת ASCII הן התווים '0' עד '9' בערכים 48 עד 57"
+      },
+      {
+        "type": "he",
+        "text": "יש להשוות תו לתו — עם גרשיים בודדים"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?איזו בדיקה נכונה לבדיקה האם תו ch הוא ספרה"
+      }
+    ]
+  },
+  {
+    "topic": "charAt",
+    "text": "?מה תחזיר הקריאה str.charAt(0) עבור str = \"Java\"",
+    "code": "String str = \"Java\";\nSystem.out.println(str.charAt(0));",
+    "options": [
+      "'J'",
+      "'a'",
+      "'v'",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "charAt(0) מחזיר את התו באינדקס 0 — האות הראשונה"
+      },
+      {
+        "type": "code",
+        "text": "J(0) a(1) v(2) a(3)"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה תחזיר הקריאה str.charAt(0) עבור str = \"Java\""
+      }
+    ]
+  },
+  {
+    "topic": "לולאת תווים",
+    "text": "?כמה פעמים תרוץ הלולאה הבאה",
+    "code": "for (char ch = 'a'; ch <= 'z'; ch++) {\n    System.out.print(ch);\n}",
+    "options": [
+      "26",
+      "25",
+      "27",
+      "24"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האותיות הקטנות הן a עד z — בדיוק 26 אותיות"
+      },
+      {
+        "type": "code",
+        "text": "'a'=97, 'z'=122 → 122-97+1 = 26"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?כמה פעמים תרוץ הלולאה הבאה"
+      }
+    ]
+  },
+  {
+    "topic": "השוואת תווים",
+    "text": "?מה ערך הביטוי הבא",
+    "code": "System.out.println('a' < 'e');",
+    "options": [
+      "true",
+      "false",
+      "שגיאת קומפילציה",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השוואת תווים מבוצעת לפי ערכם המספרי"
+      },
+      {
+        "type": "code",
+        "text": "'a'=97, 'e'=101 → 97 < 101 → true"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה ערך הביטוי הבא"
+      }
+    ]
+  },
+  {
+    "topic": "חיבור תו ומספר",
+    "text": "?מה יודפס",
+    "code": "System.out.println('A' + 3);",
+    "options": [
+      "68",
+      "A3",
+      "D",
+      "שגיאה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "חיבור תו ומספר מחזיר int ולא char"
+      },
+      {
+        "type": "code",
+        "text": "'A'=65, 65+3=68 → מודפס 68"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "قيمة ASCII للحرف",
+    "text": "?ما هي القيمة العددية للحرف 'A' في جدول ASCII",
+    "code": null,
+    "options": [
+      "65",
+      "60",
+      "97",
+      "90"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "وفقًا لجدول ASCII، تبدأ الحروف الكبيرة من 65"
+      },
+      {
+        "type": "code",
+        "text": "'A' = 65, 'B' = 66, ..., 'Z' = 90"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما هي القيمة العددية للحرف 'A' في جدول ASCII"
+      }
+    ]
+  },
+  {
+    "topic": "نوع بيانات حرف",
+    "text": "?ما هو نوع البيانات لمتغير يحتفظ بحرف واحد في Java",
+    "code": null,
+    "options": [
+      "char",
+      "String",
+      "int",
+      "letter"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "char هو النوع البدائي لحرف واحد في Java"
+      },
+      {
+        "type": "he",
+        "text": "String هو سلسلة — تسلسل من الأحرف، وليس حرفاً واحداً"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما هو نوع البيانات لمتغير يحتفظ بحرف واحد في Java"
+      }
+    ]
+  },
+  {
+    "topic": "تحويل حرف إلى رقم",
+    "text": "?ماذا سيطبع",
+    "code": "System.out.println((int)'a');",
+    "options": [
+      "97",
+      "65",
+      "a",
+      "1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحروف الصغيرة في جدول ASCII تبدأ من 97"
+      },
+      {
+        "type": "code",
+        "text": "'a' = 97, 'b' = 98, ..., 'z' = 122"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  },
+  {
+    "topic": "طول السلسلة",
+    "text": "?ماذا ستعيد الدالة str.length() عندما str = \"hello\"",
+    "code": "String str = \"hello\";\nSystem.out.println(str.length());",
+    "options": [
+      "5",
+      "4",
+      "6",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "السلسلة \"hello\" تحتوي على 5 أحرف"
+      },
+      {
+        "type": "code",
+        "text": "h-e-l-l-o → 5"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا ستعيد الدالة str.length() عندما str = \"hello\""
+      }
+    ]
+  },
+  {
+    "topic": "تحويل رقم إلى حرف",
+    "text": "?ما ستكون قيمة ch بعد الأمر",
+    "code": "char ch = (char)66;",
+    "options": [
+      "'B'",
+      "'A'",
+      "'C'",
+      "66"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "66 في جدول ASCII هو الحرف 'B'"
+      },
+      {
+        "type": "code",
+        "text": "A=65, B=66, C=67"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما ستكون قيمة ch بعد الأمر"
+      }
+    ]
+  },
+  {
+    "topic": "التحقق من الرقم",
+    "text": "?ما هو الاختبار الصحيح للتحقق مما إذا كان الحرف ch رقمًا",
+    "code": null,
+    "options": [
+      "ch >= '0' && ch <= '9'",
+      "ch >= 0 && ch <= 9",
+      "ch.isDigit()",
+      "digit(ch)"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الأرقام في جدول ASCII هي الأحرف '0' إلى '9' بالقيم من 48 إلى 57"
+      },
+      {
+        "type": "he",
+        "text": "يجب مقارنة الحرف بحرف — باستخدام علامات اقتباس مفردة"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما هو الاختبار الصحيح للتحقق مما إذا كان الحرف ch رقمًا"
+      }
+    ]
+  },
+  {
+    "topic": "charAt",
+    "text": "?ماذا ستعيد الدالة str.charAt(0) عندما str = \"Java\"",
+    "code": "String str = \"Java\";\nSystem.out.println(str.charAt(0));",
+    "options": [
+      "'J'",
+      "'a'",
+      "'v'",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "charAt(0) تعيد الحرف في الفهرس 0 — الحرف الأول"
+      },
+      {
+        "type": "code",
+        "text": "J(0) a(1) v(2) a(3)"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا ستعيد الدالة str.charAt(0) عندما str = \"Java\""
+      }
+    ]
+  },
+  {
+    "topic": "حلقة أحرف",
+    "text": "?كم مرة ستعمل الحلقة التالية",
+    "code": "for (char ch = 'a'; ch <= 'z'; ch++) {\n    System.out.print(ch);\n}",
+    "options": [
+      "26",
+      "25",
+      "27",
+      "24"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحروف الصغيرة هي a إلى z — بالضبط 26 حرفًا"
+      },
+      {
+        "type": "code",
+        "text": "'a'=97, 'z'=122 → 122-97+1 = 26"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?كم مرة ستعمل الحلقة التالية"
+      }
+    ]
+  },
+  {
+    "topic": "مقارنة الأحرف",
+    "text": "?ما قيمة التعبير التالي",
+    "code": "System.out.println('a' < 'e');",
+    "options": [
+      "true",
+      "false",
+      "خطأ في الترجمة",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "مقارنة الأحرف تتم بناءً على قيمتها العددية"
+      },
+      {
+        "type": "code",
+        "text": "'a'=97, 'e'=101 → 97 < 101 → true"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما قيمة التعبير التالي"
+      }
+    ]
+  },
+  {
+    "topic": "جمع حرف ورقم",
+    "text": "?ماذا سيطبع",
+    "code": "System.out.println('A' + 3);",
+    "options": [
+      "68",
+      "A3",
+      "D",
+      "خطأ"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "جمع حرف ورقم يعيد int وليس char"
+      },
+      {
+        "type": "code",
+        "text": "'A'=65, 65+3=68 → يطبع 68"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${o}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
