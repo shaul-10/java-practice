@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 02 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 02</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #D4900A;   /* לדוגמה: #C0392B */
+      --color-light:  #FFF3CD;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #856404;   /* לדוגמה: #8B1A1A */
+      --color-border: #FAC775; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול לולאת nestedLoops ב-Java</div>
+      <div class="home-title-ar">تدريب على حلقة nestedLoops في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 02 &nbsp;|&nbsp; المستوى 02</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 02</span>
+          תרגול לולאת nestedLoops ב-Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 02</span>
+          تدريب على حلقة nestedLoops في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "משולחים שונים",
+    "text": "?מה יודפס בקוד הבא",
+    "code": "for (int i = 1; i <= 4; i++) {\n    for (int j = 1; j <= i; j++) {\n        System.out.print(\"#\");\n    }\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "#\n##\n###\n####"
+      },
+      {
+        "type": "code",
+        "text": "####\n###\n##\n#"
+      },
+      {
+        "type": "code",
+        "text": "#\n#\n#\n#"
+      },
+      "################"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה החיצונית רצה 4 פעמים"
+      },
+      {
+        "type": "code",
+        "text": "i: 1, 2, 3, 4"
+      },
+      {
+        "type": "he",
+        "text": "בכל איטרציה, הלולאה הפנימית רצה i פעמים"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → # (שורה 1)\ni=2: j=1,2 → ## (שורה 2)\ni=3: j=1,2,3 → ### (שורה 3)\ni=4: j=1,2,3,4 → #### (שורה 4)"
+      },
+      {
+        "type": "he",
+        "text": "משולח צומח"
+      },
+      {
+        "type": "code",
+        "text": "#\n##\n###\n####"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס בקוד הבא"
+      }
+    ]
+  },
+  {
+    "topic": "משולחים עם רווחים",
+    "text": "?מה יודפס בקוד הבא",
+    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 3 - i; j++)\n        System.out.print(\" \");\n    for (int k = 1; k <= i; k++)\n        System.out.print(\"*\");\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "  *\n *\n*"
+      },
+      {
+        "type": "code",
+        "text": "*\n **\n***"
+      },
+      {
+        "type": "code",
+        "text": "  *\n **\n***"
+      },
+      {
+        "type": "code",
+        "text": "* \n** \n*** "
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה החיצונית רצה 3 פעמים"
+      },
+      {
+        "type": "he",
+        "text": "הלולאה הראשונה הפנימית מדפיסה רווחים (3-i רווחים)"
+      },
+      {
+        "type": "code",
+        "text": "i=1: 3-1=2 רווחים, אחר כך 1 כוכבית\ni=2: 3-2=1 רווח, אחר כך 2 כוכביות\ni=3: 3-3=0 רווחים, אחר כך 3 כוכביות"
+      },
+      {
+        "type": "he",
+        "text": "משולח יושר לימין"
+      },
+      {
+        "type": "code",
+        "text": "  *\n *\n*"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס בקוד הבא"
+      }
+    ]
+  },
+  {
+    "topic": "יהלומים וצורות",
+    "text": "?מה יודפס בקוד הבא",
+    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 4 - i; j++)\n        System.out.print(\" \");\n    for (int k = 1; k <= 2 * i - 1; k++)\n        System.out.print(\"*\");\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "   *\n  ***\n *****"
+      },
+      {
+        "type": "code",
+        "text": "*\n***\n*****"
+      },
+      {
+        "type": "code",
+        "text": "  *\n ***\n*****"
+      },
+      {
+        "type": "code",
+        "text": "   *\n  **\n ***"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה החיצונית רצה 3 פעמים"
+      },
+      {
+        "type": "he",
+        "text": "הלולאה הראשונה הפנימית מדפיסה רווחים"
+      },
+      {
+        "type": "code",
+        "text": "i=1: 4-1=3 רווחים, אחר כך 2*1-1=1 כוכבית\ni=2: 4-2=2 רווחים, אחר כך 2*2-1=3 כוכביות\ni=3: 4-3=1 רווח, אחר כך 2*3-1=5 כוכביות"
+      },
+      {
+        "type": "he",
+        "text": "משולח הרחבה (מעוין חלקי)"
+      },
+      {
+        "type": "code",
+        "text": "   *\n  ***\n *****"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס בקוד הבא"
+      }
+    ]
+  },
+  {
+    "topic": "הדפסה בתנאי",
+    "text": "?מה יודפס בקוד הבא",
+    "code": "for (int i = 1; i <= 4; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j % 2 == 1)\n            System.out.print(j);\n    }\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "13\n13\n13\n13"
+      },
+      {
+        "type": "code",
+        "text": "1\n1\n1\n1"
+      },
+      {
+        "type": "code",
+        "text": "1 3 1 3 1 3 1 3"
+      },
+      {
+        "type": "code",
+        "text": "13131313"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה החיצונית רצה 4 פעמים"
+      },
+      {
+        "type": "he",
+        "text": "הלולאה הפנימית רצה 4 פעמים (j: 1, 2, 3, 4)"
+      },
+      {
+        "type": "he",
+        "text": "מודפסים רק אי-זוגיים (j % 2 == 1)"
+      },
+      {
+        "type": "code",
+        "text": "j=1: 1%2==1 ✓ → print 1\nj=2: 2%2==1 ✗ → skip\nj=3: 3%2==1 ✓ → print 3\nj=4: 4%2==1 ✗ → skip"
+      },
+      {
+        "type": "he",
+        "text": "בכל שורה מודפסים 1 ו-3"
+      },
+      {
+        "type": "code",
+        "text": "13\n13\n13\n13"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס בקוד הבא"
+      }
+    ]
+  },
+  {
+    "topic": "סריקת מטריצה",
+    "text": "?כמה מספרים > 5 במטריצה הבאה",
+    "code": "int[][] matrix = {\n    {3, 8, 2},\n    {7, 4, 9},\n    {1, 6, 5}\n};",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "6"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "צריך לסרוק את כל המטריצה ולספור כמה איברים > 5"
+      },
+      {
+        "type": "code",
+        "text": "שורה 1: 3 (לא), 8 (כן), 2 (לא) → 1\nשורה 2: 7 (כן), 4 (לא), 9 (כן) → 2\nשורה 3: 1 (לא), 6 (כן), 5 (לא) → 1"
+      },
+      {
+        "type": "he",
+        "text": "סה״כ מספרים > 5: 8, 7, 9, 6"
+      },
+      {
+        "type": "code",
+        "text": "4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?כמה מספרים > 5 במטריצה הבאה"
+      }
+    ]
+  },
+  {
+    "topic": "סה״כ per row/column",
+    "text": "?מה יודפס כסה״כ של שורה 2",
+    "code": "int[][] matrix = {\n    {2, 3, 4},\n    {5, 6, 7},\n    {8, 9, 1}\n};",
+    "options": [
+      "18",
+      "15",
+      "18",
+      "17"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "שורה 2 (אינדקס 1) מכילה: 5, 6, 7"
+      },
+      {
+        "type": "code",
+        "text": "5 + 6 + 7 = 18"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס כסה״כ של שורה 2"
+      }
+    ]
+  },
+  {
+    "topic": "חיפוש בדו-מימד",
+    "text": "?מה הערך המקסימלי במטריצה",
+    "code": "int[][] matrix = {\n    {12, 8, 15},\n    {20, 5, 18},\n    {3, 25, 7}\n};",
+    "options": [
+      "25",
+      "20",
+      "15",
+      "18"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "צריך לסרוק את כל המטריצה ולמצוא את המקסימום"
+      },
+      {
+        "type": "code",
+        "text": "שורה 1: 12, 8, 15 → max=15\nשורה 2: 20, 5, 18 → max=20\nשורה 3: 3, 25, 7 → max=25"
+      },
+      {
+        "type": "he",
+        "text": "המקסימום הכללי: 25"
+      },
+      {
+        "type": "code",
+        "text": "25"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה הערך המקסימלי במטריצה"
+      }
+    ]
+  },
+  {
+    "topic": "שילוב for ו-while",
+    "text": "?מה יודפס בקוד הבא",
+    "code": "int i = 1;\nwhile (i <= 3) {\n    int j = 1;\n    while (j <= i) {\n        System.out.print(j);\n        j++;\n    }\n    System.out.println();\n    i++;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "1\n12\n123"
+      },
+      {
+        "type": "code",
+        "text": "1\n1\n1"
+      },
+      {
+        "type": "code",
+        "text": "123\n23\n3"
+      },
+      {
+        "type": "code",
+        "text": "111\n222\n333"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה החיצונית while רצה 3 פעמים (i: 1, 2, 3)"
+      },
+      {
+        "type": "he",
+        "text": "הלולאה הפנימית while רצה i פעמים"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → print 1\ni=2: j=1,2 → print 1,2\ni=3: j=1,2,3 → print 1,2,3"
+      },
+      {
+        "type": "code",
+        "text": "1\n12\n123"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס בקוד הבא"
+      }
+    ]
+  },
+  {
+    "topic": "טבלת ערכים מתמטיים",
+    "text": "?מה יודפס בקוד הבא",
+    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 3; j++) {\n        System.out.print((i * j) + \" \");\n    }\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "1 2 3\n2 4 6"
+      },
+      {
+        "type": "code",
+        "text": "1 1 1\n2 2 2"
+      },
+      {
+        "type": "code",
+        "text": "1 2 3 4 5 6"
+      },
+      {
+        "type": "code",
+        "text": "1 2 3\n1 2 3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "טבלת כפל פשוטה"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → 1*1=1, j=2 → 1*2=2, j=3 → 1*3=3\ni=2: j=1 → 2*1=2, j=2 → 2*2=4, j=3 → 2*3=6"
+      },
+      {
+        "type": "code",
+        "text": "1 2 3\n2 4 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה יודפס בקוד הבא"
+      }
+    ]
+  },
+  {
+    "topic": "דוגמא מציאותית",
+    "text": "?כמה עלות כוללת של כל הפרויקטים",
+    "code": "int[][] projects = {\n    {1000, 2000, 3000},  // פרויקט A\n    {500, 1500, 2500},   // פרויקט B\n    {2000, 1000, 500}    // פרויקט C\n};",
+    "options": [
+      "14000",
+      "12000",
+      "15000",
+      "13000"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "צריך להחבר את כל הערכים במטריצה"
+      },
+      {
+        "type": "code",
+        "text": "פרויקט A: 1000 + 2000 + 3000 = 6000\nפרויקט B: 500 + 1500 + 2500 = 4500\nפרויקט C: 2000 + 1000 + 500 = 3500"
+      },
+      {
+        "type": "he",
+        "text": "סה״כ כולל"
+      },
+      {
+        "type": "code",
+        "text": "6000 + 4500 + 3500 = 14000"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?כמה עלות כוללת של כל הפרויקטים"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "أنماط مختلفة",
+    "text": "?ماذا سيطبع في الكود التالي",
+    "code": "for (int i = 1; i <= 4; i++) {\n    for (int j = 1; j <= i; j++) {\n        System.out.print(\"#\");\n    }\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "#\n##\n###\n####"
+      },
+      {
+        "type": "code",
+        "text": "####\n###\n##\n#"
+      },
+      {
+        "type": "code",
+        "text": "#\n#\n#\n#"
+      },
+      "################"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة الخارجية تعمل 4 مرات"
+      },
+      {
+        "type": "code",
+        "text": "i: 1, 2, 3, 4"
+      },
+      {
+        "type": "he",
+        "text": "في كل تكرار، الحلقة الداخلية تعمل i مرات"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → # (السطر 1)\ni=2: j=1,2 → ## (السطر 2)\ni=3: j=1,2,3 → ### (السطر 3)\ni=4: j=1,2,3,4 → #### (السطر 4)"
+      },
+      {
+        "type": "he",
+        "text": "نمط متزايد"
+      },
+      {
+        "type": "code",
+        "text": "#\n##\n###\n####"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع في الكود التالي"
+      }
+    ]
+  },
+  {
+    "topic": "مثلثات مع فراغات",
+    "text": "?ماذا سيطبع في الكود التالي",
+    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 3 - i; j++)\n        System.out.print(\" \");\n    for (int k = 1; k <= i; k++)\n        System.out.print(\"*\");\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "  *\n *\n*"
+      },
+      {
+        "type": "code",
+        "text": "*\n **\n***"
+      },
+      {
+        "type": "code",
+        "text": "  *\n **\n***"
+      },
+      {
+        "type": "code",
+        "text": "* \n** \n*** "
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة الخارجية تعمل 3 مرات"
+      },
+      {
+        "type": "he",
+        "text": "الحلقة الداخلية الأولى تطبع فراغات (3-i فراغات)"
+      },
+      {
+        "type": "code",
+        "text": "i=1: 3-1=2 فراغات، ثم 1 نجمة\ni=2: 3-2=1 فراغ، ثم 2 نجمات\ni=3: 3-3=0 فراغات، ثم 3 نجمات"
+      },
+      {
+        "type": "he",
+        "text": "المثلث مائل لليمين"
+      },
+      {
+        "type": "code",
+        "text": "  *\n *\n*"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع في الكود التالي"
+      }
+    ]
+  },
+  {
+    "topic": "الألماس والأشكال",
+    "text": "?ماذا سيطبع في الكود التالي",
+    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 4 - i; j++)\n        System.out.print(\" \");\n    for (int k = 1; k <= 2 * i - 1; k++)\n        System.out.print(\"*\");\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "   *\n  ***\n *****"
+      },
+      {
+        "type": "code",
+        "text": "*\n***\n*****"
+      },
+      {
+        "type": "code",
+        "text": "  *\n ***\n*****"
+      },
+      {
+        "type": "code",
+        "text": "   *\n  **\n ***"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "تعمل الحلقة الخارجية 3 مرات"
+      },
+      {
+        "type": "he",
+        "text": "الحلقة الداخلية الأولى تطبع مسافات"
+      },
+      {
+        "type": "code",
+        "text": "i=1: 4-1=3 مسافات، ثم 2*1-1=1 نجمة\ni=2: 4-2=2 مسافات، ثم 2*2-1=3 نجمات\ni=3: 4-3=1 مسافة، ثم 2*3-1=5 نجمات"
+      },
+      {
+        "type": "he",
+        "text": "شكل ماسي (معين جزئي)"
+      },
+      {
+        "type": "code",
+        "text": "   *\n  ***\n *****"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع في الكود التالي"
+      }
+    ]
+  },
+  {
+    "topic": "الطباعة الشرطية",
+    "text": "?ماذا سيطبع في الكود التالي",
+    "code": "for (int i = 1; i <= 4; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j % 2 == 1)\n            System.out.print(j);\n    }\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "13\n13\n13\n13"
+      },
+      {
+        "type": "code",
+        "text": "1\n1\n1\n1"
+      },
+      {
+        "type": "code",
+        "text": "1 3 1 3 1 3 1 3"
+      },
+      {
+        "type": "code",
+        "text": "13131313"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "تعمل الحلقة الخارجية 4 مرات"
+      },
+      {
+        "type": "he",
+        "text": "تعمل الحلقة الداخلية 4 مرات (j: 1, 2, 3, 4)"
+      },
+      {
+        "type": "he",
+        "text": "يتم طباعة الأعداد الفردية فقط (j % 2 == 1)"
+      },
+      {
+        "type": "code",
+        "text": "j=1: 1%2==1 ✓ → print 1\nj=2: 2%2==1 ✗ → skip\nj=3: 3%2==1 ✓ → print 3\nj=4: 4%2==1 ✗ → skip"
+      },
+      {
+        "type": "he",
+        "text": "في كل سطر يتم طباعة 1 و 3"
+      },
+      {
+        "type": "code",
+        "text": "13\n13\n13\n13"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع في الكود التالي"
+      }
+    ]
+  },
+  {
+    "topic": "مسح المصفوفة",
+    "text": "?كم عدد الأرقام > 5 في المصفوفة التالية",
+    "code": "int[][] matrix = {\n    {3, 8, 2},\n    {7, 4, 9},\n    {1, 6, 5}\n};",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "6"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "يجب مسح المصفوفة بالكامل وعدّ كم عدد العناصر > 5"
+      },
+      {
+        "type": "code",
+        "text": "صف 1: 3 (لا)، 8 (نعم)، 2 (لا) → 1\nصف 2: 7 (نعم)، 4 (لا)، 9 (نعم) → 2\nصف 3: 1 (لا)، 6 (نعم)، 5 (لا) → 1"
+      },
+      {
+        "type": "he",
+        "text": "إجمالي الأرقام > 5: 8، 7، 9، 6"
+      },
+      {
+        "type": "code",
+        "text": "4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?كم عدد الأرقام > 5 في المصفوفة التالية"
+      }
+    ]
+  },
+  {
+    "topic": "المجموع لكل صف/عمود",
+    "text": "?ماذا سيطبع كمجموع الصف 2",
+    "code": "int[][] matrix = {\n    {2, 3, 4},\n    {5, 6, 7},\n    {8, 9, 1}\n};",
+    "options": [
+      "18",
+      "15",
+      "18",
+      "17"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الصف 2 (الفهرس 1) يحتوي على: 5, 6, 7"
+      },
+      {
+        "type": "code",
+        "text": "5 + 6 + 7 = 18"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع كمجموع الصف 2"
+      }
+    ]
+  },
+  {
+    "topic": "البحث في بعدين",
+    "text": "?ما هي القيمة القصوى في المصفوفة",
+    "code": "int[][] matrix = {\n    {12, 8, 15},\n    {20, 5, 18},\n    {3, 25, 7}\n};",
+    "options": [
+      "25",
+      "20",
+      "15",
+      "18"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "يجب مسح المصفوفة بالكامل والعثور على القيمة القصوى"
+      },
+      {
+        "type": "code",
+        "text": "שורה 1: 12, 8, 15 → max=15\nשורה 2: 20, 5, 18 → max=20\nשורה 3: 3, 25, 7 → max=25"
+      },
+      {
+        "type": "he",
+        "text": "القيمة القصوى العامة: 25"
+      },
+      {
+        "type": "code",
+        "text": "25"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما هي القيمة القصوى في المصفوفة"
+      }
+    ]
+  },
+  {
+    "topic": "دمج for و-while",
+    "text": "?ماذا سيطبع في الكود التالي",
+    "code": "int i = 1;\nwhile (i <= 3) {\n    int j = 1;\n    while (j <= i) {\n        System.out.print(j);\n        j++;\n    }\n    System.out.println();\n    i++;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "1\n12\n123"
+      },
+      {
+        "type": "code",
+        "text": "1\n1\n1"
+      },
+      {
+        "type": "code",
+        "text": "123\n23\n3"
+      },
+      {
+        "type": "code",
+        "text": "111\n222\n333"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة الخارجية while تعمل 3 مرات (i: 1, 2, 3)"
+      },
+      {
+        "type": "he",
+        "text": "الحلقة الداخلية while تعمل i مرات"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → print 1\ni=2: j=1,2 → print 1,2\ni=3: j=1,2,3 → print 1,2,3"
+      },
+      {
+        "type": "code",
+        "text": "1\n12\n123"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع في الكود التالي"
+      }
+    ]
+  },
+  {
+    "topic": "جدول القيم الرياضية",
+    "text": "?ماذا سيطبع في الكود التالي",
+    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 3; j++) {\n        System.out.print((i * j) + \" \");\n    }\n    System.out.println();\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "1 2 3\n2 4 6"
+      },
+      {
+        "type": "code",
+        "text": "1 1 1\n2 2 2"
+      },
+      {
+        "type": "code",
+        "text": "1 2 3 4 5 6"
+      },
+      {
+        "type": "code",
+        "text": "1 2 3\n1 2 3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "جدول ضرب بسيط"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → 1*1=1, j=2 → 1*2=2, j=3 → 1*3=3\ni=2: j=1 → 2*1=2, j=2 → 2*2=4, j=3 → 2*3=6"
+      },
+      {
+        "type": "code",
+        "text": "1 2 3\n2 4 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ماذا سيطبع في الكود التالي"
+      }
+    ]
+  },
+  {
+    "topic": "مثال واقعي",
+    "text": "?ما هي التكلفة الإجمالية لجميع المشاريع",
+    "code": "int[][] projects = {\n    {1000, 2000, 3000},  // مشروع A\n    {500, 1500, 2500},   // مشروع B\n    {2000, 1000, 500}    // مشروع C\n};",
+    "options": [
+      "14000",
+      "12000",
+      "15000",
+      "13000"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "يجب جمع جميع القيم في المصفوفة"
+      },
+      {
+        "type": "code",
+        "text": "مشروع A: 1000 + 2000 + 3000 = 6000\nمشروع B: 500 + 1500 + 2500 = 4500\nمشروع C: 2000 + 1000 + 500 = 3500"
+      },
+      {
+        "type": "he",
+        "text": "الإجمالي الكلي"
+      },
+      {
+        "type": "code",
+        "text": "6000 + 4500 + 3500 = 14000"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما هي التكلفة الإجمالية لجميع المشاريع"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'string') {
+        return option;
+      } else if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      return option;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
