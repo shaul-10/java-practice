@@ -12,7 +12,7 @@ java-practice/
 │   ├── while/
 │   ├── for/
 │   ├── chars-strings/
-│   ├── nested-loops/     (בקרוב)
+│   ├── nested/
 │   └── general/          (בקרוב)
 └── unit6-arrays/         (בקרוב)
 ```
@@ -43,10 +43,19 @@ java-practice/
 | chars_level03.json | תווים ומחרוזות — מתקדם | 03 |
 | chars_level04.json | לולאות + תווים ומחרוזות | 04 |
 
+### nested — לולאות מקוננות
+| קובץ | נושא | רמה |
+|------|------|-----|
+| nestedLoopsPractice_01.html | לולאות מקוננות — יסודות | 01 |
+| nestedLoopsPractice_02.html | לולאות מקוננות — ביניים | 02 |
+| nestedLoopsPractice_03.html | לולאות מקוננות — מתקדם | 03 |
+| nestedLoopsPractice_04.html | לולאות מקוננות — אתגר | 04 |
+
 ---
 
 ## פורמט הקבצים
 
+### JSON (while, for, chars-strings)
 כל קובץ JSON מכיל 10 שאלות סגורות במבנה הבא:
 
 ```json
@@ -70,6 +79,9 @@ java-practice/
 ```
 
 > התשובה הנכונה היא תמיד האפשרות הראשונה (`answer: 0`)
+
+### HTML (nested)
+שאלונים אינטראקטיביים מובנים בקובץ HTML יחיד.
 
 ---
 
