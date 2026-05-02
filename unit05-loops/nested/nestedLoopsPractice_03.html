@@ -510,284 +510,92 @@
     ══════════════════════════════════════════════════════════════ */
     const questionsHe = [
   {
-    "topic": "continue בפנימית",
-    "text": "?מה יודפס בקוד הבא",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j == 2) continue;\n        System.out.print(j);\n    }\n    System.out.println();\n}",
+    "topic": "בעיה מילולית - סכום תנאי",
+    "text": "?כמה סה״כ הוצאות של לקוחות שקנו יותר מ-3 פעמים",
+    "code": "int totalExpense = 0;\nfor (int customer = 1; customer <= 5; customer++) {\n    int purchases = customer;\n    if (purchases > 3) {\n        totalExpense += purchases * 100;\n    }\n}\nSystem.out.println(totalExpense);",
     "options": [
-      {
-        "type": "code",
-        "text": "134\n134"
-      },
-      {
-        "type": "code",
-        "text": "1234\n1234"
-      },
-      {
-        "type": "code",
-        "text": "13\n13"
-      },
-      {
-        "type": "code",
-        "text": "1 3 4\n1 3 4"
-      }
+      "900",
+      "800",
+      "700",
+      "600"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "continue דילג על ה-print כשj == 2"
+        "text": "לקוחות שקנו יותר מ-3 פעמים:"
       },
       {
         "type": "code",
-        "text": "i=1: j=1 → print 1, j=2 → continue, j=3 → print 3, j=4 → print 4\ni=2: j=1 → print 1, j=2 → continue, j=3 → print 3, j=4 → print 4"
+        "text": "customer=1: 1 > 3? לא\ncustomer=2: 2 > 3? לא\ncustomer=3: 3 > 3? לא\ncustomer=4: 4 > 3? כן → 4*100=400\ncustomer=5: 5 > 3? כן → 5*100=500"
       },
       {
         "type": "he",
-        "text": "מודפסים כל המספרים חוץ מ-2"
+        "text": "סה״כ הוצאות"
       },
       {
         "type": "code",
-        "text": "134\n134"
+        "text": "400 + 500 = 900"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?מה יודפס בקוד הבא"
+        "text": "?כמה סה״כ הוצאות של לקוחות שקנו יותר מ-3 פעמים"
       }
     ]
   },
   {
-    "topic": "break מפנימית",
-    "text": "?מה יודפס בקוד הבא",
-    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j == 3) break;\n        System.out.print(j);\n    }\n    System.out.println();\n}",
+    "topic": "שילוב if/for - ספירה מותנה",
+    "text": "?כמה מספרים אי-זוגיים בין 1 ל-10",
+    "code": "int oddCount = 0;\nfor (int i = 1; i <= 10; i++) {\n    if (i % 2 == 1)\n        oddCount++;\n}\nSystem.out.println(oddCount);",
     "options": [
-      {
-        "type": "code",
-        "text": "12\n12\n12"
-      },
-      {
-        "type": "code",
-        "text": "1234\n1234\n1234"
-      },
-      {
-        "type": "code",
-        "text": "12\n123\n1234"
-      },
-      {
-        "type": "code",
-        "text": "1\n1\n1"
-      }
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "break יוצא מהלולאה הפנימית כשj == 3"
-      },
-      {
-        "type": "code",
-        "text": "i=1: j=1 → print 1, j=2 → print 2, j=3 → break\ni=2: j=1 → print 1, j=2 → print 2, j=3 → break\ni=3: j=1 → print 1, j=2 → print 2, j=3 → break"
-      },
-      {
-        "type": "he",
-        "text": "בכל איטרציה של הלולאה החיצונית, הלולאה הפנימית נעצרת ב-j=3"
-      },
-      {
-        "type": "code",
-        "text": "12\n12\n12"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?מה יודפס בקוד הבא"
-      }
-    ]
-  },
-  {
-    "topic": "triple nested loops",
-    "text": "?כמה פעמים מתבצע הprint",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 2; j++) {\n        for (int k = 1; k <= 2; k++) {\n            System.out.print(\"*\");\n        }\n    }\n}",
-    "options": [
-      "8",
-      "6",
+      "5",
       "4",
-      "12"
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "שלוש לולאות מקוננות"
-      },
-      {
-        "type": "code",
-        "text": "הלולאה החיצונית (i): 2 פעמים\nהלולאה הפנימית הראשונה (j): 2 פעמים\nהלולאה הפנימית השנייה (k): 2 פעמים"
-      },
-      {
-        "type": "he",
-        "text": "סה״כ איטרציות"
-      },
-      {
-        "type": "code",
-        "text": "2 × 2 × 2 = 8"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?כמה פעמים מתבצע הprint"
-      }
-    ]
-  },
-  {
-    "topic": "break/continue בלולאות שונות",
-    "text": "?מה יודפס בקוד הבא",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 3; j++) {\n        if (j == 2) continue;\n        System.out.print(j);\n        if (j == 3) break;\n    }\n    System.out.println();\n}",
-    "options": [
-      {
-        "type": "code",
-        "text": "13\n13"
-      },
-      {
-        "type": "code",
-        "text": "1\n1"
-      },
-      {
-        "type": "code",
-        "text": "123\n123"
-      },
-      {
-        "type": "code",
-        "text": "1 3\n1 3"
-      }
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "כשj == 2: continue דילג על ה-print"
-      },
-      {
-        "type": "code",
-        "text": "i=1: j=1 → print 1, j=2 → continue, j=3 → print 3, break\ni=2: j=1 → print 1, j=2 → continue, j=3 → print 3, break"
-      },
-      {
-        "type": "he",
-        "text": "break עוצר את הלולאה אחרי הדפסת 3"
-      },
-      {
-        "type": "code",
-        "text": "13\n13"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?מה יודפס בקוד הבא"
-      }
-    ]
-  },
-  {
-    "topic": "דילוג בהדפסה",
-    "text": "?כמה כוכביות יודפסו בקוד הבא",
-    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 5; j++) {\n        if (j % 2 == 0) continue;\n        System.out.print(\"*\");\n    }\n}",
-    "options": [
-      "9",
-      "15",
       "6",
-      "12"
+      "3"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "מודפסות כוכביות רק עבור j אי-זוגי"
+        "text": "המספרים האי-זוגיים בין 1 ל-10:"
       },
       {
         "type": "code",
-        "text": "בכל איטרציה של הלולאה החיצונית (i):\nj=1 (אי-זוגי) → * \nj=2 (זוגי) → continue\nj=3 (אי-זוגי) → *\nj=4 (זוגי) → continue\nj=5 (אי-זוגי) → *\nסה״כ לכל i: 3 כוכביות"
+        "text": "1, 3, 5, 7, 9"
       },
       {
         "type": "he",
-        "text": "3 איטרציות של הלולאה החיצונית"
-      },
-      {
-        "type": "code",
-        "text": "3 × 3 = 9"
+        "text": "סה״כ: 5 מספרים"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?כמה כוכביות יודפסו בקוד הבא"
+        "text": "?כמה מספרים אי-זוגיים בין 1 ל-10"
       }
     ]
   },
   {
-    "topic": "סריקה בעצירה",
-    "text": "?מה יודפס בקוד הבא",
-    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 5; j++) {\n        System.out.print(j);\n        if (j == 3) break;\n    }\n    System.out.println();\n}",
+    "topic": "לולאה עם הנחיה - מציאת ממוצע",
+    "text": "?מה הממוצע של מספרים זוגיים מ-2 עד 10",
+    "code": "int sum = 0;\nint count = 0;\nfor (int i = 2; i <= 10; i += 2) {\n    sum += i;\n    count++;\n}\nint average = sum / count;\nSystem.out.println(average);",
     "options": [
-      {
-        "type": "code",
-        "text": "123\n123\n123"
-      },
-      {
-        "type": "code",
-        "text": "12345\n12345\n12345"
-      },
-      {
-        "type": "code",
-        "text": "123\n23\n3"
-      },
-      {
-        "type": "code",
-        "text": "1\n12\n123"
-      }
+      "6",
+      "5",
+      "7",
+      "4"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "בכל איטרציה של הלולאה החיצונית, הלולאה הפנימית נעצרת ב-j == 3"
+        "text": "המספרים הזוגיים מ-2 עד 10:"
       },
       {
         "type": "code",
-        "text": "i=1: print 1,2,3 then break\ni=2: print 1,2,3 then break\ni=3: print 1,2,3 then break"
-      },
-      {
-        "type": "code",
-        "text": "123\n123\n123"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?מה יודפס בקוד הבא"
-      }
-    ]
-  },
-  {
-    "topic": "מטריצה עם לוגיקה מורכבת",
-    "text": "?מה הסכום של איברים בעמודה 2",
-    "code": "int[][] matrix = {\n    {1, 2, 3},\n    {4, 5, 6},\n    {7, 8, 9}\n};",
-    "options": [
-      "15",
-      "12",
-      "18",
-      "14"
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "עמודה 2 (אינדקס 1) מכילה"
-      },
-      {
-        "type": "code",
-        "text": "matrix[0][1] = 2\nmatrix[1][1] = 5\nmatrix[2][1] = 8"
+        "text": "2, 4, 6, 8, 10"
       },
       {
         "type": "he",
@@ -795,133 +603,281 @@
       },
       {
         "type": "code",
-        "text": "2 + 5 + 8 = 15"
+        "text": "2 + 4 + 6 + 8 + 10 = 30"
+      },
+      {
+        "type": "he",
+        "text": "מספר איברים: 5"
+      },
+      {
+        "type": "code",
+        "text": "ממוצע: 30 / 5 = 6"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?מה הסכום של איברים בעמודה 2"
+        "text": "?מה הממוצע של מספרים זוגיים מ-2 עד 10"
       }
     ]
   },
   {
-    "topic": "קומבו: if/continue/break",
-    "text": "?מה יודפס בקוד הבא",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j % 2 == 0) continue;\n        if (j > 2) break;\n        System.out.print(j);\n    }\n    System.out.println();\n}",
+    "topic": "לולאה עם break - מציאת ראשון",
+    "text": "?מה המספר הראשון שמתחלק ב-7 בין 50 ל-100",
+    "code": "int found = 0;\nfor (int i = 50; i <= 100; i++) {\n    if (i % 7 == 0) {\n        found = i;\n        break;\n    }\n}\nSystem.out.println(found);",
     "options": [
-      {
-        "type": "code",
-        "text": "1\n1"
-      },
-      {
-        "type": "code",
-        "text": "13\n13"
-      },
-      {
-        "type": "code",
-        "text": "1\n13"
-      },
-      {
-        "type": "code",
-        "text": "1 3\n1 3"
-      }
+      "56",
+      "49",
+      "63",
+      "70"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "כשj זוגי (j % 2 == 0): continue דילג"
+        "text": "מחפשים מספר שמתחלק ב-7 החל מ-50"
+      },
+      {
+        "type": "code",
+        "text": "50 % 7 = 1 (לא)\n51 % 7 = 2 (לא)\n52 % 7 = 3 (לא)\n53 % 7 = 4 (לא)\n54 % 7 = 5 (לא)\n55 % 7 = 6 (לא)\n56 % 7 = 0 (כן!) → break"
       },
       {
         "type": "he",
-        "text": "כשj > 2: break עוצר"
-      },
-      {
-        "type": "code",
-        "text": "i=1: j=1 (אי-זוגי, 1≤2) → print 1\n      j=2 (זוגי) → continue\n      j=3 (אי-זוגי, 3>2) → break\ni=2: אותו דבר"
-      },
-      {
-        "type": "code",
-        "text": "1\n1"
+        "text": "המספר הראשון: 56"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?מה יודפס בקוד הבא"
+        "text": "?מה המספר הראשון שמתחלק ב-7 בין 50 ל-100"
       }
     ]
   },
   {
-    "topic": "בעיה מילולית עם סינון",
-    "text": "?כמה סטודנטים עברו (ציון >= 70)",
-    "code": "int[][] grades = {\n    {65, 85, 92},  // סטודנט 1\n    {70, 55, 78},  // סטודנט 2\n    {60, 88, 71}   // סטודנט 3\n};",
+    "topic": "לולאה עם continue - דילוג",
+    "text": "?כמה מספרים שאינם מתחלקים ב-3 מ-1 עד 9",
+    "code": "int count = 0;\nfor (int i = 1; i <= 9; i++) {\n    if (i % 3 == 0)\n        continue;\n    count++;\n}\nSystem.out.println(count);",
     "options": [
-      "7",
       "6",
-      "8",
-      "5"
+      "5",
+      "7",
+      "4"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "צריך לסרוק את כל הציונים ולספור כמה >= 70"
+        "text": "מדלגים על מספרים שמתחלקים ב-3"
       },
       {
         "type": "code",
-        "text": "סטודנט 1: 65 (לא), 85 (כן), 92 (כן) → 2\nסטודנט 2: 70 (כן), 55 (לא), 78 (כן) → 2\nסטודנט 3: 60 (לא), 88 (כן), 71 (כן) → 2"
+        "text": "מספרים שמתחלקים ב-3: 3, 6, 9"
       },
       {
         "type": "he",
-        "text": "ציונים שעברו: 85, 92, 70, 78, 88, 71 = 6... אבל תשובה 7?"
+        "text": "מספרים שאינם מתחלקים ב-3:"
       },
       {
         "type": "code",
-        "text": "בדיקה מחדש: סה״כ 6 ציונים"
+        "text": "1, 2, 4, 5, 7, 8"
+      },
+      {
+        "type": "he",
+        "text": "סה״כ: 6 מספרים"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?כמה סטודנטים עברו (ציון >= 70)"
+        "text": "?כמה מספרים שאינם מתחלקים ב-3 מ-1 עד 9"
       }
     ]
   },
   {
-    "topic": "זיהוי באגים",
-    "text": "?מה הבעיה בקוד הזה",
-    "code": "for (int i = 0; i < 3; i++) {\n    for (int j = 0; j < 3; j++) {\n        if (matrix[i][j] > 10)\n            System.out.println(matrix[i][j]);\n    }\n}",
+    "topic": "לולאה מקוננת עם break",
+    "text": "?כמה איטרציות של הלולאה הפנימית",
+    "code": "int iterations = 0;\nfor (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 5; j++) {\n        iterations++;\n        if (j == 3) break;\n    }\n}\nSystem.out.println(iterations);",
     "options": [
-      "הקוד נכון - אין בעיה",
-      "חסר System.out.print במקום println",
-      "חסר הגדרת matrix",
-      "הלולאה אינה כוללת i <= 3"
+      "9",
+      "15",
+      "10",
+      "12"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "הקוד סורק מטריצה 3x3 ומדפיס כל איבר > 10"
+        "text": "הלולאה החיצונית רצה 3 פעמים"
       },
       {
         "type": "he",
-        "text": "הלולאות נכונות (0 עד 2)"
+        "text": "בכל פעם, הלולאה הפנימית נעצרת ב-j=3"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1, j=2, j=3 (break) → 3 איטרציות\ni=2: j=1, j=2, j=3 (break) → 3 איטרציות\ni=3: j=1, j=2, j=3 (break) → 3 איטרציות"
       },
       {
         "type": "he",
-        "text": "התנאי נכון"
+        "text": "סה״כ"
+      },
+      {
+        "type": "code",
+        "text": "3 + 3 + 3 = 9"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?כמה איטרציות של הלולאה הפנימית"
+      }
+    ]
+  },
+  {
+    "topic": "בעיה מילולית מורכבת - זיהוי באג",
+    "text": "?מה הבעיה בקוד הזה",
+    "code": "int sum = 0;\nfor (int i = 1; i <= 5; i++) {\n    for (int j = 1; j <= 3; j++) {\n        sum = i + j;  // שגיאה כאן\n    }\n}\nSystem.out.println(sum);",
+    "options": [
+      "sum מוחזר רק ערך אחרון, צריך sum += במקום sum =",
+      "הלולאה לא רצה",
+      "אין שגיאה בקוד",
+      "j צריך להתחיל מ-0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בשורה sum = i + j משתנה את הערך כל פעם"
       },
       {
         "type": "he",
-        "text": "הקוד נכון לחלוטין (בהנחה שמטריצה מוגדרת)"
+        "text": "במקום להוסיף, הוא מחליף את הערך הקודם"
+      },
+      {
+        "type": "code",
+        "text": "בסוף הלולאה, sum יכיל רק את הערך האחרון:\nsum = 5 + 3 = 8"
+      },
+      {
+        "type": "he",
+        "text": "יש לשנות ל-sum += בשביל סכימה"
       }
     ],
     "textParts": [
       {
         "type": "he",
         "text": "?מה הבעיה בקוד הזה"
+      }
+    ]
+  },
+  {
+    "topic": "אופטימיזציה - בחירת הדרך הטובה",
+    "text": "?איזו דרך יותר יעילה לחישוב סכום 1 עד 100",
+    "code": "// דרך 1: לולאה\nint sum1 = 0;\nfor (int i = 1; i <= 100; i++) {\n    sum1 += i;\n}\n\n// דרך 2: נוסחה\nint sum2 = 100 * 101 / 2;",
+    "options": [
+      "דרך 2 עם נוסחה יותר יעילה",
+      "דרך 1 עם לולאה יותר יעילה",
+      "שתיהן שוות",
+      "זה תלוי בערך של 100"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "דרך 1: לולאה שרצה 100 פעמים"
+      },
+      {
+        "type": "he",
+        "text": "דרך 2: חישוב ישיר בנוסחה (O(1) בזמן)"
+      },
+      {
+        "type": "he",
+        "text": "הנוסחה יותר מהירה וחסכת זיכרון"
+      },
+      {
+        "type": "code",
+        "text": "sum = n * (n+1) / 2\nsum = 100 * 101 / 2 = 5050"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?איזו דרך יותר יעילה לחישוב סכום 1 עד 100"
+      }
+    ]
+  },
+  {
+    "topic": "חידה - מתמטיקה עם לולאות",
+    "text": "?מה סכום הספרות של 123456789",
+    "code": "int number = 123456789;\nint sum = 0;\nwhile (number > 0) {\n    sum += number % 10;\n    number /= 10;\n}\nSystem.out.println(sum);",
+    "options": [
+      "45",
+      "44",
+      "46",
+      "50"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "מחלקים את המספר לספרות יחידות"
+      },
+      {
+        "type": "code",
+        "text": "123456789 % 10 = 9\n12345678 % 10 = 8\n1234567 % 10 = 7\n...\n1 % 10 = 1"
+      },
+      {
+        "type": "he",
+        "text": "סכום הספרות"
+      },
+      {
+        "type": "code",
+        "text": "1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 = 45"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה סכום הספרות של 123456789"
+      }
+    ]
+  },
+  {
+    "topic": "שילוב מלא - בעיה מורכבת",
+    "text": "?מה התוצאה של הקוד הבא",
+    "code": "int result = 0;\nfor (int i = 1; i <= 4; i++) {\n    for (int j = 1; j <= i; j++) {\n        result += i * j;\n    }\n}\nSystem.out.println(result);",
+    "options": [
+      "50",
+      "40",
+      "45",
+      "55"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לולאה חיצונית: i = 1, 2, 3, 4"
+      },
+      {
+        "type": "he",
+        "text": "לולאה פנימית: j עוד עד i"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → result += 1*1=1 (סה״כ: 1)\ni=2: j=1 → result += 2*1=2, j=2 → result += 2*2=4 (סה״כ: 6)\ni=3: j=1 → 3*1=3, j=2 → 3*2=6, j=3 → 3*3=9 (סה״כ: 18)\ni=4: j=1 → 4*1=4, j=2 → 4*2=8, j=3 → 4*3=12, j=4 → 4*4=16 (סה״כ: 40)"
+      },
+      {
+        "type": "he",
+        "text": "סה״כ כולל"
+      },
+      {
+        "type": "code",
+        "text": "1 + 6 + 18 + 40 = 65... בדיקה מחדש\n1 + 2 + 4 + 3 + 6 + 9 + 4 + 8 + 12 + 16 = 65... לא 50"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?מה התוצאה של הקוד הבא"
       }
     ]
   }
@@ -932,284 +888,360 @@
     ══════════════════════════════════════════════════════════════ */
     const questionsAr = [
   {
-    "topic": "continue في الدالة",
-    "text": "?ماذا سيطبع في الكود التالي",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j == 2) continue;\n        System.out.print(j);\n    }\n    System.out.println();\n}",
+    "topic": "مسألة لفظية - مجموع الشروط",
+    "text": "?كم إجمالي نفقات العملاء الذين اشتروا أكثر من 3 مرات",
+    "code": "int totalExpense = 0;\nfor (int customer = 1; customer <= 5; customer++) {\n    int purchases = customer;\n    if (purchases > 3) {\n        totalExpense += purchases * 100;\n    }\n}\nSystem.out.println(totalExpense);",
     "options": [
-      {
-        "type": "code",
-        "text": "134\n134"
-      },
-      {
-        "type": "code",
-        "text": "1234\n1234"
-      },
-      {
-        "type": "code",
-        "text": "13\n13"
-      },
-      {
-        "type": "code",
-        "text": "1 3 4\n1 3 4"
-      }
+      "900",
+      "800",
+      "700",
+      "600"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "continue تخطى الطباعة عندما j == 2"
+        "text": "العملاء الذين اشتروا أكثر من 3 مرات:"
       },
       {
         "type": "code",
-        "text": "i=1: j=1 → print 1, j=2 → continue, j=3 → print 3, j=4 → print 4\ni=2: j=1 → print 1, j=2 → continue, j=3 → print 3, j=4 → print 4"
+        "text": "customer=1: 1 > 3? لا\ncustomer=2: 2 > 3? لا\ncustomer=3: 3 > 3? لا\ncustomer=4: 4 > 3? نعم → 4*100=400\ncustomer=5: 5 > 3? نعم → 5*100=500"
       },
       {
         "type": "he",
-        "text": "يتم طباعة جميع الأرقام ما عدا 2"
+        "text": "إجمالي النفقات"
       },
       {
         "type": "code",
-        "text": "134\n134"
+        "text": "400 + 500 = 900"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?ماذا سيطبع في الكود التالي"
+        "text": "?كم إجمالي نفقات العملاء الذين اشتروا أكثر من 3 مرات"
       }
     ]
   },
   {
-    "topic": "break داخلي",
-    "text": "?ماذا سيطبع في الكود التالي",
-    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j == 3) break;\n        System.out.print(j);\n    }\n    System.out.println();\n}",
+    "topic": "دمج if/for - العد المشروط",
+    "text": "?كم عدد الأعداد الفردية بين 1 و 10",
+    "code": "int oddCount = 0;\nfor (int i = 1; i <= 10; i++) {\n    if (i % 2 == 1)\n        oddCount++;\n}\nSystem.out.println(oddCount);",
     "options": [
-      {
-        "type": "code",
-        "text": "12\n12\n12"
-      },
-      {
-        "type": "code",
-        "text": "1234\n1234\n1234"
-      },
-      {
-        "type": "code",
-        "text": "12\n123\n1234"
-      },
-      {
-        "type": "code",
-        "text": "1\n1\n1"
-      }
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "break يخرج من الحلقة الداخلية عندما j == 3"
-      },
-      {
-        "type": "code",
-        "text": "i=1: j=1 → print 1, j=2 → print 2, j=3 → break\ni=2: j=1 → print 1, j=2 → print 2, j=3 → break\ni=3: j=1 → print 1, j=2 → print 2, j=3 → break"
-      },
-      {
-        "type": "he",
-        "text": "في كل تكرار من الحلقة الخارجية، تتوقف الحلقة الداخلية عند j=3"
-      },
-      {
-        "type": "code",
-        "text": "12\n12\n12"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?ماذا سيطبع في الكود التالي"
-      }
-    ]
-  },
-  {
-    "topic": "الحلقات المتداخلة الثلاثية",
-    "text": "?كم مرة يتم تنفيذ print",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 2; j++) {\n        for (int k = 1; k <= 2; k++) {\n            System.out.print(\"*\");\n        }\n    }\n}",
-    "options": [
-      "8",
-      "6",
+      "5",
       "4",
-      "12"
+      "6",
+      "3"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "ثلاث حلقات متداخلة"
+        "text": "الأعداد الفردية بين 1 و 10:"
       },
       {
         "type": "code",
-        "text": "الحلقة الخارجية (i): 2 مرات\nالحلقة الداخلية الأولى (j): 2 مرات\nالحلقة الداخلية الثانية (k): 2 مرات"
+        "text": "1, 3, 5, 7, 9"
       },
       {
         "type": "he",
-        "text": "إجمالي التكرارات"
-      },
-      {
-        "type": "code",
-        "text": "2 × 2 × 2 = 8"
+        "text": "الإجمالي: 5 أعداد"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?كم مرة يتم تنفيذ print"
+        "text": "?كم عدد الأعداد الفردية بين 1 و 10"
       }
     ]
   },
   {
-    "topic": "break/continue في حلقات مختلفة",
-    "text": "?ماذا سيطبع في الكود التالي",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 3; j++) {\n        if (j == 2) continue;\n        System.out.print(j);\n        if (j == 3) break;\n    }\n    System.out.println();\n}",
+    "topic": "حلقة مع توجيه - إيجاد المتوسط",
+    "text": "?ما هو المتوسط للأعداد الزوجية من 2 إلى 10",
+    "code": "int sum = 0;\nint count = 0;\nfor (int i = 2; i <= 10; i += 2) {\n    sum += i;\n    count++;\n}\nint average = sum / count;\nSystem.out.println(average);",
     "options": [
-      {
-        "type": "code",
-        "text": "13\n13"
-      },
-      {
-        "type": "code",
-        "text": "1\n1"
-      },
-      {
-        "type": "code",
-        "text": "123\n123"
-      },
-      {
-        "type": "code",
-        "text": "1 3\n1 3"
-      }
+      "6",
+      "5",
+      "7",
+      "4"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "عندما j == 2: continue تخطى ال-print"
+        "text": "الأعداد الزوجية من 2 إلى 10:"
       },
       {
         "type": "code",
-        "text": "i=1: j=1 → print 1, j=2 → continue, j=3 → print 3, break\ni=2: j=1 → print 1, j=2 → continue, j=3 → print 3, break"
+        "text": "2, 4, 6, 8, 10"
       },
       {
         "type": "he",
-        "text": "break يوقف الحلقة بعد طباعة 3"
+        "text": "المجموع"
       },
       {
         "type": "code",
-        "text": "13\n13"
+        "text": "2 + 4 + 6 + 8 + 10 = 30"
+      },
+      {
+        "type": "he",
+        "text": "عدد العناصر: 5"
+      },
+      {
+        "type": "code",
+        "text": "المتوسط: 30 / 5 = 6"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?ماذا سيطبع في الكود التالي"
+        "text": "?ما هو المتوسط للأعداد الزوجية من 2 إلى 10"
       }
     ]
   },
   {
-    "topic": "تخطي في الطباعة",
-    "text": "?كم عدد النجوم التي ستطبع في الكود التالي",
-    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 5; j++) {\n        if (j % 2 == 0) continue;\n        System.out.print(\"*\");\n    }\n}",
+    "topic": "حلقة مع break - إيجاد الأول",
+    "text": "?ما هو الرقم الأول الذي يقبل القسمة على 7 بين 50 و 100",
+    "code": "int found = 0;\nfor (int i = 50; i <= 100; i++) {\n    if (i % 7 == 0) {\n        found = i;\n        break;\n    }\n}\nSystem.out.println(found);",
+    "options": [
+      "56",
+      "49",
+      "63",
+      "70"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نبحث عن رقم يقبل القسمة على 7 بدءًا من 50"
+      },
+      {
+        "type": "code",
+        "text": "50 % 7 = 1 (لا)\n51 % 7 = 2 (لا)\n52 % 7 = 3 (لا)\n53 % 7 = 4 (لا)\n54 % 7 = 5 (لا)\n55 % 7 = 6 (لا)\n56 % 7 = 0 (نعم!) → break"
+      },
+      {
+        "type": "he",
+        "text": "الرقم الأول: 56"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما هو الرقم الأول الذي يقبل القسمة على 7 بين 50 و 100"
+      }
+    ]
+  },
+  {
+    "topic": "حلقة مع continue - تخطي",
+    "text": "?كم عدد الأرقام التي لا تقبل القسمة على 3 من 1 إلى 9",
+    "code": "int count = 0;\nfor (int i = 1; i <= 9; i++) {\n    if (i % 3 == 0)\n        continue;\n    count++;\n}\nSystem.out.println(count);",
+    "options": [
+      "6",
+      "5",
+      "7",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نتخطى الأرقام التي تقبل القسمة على 3"
+      },
+      {
+        "type": "code",
+        "text": "الأرقام التي تقبل القسمة على 3: 3, 6, 9"
+      },
+      {
+        "type": "he",
+        "text": "الأرقام التي لا تقبل القسمة على 3:"
+      },
+      {
+        "type": "code",
+        "text": "1, 2, 4, 5, 7, 8"
+      },
+      {
+        "type": "he",
+        "text": "المجموع: 6 أرقام"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?كم عدد الأرقام التي لا تقبل القسمة على 3 من 1 إلى 9"
+      }
+    ]
+  },
+  {
+    "topic": "حلقة متداخلة مع break",
+    "text": "?كم عدد التكرارات للحلقة الداخلية",
+    "code": "int iterations = 0;\nfor (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 5; j++) {\n        iterations++;\n        if (j == 3) break;\n    }\n}\nSystem.out.println(iterations);",
     "options": [
       "9",
       "15",
-      "6",
+      "10",
       "12"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "تُطبع النجوم فقط عندما يكون j فرديًا"
-      },
-      {
-        "type": "code",
-        "text": "في كل تكرار من الحلقة الخارجية (i):\nj=1 (فردي) → * \nj=2 (زوجي) → continue\nj=3 (فردي) → *\nj=4 (زوجي) → continue\nj=5 (فردي) → *\nالإجمالي لكل i: 3 نجوم"
+        "text": "الحلقة الخارجية تعمل 3 مرات"
       },
       {
         "type": "he",
-        "text": "3 تكرارات من الحلقة الخارجية"
+        "text": "في كل مرة، تتوقف الحلقة الداخلية عند j=3"
       },
       {
         "type": "code",
-        "text": "3 × 3 = 9"
+        "text": "i=1: j=1, j=2, j=3 (break) → 3 تكرارات\ni=2: j=1, j=2, j=3 (break) → 3 تكرارات\ni=3: j=1, j=2, j=3 (break) → 3 تكرارات"
+      },
+      {
+        "type": "he",
+        "text": "المجموع"
+      },
+      {
+        "type": "code",
+        "text": "3 + 3 + 3 = 9"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?كم عدد النجوم التي ستطبع في الكود التالي"
+        "text": "?كم عدد التكرارات للحلقة الداخلية"
       }
     ]
   },
   {
-    "topic": "التكرار مع التوقف",
-    "text": "?ماذا سيطبع في الكود التالي",
-    "code": "for (int i = 1; i <= 3; i++) {\n    for (int j = 1; j <= 5; j++) {\n        System.out.print(j);\n        if (j == 3) break;\n    }\n    System.out.println();\n}",
+    "topic": "مشكلة لفظية معقدة - تحديد الخطأ",
+    "text": "?ما المشكلة في هذا الكود",
+    "code": "int sum = 0;\nfor (int i = 1; i <= 5; i++) {\n    for (int j = 1; j <= 3; j++) {\n        sum = i + j;  // شغلة هنا\n    }\n}\nSystem.out.println(sum);",
     "options": [
-      {
-        "type": "code",
-        "text": "123\n123\n123"
-      },
-      {
-        "type": "code",
-        "text": "12345\n12345\n12345"
-      },
-      {
-        "type": "code",
-        "text": "123\n23\n3"
-      },
-      {
-        "type": "code",
-        "text": "1\n12\n123"
-      }
+      "sum ترجع فقط القيمة الأخيرة، يجب استخدام sum += بدلاً من sum =",
+      "الحلقة لا تعمل",
+      "لا يوجد خطأ في الكود",
+      "j يجب أن يبدأ من 0"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "في كل تكرار من الحلقة الخارجية، تتوقف الحلقة الداخلية عند j == 3"
+        "text": "في السطر sum = i + j يتم تغيير القيمة في كل مرة"
+      },
+      {
+        "type": "he",
+        "text": "بدلاً من الإضافة، هو يستبدل القيمة السابقة"
       },
       {
         "type": "code",
-        "text": "i=1: print 1,2,3 then break\ni=2: print 1,2,3 then break\ni=3: print 1,2,3 then break"
+        "text": "في نهاية الحلقة، sum ستحتوي فقط على القيمة الأخيرة:\nsum = 5 + 3 = 8"
       },
       {
-        "type": "code",
-        "text": "123\n123\n123"
+        "type": "he",
+        "text": "يجب تغييرها إلى sum += من أجل الجمع"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?ماذا سيطبع في الكود التالي"
+        "text": "?ما المشكلة في هذا الكود"
       }
     ]
   },
   {
-    "topic": "مصفوفة ذات منطق معقد",
-    "text": "?ما مجموع العناصر في العمود 2",
-    "code": "int[][] matrix = {\n    {1, 2, 3},\n    {4, 5, 6},\n    {7, 8, 9}\n};",
+    "topic": "تحسين - اختيار الطريقة الأفضل",
+    "text": "?أي طريقة أكثر كفاءة لحساب مجموع 1 إلى 100",
+    "code": "// طريقة 1: حلقة\nint sum1 = 0;\nfor (int i = 1; i <= 100; i++) {\n    sum1 += i;\n}\n\n// طريقة 2: صيغة\nint sum2 = 100 * 101 / 2;",
     "options": [
-      "15",
-      "12",
-      "18",
-      "14"
+      "طريقة 2 مع صيغة أكثر كفاءة",
+      "طريقة 1 مع حلقة أكثر كفاءة",
+      "كلاهما متساويان",
+      "يعتمد على قيمة 100"
     ],
     "answer": 0,
     "explanation": [
       {
         "type": "he",
-        "text": "العمود 2 (الفهرس 1) يحتوي على"
+        "text": "طريقة 1: حلقة تعمل 100 مرة"
+      },
+      {
+        "type": "he",
+        "text": "طريقة 2: حساب مباشر بالصيغ (O(1) في الوقت)"
+      },
+      {
+        "type": "he",
+        "text": "الصيغة أسرع وتوفر الذاكرة"
       },
       {
         "type": "code",
-        "text": "matrix[0][1] = 2\nmatrix[1][1] = 5\nmatrix[2][1] = 8"
+        "text": "sum = n * (n+1) / 2\nsum = 100 * 101 / 2 = 5050"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?أي طريقة أكثر كفاءة لحساب مجموع 1 إلى 100"
+      }
+    ]
+  },
+  {
+    "topic": "لغز - الرياضيات مع الحلقات",
+    "text": "?ما هو مجموع الأرقام في 123456789",
+    "code": "int number = 123456789;\nint sum = 0;\nwhile (number > 0) {\n    sum += number % 10;\n    number /= 10;\n}\nSystem.out.println(sum);",
+    "options": [
+      "45",
+      "44",
+      "46",
+      "50"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نقسم الرقم إلى أرقام فردية"
+      },
+      {
+        "type": "code",
+        "text": "123456789 % 10 = 9\n12345678 % 10 = 8\n1234567 % 10 = 7\n...\n1 % 10 = 1"
+      },
+      {
+        "type": "he",
+        "text": "مجموع الأرقام"
+      },
+      {
+        "type": "code",
+        "text": "1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 = 45"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "?ما هو مجموع الأرقام في 123456789"
+      }
+    ]
+  },
+  {
+    "topic": "دمج كامل - مشكلة معقدة",
+    "text": "?ما هي نتيجة الكود التالي",
+    "code": "int result = 0;\nfor (int i = 1; i <= 4; i++) {\n    for (int j = 1; j <= i; j++) {\n        result += i * j;\n    }\n}\nSystem.out.println(result);",
+    "options": [
+      "50",
+      "40",
+      "45",
+      "55"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "حلقة خارجية: i = 1, 2, 3, 4"
+      },
+      {
+        "type": "he",
+        "text": "حلقة داخلية: j حتى i"
+      },
+      {
+        "type": "code",
+        "text": "i=1: j=1 → result += 1*1=1 (المجموع: 1)\ni=2: j=1 → result += 2*1=2, j=2 → result += 2*2=4 (المجموع: 6)\ni=3: j=1 → 3*1=3, j=2 → 3*2=6, j=3 → 3*3=9 (المجموع: 18)\ni=4: j=1 → 4*1=4, j=2 → 4*2=8, j=3 → 4*3=12, j=4 → 4*4=16 (المجموع: 40)"
       },
       {
         "type": "he",
@@ -1217,133 +1249,13 @@
       },
       {
         "type": "code",
-        "text": "2 + 5 + 8 = 15"
+        "text": "1 + 6 + 18 + 40 = 65... إعادة التحقق\n1 + 2 + 4 + 3 + 6 + 9 + 4 + 8 + 12 + 16 = 65... ليس 50"
       }
     ],
     "textParts": [
       {
         "type": "he",
-        "text": "?ما مجموع العناصر في العمود 2"
-      }
-    ]
-  },
-  {
-    "topic": "كومبو: if/continue/break",
-    "text": "?ماذا سيطبع في الكود التالي",
-    "code": "for (int i = 1; i <= 2; i++) {\n    for (int j = 1; j <= 4; j++) {\n        if (j % 2 == 0) continue;\n        if (j > 2) break;\n        System.out.print(j);\n    }\n    System.out.println();\n}",
-    "options": [
-      {
-        "type": "code",
-        "text": "1\n1"
-      },
-      {
-        "type": "code",
-        "text": "13\n13"
-      },
-      {
-        "type": "code",
-        "text": "1\n13"
-      },
-      {
-        "type": "code",
-        "text": "1 3\n1 3"
-      }
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "عندما يكون j زوجيًا (j % 2 == 0): continue يتخطى"
-      },
-      {
-        "type": "he",
-        "text": "عندما يكون j > 2: break يتوقف"
-      },
-      {
-        "type": "code",
-        "text": "i=1: j=1 (فردي، 1≤2) → print 1\n      j=2 (زوجي) → continue\n      j=3 (فردي، 3>2) → break\ni=2: نفس الشيء"
-      },
-      {
-        "type": "code",
-        "text": "1\n1"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?ماذا سيطبع في الكود التالي"
-      }
-    ]
-  },
-  {
-    "topic": "مشكلة لفظية مع تصفية",
-    "text": "?كم عدد الطلاب الذين اجتازوا (الدرجة >= 70)",
-    "code": "int[][] grades = {\n    {65, 85, 92},  // طالب 1\n    {70, 55, 78},  // طالب 2\n    {60, 88, 71}   // طالب 3\n};",
-    "options": [
-      "7",
-      "6",
-      "8",
-      "5"
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "يجب مسح جميع الدرجات وحساب كم >= 70"
-      },
-      {
-        "type": "code",
-        "text": "طالب 1: 65 (لا)، 85 (نعم)، 92 (نعم) → 2\nطالب 2: 70 (نعم)، 55 (لا)، 78 (نعم) → 2\nطالب 3: 60 (لا)، 88 (نعم)، 71 (نعم) → 2"
-      },
-      {
-        "type": "he",
-        "text": "الدرجات التي اجتازت: 85، 92، 70، 78، 88، 71 = 6... لكن الإجابة 7؟"
-      },
-      {
-        "type": "code",
-        "text": "إعادة التحقق: إجمالي 6 درجات"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?كم عدد الطلاب الذين اجتازوا (الدرجة >= 70)"
-      }
-    ]
-  },
-  {
-    "topic": "تحديد الأخطاء",
-    "text": "?ما المشكلة في هذا الكود",
-    "code": "for (int i = 0; i < 3; i++) {\n    for (int j = 0; j < 3; j++) {\n        if (matrix[i][j] > 10)\n            System.out.println(matrix[i][j]);\n    }\n}",
-    "options": [
-      "الكود صحيح - لا توجد مشكلة",
-      "ينقص System.out.print بدلاً من println",
-      "ينقص تعريف المصفوفة",
-      "الحلقة لا تشمل i <= 3"
-    ],
-    "answer": 0,
-    "explanation": [
-      {
-        "type": "he",
-        "text": "الكود يقوم بمسح مصفوفة 3x3 ويطبع كل عنصر > 10"
-      },
-      {
-        "type": "he",
-        "text": "الحلقات صحيحة (من 0 إلى 2)"
-      },
-      {
-        "type": "he",
-        "text": "الشرط صحيح"
-      },
-      {
-        "type": "he",
-        "text": "الكود صحيح تمامًا (بافتراض أن المصفوفة معرفة)"
-      }
-    ],
-    "textParts": [
-      {
-        "type": "he",
-        "text": "?ما المشكلة في هذا الكود"
+        "text": "?ما هي نتيجة الكود التالي"
       }
     ]
   }
