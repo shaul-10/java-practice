@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 03 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 03</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #C0392B;   /* לדוגמה: #C0392B */
+      --color-light:  #FCE8E8;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #8B1A1A;   /* לדוגמה: #8B1A1A */
+      --color-border: #F5C0C0; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול מערכים חד-ממדיים ב - Java</div>
+      <div class="home-title-ar">تدريب على المصفوفات أحادية البُعد في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 03 &nbsp;|&nbsp; المستوى 03</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 03</span>
+          תרגול מערכים חד-ממדיים ב - Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 03</span>
+          تدريب على المصفوفات أحادية البُعد في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "עקיבה — תנאי מקונן",
+    "text": "מה יהיה תוכן המערך a לאחר הרצת הקוד הבא?",
+    "code": "int[] a = {3, -1, 4, -2, 5};\nfor (int i = 0; i < a.length; i++) {\n    if (a[i] > 0)\n        a[i] = a[i] * 2;\n    else\n        a[i] = 0;\n}",
+    "options": [
+      "{6, 0, 8, 0, 10}",
+      "{6, -1, 8, -2, 10}",
+      "{3, 0, 4, 0, 5}",
+      "{6, 2, 8, 4, 10}"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לכל איבר חיובי — הכפלה ב-2. לכל איבר שאינו חיובי (שלילי או אפס) — החלפה ב-0."
+      },
+      {
+        "type": "code",
+        "text": "3>0  → 3*2=6\n-1≤0 → 0\n4>0  → 4*2=8\n-2≤0 → 0\n5>0  → 5*2=10\n// תוצאה: {6, 0, 8, 0, 10}"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה תוכן המערך a לאחר הרצת הקוד הבא?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — השוואת שני מערכים",
+    "text": "מה יודפס?",
+    "code": "public static void main(String[] args) {\n    int[] a = {1, 2, 3, 4};\n    int[] b = {1, 2, 5, 4};\n    System.out.println(isEqual(a, b));\n}\n\npublic static boolean isEqual(int[] a, int[] b) {\n    for (int i = 0; i < a.length; i++)\n        if (a[i] != b[i])\n            return false;\n    return true;\n}",
+    "options": [
+      "false",
+      "true",
+      "3",
+      "שגיאת ריצה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השיטה עוברת על האיברים ומחזירה false ברגע שמוצאת הבדל. באינדקס 2 — a[2]=3 ו-b[2]=5, ולכן תוחזר false מיד."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 1==1 OK\ni=1: 2==2 OK\ni=2: 3!=5 → return false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — היפוך מערך",
+    "text": "מה יודפס?",
+    "code": "public static void main(String[] args) {\n    int[] a = {1, 2, 3, 4, 5};\n    reverse(a);\n    System.out.println(a[1]);\n}\n\npublic static void reverse(int[] arr) {\n    int n = arr.length;\n    for (int i = 0; i < n / 2; i++) {\n        int temp = arr[i];\n        arr[i] = arr[n - 1 - i];\n        arr[n - 1 - i] = temp;\n    }\n}",
+    "options": [
+      "4",
+      "2",
+      "5",
+      "1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השיטה מחליפה זוגות סימטריים: [0]↔[4], [1]↔[3]. [2] נשאר במקומו. לאחר ההיפוך: {5,4,3,2,1}, ולכן a[1]=4."
+      },
+      {
+        "type": "code",
+        "text": "i=0: arr[0]↔arr[4] → 1↔5\ni=1: arr[1]↔arr[3] → 2↔4\n// לאחר היפוך: {5,4,3,2,1}\n// a[1] = 4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — מציאת מינימום",
+    "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תמצא את הערך המינימלי במערך?",
+    "code": "public static int findMin(int[] arr) {\n    int min = arr[0];\n    for (int i = 1; i < arr.length; i++)\n        if ( /* ??? */ )\n            min = arr[i];\n    return min;\n}",
+    "options": [
+      "arr[i] < min",
+      "arr[i] > min",
+      "arr[i] < arr[0]",
+      "min < arr[i]"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בכל איטרציה בודקים האם האיבר הנוכחי קטן מהמינימום הנוכחי. אם כן — מעדכנים את min. ההשוואה חייבת להיות arr[i] < min (לא arr[0], כי min מתעדכן)."
+      },
+      {
+        "type": "code",
+        "text": "if (arr[i] < min)\n    min = arr[i];"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תמצא את הערך המינימלי במערך?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — סכום אינדקסים זוגיים",
+    "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תחזיר את סכום האיברים באינדקסים זוגיים בלבד?",
+    "code": "public static int sumEvenIndex(int[] arr) {\n    int sum = 0;\n    for (int i = 0; i < arr.length; i++)\n        if ( /* ??? */ )\n            sum += arr[i];\n    return sum;\n}",
+    "options": [
+      "i % 2 == 0",
+      "i % 2 == 1",
+      "arr[i] % 2 == 0",
+      "i / 2 == 0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השאלה היא על אינדקסים זוגיים (0, 2, 4...) — לא על ערכים זוגיים. לכן הבדיקה היא על i ולא על arr[i]. i%2==0 בודק שהאינדקס זוגי."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 0%2==0 ✓ → sum+=arr[0]\ni=1: 1%2==1 ✗\ni=2: 2%2==0 ✓ → sum+=arr[2]\n..."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תחזיר את סכום האיברים באינדקסים זוגיים בלבד?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — ספירה בטווח",
+    "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תספור את האיברים בטווח [lo, hi] כולל?",
+    "code": "public static int countInRange(int[] arr, int lo, int hi) {\n    int count = 0;\n    for (int i = 0; i < arr.length; i++)\n        if ( /* ??? */ )\n            count++;\n    return count;\n}",
+    "options": [
+      "arr[i] >= lo && arr[i] <= hi",
+      "arr[i] > lo && arr[i] < hi",
+      "arr[i] >= lo || arr[i] <= hi",
+      "arr[i] >= lo && arr[i] >= hi"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הטווח כולל את שני הקצוות, לכן יש להשתמש ב-<= ו->=. שימוש ב-|| (או) יחזיר תמיד true כמעט ולכן שגוי."
+      },
+      {
+        "type": "code",
+        "text": "arr[i] >= lo  // גדול או שווה לתחתית\n&&\narr[i] <= hi  // קטן או שווה לעליון"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תספור את האיברים בטווח [lo, hi] כולל?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — בדיקת כפילות",
+    "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תבדוק אם יש שני איברים זהים במערך?",
+    "code": "public static boolean hasDuplicate(int[] arr) {\n    for (int i = 0; i < arr.length - 1; i++)\n        for (int j = i + 1; j < arr.length; j++)\n            if ( /* ??? */ )\n                return true;\n    return false;\n}",
+    "options": [
+      "arr[i] == arr[j]",
+      "arr[i] != arr[j]",
+      "arr[i] == arr[0]",
+      "i == j"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה הכפולה משווה כל זוג אפשרי של איברים (בלי חזרה). אם נמצאו שני איברים זהים — מיידית מחזירים true. j מתחיל מ-i+1 כדי לא להשוות איבר לעצמו."
+      },
+      {
+        "type": "code",
+        "text": "// i=0, j=1,2,3...\n// i=1, j=2,3...\n// וכו׳ — כל זוג בדיוק פעם אחת\nif (arr[i] == arr[j]) return true;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום /* ??? */ כדי שהשיטה תבדוק אם יש שני איברים זהים במערך?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — העתקת חיוביים",
+    "text": "מה יש להשלים בשורות /* ??? 1 */ ו-/* ??? 2 */ כדי שהשיטה תחזיר מערך המכיל רק את האיברים החיוביים?",
+    "code": "public static int[] onlyPositive(int[] arr) {\n    int count = 0;\n    for (int i = 0; i < arr.length; i++)\n        if (arr[i] > 0) count++;\n    int[] result = new int[count];\n    int j = 0;\n    for (int i = 0; i < arr.length; i++)\n        if (arr[i] > 0) {\n            /* ??? 1 */\n            /* ??? 2 */\n        }\n    return result;\n}",
+    "options": [
+      "result[j] = arr[i];  |  j++;",
+      "result[i] = arr[i];  |  j++;",
+      "result[j] = arr[i];  |  i++;",
+      "result[j] = arr[j];  |  j++;"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "j הוא האינדקס במערך result (מתחיל מ-0 ועולה רק עבור חיוביים). i הוא האינדקס במערך המקורי. יש לשמור את arr[i] ב-result[j], ואז להקדים את j בלבד."
+      },
+      {
+        "type": "code",
+        "text": "result[j] = arr[i]; // שמור את הערך\nj++;                 // הקדם רק את j"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים בשורות /* ??? 1 */ ו-/* ??? 2 */ כדי שהשיטה תחזיר מערך המכיל רק את האיברים החיוביים?"
+      }
+    ]
+  },
+  {
+    "topic": "אלגוריתם — מציאת השני בגודלו",
+    "text": "מה יודפס?",
+    "code": "public static void main(String[] args) {\n    int[] arr = {3, 7, 1, 9, 4, 6};\n    System.out.println(secondMax(arr));\n}\n\npublic static int secondMax(int[] arr) {\n    int max1 = Integer.MIN_VALUE;\n    int max2 = Integer.MIN_VALUE;\n    for (int i = 0; i < arr.length; i++) {\n        if (arr[i] > max1) {\n            max2 = max1;\n            max1 = arr[i];\n        } else if (arr[i] > max2) {\n            max2 = arr[i];\n        }\n    }\n    return max2;\n}",
+    "options": [
+      "7",
+      "6",
+      "9",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האלגוריתם שומר את שני הערכים הגדולים ביותר. כשנמצא ערך גדול מ-max1, הישן max1 הופך ל-max2. הערך הגדול ביותר הוא 9, השני בגודלו הוא 7."
+      },
+      {
+        "type": "code",
+        "text": "3  → max1=3,  max2=MIN\n7  → max1=7,  max2=3\n1  → (1<7, 1<3) — ללא שינוי\n9  → max1=9,  max2=7\n4  → (4<9, 4<7) — ללא שינוי\n6  → (6<9, 6<7) — ללא שינוי\n// return max2 = 7"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "אלגוריתם — הזזת איברים ימינה",
+    "text": "מה יודפס?",
+    "code": "public static void main(String[] args) {\n    int[] a = {1, 2, 3, 4, 5};\n    shiftRight(a);\n    System.out.println(a[0] + \" \" + a[1]);\n}\n\npublic static void shiftRight(int[] arr) {\n    int last = arr[arr.length - 1];\n    for (int i = arr.length - 1; i > 0; i--)\n        arr[i] = arr[i - 1];\n    arr[0] = last;\n}",
+    "options": [
+      "5 1",
+      "1 2",
+      "2 1",
+      "5 2"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האלגוריתם שומר את האיבר האחרון, מזיז כל שאר האיברים מיקום ימינה, ומכניס את האחרון בתחילת המערך — היפוך מעגלי."
+      },
+      {
+        "type": "code",
+        "text": "last = 5\ni=4: arr[4]=arr[3]=4\ni=3: arr[3]=arr[2]=3\ni=2: arr[2]=arr[1]=2\ni=1: arr[1]=arr[0]=1\narr[0]=5\n// תוצאה: {5,1,2,3,4}\n// a[0]+\" \"+a[1] = \"5 1\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "تتبع — شرط متداخل",
+    "text": "ما سيكون محتوى المصفوفة a بعد تشغيل الكود التالي؟",
+    "code": "int[] a = {3, -1, 4, -2, 5};\nfor (int i = 0; i < a.length; i++) {\n    if (a[i] > 0)\n        a[i] = a[i] * 2;\n    else\n        a[i] = 0;\n}",
+    "options": [
+      "{6, 0, 8, 0, 10}",
+      "{6, -1, 8, -2, 10}",
+      "{3, 0, 4, 0, 5}",
+      "{6, 2, 8, 4, 10}"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "لكل عنصر إيجابي — الضرب في 2. لكل عنصر غير إيجابي (سلبي أو صفر) — الاستبدال بـ 0."
+      },
+      {
+        "type": "code",
+        "text": "3>0  → 3*2=6\n-1≤0 → 0\n4>0  → 4*2=8\n-2≤0 → 0\n5>0  → 5*2=10\n// תוצאה: {6, 0, 8, 0, 10}"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما سيكون محتوى المصفوفة a بعد تشغيل الكود التالي؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — مقارنة بين مصفوفتين",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static void main(String[] args) {\n    int[] a = {1, 2, 3, 4};\n    int[] b = {1, 2, 5, 4};\n    System.out.println(isEqual(a, b));\n}\n\npublic static boolean isEqual(int[] a, int[] b) {\n    for (int i = 0; i < a.length; i++)\n        if (a[i] != b[i])\n            return false;\n    return true;\n}",
+    "options": [
+      "false",
+      "true",
+      "3",
+      "خطأ في التشغيل"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الدالة تمر على العناصر وتعيد false بمجرد أن تجد اختلافًا. في الفهرس 2 — a[2]=3 و-b[2]=5، لذلك ستُعاد false فورًا."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 1==1 OK\ni=1: 2==2 OK\ni=2: 3!=5 → return false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — عكس مصفوفة",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static void main(String[] args) {\n    int[] a = {1, 2, 3, 4, 5};\n    reverse(a);\n    System.out.println(a[1]);\n}\n\npublic static void reverse(int[] arr) {\n    int n = arr.length;\n    for (int i = 0; i < n / 2; i++) {\n        int temp = arr[i];\n        arr[i] = arr[n - 1 - i];\n        arr[n - 1 - i] = temp;\n    }\n}",
+    "options": [
+      "4",
+      "2",
+      "5",
+      "1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الدالة تستبدل الأزواج المتماثلة: [0]↔[4], [1]↔[3]. [2] يبقى في مكانه. بعد العكس: {5,4,3,2,1}، لذلك a[1]=4."
+      },
+      {
+        "type": "code",
+        "text": "i=0: arr[0]↔arr[4] → 1↔5\ni=1: arr[1]↔arr[3] → 2↔4\n// بعد العكس: {5,4,3,2,1}\n// a[1] = 4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — إيجاد أصغر قيمة",
+    "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تجد الدالة القيمة الأصغر في المصفوفة؟",
+    "code": "public static int findMin(int[] arr) {\n    int min = arr[0];\n    for (int i = 1; i < arr.length; i++)\n        if ( /* ??? */ )\n            min = arr[i];\n    return min;\n}",
+    "options": [
+      "arr[i] < min",
+      "arr[i] > min",
+      "arr[i] < arr[0]",
+      "min < arr[i]"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في كل تكرار نتحقق مما إذا كان العنصر الحالي أصغر من الأصغر الحالي. إذا كان كذلك — نقوم بتحديث min. يجب أن تكون المقارنة arr[i] < min (وليس arr[0]، لأن min يتم تحديثه)."
+      },
+      {
+        "type": "code",
+        "text": "if (arr[i] < min)\n    min = arr[i];"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تجد الدالة القيمة الأصغر في المصفوفة؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — مجموع الفهارس الزوجية",
+    "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تعيد الدالة مجموع العناصر في الفهارس الزوجية فقط؟",
+    "code": "public static int sumEvenIndex(int[] arr) {\n    int sum = 0;\n    for (int i = 0; i < arr.length; i++)\n        if ( /* ??? */ )\n            sum += arr[i];\n    return sum;\n}",
+    "options": [
+      "i % 2 == 0",
+      "i % 2 == 1",
+      "arr[i] % 2 == 0",
+      "i / 2 == 0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "السؤال يتعلق بالفهارس الزوجية (0, 2, 4...) — وليس على القيم الزوجية. لذلك الفحص يكون على i وليس على arr[i]. i%2==0 يتحقق من أن الفهرس زوجي."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 0%2==0 ✓ → sum+=arr[0]\ni=1: 1%2==1 ✗\ni=2: 2%2==0 ✓ → sum+=arr[2]\n..."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تعيد الدالة مجموع العناصر في الفهارس الزوجية فقط؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — عدّ في نطاق",
+    "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تقوم الدالة بعدّ العناصر في النطاق [lo, hi] شامل؟",
+    "code": "public static int countInRange(int[] arr, int lo, int hi) {\n    int count = 0;\n    for (int i = 0; i < arr.length; i++)\n        if ( /* ??? */ )\n            count++;\n    return count;\n}",
+    "options": [
+      "arr[i] >= lo && arr[i] <= hi",
+      "arr[i] > lo && arr[i] < hi",
+      "arr[i] >= lo || arr[i] <= hi",
+      "arr[i] >= lo && arr[i] >= hi"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "النطاق يشمل كلا الطرفين، لذلك يجب استخدام <= و >=. استخدام || (أو) سيعيد دائماً true تقريباً ولذلك فهو خاطئ."
+      },
+      {
+        "type": "code",
+        "text": "arr[i] >= lo  // أكبر أو يساوي الحد الأدنى\n&&\narr[i] <= hi  // أصغر أو يساوي الحد الأعلى"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تقوم الدالة بعدّ العناصر في النطاق [lo, hi] شامل؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — فحص التكرار",
+    "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تقوم الدالة بفحص إذا كان هناك عنصران متطابقان في المصفوفة؟",
+    "code": "public static boolean hasDuplicate(int[] arr) {\n    for (int i = 0; i < arr.length - 1; i++)\n        for (int j = i + 1; j < arr.length; j++)\n            if ( /* ??? */ )\n                return true;\n    return false;\n}",
+    "options": [
+      "arr[i] == arr[j]",
+      "arr[i] != arr[j]",
+      "arr[i] == arr[0]",
+      "i == j"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة المزدوجة تقارن كل زوج ممكن من العناصر (بدون تكرار). إذا تم العثور على عنصرين متطابقين — يتم إرجاع true فوراً. يبدأ j من i+1 لكي لا يتم مقارنة العنصر مع نفسه."
+      },
+      {
+        "type": "code",
+        "text": "// i=0, j=1,2,3...\n// i=1, j=2,3...\n// وهكذا — كل زوج مرة واحدة فقط\nif (arr[i] == arr[j]) return true;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من /* ??? */ لكي تقوم الدالة بفحص إذا كان هناك عنصران متطابقان في المصفوفة؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — نسخ الأعداد الموجبة",
+    "text": "ماذا يجب إكماله في السطور /* ??? 1 */ و-/* ??? 2 */ لكي تعيد الدالة مصفوفة تحتوي فقط على العناصر الموجبة؟",
+    "code": "public static int[] onlyPositive(int[] arr) {\n    int count = 0;\n    for (int i = 0; i < arr.length; i++)\n        if (arr[i] > 0) count++;\n    int[] result = new int[count];\n    int j = 0;\n    for (int i = 0; i < arr.length; i++)\n        if (arr[i] > 0) {\n            /* ??? 1 */\n            /* ??? 2 */\n        }\n    return result;\n}",
+    "options": [
+      "result[j] = arr[i];  |  j++;",
+      "result[i] = arr[i];  |  j++;",
+      "result[j] = arr[i];  |  i++;",
+      "result[j] = arr[j];  |  j++;"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "j هو الفهرس في مصفوفة result (يبدأ من 0 ويزداد فقط للأعداد الموجبة). i هو الفهرس في المصفوفة الأصلية. يجب حفظ arr[i] في result[j]، ثم زيادة j فقط."
+      },
+      {
+        "type": "code",
+        "text": "result[j] = arr[i]; // שמור את הערך\nj++;                 // הקדם רק את j"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله في السطور /* ??? 1 */ و-/* ??? 2 */ لكي تعيد الدالة مصفوفة تحتوي فقط على العناصر الموجبة؟"
+      }
+    ]
+  },
+  {
+    "topic": "خوارزمية — إيجاد الثاني في الكبر",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static void main(String[] args) {\n    int[] arr = {3, 7, 1, 9, 4, 6};\n    System.out.println(secondMax(arr));\n}\n\npublic static int secondMax(int[] arr) {\n    int max1 = Integer.MIN_VALUE;\n    int max2 = Integer.MIN_VALUE;\n    for (int i = 0; i < arr.length; i++) {\n        if (arr[i] > max1) {\n            max2 = max1;\n            max1 = arr[i];\n        } else if (arr[i] > max2) {\n            max2 = arr[i];\n        }\n    }\n    return max2;\n}",
+    "options": [
+      "7",
+      "6",
+      "9",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الخوارزمية تحتفظ بأكبر قيمتين. عندما يتم العثور على قيمة أكبر من max1، يصبح max1 القديم هو max2. أكبر قيمة هي 9، والثاني في الكبر هو 7."
+      },
+      {
+        "type": "code",
+        "text": "3  → max1=3,  max2=MIN\n7  → max1=7,  max2=3\n1  → (1<7, 1<3) — بدون تغيير\n9  → max1=9,  max2=7\n4  → (4<9, 4<7) — بدون تغيير\n6  → (6<9, 6<7) — بدون تغيير\n// return max2 = 7"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "خوارزمية — نقل عناصر إلى اليمين",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static void main(String[] args) {\n    int[] a = {1, 2, 3, 4, 5};\n    shiftRight(a);\n    System.out.println(a[0] + \" \" + a[1]);\n}\n\npublic static void shiftRight(int[] arr) {\n    int last = arr[arr.length - 1];\n    for (int i = arr.length - 1; i > 0; i--)\n        arr[i] = arr[i - 1];\n    arr[0] = last;\n}",
+    "options": [
+      "5 1",
+      "1 2",
+      "2 1",
+      "5 2"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الخوارزمية تحفظ العنصر الأخير، تنقل كل العناصر الأخرى مكاناً إلى اليمين، وتضع الأخير في بداية المصفوفة — تدوير دائري."
+      },
+      {
+        "type": "code",
+        "text": "last = 5\ni=4: arr[4]=arr[3]=4\ni=3: arr[3]=arr[2]=3\ni=2: arr[2]=arr[1]=2\ni=1: arr[1]=arr[0]=1\narr[0]=5\n// תוצאה: {5,1,2,3,4}\n// a[0]+\" \"+a[1] = \"5 1\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      const text = typeof option === 'string' ? option : String(option);
+      // זיהוי טקסט עברי — מתחיל בתו עברי (לאחר הסרת ‏)
+      const clean = text.replace(/‏/g, '').trim();
+      const isHebrew = /^[֐-׿יִ-ﭏ]/.test(clean);
+      if (isHebrew) {
+        return `<span class="opt-text-he">${text}</span>`;
+      }
+      // קוד / אנגלית — נשאר LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${text}</span>`;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
