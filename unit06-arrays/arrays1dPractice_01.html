@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 01 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 01</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #7F77DD;   /* לדוגמה: #C0392B */
+      --color-light:  #EEEDFE;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #3C3489;   /* לדוגמה: #8B1A1A */
+      --color-border: #CECBF6; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול מערכים חד-ממדיים ב - Java</div>
+      <div class="home-title-ar">تدريب على المصفوفات أحادية البُعد في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 01 &nbsp;|&nbsp; المستوى 01</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 01</span>
+          תרגול מערכים חד-ממדיים ב - Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 01</span>
+          تدريب على المصفوفات أحادية البُعد في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "יצירת מערך",
+    "text": "מה יוצרת הפקודה הבאה?",
+    "code": "boolean[] flags = new boolean[5];",
+    "options": [
+      "מערך של 5 תאים מסוג ‏boolean",
+      "מערך של 5 תאים מסוג ‏int",
+      "מערך של תא אחד מסוג ‏boolean",
+      "שגיאת קומפילציה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הפקודה יוצרת מערך בשם flags המכיל 5 תאים מסוג boolean. הסוג מצוין לפני הסוגריים המרובעים, והגודל — בתוכם."
+      },
+      {
+        "type": "code",
+        "text": "boolean[] flags = new boolean[5];\n// חמישה תאים, אינדקסים 0 עד 4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יוצרת הפקודה הבאה?"
+      }
+    ]
+  },
+  {
+    "topic": "ערך ברירת מחדל",
+    "text": "מה יהיה הערך של a[0] מיד לאחר יצירת המערך, לפני כל השמה?",
+    "code": "int[] a = new int[5];",
+    "options": [
+      "0‏",
+      "-1‏",
+      "‏null",
+      "שגיאת ריצה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ב-Java, תאי מערך מסוג int מאותחלים אוטומטית לערך ברירת המחדל 0 בעת יצירת המערך."
+      },
+      {
+        "type": "code",
+        "text": "int[] a = new int[5];\n// a[0]==0, a[1]==0, ..."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה הערך של a[0] מיד לאחר יצירת המערך, לפני כל השמה?"
+      }
+    ]
+  },
+  {
+    "topic": "אינדקסים",
+    "text": "מהו האינדקס של התא הראשון, ומהו האינדקס של התא האחרון במערך הבא?",
+    "code": "int[] a = new int[7];",
+    "options": [
+      "ראשון: 0, אחרון: 6‏",
+      "ראשון: 1, אחרון: 7‏",
+      "ראשון: 0, אחרון: 7‏",
+      "ראשון: 1, אחרון: 6‏"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האינדקסים במערך מתחילים תמיד ב-0. במערך באורך 7, האינדקס האחרון הוא 6 — כלומר length-1."
+      },
+      {
+        "type": "code",
+        "text": "// אינדקסים: 0, 1, 2, 3, 4, 5, 6\n// האחרון = a.length - 1 = 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מהו האינדקס של התא הראשון, ומהו האינדקס של התא האחרון במערך הבא?"
+      }
+    ]
+  },
+  {
+    "topic": "תכונת length",
+    "text": "מה יהיה ערכו של a.length?",
+    "code": "int[] a = new int[11];",
+    "options": [
+      "11‏",
+      "10‏",
+      "12‏",
+      "0‏"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "התכונה length מציינת את מספר התאים שהוגדרו בעת יצירת המערך. המערך נוצר עם 11 תאים, לכן a.length שווה 11."
+      },
+      {
+        "type": "code",
+        "text": "int[] a = new int[11];\n// a.length == 11"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה ערכו של a.length?"
+      }
+    ]
+  },
+  {
+    "topic": "חריגה מגבולות",
+    "text": "מה תהיה תוצאת הרצת הקוד הבא?",
+    "code": "int[] a = new int[7];\na[7] = 5;",
+    "options": [
+      "חריגת ‏ArrayIndexOutOfBoundsException",
+      "הערך 5 יישמר בתא האחרון",
+      "שגיאת קומפילציה",
+      "הפקודה תתעלם מההשמה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "מערך באורך 7 מכיל אינדקסים 0 עד 6 בלבד. פנייה לאינדקס 7 היא מחוץ לטווח ותגרום לחריגת ריצה."
+      },
+      {
+        "type": "code",
+        "text": "// ArrayIndexOutOfBoundsException:\n// Index 7 out of bounds for length 7"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה תהיה תוצאת הרצת הקוד הבא?"
+      }
+    ]
+  },
+  {
+    "topic": "אתחול ישיר",
+    "text": "איזו מהפקודות הבאות לאתחול ישיר של מערך היא חוקית?",
+    "code": null,
+    "options": [
+      "int[] arr = {1, 2, 3, 4};",
+      "int[] arr;  arr = {1, 2, 3, 4};",
+      "int[] arr = [1, 2, 3, 4];",
+      "int arr = {1, 2, 3, 4};"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "באתחול ישיר, ההצהרה וההשמה חייבות להיות באותה הפקודה. האיברים נכתבים בתוך סוגריים מסולסלים."
+      },
+      {
+        "type": "code",
+        "text": "int[] arr = {1, 2, 3, 4}; // חוקי\nint[] arr; arr = {1, 2, 3, 4}; // שגיאה!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "איזו מהפקודות הבאות לאתחול ישיר של מערך היא חוקית?"
+      }
+    ]
+  },
+  {
+    "topic": "aliasing — הצבעה כפולה",
+    "text": "מה יודפס בסוף הרצת הקוד הבא?",
+    "code": "int[] arr1 = {1, 2, 3, 4, 5};\nint[] arr2 = arr1;\narr2[3] = 8;\nSystem.out.println(arr1[3]);",
+    "options": [
+      "8‏",
+      "4‏",
+      "0‏",
+      "שגיאת ריצה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "arr2 = arr1 אינה מעתיקה את המערך — היא שומרת את כתובתו. שניהם מצביעים על אותו מערך בזיכרון, ולכן שינוי דרך arr2 משפיע גם על arr1."
+      },
+      {
+        "type": "code",
+        "text": "// arr1 ו-arr2 מצביעים על אותו מערך\n// arr2[3]=8  →  גם arr1[3]==8"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס בסוף הרצת הקוד הבא?"
+      }
+    ]
+  },
+  {
+    "topic": "שינוי גודל מערך",
+    "text": "מה יקרה בניסיון להריץ את הקוד הבא?",
+    "code": "int[] a = new int[7];\na.length = 10;",
+    "options": [
+      "שגיאת קומפילציה — length הוא final ולא ניתן לשנותו",
+      "גודל המערך ישתנה ל-10‏",
+      "שגיאת ריצה",
+      "הפקודה תתעלם מהשינוי"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "length מוגדר כ-final, כלומר קבוע שלא ניתן לשנותו. לא ניתן לשנות את מספר תאי המערך לאחר יצירתו."
+      },
+      {
+        "type": "code",
+        "text": "// Error: cannot assign a value\n// to final variable length"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יקרה בניסיון להריץ את הקוד הבא?"
+      }
+    ]
+  },
+  {
+    "topic": "גישה לאיבר",
+    "text": "מה יודפס?",
+    "code": "int[] arr = {10, 20, 30};\nSystem.out.println(arr[1]);",
+    "options": [
+      "20‏",
+      "10‏",
+      "30‏",
+      "שגיאת קומפילציה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האינדקסים מתחילים ב-0, לכן arr[0]=10, arr[1]=20, arr[2]=30."
+      },
+      {
+        "type": "code",
+        "text": "arr[0]=10,  arr[1]=20,  arr[2]=30\n// arr[1]  →  20"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה אחרי לולאה",
+    "text": "מה יהיה תוכן המערך a לאחר הרצת הקוד הבא?",
+    "code": "int[] a = new int[4];\nfor (int i = 0; i < 4; i++) {\n    a[i] = i + 1;\n}",
+    "options": [
+      "{1, 2, 3, 4}‏",
+      "{0, 1, 2, 3}‏",
+      "{2, 4, 6, 8}‏",
+      "{1, 2, 3, 4, 5}‏"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בכל איטרציה i מקבל ערך בין 0 ל-3, ו-a[i] מקבל את הערך i+1."
+      },
+      {
+        "type": "code",
+        "text": "i=0: a[0]=1\ni=1: a[1]=2\ni=2: a[2]=3\ni=3: a[3]=4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה תוכן המערך a לאחר הרצת הקוד הבא?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "إنشاء مصفوفة",
+    "text": "ماذا تنشئ التعليمة التالية؟",
+    "code": "boolean[] flags = new boolean[5];",
+    "options": [
+      "مصفوفة من 5 خلايا من نوع ‏boolean",
+      "مصفوفة من 5 خلايا من نوع ‏int",
+      "مصفوفة من خلية واحدة من نوع ‏boolean",
+      "خطأ في الترجمة"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "التعليمة تنشئ مصفوفة باسم flags تحتوي على 5 خلايا من نوع boolean. النوع يُذكر قبل الأقواس المعقوصة، والحجم داخلها."
+      },
+      {
+        "type": "code",
+        "text": "boolean[] flags = new boolean[5];\n// خمسة خلايا، فهارس 0 إلى 4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا تنشئ التعليمة التالية؟"
+      }
+    ]
+  },
+  {
+    "topic": "القيمة الافتراضية",
+    "text": "ما هو القيمة لـ a[0] مباشرة بعد إنشاء المصفوفة، قبل أي إسناد؟",
+    "code": "int[] a = new int[5];",
+    "options": [
+      "0‏",
+      "-1‏",
+      "‏null",
+      "خطأ في التشغيل"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في Java، عناصر مصفوفة من نوع int يتم تهيئتها تلقائيًا إلى القيمة الافتراضية 0 عند إنشاء المصفوفة."
+      },
+      {
+        "type": "code",
+        "text": "int[] a = new int[5];\n// a[0]==0, a[1]==0, ..."
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو القيمة لـ a[0] مباشرة بعد إنشاء المصفوفة، قبل أي إسناد؟"
+      }
+    ]
+  },
+  {
+    "topic": "فهرس",
+    "text": "ما هو الفهرس للخلية الأولى، وما هو الفهرس للخلية الأخيرة في المصفوفة التالية؟",
+    "code": "int[] a = new int[7];",
+    "options": [
+      "الأول: 0، الأخير: 6",
+      "الأول: 1، الأخير: 7",
+      "الأول: 0، الأخير: 7",
+      "الأول: 1، الأخير: 6"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الفهارس في المصفوفة تبدأ دائمًا من 0. في مصفوفة بطول 7، الفهرس الأخير هو 6 — أي length-1."
+      },
+      {
+        "type": "code",
+        "text": "// אינדקסים: 0, 1, 2, 3, 4, 5, 6\n// האחרון = a.length - 1 = 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو الفهرس للخلية الأولى، وما هو الفهرس للخلية الأخيرة في المصفوفة التالية؟"
+      }
+    ]
+  },
+  {
+    "topic": "خاصية length",
+    "text": "ما هو قيمة a.length؟",
+    "code": "int[] a = new int[11];",
+    "options": [
+      "11‏",
+      "10‏",
+      "12‏",
+      "0‏"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الخاصية length تشير إلى عدد الخلايا التي تم تعريفها عند إنشاء المصفوفة. تم إنشاء المصفوفة مع 11 خلية، لذلك a.length تساوي 11."
+      },
+      {
+        "type": "code",
+        "text": "int[] a = new int[11];\n// a.length == 11"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو قيمة a.length؟"
+      }
+    ]
+  },
+  {
+    "topic": "استثناء تجاوز الحدود",
+    "text": "ما هي نتيجة تشغيل الكود التالي؟",
+    "code": "int[] a = new int[7];\na[7] = 5;",
+    "options": [
+      "استثناء ‏ArrayIndexOutOfBoundsException",
+      "القيمة 5 سيتم حفظها في الخلية الأخيرة",
+      "خطأ في الترجمة",
+      "سيتم تجاهل الإسناد"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "مصفوفة بطول 7 تحتوي على فهارس من 0 إلى 6 فقط. الوصول إلى الفهرس 7 هو خارج النطاق وسيسبب استثناء تشغيل."
+      },
+      {
+        "type": "code",
+        "text": "// ArrayIndexOutOfBoundsException:\n// Index 7 out of bounds for length 7"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هي نتيجة تشغيل الكود التالي؟"
+      }
+    ]
+  },
+  {
+    "topic": "تهيئة مباشرة",
+    "text": "أي من الأوامر التالية لتهيئة مباشرة لمصفوفة هو قانوني؟",
+    "code": null,
+    "options": [
+      "int[] arr = {1, 2, 3, 4};",
+      "int[] arr;  arr = {1, 2, 3, 4};",
+      "int[] arr = [1, 2, 3, 4];",
+      "int arr = {1, 2, 3, 4};"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في التهيئة المباشرة، يجب أن يكون التعريف والإسناد في نفس الأمر. العناصر تُكتب داخل أقواس معقوصة."
+      },
+      {
+        "type": "code",
+        "text": "int[] arr = {1, 2, 3, 4}; // חוקי\nint[] arr; arr = {1, 2, 3, 4}; // שגיאה!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "أي من الأوامر التالية لتهيئة مباشرة لمصفوفة هو قانوني؟"
+      }
+    ]
+  },
+  {
+    "topic": "aliasing — إسناد مرجعي مزدوج",
+    "text": "ما الذي سيُطبع في نهاية تشغيل الكود التالي؟",
+    "code": "int[] arr1 = {1, 2, 3, 4, 5};\nint[] arr2 = arr1;\narr2[3] = 8;\nSystem.out.println(arr1[3]);",
+    "options": [
+      "8‏",
+      "4‏",
+      "0‏",
+      "خطأ في التشغيل"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "arr2 = arr1 لا تنسخ المصفوفة — إنها تحتفظ بعنوانها. كلاهما يشير إلى نفس المصفوفة في الذاكرة، لذلك التغيير عبر arr2 يؤثر أيضًا على arr1."
+      },
+      {
+        "type": "code",
+        "text": "// arr1 و-arr2 يشيران إلى نفس المصفوفة\n// arr2[3]=8  →  أيضًا arr1[3]==8"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما الذي سيُطبع في نهاية تشغيل الكود التالي؟"
+      }
+    ]
+  },
+  {
+    "topic": "تغيير حجم مصفوفة",
+    "text": "ماذا سيحدث عند محاولة تشغيل الكود التالي؟",
+    "code": "int[] a = new int[7];\na.length = 10;",
+    "options": [
+      "خطأ في الترجمة — length هو ثابت ولا يمكن تغييره",
+      "سيتم تغيير حجم المصفوفة إلى 10",
+      "خطأ في التشغيل",
+      "سيتم تجاهل الأمر"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "length معرف كـ-final، أي ثابت لا يمكن تغييره. لا يمكن تغيير عدد عناصر المصفوفة بعد إنشائها."
+      },
+      {
+        "type": "code",
+        "text": "// Error: cannot assign a value\n// to final variable length"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيحدث عند محاولة تشغيل الكود التالي؟"
+      }
+    ]
+  },
+  {
+    "topic": "الوصول إلى عنصر",
+    "text": "ماذا سيُطبع؟",
+    "code": "int[] arr = {10, 20, 30};\nSystem.out.println(arr[1]);",
+    "options": [
+      "20‏",
+      "10‏",
+      "30‏",
+      "خطأ في الترجمة"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الفهارس تبدأ من 0، لذلك arr[0]=10, arr[1]=20, arr[2]=30."
+      },
+      {
+        "type": "code",
+        "text": "arr[0]=10,  arr[1]=20,  arr[2]=30\n// arr[1]  →  20"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع حلقة",
+    "text": "ما هو محتوى المصفوفة a بعد تشغيل الكود التالي؟",
+    "code": "int[] a = new int[4];\nfor (int i = 0; i < 4; i++) {\n    a[i] = i + 1;\n}",
+    "options": [
+      "{1, 2, 3, 4}‏",
+      "{0, 1, 2, 3}‏",
+      "{2, 4, 6, 8}‏",
+      "{1, 2, 3, 4, 5}‏"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في كل تكرار i يحصل على قيمة بين 0 و-3، و-a[i] يحصل على القيمة i+1."
+      },
+      {
+        "type": "code",
+        "text": "i=0: a[0]=1\ni=1: a[1]=2\ni=2: a[2]=3\ni=3: a[3]=4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو محتوى المصفوفة a بعد تشغيل الكود التالي؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      const text = typeof option === 'string' ? option : String(option);
+      // זיהוי טקסט עברי — מתחיל בתו עברי (לאחר הסרת ‏)
+      const clean = text.replace(/‏/g, '').trim();
+      const isHebrew = /^[֐-׿יִ-ﭏ]/.test(clean);
+      if (isHebrew) {
+        return `<span class="opt-text-he">${text}</span>`;
+      }
+      // קוד / אנגלית — נשאר LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${text}</span>`;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
