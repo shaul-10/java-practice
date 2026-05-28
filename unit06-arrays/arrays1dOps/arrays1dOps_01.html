@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 01 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 01</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #7F77DD;   /* לדוגמה: #C0392B */
+      --color-light:  #EEEDFE;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #3C3489;   /* לדוגמה: #8B1A1A */
+      --color-border: #CECBF6; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול מערכים חד-ממדיים ב - Java</div>
+      <div class="home-title-ar">تدريب على المصفوفات أحادية البُعد في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 01 &nbsp;|&nbsp; المستوى 01</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 01</span>
+          תרגול מערכים חד-ממדיים ב - Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 01</span>
+          تدريب على المصفوفات أحادية البُعد في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "הדפסת מערך — פסיק עודף",
+    "text": "מה יודפס?",
+    "code": "int[] a = {5, 3, 8};\nSystem.out.print(\"[\");\nfor (int i = 0; i < a.length; i++) {\n    System.out.print(a[i] + \", \");\n}\nSystem.out.println(\"]\");",
+    "options": [
+      "[5, 3, 8, ]",
+      "[5, 3, 8]",
+      "5, 3, 8",
+      "[5, 3, 8,]"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה מדפיסה כל איבר ואחריו \", \" — כולל האיבר האחרון. לכן לפני ה-] מופיעים פסיק ורווח עודפים."
+      },
+      {
+        "type": "code",
+        "text": "i=0: \"5, \"\ni=1: \"3, \"\ni=2: \"8, \"\n// פלט: [5, 3, 8, ]"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "הדפסה נקיה — איזה קוד מייצר",
+    "text": "נתון int[] a = {4, 7, 2}. איזה שילוב של תנאי לולאה ושורה נוספת יפיק את הפלט הנקי [4, 7, 2] (ללא פסיק עודף)?",
+    "code": "System.out.print(\"[\");\nfor (int i = 0; i < /* תנאי */; i++) {\n    System.out.print(a[i] + \", \");\n}\n/* שורה נוספת? */\nSystem.out.println(\"]\");",
+    "options": [
+      "תנאי: i < a.length - 1  |  שורה נוספת: System.out.print(a[a.length - 1]);",
+      "תנאי: i < a.length  |  שורה נוספת: System.out.print(a[a.length - 1]);",
+      "תנאי: i < a.length - 1  |  ללא שורה נוספת",
+      "תנאי: i < a.length  |  ללא שורה נוספת"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה חייבת לעצור לפני האיבר האחרון (length-1) כדי להימנע מפסיק עודף. לאחר מכן מדפיסים את האיבר האחרון בנפרד ללא \", \"."
+      },
+      {
+        "type": "code",
+        "text": "// תנאי i<length: [4, 7, 2, ] + a[2] = [4, 7, 2, 2] ✗\n// תנאי i<length-1, ללא שורה: [4, 7, ] ✗\n// תנאי i<length-1 + print(a[last]): [4, 7, 2] ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "נתון int[] a = {4, 7, 2}. איזה שילוב של תנאי לולאה ושורה נוספת יפיק את הפלט הנקי [4, 7, 2] (ללא פסיק עודף)?"
+      }
+    ]
+  },
+  {
+    "topic": "swap — איזה פרמטר גרם להחלפה",
+    "text": "לאחר קריאה אחת ל-swap המערך השתנה מ-{5, 10, 15, 20} ל-{5, 20, 15, 10}. איזו קריאה גרמה לכך?",
+    "code": "public static void swap(int[] a, int i, int j) {\n    int temp = a[i];\n    a[i] = a[j];\n    a[j] = temp;\n}\n// לפני: {5, 10, 15, 20}\n// אחרי: {5, 20, 15, 10}",
+    "options": [
+      "swap(a, 1, 3)",
+      "swap(a, 0, 3)",
+      "swap(a, 2, 3)",
+      "swap(a, 1, 2)"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השינוי הוא: a[1] השתנה מ-10 ל-20, ו-a[3] השתנה מ-20 ל-10. כלומר הוחלפו האינדקסים 1 ו-3."
+      },
+      {
+        "type": "code",
+        "text": "swap(a, 1, 3):\na[1]=10 ↔ a[3]=20\n// {5, 20, 15, 10} ✓\n\nswap(a, 0, 3) → {20, 10, 15, 5} ✗\nswap(a, 2, 3) → {5, 10, 20, 15} ✗\nswap(a, 1, 2) → {5, 15, 10, 20} ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "לאחר קריאה אחת ל-swap המערך השתנה מ-{5, 10, 15, 20} ל-{5, 20, 15, 10}. איזו קריאה גרמה לכך?"
+      }
+    ]
+  },
+  {
+    "topic": "מקסימום — אתחול נכון",
+    "text": "מדוע נכון לאתחל max = a[0] ולא max = 0 בשיטת מציאת המקסימום?",
+    "code": null,
+    "options": [
+      "כי המערך עשוי להכיל ערכים שליליים בלבד, ואז max=0 יחזיר ערך שגוי",
+      "כי הלולאה מתחילה מ-i=1 ולכן a[0] לא נבדק בה",
+      "כי Java לא מאפשרת לאתחל int ל-0",
+      "כי 0 הוא ערך ברירת המחדל של int ועלול לגרום לחריגה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אם כל ערכי המערך שליליים (למשל {-5, -3, -8}), max=0 לא יתעדכן כלל ויוחזר 0 — ערך שאינו קיים במערך. a[0] מבטיח שהמועמד הראשוני הוא ערך אמיתי."
+      },
+      {
+        "type": "code",
+        "text": "// מערך שלילי: {-5, -3, -8}\nmax = 0  → יחזיר 0 (שגוי!)\nmax = a[0] = -5 → יחזיר -3 (נכון)"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מדוע נכון לאתחל max = a[0] ולא max = 0 בשיטת מציאת המקסימום?"
+      }
+    ]
+  },
+  {
+    "topic": "מינימום — עקיבה",
+    "text": "מה יודפס?",
+    "code": "public static int min(int[] a) {\n    int min = a[0];\n    for (int i = 1; i < a.length; i++) {\n        if (a[i] < min)\n            min = a[i];\n    }\n    return min;\n}\n// בתוכנית הראשית:\nint[] arr = {8, 3, 5, 1, 6};\nSystem.out.println(min(arr));",
+    "options": [
+      "1",
+      "3",
+      "8",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האלגוריתם מתחיל עם min=8 ומעדכן כשמוצא ערך קטן יותר."
+      },
+      {
+        "type": "code",
+        "text": "min=8\n3<8 → min=3\n5<3? לא\n1<3 → min=1\n6<1? לא\n// return 1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "חיפוש — נמצא",
+    "text": "מה יודפס?",
+    "code": "public static int search(int[] a, int value) {\n    for (int i = 0; i < a.length; i++) {\n        if (a[i] == value)\n            return i;\n    }\n    return -1;\n}\n// בתוכנית הראשית:\nint[] arr = {10, 20, 30, 40};\nSystem.out.println(search(arr, 30));",
+    "options": [
+      "2",
+      "3",
+      "30",
+      "1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השיטה מחזירה את האינדקס ברגע שמוצאת את הערך 30."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 10==30? לא\ni=1: 20==30? לא\ni=2: 30==30? כן → return 2"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "חיפוש — לא נמצא",
+    "text": "מה יודפס, ומדוע?",
+    "code": "public static int search(int[] a, int value) {\n    for (int i = 0; i < a.length; i++) {\n        if (a[i] == value)\n            return i;\n    }\n    return -1;\n}\n// בתוכנית הראשית:\nint[] arr = {10, 20, 30};\nSystem.out.println(search(arr, 99));",
+    "options": [
+      "-1, כי הערך לא נמצא והשיטה מחזירה -1 כאינדקס לא חוקי",
+      "0, כי החיפוש מתחיל מאינדקס 0",
+      "3, כי זהו האינדקס שאחרי האחרון",
+      "שגיאת ריצה, כי הערך אינו קיים במערך"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה מסתיימת בלי למצוא את 99, ומוחזר -1. -1 מוסכמה לציין \"לא נמצא\", כי אינדקסים חוקיים הם תמיד אי-שליליים."
+      },
+      {
+        "type": "code",
+        "text": "i=0,1,2: לא נמצא\n// return -1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס, ומדוע?"
+      }
+    ]
+  },
+  {
+    "topic": "swap — תפקיד temp",
+    "text": "מה יודפס לאחר הקריאה swap(a, 0, 2)?",
+    "code": "// מימוש ללא temp (שגוי):\npublic static void swap(int[] a, int i, int j) {\n    a[i] = a[j];\n    a[j] = a[i];\n}\n// בתוכנית הראשית:\nint[] a = {1, 2, 3};\nswap(a, 0, 2);\nSystem.out.println(a[0] + \" \" + a[2]);",
+    "options": [
+      "3 3",
+      "3 1",
+      "1 3",
+      "1 1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "a[i]=a[j] כותב 3 ל-a[0] ודורס את הערך המקורי 1. לאחר מכן a[j]=a[i] כותב שוב 3 ל-a[2]. הערך 1 אבד."
+      },
+      {
+        "type": "code",
+        "text": "a[0] = a[2] = 3  → {3, 2, 3}\na[2] = a[0] = 3  → {3, 2, 3}\n// a[0]=3, a[2]=3 → \"3 3\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס לאחר הקריאה swap(a, 0, 2)?"
+      }
+    ]
+  },
+  {
+    "topic": "reverse — תוצאה",
+    "text": "מה יודפס?",
+    "code": "public static void reverse(int[] a) {\n    int n = a.length;\n    for (int i = 0; i < n / 2; i++) {\n        int temp = a[i];\n        a[i] = a[n - 1 - i];\n        a[n - 1 - i] = temp;\n    }\n}\n// בתוכנית הראשית:\nint[] a = {1, 2, 3, 4, 5};\nreverse(a);\nSystem.out.println(a[0]);",
+    "options": [
+      "5",
+      "1",
+      "4",
+      "3"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בסיבוב הראשון (i=0): מוחלפים a[0] ו-a[4] — כלומר 1 ↔ 5. לאחר ההיפוך a[0]=5."
+      },
+      {
+        "type": "code",
+        "text": "i=0: a[0]↔a[4] → 1↔5\n// לאחר reverse: {5,4,3,2,1}\n// a[0] = 5"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "אינדקס מקסימום — בסיסי",
+    "text": "מה יודפס?",
+    "code": "public static int indexOfMax(int[] a) {\n    int maxIndex = 0;\n    for (int i = 1; i < a.length; i++) {\n        if (a[i] > a[maxIndex])\n            maxIndex = i;\n    }\n    return maxIndex;\n}\n// בתוכנית הראשית:\nint[] arr = {3, 7, 2, 9, 1};\nSystem.out.println(indexOfMax(arr));",
+    "options": [
+      "3",
+      "9",
+      "1",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השיטה מחזירה אינדקס — לא ערך. הערך הגדול ביותר הוא 9 והוא נמצא באינדקס 3."
+      },
+      {
+        "type": "code",
+        "text": "maxIndex=0\ni=1: 7>3 → maxIndex=1\ni=2: 2>7? לא\ni=3: 9>7 → maxIndex=3\ni=4: 1>9? לא\n// return 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "طباعة مصفوفة — فاصلة زائدة",
+    "text": "ماذا سيُطبع؟",
+    "code": "int[] a = {5, 3, 8};\nSystem.out.print(\"[\");\nfor (int i = 0; i < a.length; i++) {\n    System.out.print(a[i] + \", \");\n}\nSystem.out.println(\"]\");",
+    "options": [
+      "[5, 3, 8, ]",
+      "[5, 3, 8]",
+      "5, 3, 8",
+      "[5, 3, 8,]"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تطبع كل عنصر وبعده \", \" — بما في ذلك العنصر الأخير. لذلك قبل ال-] تظهر فاصلة ومسافة زائدة."
+      },
+      {
+        "type": "code",
+        "text": "i=0: \"5, \"\ni=1: \"3, \"\ni=2: \"8, \"\n// פלט: [5, 3, 8, ]"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "طباعة نظيفة — أي كود ينتج",
+    "text": "معطى int[] a = {4, 7, 2}. أي دمج من شرط حلقة وسطر إضافي سينتج المخرجات النظيفة [4, 7, 2] (بدون فاصلة زائدة)؟",
+    "code": "System.out.print(\"[\");\nfor (int i = 0; i < /* תנאי */; i++) {\n    System.out.print(a[i] + \", \");\n}\n/* שורה נוספת? */\nSystem.out.println(\"]\");",
+    "options": [
+      "شرط: i < a.length - 1  |  سطر إضافي: System.out.print(a[a.length - 1]);",
+      "شرط: i < a.length  |  سطر إضافي: System.out.print(a[a.length - 1]);",
+      "شرط: i < a.length - 1  |  بدون سطر إضافي",
+      "شرط: i < a.length  |  بدون سطر إضافي"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة يجب أن تتوقف قبل العنصر الأخير (length-1) لتجنب الفاصلة الزائدة. بعد ذلك يتم طباعة العنصر الأخير بشكل منفصل بدون \", \"."
+      },
+      {
+        "type": "code",
+        "text": "// תנאי i<length: [4, 7, 2, ] + a[2] = [4, 7, 2, 2] ✗\n// תנאי i<length-1, ללא שורה: [4, 7, ] ✗\n// תנאי i<length-1 + print(a[last]): [4, 7, 2] ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "معطى int[] a = {4, 7, 2}. أي دمج من شرط حلقة وسطر إضافي سينتج المخرجات النظيفة [4, 7, 2] (بدون فاصلة زائدة)؟"
+      }
+    ]
+  },
+  {
+    "topic": "swap — أي معلمة تسببت في التبديل",
+    "text": "بعد استدعاء واحد لـ-swap تغيرت المصفوفة من {5, 10, 15, 20} إلى {5, 20, 15, 10}. أي استدعاء تسبب في ذلك؟",
+    "code": "public static void swap(int[] a, int i, int j) {\n    int temp = a[i];\n    a[i] = a[j];\n    a[j] = temp;\n}\n// قبل: {5, 10, 15, 20}\n// بعد: {5, 20, 15, 10}",
+    "options": [
+      "swap(a, 1, 3)",
+      "swap(a, 0, 3)",
+      "swap(a, 2, 3)",
+      "swap(a, 1, 2)"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الشينوي هو: a[1] تغير من 10 إلى 20، و-a[3] تغير من 20 إلى 10. أي تم تبديل الفهارس 1 و-3."
+      },
+      {
+        "type": "code",
+        "text": "swap(a, 1, 3):\na[1]=10 ↔ a[3]=20\n// {5, 20, 15, 10} ✓\n\nswap(a, 0, 3) → {20, 10, 15, 5} ✗\nswap(a, 2, 3) → {5, 10, 20, 15} ✗\nswap(a, 1, 2) → {5, 15, 10, 20} ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "بعد استدعاء واحد لـ-swap تغيرت المصفوفة من {5, 10, 15, 20} إلى {5, 20, 15, 10}. أي استدعاء تسبب في ذلك؟"
+      }
+    ]
+  },
+  {
+    "topic": "أكبر قيمة — تهيئة صحيحة",
+    "text": "لماذا من الصحيح تهيئة max = a[0] وليس max = 0 في دالة إيجاد أكبر قيمة؟",
+    "code": null,
+    "options": [
+      "لأن المصفوفة قد تحتوي على قيم سلبية فقط، وبالتالي max=0 سيعيد قيمة خاطئة",
+      "لأن الحلقة تبدأ من i=1 ولذلك a[0] لا يتم فحصه فيها",
+      "لأن Java لا تسمح بتهيئة int إلى 0",
+      "لأن 0 هو القيمة الافتراضية لـ int وقد يسبب استثناء"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "إذا كانت جميع قيم المصفوفة سلبية (مثلاً {-5, -3, -8})، فإن max=0 لن يتم تحديثه على الإطلاق وسيتم إرجاع 0 — قيمة غير موجودة في المصفوفة. a[0] يضمن أن المرشح الأولي هو قيمة حقيقية."
+      },
+      {
+        "type": "code",
+        "text": "// مصفوفة سلبية: {-5, -3, -8}\nmax = 0  → سيعيد 0 (خاطئ!)\nmax = a[0] = -5 → سيعيد -3 (صحيح)"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "لماذا من الصحيح تهيئة max = a[0] وليس max = 0 في دالة إيجاد أكبر قيمة؟"
+      }
+    ]
+  },
+  {
+    "topic": "أصغر قيمة — تتبع",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static int min(int[] a) {\n    int min = a[0];\n    for (int i = 1; i < a.length; i++) {\n        if (a[i] < min)\n            min = a[i];\n    }\n    return min;\n}\n// בתוכנית הראשית:\nint[] arr = {8, 3, 5, 1, 6};\nSystem.out.println(min(arr));",
+    "options": [
+      "1",
+      "3",
+      "8",
+      "0"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الخوارزمية تبدأ مع min=8 وتحدث عندما تجد قيمة أصغر."
+      },
+      {
+        "type": "code",
+        "text": "min=8\n3<8 → min=3\n5<3? لا\n1<3 → min=1\n6<1? لا\n// return 1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "بحث — موجود",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static int search(int[] a, int value) {\n    for (int i = 0; i < a.length; i++) {\n        if (a[i] == value)\n            return i;\n    }\n    return -1;\n}\n// בתוכנית הראשית:\nint[] arr = {10, 20, 30, 40};\nSystem.out.println(search(arr, 30));",
+    "options": [
+      "2",
+      "3",
+      "30",
+      "1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الدالة تعيد الفهرس بمجرد أن تجد القيمة 30."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 10==30? لا\ni=1: 20==30? لا\ni=2: 30==30? نعم → return 2"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "بحث — لم يتم العثور",
+    "text": "ماذا سيُطبع، ولماذا؟",
+    "code": "public static int search(int[] a, int value) {\n    for (int i = 0; i < a.length; i++) {\n        if (a[i] == value)\n            return i;\n    }\n    return -1;\n}\n// في البرنامج الرئيسي:\nint[] arr = {10, 20, 30};\nSystem.out.println(search(arr, 99));",
+    "options": [
+      "-1, لأن القيمة لم يتم العثور عليها والدالة تعيد -1 كفهرس غير قانوني",
+      "0, لأن البحث يبدأ من الفهرس 0",
+      "3, لأنه الفهرس الذي يلي الأخير",
+      "خطأ في التشغيل، لأن القيمة غير موجودة في المصفوفة"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تنتهي دون العثور على 99، ويُعاد -1. -1 هو اتفاق للإشارة إلى \"لم يتم العثور\"، لأن الفهارس القانونية دائماً غير سالبة."
+      },
+      {
+        "type": "code",
+        "text": "i=0,1,2: لم يتم العثور\n// return -1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع، ولماذا؟"
+      }
+    ]
+  },
+  {
+    "topic": "swap — تפקיד temp",
+    "text": "מה יודפס לאחר הקריאה swap(a, 0, 2)?",
+    "code": "// מימוש ללא temp (שגוי):\npublic static void swap(int[] a, int i, int j) {\n    a[i] = a[j];\n    a[j] = a[i];\n}\n// בתוכנית הראשית:\nint[] a = {1, 2, 3};\nswap(a, 0, 2);\nSystem.out.println(a[0] + \" \" + a[2]);",
+    "options": [
+      "3 3",
+      "3 1",
+      "1 3",
+      "1 1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "a[i]=a[j] כותב 3 ל-a[0] ודורס את הערך המקורי 1. לאחר מכן a[j]=a[i] כותב שוב 3 ל-a[2]. הערך 1 אבד."
+      },
+      {
+        "type": "code",
+        "text": "a[0] = a[2] = 3  → {3, 2, 3}\na[2] = a[0] = 3  → {3, 2, 3}\n// a[0]=3, a[2]=3 → \"3 3\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס לאחר הקריאה swap(a, 0, 2)?"
+      }
+    ]
+  },
+  {
+    "topic": "reverse — تוצאה",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static void reverse(int[] a) {\n    int n = a.length;\n    for (int i = 0; i < n / 2; i++) {\n        int temp = a[i];\n        a[i] = a[n - 1 - i];\n        a[n - 1 - i] = temp;\n    }\n}\n// בתוכנית הראשית:\nint[] a = {1, 2, 3, 4, 5};\nreverse(a);\nSystem.out.println(a[0]);",
+    "options": [
+      "5",
+      "1",
+      "4",
+      "3"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في الدورة الأولى (i=0): يتم تبديل a[0] و-a[4] — أي 1 ↔ 5. بعد العكس a[0]=5."
+      },
+      {
+        "type": "code",
+        "text": "i=0: a[0]↔a[4] → 1↔5\n// לאחר reverse: {5,4,3,2,1}\n// a[0] = 5"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "فهرس أكبر قيمة — أساسي",
+    "text": "ماذا سيُطبع؟",
+    "code": "public static int indexOfMax(int[] a) {\n    int maxIndex = 0;\n    for (int i = 1; i < a.length; i++) {\n        if (a[i] > a[maxIndex])\n            maxIndex = i;\n    }\n    return maxIndex;\n}\n// בתוכנית הראשית:\nint[] arr = {3, 7, 2, 9, 1};\nSystem.out.println(indexOfMax(arr));",
+    "options": [
+      "3",
+      "9",
+      "1",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الدالة تُعيد فهرس — ليس قيمة. القيمة الأكبر هي 9 وهي موجودة في الفهرس 3."
+      },
+      {
+        "type": "code",
+        "text": "maxIndex=0\ni=1: 7>3 → maxIndex=1\ni=2: 2>7? لا\ni=3: 9>7 → maxIndex=3\ni=4: 1>9? لا\n// return 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      const text = typeof option === 'string' ? option : String(option);
+      // זיהוי טקסט עברי — מתחיל בתו עברי (לאחר הסרת ‏)
+      const clean = text.replace(/‏/g, '').trim();
+      const isHebrew = /^[֐-׿יִ-ﭏ]/.test(clean);
+      if (isHebrew) {
+        return `<span class="opt-text-he">${text}</span>`;
+      }
+      // קוד / אנגלית — נשאר LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${text}</span>`;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
