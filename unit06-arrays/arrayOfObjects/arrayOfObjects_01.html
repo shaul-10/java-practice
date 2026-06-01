@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 01 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 01</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #7F77DD;   /* לדוגמה: #C0392B */
+      --color-light:  #EEEDFE;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #3C3489;   /* לדוגמה: #8B1A1A */
+      --color-border: #CECBF6; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול מערך אוביקטים ב- Java</div>
+      <div class="home-title-ar">تدريب على مصفوفة الكائنات في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 01 &nbsp;|&nbsp; المستوى 01</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 01</span>
+          תרגול מערך אוביקטים ב- Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 01</span>
+          تدريب على مصفوفة الكائنات في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "ערך ברירת מחדל — מערך אובייקטים",
+    "text": "מה יהיה הערך של התא הראשון במערך מיד לאחר הפעלת הבנאי, לפני כל הוספה?",
+    "code": "public class RentalCompany {\n    private Car[] _cars;\n    private int _size;\n\n    public RentalCompany(int maxCars) {\n        _cars = new Car[maxCars];\n        _size = 0;\n    }\n}\n// בתוכנית הראשית:\nRentalCompany company = new RentalCompany(5);",
+    "options": [
+      {
+        "type": "code",
+        "text": "null"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      },
+      {
+        "type": "code",
+        "text": "false"
+      },
+      "אובייקט Car ריק"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בעת יצירת מערך של אובייקטים ב-Java, כל תא מאותחל אוטומטית לערך null — כלומר המצביע לא מצביע לשום אובייקט."
+      },
+      {
+        "type": "he",
+        "text": "ערכים כמו 0 ו-false הם ברירת מחדל למערכי int ו-boolean בלבד."
+      },
+      {
+        "type": "code",
+        "text": "Car[] _cars = new Car[5];\n// _cars[0] == null\n// _cars[1] == null  ... וכן הלאה"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה הערך של התא הראשון במערך מיד לאחר הפעלת הבנאי, לפני כל הוספה?"
+      }
+    ]
+  },
+  {
+    "topic": "ההבדל בין אורך המערך לתכונה size",
+    "text": "מה ההבדל בין אורך המערך (length) לבין התכונה size?",
+    "code": "private Car[] _cars;  // אורך: 7\nprivate int _size;    // ערך נוכחי: 3",
+    "options": [
+      "אורך המערך — קיבולת מקסימלית; התכונה size — מספר האובייקטים בפועל",
+      "אורך המערך — מספר האובייקטים בפועל; התכונה size — קיבולת מקסימלית",
+      "שניהם מייצגים את אותו הדבר — מספר האיברים במערך",
+      "התכונה size תמיד שווה לאורך המערך פחות 1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אורך המערך (_cars.length) קבוע — משקף את מספר התאים שהוקצו בזיכרון."
+      },
+      {
+        "type": "he",
+        "text": "התכונה size (_size) משתנה — עוקבת אחרי כמה אובייקטים נמצאים במערך כרגע. זה הערך שמשתמשים בו בלולאות ובבדיקות."
+      },
+      {
+        "type": "code",
+        "text": "// אחרי new RentalCompany(7):\n_cars.length == 7  // קבוע\n_size == 0        // ריק\n\n// אחרי הוספת 3 רכבים:\n_cars.length == 7  // לא השתנה\n_size == 3        // עודכן"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה ההבדל בין אורך המערך (length) לבין התכונה size?"
+      }
+    ]
+  },
+  {
+    "topic": "תנאי ההוספה בשיטת addCar",
+    "text": "מה הבדיקה הנדרשת בשיטת addCar לפני הוספת רכב חדש?",
+    "code": "public boolean addCar(Car car) {\n    if ( _______ ) {\n        _cars[_size] = car;\n        _size++;\n        return true;\n    }\n    return false;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_size < _cars.length"
+      },
+      {
+        "type": "code",
+        "text": "_size <= _cars.length"
+      },
+      {
+        "type": "code",
+        "text": "_size > 0"
+      },
+      {
+        "type": "code",
+        "text": "_cars[_size] == null"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "יש מקום להוספה כאשר מספר האובייקטים הקיימים קטן ממש מגודל המערך."
+      },
+      {
+        "type": "he",
+        "text": "אם התכונה size שווה לאורך המערך — הוא מלא. שימוש ב-<= יגרום לחריגת גבולות."
+      },
+      {
+        "type": "code",
+        "text": "// מערך גודל 3, _size=3:\n_size < _cars.length → 3 < 3 → false ✓\n_size <= _cars.length → 3 <= 3 → true → חריגה! ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה הבדיקה הנדרשת בשיטת addCar לפני הוספת רכב חדש?"
+      }
+    ]
+  },
+  {
+    "topic": "עדכון התכונה size לאחר הוספה",
+    "text": "מה קורה לתכונה size לאחר הוספה מוצלחת של רכב?",
+    "code": "public boolean addCar(Car car) {\n    if (_size >= _cars.length)\n        return false;\n    _cars[_size] = car;\n    _size++;\n    return true;\n}",
+    "options": [
+      "התכונה size גדלה ב-1 כך שהרכב הבא יוכנס לתא הבא",
+      "התכונה size נשארת ללא שינוי — תתעדכן רק בשיטת toString",
+      "התכונה size מתאפסת לאחר כל הוספה",
+      "התכונה size מוגדלת לאורך המערך כדי לסמן שהוא מלא"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אם אין מקום — השיטה מחזירה false מיד ולא מגיעה להוספה."
+      },
+      {
+        "type": "he",
+        "text": "אם יש מקום — הרכב נשמר ב-_cars[_size] ואז התכונה size גדלה ב-1, ומצביעה לתא הפנוי הבא."
+      },
+      {
+        "type": "code",
+        "text": "// לפני: _size=2\n_cars[2] = car;  // שמירה בתא 2\n_size++;         // _size=3\n// התא הפנוי הבא הוא 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה קורה לתכונה size לאחר הוספה מוצלחת של רכב?"
+      }
+    ]
+  },
+  {
+    "topic": "ערך מוחזר כשהמערך מלא",
+    "text": "מה מחזירה שיטת addCar כאשר המערך מלא?",
+    "code": "RentalCompany company = new RentalCompany(2);\ncompany.addCar(new Car(\"Toyota\", 'A', \"111\", true));\ncompany.addCar(new Car(\"Honda\",  'B', \"222\", true));\n// המערך מלא!\nboolean result = company.addCar(new Car(\"Ford\", 'B', \"333\", true));\nSystem.out.println(result);",
+    "options": [
+      {
+        "type": "code",
+        "text": "false"
+      },
+      {
+        "type": "code",
+        "text": "true"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      },
+      "שגיאת ריצה ArrayIndexOutOfBoundsException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הבדיקה if (_size >= _cars.length) מונעת חריגה: כשהמערך מלא התנאי מתקיים, מוחזר false מיד ולא מתבצעת שמירה."
+      },
+      {
+        "type": "he",
+        "text": "בלי הבדיקה הזו — הייתה מתרחשת חריגת ArrayIndexOutOfBoundsException."
+      },
+      {
+        "type": "code",
+        "text": "// _size=2, _cars.length=2\n_size >= _cars.length → 2 >= 2 → true\n// מגיעים ל-return false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה מחזירה שיטת addCar כאשר המערך מלא?"
+      }
+    ]
+  },
+  {
+    "topic": "שיטת toString — מצב ריק",
+    "text": "מה תחזיר שיטת toString כאשר אין רכבים במערך?",
+    "code": "public String toString() {\n    if (_size == 0)\n        return \"No Cars\";\n    String result = \"List Of Cars:\";\n    for (int i = 0; i < _size; i++) {\n        result += \"\\n\" + (i + 1) + \". \" + _cars[i].toString();\n    }\n    return result;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "\"No Cars\""
+      },
+      {
+        "type": "code",
+        "text": "\"List Of Cars:\""
+      },
+      "מחרוזת ריקה",
+      {
+        "type": "code",
+        "text": "null"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הבדיקה if (_size == 0) מטפלת במקרה הגבול של מערך ריק — לפני הלולאה."
+      },
+      {
+        "type": "he",
+        "text": "חשוב לבדוק מצב זה ראשון כדי לא לקבל כותרת ריקה ללא רכבים."
+      },
+      {
+        "type": "code",
+        "text": "// _size == 0:\nif (0 == 0) → true\nreturn \"No Cars\"  ✓\n\n// לא נגיע ל-\"List Of Cars:\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה תחזיר שיטת toString כאשר אין רכבים במערך?"
+      }
+    ]
+  },
+  {
+    "topic": "שיטת toString — גבול הלולאה",
+    "text": "מה גבול הלולאה הנכון בשיטת toString?",
+    "code": "public String toString() {\n    if (_size == 0) return \"No Cars\";\n    String result = \"List Of Cars:\";\n    for (int i = 0; i < _______; i++) {\n        result += \"\\n\" + (i + 1) + \". \" + _cars[i].toString();\n    }\n    return result;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_size   // רק תאים 0 עד _size-1 מכילים אובייקטים"
+      },
+      {
+        "type": "code",
+        "text": "_cars.length   // עובר על כל תאי המערך"
+      },
+      {
+        "type": "code",
+        "text": "_size + 1   // לא לפספס את האיבר האחרון"
+      },
+      {
+        "type": "code",
+        "text": "_cars.length - 1   // להימנע מחריגה"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה צריכה לעבור רק על האובייקטים שנוספו בפועל."
+      },
+      {
+        "type": "he",
+        "text": "שימוש באורך המערך (_cars.length) יגרום לגישה לתאי null מעבר לתכונה size ולחריגת NullPointerException."
+      },
+      {
+        "type": "code",
+        "text": "// _size=3, _cars.length=7:\n// _cars[0..2] = אובייקטים אמיתיים\n// _cars[3..6] = null\n// i < _size → רק 0,1,2 ✓\n// i < _cars.length → גם 3..6 → NullPointerException ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה גבול הלולאה הנכון בשיטת toString?"
+      }
+    ]
+  },
+  {
+    "topic": "שיטת toString — פלט בפועל",
+    "text": "מה יודפס?",
+    "code": "RentalCompany company = new RentalCompany(5);\ncompany.addCar(new Car(\"Toyota\", 'A', \"12345\", true));\ncompany.addCar(new Car(\"Honda\",  'B', \"67890\", true));\nSystem.out.println(company.toString());",
+    "options": [
+      {
+        "type": "code",
+        "text": "List Of Cars:\n1. Toyota (A) - 12345 | Available\n2. Honda (B) - 67890 | Available"
+      },
+      {
+        "type": "code",
+        "text": "No Cars"
+      },
+      {
+        "type": "code",
+        "text": "List Of Cars:\n0. Toyota (A) - 12345 | Available\n1. Honda (B) - 67890 | Available"
+      },
+      {
+        "type": "code",
+        "text": "1. Toyota (A) - 12345 | Available\n2. Honda (B) - 67890 | Available"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לאחר הוספת שני רכבים התכונה size שווה ל-2, לכן toString מתחיל בכותרת ואז מוסיף כל רכב בשורה חדשה עם מספר שורה."
+      },
+      {
+        "type": "he",
+        "text": "מספרי השורות מתחילים מ-1 כי משתמשים בביטוי (i+1). התשובה הרביעית שגויה כי חסרה הכותרת."
+      },
+      {
+        "type": "code",
+        "text": "result = \"List Of Cars:\"\ni=0: result += \"\\n1. Toyota (A) - 12345 | Available\"\ni=1: result += \"\\n2. Honda (B) - 67890 | Available\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "שגיאה בסדר הפעולות ב-addCar",
+    "text": "מה יהיה תוכן התא הראשון במערך לאחר הרצת הקוד?",
+    "code": "// שיטה עם שגיאה בסדר הפעולות:\npublic boolean addCar(Car car) {\n    if (_size >= _cars.length)\n        return false;\n    _size++;           // קודם מקדמים!\n    _cars[_size] = car; // ואז מכניסים\n    return true;\n}\n// בתוכנית הראשית:\nRentalCompany company = new RentalCompany(5);\ncompany.addCar(new Car(\"Toyota\", 'A', \"12345\", true));\n// מה ב-_cars[0]?",
+    "options": [
+      {
+        "type": "code",
+        "text": "null"
+      },
+      "Toyota (A) - 12345 | Available",
+      {
+        "type": "code",
+        "text": "0"
+      },
+      "שגיאת ריצה ArrayIndexOutOfBoundsException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לפני ההוספה התכונה size שווה ל-0. הקוד מקדם אותה ל-1 לפני ההשמה, ולכן הרכב נשמר ב-_cars[1] ולא ב-_cars[0]."
+      },
+      {
+        "type": "he",
+        "text": "התא _cars[0] נשאר null — הרכב הוכנס לתא הלא נכון! זו הסיבה שחשוב לשמור קודם ואז להגדיל."
+      },
+      {
+        "type": "code",
+        "text": "// _size=0 בהתחלה\n_size++;            // _size=1\n_cars[1] = car;     // שמירה בתא 1 — שגיאה!\n\n// הנכון:\n_cars[_size] = car; // שמירה בתא 0\n_size++;            // _size=1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה תוכן התא הראשון במערך לאחר הרצת הקוד?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — ערך התכונה size לאחר מספר פעולות",
+    "text": "מה יהיה ערך התכונה size בסוף הרצת הקוד?",
+    "code": "RentalCompany company = new RentalCompany(3);\ncompany.addCar(new Car(\"Toyota\", 'A', \"111\", true));\ncompany.addCar(new Car(\"Honda\",  'B', \"222\", true));\ncompany.addCar(new Car(\"Ford\",   'C', \"333\", true));\ncompany.addCar(new Car(\"Mazda\",  'A', \"444\", true));\n// _size = ?",
+    "options": [
+      {
+        "type": "code",
+        "text": "3"
+      },
+      {
+        "type": "code",
+        "text": "4"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      },
+      {
+        "type": "code",
+        "text": "2"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "המערך נוצר עם קיבולת 3. שלוש הוספות ראשונות מצליחות ומגדילות את התכונה size ל-3."
+      },
+      {
+        "type": "he",
+        "text": "ניסיון ההוספה הרביעי נכשל (המערך מלא) ולכן התכונה size נשארת 3."
+      },
+      {
+        "type": "code",
+        "text": "add Toyota → _size=1\nadd Honda  → _size=2\nadd Ford   → _size=3\nadd Mazda  → 3 >= 3 → false\n// _size == 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה ערך התכונה size בסוף הרצת הקוד?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "القيمة الافتراضية — مصفوفة كائنات",
+    "text": "ما هي القيمة للخلية الأولى في المصفوفة مباشرة بعد تشغيل المنشئ، قبل أي إضافة؟",
+    "code": "public class RentalCompany {\n    private Car[] _cars;\n    private int _size;\n\n    public RentalCompany(int maxCars) {\n        _cars = new Car[maxCars];\n        _size = 0;\n    }\n}\n// في البرنامج الرئيسي:\nRentalCompany company = new RentalCompany(5);",
+    "options": [
+      {
+        "type": "code",
+        "text": "null"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      },
+      {
+        "type": "code",
+        "text": "false"
+      },
+      "كائن Car فارغ"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "عند إنشاء مصفوفة من الكائنات في Java، يتم تهيئة كل خلية تلقائيًا إلى القيمة null — أي أن المؤشر لا يشير إلى أي كائن."
+      },
+      {
+        "type": "he",
+        "text": "القيم مثل 0 و-false هي القيم الافتراضية لمصفوفات int و-boolean فقط."
+      },
+      {
+        "type": "code",
+        "text": "Car[] _cars = new Car[5];\n// _cars[0] == null\n// _cars[1] == null  ... وهكذا"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هي القيمة للخلية الأولى في المصفوفة مباشرة بعد تشغيل المنشئ، قبل أي إضافة؟"
+      }
+    ]
+  },
+  {
+    "topic": "الفرق بين طول المصفوفة والخاصية size",
+    "text": "ما الفرق بين طول المصفوفة (length) والخاصية size؟",
+    "code": "private Car[] _cars;  // אורך: 7\nprivate int _size;    // ערך נוכחי: 3",
+    "options": [
+      "طول المصفوفة — السعة القصوى؛ الخاصية size — عدد الكائنات الفعلي",
+      "طول المصفوفة — عدد الكائنات الفعلي؛ الخاصية size — السعة القصوى",
+      "كلاهما يمثلان نفس الشيء — عدد العناصر في المصفوفة",
+      "الخاصية size دائماً تساوي طول المصفوفة ناقص 1"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "طول المصفوفة (_cars.length) ثابت — يعكس عدد الخلايا المخصصة في الذاكرة."
+      },
+      {
+        "type": "he",
+        "text": "الخاصية size (_size) متغيرة — تتابع عدد الكائنات الموجودة في المصفوفة حالياً. هذا هو القيمة التي تُستخدم في الحلقات والاختبارات."
+      },
+      {
+        "type": "code",
+        "text": "// אחרי new RentalCompany(7):\n_cars.length == 7  // קבוע\n_size == 0        // ריק\n\n// אחרי הוספת 3 רכבים:\n_cars.length == 7  // לא השתנה\n_size == 3        // עודכן"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما الفرق بين طول المصفوفة (length) والخاصية size؟"
+      }
+    ]
+  },
+  {
+    "topic": "شرط الإضافة في الدالة addCar",
+    "text": "ما هو الفحص المطلوب في الدالة addCar قبل إضافة سيارة جديدة؟",
+    "code": "public boolean addCar(Car car) {\n    if ( _______ ) {\n        _cars[_size] = car;\n        _size++;\n        return true;\n    }\n    return false;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_size < _cars.length"
+      },
+      {
+        "type": "code",
+        "text": "_size <= _cars.length"
+      },
+      {
+        "type": "code",
+        "text": "_size > 0"
+      },
+      {
+        "type": "code",
+        "text": "_cars[_size] == null"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "يوجد مكان للإضافة عندما يكون عدد الكائنات الحالية أقل من حجم المصفوفة."
+      },
+      {
+        "type": "he",
+        "text": "إذا كانت الخاصية size تساوي طول المصفوفة — فهي ممتلئة. استخدام <= سيسبب استثناء حدود."
+      },
+      {
+        "type": "code",
+        "text": "// مصفوفة بحجم 3، _size=3:\n_size < _cars.length → 3 < 3 → false ✓\n_size <= _cars.length → 3 <= 3 → true → استثناء! ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو الفحص المطلوب في الدالة addCar قبل إضافة سيارة جديدة؟"
+      }
+    ]
+  },
+  {
+    "topic": "تحديث الخاصية size بعد الإضافة",
+    "text": "ماذا يحدث للخاصية size بعد إضافة ناجحة لسيارة؟",
+    "code": "public boolean addCar(Car car) {\n    if (_size >= _cars.length)\n        return false;\n    _cars[_size] = car;\n    _size++;\n    return true;\n}",
+    "options": [
+      "الخاصية size تزداد بمقدار 1 بحيث يتم إدخال السيارة التالية في الخلية التالية",
+      "الخاصية size تبقى بدون تغيير — سيتم تحديثها فقط في دالة toString",
+      "الخاصية size يتم تصفيرها بعد كل إضافة",
+      "الخاصية size تزداد إلى طول المصفوفة للإشارة إلى أنها ممتلئة"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אם אין מקום — השיטה מחזירה false מיד ולא מגיעה להוספה."
+      },
+      {
+        "type": "he",
+        "text": "אם יש מקום — הרכב נשמר ב-_cars[_size] ואז התכונה size גדלה ב-1, ומצביעה לתא הפנוי הבא."
+      },
+      {
+        "type": "code",
+        "text": "// לפני: _size=2\n_cars[2] = car;  // שמירה בתא 2\n_size++;         // _size=3\n// התא הפנוי הבא הוא 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يحدث للخاصية size بعد إضافة ناجحة لسيارة؟"
+      }
+    ]
+  },
+  {
+    "topic": "القيمة المعادة عندما تكون المصفوفة ممتلئة",
+    "text": "ماذا تعيد دالة addCar عندما تكون المصفوفة ممتلئة؟",
+    "code": "RentalCompany company = new RentalCompany(2);\ncompany.addCar(new Car(\"Toyota\", 'A', \"111\", true));\ncompany.addCar(new Car(\"Honda\",  'B', \"222\", true));\n// المصفوفة ممتلئة!\nboolean result = company.addCar(new Car(\"Ford\", 'B', \"333\", true));\nSystem.out.println(result);",
+    "options": [
+      {
+        "type": "code",
+        "text": "false"
+      },
+      {
+        "type": "code",
+        "text": "true"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      },
+      "خطأ في التشغيل ArrayIndexOutOfBoundsException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "التحقق if (_size >= _cars.length) يمنع استثناء: عندما تكون المصفوفة ممتلئة يتحقق الشرط، يعاد false فوراً ولا يتم الحفظ."
+      },
+      {
+        "type": "he",
+        "text": "بدون هذا التحقق — كان سيحدث استثناء ArrayIndexOutOfBoundsException."
+      },
+      {
+        "type": "code",
+        "text": "// _size=2, _cars.length=2\n_size >= _cars.length → 2 >= 2 → true\n// نصل إلى return false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا تعيد دالة addCar عندما تكون المصفوفة ممتلئة؟"
+      }
+    ]
+  },
+  {
+    "topic": "دالة toString — حالة فارغة",
+    "text": "ماذا ستعيد دالة toString عندما لا توجد سيارات في المصفوفة؟",
+    "code": "public String toString() {\n    if (_size == 0)\n        return \"No Cars\";\n    String result = \"List Of Cars:\";\n    for (int i = 0; i < _size; i++) {\n        result += \"\\n\" + (i + 1) + \". \" + _cars[i].toString();\n    }\n    return result;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "\"No Cars\""
+      },
+      {
+        "type": "code",
+        "text": "\"List Of Cars:\""
+      },
+      "سلسلة فارغة",
+      {
+        "type": "code",
+        "text": "null"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "التحقق if (_size == 0) يعالج حالة الحد للمصفوفة الفارغة — قبل الحلقة."
+      },
+      {
+        "type": "he",
+        "text": "من المهم التحقق من هذه الحالة أولاً لتجنب الحصول على عنوان فارغ بدون سيارات."
+      },
+      {
+        "type": "code",
+        "text": "// _size == 0:\nif (0 == 0) → true\nreturn \"No Cars\"  ✓\n\n// لن نصل إلى \"List Of Cars:\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا ستعيد دالة toString عندما لا توجد سيارات في المصفوفة؟"
+      }
+    ]
+  },
+  {
+    "topic": "دالة toString — حد الحلقة",
+    "text": "ما هو حد الحلقة الصحيح في دالة toString؟",
+    "code": "public String toString() {\n    if (_size == 0) return \"No Cars\";\n    String result = \"List Of Cars:\";\n    for (int i = 0; i < _______; i++) {\n        result += \"\\n\" + (i + 1) + \". \" + _cars[i].toString();\n    }\n    return result;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_size   // רק תאים 0 עד _size-1 מכילים אובייקטים"
+      },
+      {
+        "type": "code",
+        "text": "_cars.length   // עובר על כל תאי המערך"
+      },
+      {
+        "type": "code",
+        "text": "_size + 1   // לא לפספס את האיבר האחרון"
+      },
+      {
+        "type": "code",
+        "text": "_cars.length - 1   // להימנע מחריגה"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة يجب أن تمر فقط على العناصر التي تمت إضافتها فعليًا."
+      },
+      {
+        "type": "he",
+        "text": "استخدام طول المصفوفة (_cars.length) سيتسبب في الوصول إلى خلايا null بعد خاصية size وظهور استثناء NullPointerException."
+      },
+      {
+        "type": "code",
+        "text": "// _size=3, _cars.length=7:\n// _cars[0..2] = أشياء حقيقية\n// _cars[3..6] = null\n// i < _size → فقط 0,1,2 ✓\n// i < _cars.length → أيضًا 3..6 → NullPointerException ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو حد الحلقة الصحيح في دالة toString؟"
+      }
+    ]
+  },
+  {
+    "topic": "دالة toString — الإخراج الفعلي",
+    "text": "ماذا سيُطبع؟",
+    "code": "RentalCompany company = new RentalCompany(5);\ncompany.addCar(new Car(\"Toyota\", 'A', \"12345\", true));\ncompany.addCar(new Car(\"Honda\",  'B', \"67890\", true));\nSystem.out.println(company.toString());",
+    "options": [
+      {
+        "type": "code",
+        "text": "List Of Cars:\n1. Toyota (A) - 12345 | Available\n2. Honda (B) - 67890 | Available"
+      },
+      {
+        "type": "code",
+        "text": "No Cars"
+      },
+      {
+        "type": "code",
+        "text": "List Of Cars:\n0. Toyota (A) - 12345 | Available\n1. Honda (B) - 67890 | Available"
+      },
+      {
+        "type": "code",
+        "text": "1. Toyota (A) - 12345 | Available\n2. Honda (B) - 67890 | Available"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "بعد إضافة سيارتين، الخاصية size تساوي 2، لذلك يبدأ toString بالعنوان ثم يضيف كل سيارة في سطر جديد مع رقم السطر."
+      },
+      {
+        "type": "he",
+        "text": "أرقام السطور تبدأ من 1 لأن التعبير المستخدم هو (i+1). الإجابة الرابعة خاطئة لأنها تفتقر إلى العنوان."
+      },
+      {
+        "type": "code",
+        "text": "result = \"List Of Cars:\"\ni=0: result += \"\\n1. Toyota (A) - 12345 | Available\"\ni=1: result += \"\\n2. Honda (B) - 67890 | Available\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "خطأ في ترتيب العمليات في addCar",
+    "text": "ما هو محتوى الخلية الأولى في المصفوفة بعد تشغيل الكود؟",
+    "code": "// شיטה مع خطأ في ترتيب العمليات:\npublic boolean addCar(Car car) {\n    if (_size >= _cars.length)\n        return false;\n    _size++;           // קודם מקדמים!\n    _cars[_size] = car; // ואז מכניסים\n    return true;\n}\n// בתוכנית הראשית:\nRentalCompany company = new RentalCompany(5);\ncompany.addCar(new Car(\"Toyota\", 'A', \"12345\", true));\n// מה ב-_cars[0]?",
+    "options": [
+      {
+        "type": "code",
+        "text": "null"
+      },
+      "Toyota (A) - 12345 | Available",
+      {
+        "type": "code",
+        "text": "0"
+      },
+      "خطأ في التشغيل ArrayIndexOutOfBoundsException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לפני ההוספה התכונה size שווה ל-0. הקוד מקדם אותה ל-1 לפני ההשמה, ולכן הרכב נשמר ב-_cars[1] ולא ב-_cars[0]."
+      },
+      {
+        "type": "he",
+        "text": "התא _cars[0] נשאר null — הרכב הוכנס לתא הלא נכון! זו הסיבה שחשוב לשמור קודם ואז להגדיל."
+      },
+      {
+        "type": "code",
+        "text": "// _size=0 בהתחלה\n_size++;            // _size=1\n_cars[1] = car;     // שמירה בתא 1 — שגיאה!\n\n// הנכון:\n_cars[_size] = car; // שמירה בתא 0\n_size++;            // _size=1"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو محتوى الخلية الأولى في المصفوفة بعد تشغيل الكود؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — قيمة الخاصية size بعد عدة عمليات",
+    "text": "ما هي قيمة الخاصية size في نهاية تشغيل الكود؟",
+    "code": "RentalCompany company = new RentalCompany(3);\ncompany.addCar(new Car(\"Toyota\", 'A', \"111\", true));\ncompany.addCar(new Car(\"Honda\",  'B', \"222\", true));\ncompany.addCar(new Car(\"Ford\",   'C', \"333\", true));\ncompany.addCar(new Car(\"Mazda\",  'A', \"444\", true));\n// _size = ?",
+    "options": [
+      {
+        "type": "code",
+        "text": "3"
+      },
+      {
+        "type": "code",
+        "text": "4"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      },
+      {
+        "type": "code",
+        "text": "2"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "المصفوفة تم إنشاؤها بسعة 3. الإضافات الثلاثة الأولى تنجح وتزيد الخاصية size إلى 3."
+      },
+      {
+        "type": "he",
+        "text": "محاولة الإضافة الرابعة تفشل (المصفوفة ممتلئة) ولذلك تبقى الخاصية size تساوي 3."
+      },
+      {
+        "type": "code",
+        "text": "add Toyota → _size=1\nadd Honda  → _size=2\nadd Ford   → _size=3\nadd Mazda  → 3 >= 3 → false\n// _size == 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هي قيمة الخاصية size في نهاية تشغيل الكود؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      const text = typeof option === 'string' ? option : String(option);
+      // זיהוי טקסט עברי — מתחיל בתו עברי (לאחר הסרת ‏)
+      const clean = text.replace(/‏/g, '').trim();
+      const isHebrew = /^[֐-׿יִ-ﭏ]/.test(clean);
+      if (isHebrew) {
+        return `<span class="opt-text-he">${text}</span>`;
+      }
+      // קוד / אנגלית — נשאר LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${text}</span>`;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>

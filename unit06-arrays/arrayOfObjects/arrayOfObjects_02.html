@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 02 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 02</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #D4900A;   /* לדוגמה: #C0392B */
+      --color-light:  #FFF3CD;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #856404;   /* לדוגמה: #8B1A1A */
+      --color-border: #FAC775; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול מערך אוביקטים ב- Java</div>
+      <div class="home-title-ar">تدريب على مصفوفة الكائنات في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 02 &nbsp;|&nbsp; المستوى 02</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 02</span>
+          תרגול מערך אוביקטים ב- Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 02</span>
+          تدريب على مصفوفة الكائنات في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "חיפוש לפי מזהה — עקיבה",
+    "text": "מה יחזיר הקוד?",
+    "code": "public boolean rentCarById(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            if (!_cars[i].isAvail())\n                return false;\n            _cars[i].rentCar();\n            return true;\n        }\n    }\n    return false;\n}\n// המערך מכיל:\n// [Toyota A 12345 true, Honda B 67890 false, Ford B 54321 true]\n// קריאה:\nrentCarById(\"67890\");",
+    "options": [
+      {
+        "type": "code",
+        "text": "false  // רכב קיים אך לא זמין"
+      },
+      {
+        "type": "code",
+        "text": "true   // ההשכרה הצליחה"
+      },
+      {
+        "type": "code",
+        "text": "false  // המספר לא נמצא"
+      },
+      {
+        "type": "code",
+        "text": "true   // כל רכב ניתן להשכרה"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הרכב 67890 נמצא במערך — אך תכונת הזמינות שלו היא false (לא זמין)."
+      },
+      {
+        "type": "he",
+        "text": "הקוד מזהה שהרכב אינו זמין ומחזיר false לפני ביצוע ההשכרה."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 12345==67890? לא\ni=1: 67890==67890? כן\n  isAvail()? false → return false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יחזיר הקוד?"
+      }
+    ]
+  },
+  {
+    "topic": "חיפוש — מזהה לא קיים",
+    "text": "מה יחזיר הקוד כאשר המזהה אינו קיים במערך?",
+    "code": "public boolean rentCarById(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            if (!_cars[i].isAvail())\n                return false;\n            _cars[i].rentCar();\n            return true;\n        }\n    }\n    return false;\n}\n// המערך מכיל:\n// [Toyota A 12345 true, Honda B 67890 true]\n// קריאה:\nrentCarById(\"99999\");",
+    "options": [
+      {
+        "type": "code",
+        "text": "false  // הלולאה הסתיימה ללא מציאה"
+      },
+      {
+        "type": "code",
+        "text": "true   // ברירת המחדל היא true"
+      },
+      {
+        "type": "code",
+        "text": "false  // רכב לא זמין"
+      },
+      "שגיאת ריצה NullPointerException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה עוברת על כל הרכבים ולא מוצאת את המזהה 99999. לאחר סיום הלולאה מוחזר false — הרכב לא נמצא."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 12345==99999? לא\ni=1: 67890==99999? לא\n// הלולאה הסתיימה\nreturn false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יחזיר הקוד כאשר המזהה אינו קיים במערך?"
+      }
+    ]
+  },
+  {
+    "topic": "הסרה ללא שמירת סדר — עקיבה",
+    "text": "מה יהיה תוכן המערך לאחר הסרת הרכב עם המזהה 15442?",
+    "code": "public boolean removeCar(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            _cars[i] = _cars[_size - 1];\n            _cars[_size - 1] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}\n// לפני: [Toyota/12345, Honda/15442, Ford/54321, Mazda/96371]\n// _size = 4\nremoveCar(\"15442\");",
+    "options": [
+      "Toyota/12345, Mazda/96371, Ford/54321",
+      "Toyota/12345, Ford/54321, Mazda/96371",
+      "Toyota/12345, null, Ford/54321, Mazda/96371",
+      "Honda/15442, Ford/54321, Mazda/96371"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הרכב ב-i=1 (Honda/15442) מוחלף באיבר האחרון (Mazda/96371), ואז האחרון מוחק."
+      },
+      {
+        "type": "he",
+        "text": "הסדר אינו נשמר — Mazda עוברת למקום 1. זו שיטת ה-swap-with-last."
+      },
+      {
+        "type": "code",
+        "text": "i=1: cars[1] = cars[3]  // Mazda → מקום 1\ncars[3] = null\n_size--  // _size=3\n// תוצאה: [Toyota, Mazda, Ford]"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה תוכן המערך לאחר הסרת הרכב עם המזהה 15442?"
+      }
+    ]
+  },
+  {
+    "topic": "בעיית החור בהסרה",
+    "text": "מה הבעיה בגרסה הבאה של removeCar?",
+    "code": "public boolean removeCar(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            _cars[i] = null;  // רק מחיקה!\n            return true;\n        }\n    }\n    return false;\n}",
+    "options": [
+      "נוצר חור — תא null בתוך האיברים הפעילים, מה שישבש לולאות עתידיות",
+      "התכונה size לא מתעדכנת ואורך המערך גדל",
+      "הקוד גורם לשגיאת NullPointerException מיידית",
+      "אין בעיה — null הוא ערך חוקי במערך אובייקטים"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אחרי ההסרה יש null בתוך האיברים הפעילים. לולאה עתידית שתנסה לגשת לשדה של אותו תא תגרום לשגיאת NullPointerException."
+      },
+      {
+        "type": "he",
+        "text": "בנוסף, התכונה size לא עודכנה — המערך 'חושב' שיש עדיין n איברים."
+      },
+      {
+        "type": "code",
+        "text": "// after _cars[1] = null:\n// [Toyota, null, Ford, Mazda]  ← hole!\n// another method:\n_cars[1].getId()  → NullPointerException!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה הבעיה בגרסה הבאה של removeCar?"
+      }
+    ]
+  },
+  {
+    "topic": "הוספה עם בדיקת כפילות",
+    "text": "מה הוסיף הקוד הזה לשיטת addCar, ומה יחזיר קריאה כפולה עם אותו מזהה?",
+    "code": "public boolean addCar(Car car) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(car.getId()))\n            return false;\n    }\n    if (_size >= _cars.length)\n        return false;\n    _cars[_size] = car;\n    _size++;\n    return true;\n}\n// קריאות:\naddCar(new Car(\"Toyota\", 'A', \"12345\", true));\naddCar(new Car(\"Honda\",  'A', \"12345\", true)); // אותו מזהה!",
+    "options": [
+      {
+        "type": "code",
+        "text": "false  // מזהה כפול — לא נוסף"
+      },
+      {
+        "type": "code",
+        "text": "true   // נוסף כי יש מקום"
+      },
+      {
+        "type": "code",
+        "text": "false  // המערך מלא"
+      },
+      "שגיאת ריצה ArrayIndexOutOfBoundsException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה בתחילת השיטה בודקת אם כבר קיים רכב עם אותו מזהה. אם כן — מחזירה false לפני ביצוע ההוספה."
+      },
+      {
+        "type": "code",
+        "text": "// הוספה שנייה עם id=12345:\ni=0: cars[0].getId() == \"12345\"? כן\nreturn false  // לא נוסף"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה הוסיף הקוד הזה לשיטת addCar, ומה יחזיר קריאה כפולה עם אותו מזהה?"
+      }
+    ]
+  },
+  {
+    "topic": "הוספה ממוינת — הזזת איברים",
+    "text": "בשיטת addCar ממוינת לפי רמה (A לפני B לפני C), כמה פקודות הזזה נדרשות כדי להוסיף רכב ברמה A כאשר המערך כבר מכיל [A, B, B, C]?",
+    "code": "// המערך לפני: [A, B, B, C] , _size=4\n// רוצים להוסיף רכב ברמה A במיקום הנכון",
+    "options": [
+      "3 הזזות — B,B,C זזים מקום אחד ימינה",
+      "4 הזזות — כל האיברים זזים",
+      "1 הזזה — רק C זז",
+      "0 הזזות — מוסיפים בסוף"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "רכב ברמה A שייך לאחר כל ה-A הקיימים. המיקום הנכון הוא אינדקס 1. כדי לפנות מקום יש להזיז את B,B,C — 3 איברים — ימינה."
+      },
+      {
+        "type": "code",
+        "text": "// לפני: [A, B, B, C, null]\n// מיקום חדש: 1\n// הזזות:\ncars[4]=cars[3]  // C → מקום 4\ncars[3]=cars[2]  // B → מקום 3\ncars[2]=cars[1]  // B → מקום 2\n// ואז: cars[1] = newCar"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "בשיטת addCar ממוינת לפי רמה (A לפני B לפני C), כמה פקודות הזזה נדרשות כדי להוסיף רכב ברמה A כאשר המערך כבר מכיל [A, B, B, C]?"
+      }
+    ]
+  },
+  {
+    "topic": "חיפוש לפי תכונה — ספירה",
+    "text": "מה יחזיר הקוד?",
+    "code": "public int countAvailable() {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].isAvail())\n            count++;\n    }\n    return count;\n}\n// המערך:\n// [Toyota A 12345 true,\n//  Honda  B 67890 false,\n//  Ford   B 54321 true,\n//  Mazda  C 11111 false]\n// _size = 4",
+    "options": [
+      {
+        "type": "code",
+        "text": "2"
+      },
+      {
+        "type": "code",
+        "text": "4"
+      },
+      {
+        "type": "code",
+        "text": "1"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה עוברת על 4 הרכבים ומונה כמה מהם זמינים (isAvail מחזירה true)."
+      },
+      {
+        "type": "code",
+        "text": "i=0: Toyota → true  → count=1\ni=1: Honda  → false → count=1\ni=2: Ford   → true  → count=2\ni=3: Mazda  → false → count=2\n// return 2"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יחזיר הקוד?"
+      }
+    ]
+  },
+  {
+    "topic": "הסרה עם שמירת סדר",
+    "text": "מה ההבדל בין שתי הגרסאות של removeCar?",
+    "code": "// גרסה א — ללא שמירת סדר:\n_cars[i] = _cars[_size - 1];\n_cars[_size - 1] = null;\n_size--;\n\n// גרסה ב — עם שמירת סדר:\nfor (int j = i; j < _size - 1; j++)\n    _cars[j] = _cars[j + 1];\n_cars[_size - 1] = null;\n_size--;",
+    "options": [
+      "גרסה א מהירה יותר אך לא שומרת סדר; גרסה ב שומרת סדר אך מבצעת יותר פעולות",
+      "גרסה א שומרת סדר; גרסה ב לא שומרת סדר",
+      "שתי הגרסאות זהות בתוצאה ובמהירות",
+      "גרסה ב גורמת לחריגת גבולות כי הלולאה מגיעה ל-_size"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "גרסה א מחליפה את האיבר הנמחק בסוף — פעולה אחת, אך משנה את הסדר."
+      },
+      {
+        "type": "he",
+        "text": "גרסה ב מזיזה כל האיברים שמימין שמאלה — שומרת סדר, אבל עושה עד n פעולות."
+      },
+      {
+        "type": "code",
+        "text": "// מערך [A, B, C, D], מחיקת B (i=1):\n// גרסה א: [A, D, C]    ← סדר השתנה\n// גרסה ב: [A, C, D]    ← סדר נשמר"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה ההבדל בין שתי הגרסאות של removeCar?"
+      }
+    ]
+  },
+  {
+    "topic": "חיפוש לפי רמה — דגל",
+    "text": "מה יחזיר carsByLevel('C') לפי הקוד?",
+    "code": "public String carsByLevel(char level) {\n    String result = \"Cars with level \" + level + \":\";\n    boolean found = false;\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getLevel() == level) {\n            result += \"\\n\" + _cars[i].toString();\n            found = true;\n        }\n    }\n    return found ? result : \"No cars found with level \" + level;\n}\n// המערך: [Toyota A, Honda B, Ford B]\n// קריאה: carsByLevel('C')",
+    "options": [
+      "\"No cars found with level C\"",
+      "\"Cars with level C:\"",
+      "מחרוזת ריקה",
+      {
+        "type": "code",
+        "text": "null"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הדגל found נשאר false כי אף רכב אינו ברמה C. הביטוי התנאי בסוף מחזיר את הודעת 'לא נמצא'."
+      },
+      {
+        "type": "code",
+        "text": "found = false לכל אורך הלולאה\n// ביטוי תנאי:\nfound ? result : \"No cars found with level C\"\n→ \"No cars found with level C\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יחזיר carsByLevel('C') לפי הקוד?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — removeCar כשמוחקים את האחרון",
+    "text": "מה יקרה כאשר מוחקים את האיבר האחרון במערך בשיטת removeCar?",
+    "code": "public boolean removeCar(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            _cars[i] = _cars[_size - 1];\n            _cars[_size - 1] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}\n// המערך: [Toyota/111, Honda/222, Ford/333]\n// _size = 3\nremoveCar(\"333\");  // מוחקים את האחרון",
+    "options": [
+      "הקוד עובד נכון — האיבר מוחלף בעצמו ואז מוחק",
+      "שגיאה — _cars[i] = _cars[_size-1] גורמת לחריגה",
+      "הקוד מחזיר false כי האיבר האחרון אינו ניתן למחיקה",
+      "נוצר חור במערך"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כאשר i == _size-1, הפקודה _cars[i] = _cars[_size-1] מציבה את האיבר בעצמו — פעולה חסרת השפעה."
+      },
+      {
+        "type": "he",
+        "text": "לאחר מכן _cars[_size-1] = null מוחקת אותו, ו-_size-- מקטינה. הקוד עובד נכון גם במקרה זה."
+      },
+      {
+        "type": "code",
+        "text": "// i=2, _size=3:\ncars[2] = cars[2]  // לא משנה כלום\ncars[2] = null     // מחיקה\n_size = 2\n// תוצאה: [Toyota, Honda]  ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יקרה כאשר מוחקים את האיבר האחרון במערך בשיטת removeCar?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "البحث حسب معرف — تتبع",
+    "text": "ماذا سيعيد الكود؟",
+    "code": "public boolean rentCarById(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            if (!_cars[i].isAvail())\n                return false;\n            _cars[i].rentCar();\n            return true;\n        }\n    }\n    return false;\n}\n// المصفوفة تحتوي على:\n// [Toyota A 12345 true, Honda B 67890 false, Ford B 54321 true]\n// استدعاء:\nrentCarById(\"67890\");",
+    "options": [
+      {
+        "type": "code",
+        "text": "false  // رכב קיים אך לא זמין"
+      },
+      {
+        "type": "code",
+        "text": "true   // ההשכרה הצליחה"
+      },
+      {
+        "type": "code",
+        "text": "false  // המספר לא נמצא"
+      },
+      {
+        "type": "code",
+        "text": "true   // כל רכב ניתן להשכרה"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "السيارة 67890 موجودة في المصفوفة — لكن خاصية التوفر لها هي false (غير متاحة)."
+      },
+      {
+        "type": "he",
+        "text": "الكود يحدد أن السيارة غير متاحة ويعيد false قبل تنفيذ الإيجار."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 12345==67890? لا\ni=1: 67890==67890? نعم\n  isAvail()? false → return false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيعيد الكود؟"
+      }
+    ]
+  },
+  {
+    "topic": "بحث — معرف غير موجود",
+    "text": "ماذا سيعيد الكود عندما لا يكون المعرف موجودًا في المصفوفة؟",
+    "code": "public boolean rentCarById(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            if (!_cars[i].isAvail())\n                return false;\n            _cars[i].rentCar();\n            return true;\n        }\n    }\n    return false;\n}\n// المصفوفة تحتوي على:\n// [Toyota A 12345 true, Honda B 67890 true]\n// استدعاء:\nrentCarById(\"99999\");",
+    "options": [
+      {
+        "type": "code",
+        "text": "false  // الحلقة انتهت بدون إيجاد"
+      },
+      {
+        "type": "code",
+        "text": "true   // القيمة الافتراضية هي true"
+      },
+      {
+        "type": "code",
+        "text": "false  // السيارة غير متاحة"
+      },
+      "خطأ في التشغيل NullPointerException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تمر على جميع السيارات ولا تجد المعرف 99999. بعد انتهاء الحلقة يتم إرجاع false — السيارة غير موجودة."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 12345==99999? لا\ni=1: 67890==99999? لا\n// الحلقة انتهت\nreturn false"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيعيد الكود عندما لا يكون المعرف موجودًا في المصفوفة؟"
+      }
+    ]
+  },
+  {
+    "topic": "إزالة بدون حفظ الترتيب — تتبع",
+    "text": "ما هو محتوى المصفوفة بعد إزالة السيارة بالمعرف 15442؟",
+    "code": "public boolean removeCar(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            _cars[i] = _cars[_size - 1];\n            _cars[_size - 1] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}\n// قبل: [Toyota/12345, Honda/15442, Ford/54321, Mazda/96371]\n// _size = 4\nremoveCar(\"15442\");",
+    "options": [
+      "Toyota/12345, Mazda/96371, Ford/54321",
+      "Toyota/12345, Ford/54321, Mazda/96371",
+      "Toyota/12345, null, Ford/54321, Mazda/96371",
+      "Honda/15442, Ford/54321, Mazda/96371"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "السيارة في i=1 (Honda/15442) تُستبدل بالعنصر الأخير (Mazda/96371)، ثم يُحذف الأخير."
+      },
+      {
+        "type": "he",
+        "text": "الترتيب لا يُحفظ — Mazda تنتقل إلى المكان 1. هذه هي طريقة التبديل مع الأخير."
+      },
+      {
+        "type": "code",
+        "text": "i=1: cars[1] = cars[3]  // Mazda → مكان 1\ncars[3] = null\n_size--  // _size=3\n// النتيجة: [Toyota, Mazda, Ford]"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو محتوى المصفوفة بعد إزالة السيارة بالمعرف 15442؟"
+      }
+    ]
+  },
+  {
+    "topic": "مشكلة الفجوة في الإزالة",
+    "text": "ما هي المشكلة في النسخة التالية من removeCar؟",
+    "code": "public boolean removeCar(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            _cars[i] = null;  // רק מחיקה!\n            return true;\n        }\n    }\n    return false;\n}",
+    "options": [
+      "تُنشأ فجوة — خانة null داخل العناصر النشطة، مما سيعطل الحلقات المستقبلية",
+      "الخاصية size لا تتحدث وطول المصفوفة يزداد",
+      "الكود يسبب خطأ NullPointerException فوري",
+      "لا توجد مشكلة — null هو قيمة قانونية في مصفوفة الكائنات"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "بعد الإزالة يوجد null داخل العناصر النشطة. حلقة مستقبلية تحاول الوصول إلى حقل تلك الخانة ستسبب خطأ NullPointerException."
+      },
+      {
+        "type": "he",
+        "text": "بالإضافة إلى ذلك، الخاصية size لم تُحدث — المصفوفة 'تعتقد' أنه لا يزال هناك n عناصر."
+      },
+      {
+        "type": "code",
+        "text": "// after _cars[1] = null:\n// [Toyota, null, Ford, Mazda]  ← hole!\n// another method:\n_cars[1].getId()  → NullPointerException!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هي المشكلة في النسخة التالية من removeCar؟"
+      }
+    ]
+  },
+  {
+    "topic": "إضافة مع فحص التكرار",
+    "text": "ماذا أضاف هذا الكود لدالة addCar، وماذا ستعيد استدعاء مزدوج مع نفس المعرف؟",
+    "code": "public boolean addCar(Car car) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(car.getId()))\n            return false;\n    }\n    if (_size >= _cars.length)\n        return false;\n    _cars[_size] = car;\n    _size++;\n    return true;\n}\n// קריאות:\naddCar(new Car(\"Toyota\", 'A', \"12345\", true));\naddCar(new Car(\"Honda\",  'A', \"12345\", true)); // אותו מזהה!",
+    "options": [
+      {
+        "type": "code",
+        "text": "false  // מזהה כפול — לא נוסף"
+      },
+      {
+        "type": "code",
+        "text": "true   // נוסף כי יש מקום"
+      },
+      {
+        "type": "code",
+        "text": "false  // המערך מלא"
+      },
+      "خطأ في التشغيل ArrayIndexOutOfBoundsException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة في بداية الدالة تتحقق مما إذا كانت هناك سيارة بنفس المعرف. إذا كان نعم — تعيد false قبل تنفيذ الإضافة."
+      },
+      {
+        "type": "code",
+        "text": "// הוספה שנייה עם id=12345:\ni=0: cars[0].getId() == \"12345\"? כן\nreturn false  // לא נוסף"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا أضاف هذا الكود لدالة addCar، وماذا ستعيد استدعاء مزدوج مع نفس المعرف؟"
+      }
+    ]
+  },
+  {
+    "topic": "إضافة مرتبة — تحريك عناصر",
+    "text": "في الدالة addCar المرتبة حسب المستوى (A قبل B قبل C)، كم عدد أوامر التحريك المطلوبة لإضافة سيارة بالمستوى A عندما تحتوي المصفوفة بالفعل على [A, B, B, C]؟",
+    "code": "// المصفوفة قبل: [A, B, B, C] , _size=4\n// نريد إضافة سيارة بالمستوى A في الموقع الصحيح",
+    "options": [
+      "3 تحريكات — B,B,C يتحركون مكان واحد إلى اليمين",
+      "4 تحريكات — كل العناصر تتحرك",
+      "1 تحريك — فقط C يتحرك",
+      "0 تحريكات — نضيف في النهاية"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "سيارة بالمستوى A تنتمي بعد كل الـ A الموجودين. الموقع الصحيح هو الفهرس 1. لإفساح المجال يجب تحريك B,B,C — 3 عناصر — إلى اليمين."
+      },
+      {
+        "type": "code",
+        "text": "// قبل: [A, B, B, C, null]\n// موقع جديد: 1\n// التحريكات:\ncars[4]=cars[3]  // C → مكان 4\ncars[3]=cars[2]  // B → مكان 3\ncars[2]=cars[1]  // B → مكان 2\n// ثم: cars[1] = newCar"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "في الدالة addCar المرتبة حسب المستوى (A قبل B قبل C)، كم عدد أوامر التحريك المطلوبة لإضافة سيارة بالمستوى A عندما تحتوي المصفوفة بالفعل على [A, B, B, C]؟"
+      }
+    ]
+  },
+  {
+    "topic": "بحث حسب خاصية — عدّ",
+    "text": "ماذا سيعيد الكود؟",
+    "code": "public int countAvailable() {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].isAvail())\n            count++;\n    }\n    return count;\n}\n// المصفوفة:\n// [Toyota A 12345 true,\n//  Honda  B 67890 false,\n//  Ford   B 54321 true,\n//  Mazda  C 11111 false]\n// _size = 4",
+    "options": [
+      {
+        "type": "code",
+        "text": "2"
+      },
+      {
+        "type": "code",
+        "text": "4"
+      },
+      {
+        "type": "code",
+        "text": "1"
+      },
+      {
+        "type": "code",
+        "text": "0"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تمر على 4 السيارات وتعدّ كم منها متاح (isAvail تعيد true)."
+      },
+      {
+        "type": "code",
+        "text": "i=0: Toyota → true  → count=1\ni=1: Honda  → false → count=1\ni=2: Ford   → true  → count=2\ni=3: Mazda  → false → count=2\n// return 2"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيعيد الكود؟"
+      }
+    ]
+  },
+  {
+    "topic": "الإزالة مع الحفاظ على الترتيب",
+    "text": "ما الفرق بين النسختين من removeCar؟",
+    "code": "// גרסה א — ללא שמירת סדר:\n_cars[i] = _cars[_size - 1];\n_cars[_size - 1] = null;\n_size--;\n\n// גרסה ב — עם שמירת סדר:\nfor (int j = i; j < _size - 1; j++)\n    _cars[j] = _cars[j + 1];\n_cars[_size - 1] = null;\n_size--;",
+    "options": [
+      "النسخة أ أسرع ولكن لا تحافظ على الترتيب؛ النسخة ب تحافظ على الترتيب ولكن تقوم بمزيد من العمليات",
+      "النسخة أ تحافظ على الترتيب؛ النسخة ب لا تحافظ على الترتيب",
+      "النسختان متطابقتان في النتيجة والسرعة",
+      "النسخة ب تسبب استثناء حدود لأن الحلقة تصل إلى _size"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "النسخة أ تستبدل العنصر المحذوف بالنهاية — عملية واحدة، ولكن تغير الترتيب."
+      },
+      {
+        "type": "he",
+        "text": "النسخة ب تحرك كل العناصر من اليمين إلى اليسار — تحافظ على الترتيب، ولكن تقوم حتى n عمليات."
+      },
+      {
+        "type": "code",
+        "text": "// מערך [A, B, C, D], מחיקת B (i=1):\n// גרסה א: [A, D, C]    ← סדר השתנה\n// גרסה ב: [A, C, D]    ← סדר נשמר"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما الفرق بين النسختين من removeCar؟"
+      }
+    ]
+  },
+  {
+    "topic": "بحث حسب المستوى — علم",
+    "text": "ماذا ستعيد carsByLevel('C') حسب الكود؟",
+    "code": "public String carsByLevel(char level) {\n    String result = \"Cars with level \" + level + \":\";\n    boolean found = false;\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getLevel() == level) {\n            result += \"\\n\" + _cars[i].toString();\n            found = true;\n        }\n    }\n    return found ? result : \"No cars found with level \" + level;\n}\n// المصفوفة: [Toyota A, Honda B, Ford B]\n// استدعاء: carsByLevel('C')",
+    "options": [
+      "\"No cars found with level C\"",
+      "\"Cars with level C:\"",
+      "سلسلة فارغة",
+      {
+        "type": "code",
+        "text": "null"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "العلم found يبقى false لأن لا توجد سيارة بالمستوى C. التعبير الشرطي في النهاية يعيد رسالة 'لم يتم العثور'."
+      },
+      {
+        "type": "code",
+        "text": "found = false طوال الحلقة\n// تعبير شرطي:\nfound ? result : \"No cars found with level C\"\n→ \"No cars found with level C\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا ستعيد carsByLevel('C') حسب الكود؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — removeCar عند حذف الأخير",
+    "text": "ماذا يحدث عند حذف العنصر الأخير في المصفوفة باستخدام الدالة removeCar؟",
+    "code": "public boolean removeCar(String id) {\n    for (int i = 0; i < _size; i++) {\n        if (_cars[i].getId().equals(id)) {\n            _cars[i] = _cars[_size - 1];\n            _cars[_size - 1] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}\n// المصفوفة: [Toyota/111, Honda/222, Ford/333]\n// _size = 3\nremoveCar(\"333\");  // حذف الأخير",
+    "options": [
+      "الكود يعمل بشكل صحيح — يتم استبدال العنصر بنفسه ثم يُحذف",
+      "خطأ — _cars[i] = _cars[_size-1] يسبب استثناء",
+      "الكود يعيد false لأن العنصر الأخير لا يمكن حذفه",
+      "يتم إنشاء فجوة في المصفوفة"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כאשר i == _size-1, הפקודה _cars[i] = _cars[_size-1] מציבה את האיבר בעצמו — פעולה חסרת השפעה."
+      },
+      {
+        "type": "he",
+        "text": "לאחר מכן _cars[_size-1] = null מוחקת אותו, ו-_size-- מקטינה. הקוד עובד נכון גם במקרה זה."
+      },
+      {
+        "type": "code",
+        "text": "// i=2, _size=3:\ncars[2] = cars[2]  // لا يغير شيئًا\ncars[2] = null     // حذف\n_size = 2\n// النتيجة: [Toyota, Honda]  ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يحدث عند حذف العنصر الأخير في المصفوفة باستخدام الدالة removeCar؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      const text = typeof option === 'string' ? option : String(option);
+      // זיהוי טקסט עברי — מתחיל בתו עברי (לאחר הסרת ‏)
+      const clean = text.replace(/‏/g, '').trim();
+      const isHebrew = /^[֐-׿יִ-ﭏ]/.test(clean);
+      if (isHebrew) {
+        return `<span class="opt-text-he">${text}</span>`;
+      }
+      // קוד / אנגלית — נשאר LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${text}</span>`;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 04 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 04</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #27AE60;   /* לדוגמה: #C0392B */
+      --color-light:  #E8F8EE;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #1A5E35;   /* לדוגמה: #8B1A1A */
+      --color-border: #9FE1CB; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול מערך אוביקטים ב- Java</div>
+      <div class="home-title-ar">تدريب على مصفوفة الكائنات في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 04 &nbsp;|&nbsp; المستوى 04</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 04</span>
+          תרגול מערך אוביקטים ב- Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 04</span>
+          تدريب على مصفوفة الكائنات في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "עקיבה — שתי שיטות משולבות",
+    "text": "מה יהיה הפלט?",
+    "code": "// Class Playlist manages an array of Song\n// Song has: getTitle(), getDuration() (int, seconds)\npublic Song getLongest() {\n    if (_size == 0) return null;\n    Song best = _songs[0];\n    for (int i = 1; i < _size; i++)\n        if (_songs[i].getDuration() > best.getDuration())\n            best = _songs[i];\n    return best;\n}\npublic boolean remove(String title) {\n    for (int i = 0; i < _size; i++) {\n        if (_songs[i].getTitle().equals(title)) {\n            _songs[i] = _songs[_size - 1];\n            _songs[_size - 1] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}\n// In main:\n// Playlist: [\"Imagine\"=210, \"Bohemian\"=354, \"Hotel\"=270]\nplaylist.remove(playlist.getLongest().getTitle());\nSystem.out.println(playlist.getLongest().getTitle());",
+    "options": [
+      "Hotel",
+      "Imagine",
+      "Bohemian",
+      "שגיאת ריצה NullPointerException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "קודם getLongest מוצאת את השיר הארוך ביותר: Bohemian (354 שניות). remove מסירה אותו — ועכשיו הפלייליסט הוא [Imagine=210, Hotel=270]."
+      },
+      {
+        "type": "he",
+        "text": "קריאה שנייה ל-getLongest מוצאת את הארוך מבין השניים שנותרו: Hotel (270 שניות)."
+      },
+      {
+        "type": "code",
+        "text": "getLongest(): Bohemian (354) → removed\nPlaylist now: [Imagine=210, Hotel=270]\ngetLongest(): Hotel (270)\n// output: Hotel"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה הפלט?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — מיזוג שני מערכים ממוינים",
+    "text": "מה יש להשלים במקום ??? כדי שהשיטה תמזג שני מערכים ממוינים לאחד ממוין?",
+    "code": "// merges two sorted Playlist objects into a new one\n// sorted by duration (ascending)\npublic static Playlist merge(Playlist a, Playlist b) {\n    Playlist result = new Playlist(a._size + b._size);\n    int i = 0, j = 0;\n    while (i < a._size && j < b._size) {\n        if ( ??? ) {\n            result.addSong(a._songs[i]);\n            i++;\n        } else {\n            result.addSong(b._songs[j]);\n            j++;\n        }\n    }\n    while (i < a._size) { result.addSong(a._songs[i]); i++; }\n    while (j < b._size) { result.addSong(b._songs[j]); j++; }\n    return result;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a._songs[i].getDuration() <= b._songs[j].getDuration()"
+      },
+      {
+        "type": "code",
+        "text": "a._songs[i].getDuration() >= b._songs[j].getDuration()"
+      },
+      {
+        "type": "code",
+        "text": "a._songs[i].getDuration() < b._songs[j].getDuration()"
+      },
+      {
+        "type": "code",
+        "text": "i <= j"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כדי לשמור על סדר עולה, מוסיפים תמיד את הקטן מבין שני הראשים הנוכחיים. שימוש ב-<= (ולא <) מבטיח יציבות — ערכים שווים מ-a יוכנסו לפני אלה מ-b."
+      },
+      {
+        "type": "code",
+        "text": "// a: [180, 240]   b: [200, 300]\ni=0,j=0: 180 <= 200 → add a[0]=180, i=1\ni=1,j=0: 240 <= 200? no → add b[0]=200, j=1\ni=1,j=1: 240 <= 300 → add a[1]=240, i=2\n// remaining: add b[1]=300\n// result: [180, 200, 240, 300] ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום ??? כדי שהשיטה תמזג שני מערכים ממוינים לאחד ממוין?"
+      }
+    ]
+  },
+  {
+    "topic": "תכנון — מדוע לא לסמוך על אורך המערך",
+    "text": "מחלקה Hospital מנהלת מערך של Patient. מפתח כתב את toString כך שהיא בודקת כל תא ומדפיסה רק אם הוא אינו null. מה הבעיה בגישה זו לעומת שימוש בתכונה size?",
+    "code": "// Version A — without size:\npublic String toString() {\n    String result = \"\";\n    for (int i = 0; i < _patients.length; i++) {\n        if (_patients[i] != null)\n            result += _patients[i].getName() + \"\\n\";\n    }\n    return result;\n}\n// Version B — with size:\npublic String toString() {\n    String result = \"\";\n    for (int i = 0; i < _size; i++)\n        result += _patients[i].getName() + \"\\n\";\n    return result;\n}",
+    "options": [
+      "גרסה א עוברת על כל קיבולת המערך בכל קריאה — בזבוז זמן; גרסה ב עוברת רק על האיברים הפעילים",
+      "גרסה א תגרום לשגיאת NullPointerException; גרסה ב בטוחה תמיד",
+      "שתי הגרסאות זהות בתוצאה ובביצועים",
+      "גרסה ב תגרום לשגיאה אם מחקנו איבר מהאמצע"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "גרסה א עוברת תמיד על כל אורך המערך (לדוגמה 1000 תאים) גם אם יש רק 3 מטופלים. גרסה ב עוברת רק על 3 האיברים הפעילים."
+      },
+      {
+        "type": "he",
+        "text": "גרסה א אמנה בטוחה (בודקת null), אך בזבזנית. גרסה ב נכונה כל עוד שומרים על האינווריאנט: אין חורים לפני אינדקס size."
+      },
+      {
+        "type": "code",
+        "text": "// capacity=1000, _size=3:\n// Version A: loops 1000 times, checks 997 nulls\n// Version B: loops 3 times only ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מחלקה Hospital מנהלת מערך של Patient. מפתח כתב את toString כך שהיא בודקת כל תא ומדפיסה רק אם הוא אינו null. מה הבעיה בגישה זו לעומת שימוש בתכונה size?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — removeAll עם while",
+    "text": "כמה פעמים ירוץ גוף ה-while, ומה יהיה ערך התכונה size בסוף?",
+    "code": "// Class Team manages an array of Player\n// Player has getScore() returning int\npublic int removeWeak(int threshold) {\n    int removed = 0;\n    int i = 0;\n    while (i < _size) {\n        if (_players[i].getScore() < threshold) {\n            _players[i] = _players[_size - 1];\n            _players[_size - 1] = null;\n            _size--;\n            removed++;\n        } else {\n            i++;\n        }\n    }\n    return removed;\n}\n// Array: [score=30, score=80, score=20, score=90, score=10]\n// _size=5\nremoveWeak(50);",
+    "options": [
+      {
+        "type": "code",
+        "text": "// loop body: 5 times, size=2"
+      },
+      {
+        "type": "code",
+        "text": "// loop body: 3 times, size=2"
+      },
+      {
+        "type": "code",
+        "text": "// loop body: 5 times, size=3"
+      },
+      {
+        "type": "code",
+        "text": "// loop body: 3 times, size=3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "נעקוב: i=0, score=30 < 50 → swap עם אחרון (10), size=4, removed=1. i=0, score=10 < 50 → swap עם אחרון (90), size=3, removed=2. i=0, score=90 >= 50 → i=1. i=1, score=80 >= 50 → i=2. i=2, score=20 < 50 → swap עם אחרון (20), size=2, removed=3. i=2 >= size=2 → עצירה."
+      },
+      {
+        "type": "code",
+        "text": "Iterations: i=0(30), i=0(10), i=0(90), i=1(80), i=2(20)\n→ 5 iterations total\nremoved=3, _size=2\nFinal array: [90, 80]"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "כמה פעמים ירוץ גוף ה-while, ומה יהיה ערך התכונה size בסוף?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — mostPopular עם לולאה מקוננת",
+    "text": "מה יש להשלים במקום ??? כדי שהשיטה תמצא את הקטגוריה הנפוצה ביותר?",
+    "code": "// Class Store manages an array of Product\n// Product has getCategory() returning String\npublic String mostPopularCategory() {\n    if (_size == 0) return null;\n    String popular = _products[0].getCategory();\n    int maxCount = 0;\n    for (int i = 0; i < _size; i++) {\n        String current = _products[i].getCategory();\n        int count = 0;\n        for (int j = 0; j < _size; j++) {\n            if (_products[j].getCategory().equals(current))\n                count++;\n        }\n        if ( ??? ) {\n            maxCount = count;\n            popular = current;\n        }\n    }\n    return popular;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "count > maxCount"
+      },
+      {
+        "type": "code",
+        "text": "count >= maxCount"
+      },
+      {
+        "type": "code",
+        "text": "count > 0"
+      },
+      {
+        "type": "code",
+        "text": "count == maxCount"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הבדיקה צריכה לעדכן את המועמד רק כשנמצאה קטגוריה שכיחה יותר מהמקסימום הנוכחי."
+      },
+      {
+        "type": "he",
+        "text": "שימוש ב->= יחליף את המועמד גם על שוויון — התוצאה תהיה הקטגוריה האחרונה עם שכיחות מקסימלית ולא הראשונה. שימוש ב->0 יחליף תמיד."
+      },
+      {
+        "type": "code",
+        "text": "// products: [A, B, A, C, B, A]\n// i=0: current=A, count=3 → 3>0 → popular=A, max=3\n// i=1: current=B, count=2 → 2>3? no\n// i=2: current=A, count=3 → 3>3? no (stays A) ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום ??? כדי שהשיטה תמצא את הקטגוריה הנפוצה ביותר?"
+      }
+    ]
+  },
+  {
+    "topic": "זיהוי שגיאה — addSorted כשיש כפילות",
+    "text": "מה יקרה אם נקרא ל-addSorted עם אובייקט שה-id שלו כבר קיים?",
+    "code": "// Class Directory manages an array of Contact\n// Contact has getId() returning int\n// Array is kept sorted by id\npublic void addSorted(Contact c) {\n    if (_size >= _contacts.length) return;\n    int i = _size - 1;\n    while (i >= 0 && _contacts[i].getId() > c.getId()) {\n        _contacts[i + 1] = _contacts[i];\n        i--;\n    }\n    _contacts[i + 1] = c;\n    _size++;\n}\n// Array: [id=10, id=20, id=30]\naddSorted(new Contact(20, ...));",
+    "options": [
+      "הרכיב יוכנס כפול — המערך יכיל שני אנשי קשר עם id=20",
+      "שגיאת ריצה ArrayIndexOutOfBoundsException",
+      "הוספה תכשל בשקט — הרכיב לא יוכנס",
+      "הרכיב הקיים עם id=20 יוחלף בחדש"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השיטה לא בודקת כפילויות — היא רק מוצאת את המיקום הנכון ומכניסה. הרכיב החדש עם id=20 יוכנס לצד הרכיב הקיים."
+      },
+      {
+        "type": "he",
+        "text": "אם צריך למנוע כפילויות, יש להוסיף לולאת חיפוש לפני ההכנסה ולהחזיר false אם id כבר קיים."
+      },
+      {
+        "type": "code",
+        "text": "// i=2: id=30 > 20 → shift right, i=1\n// i=1: id=20 > 20? no → stop\n// contacts[2] = new Contact(20)\n// Result: [id=10, id=20, id=20, id=30] ← duplicate!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יקרה אם נקרא ל-addSorted עם אובייקט שה-id שלו כבר קיים?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — toString עם סינון",
+    "text": "מה יחזיר הקוד?",
+    "code": "// Class Library manages an array of Book\n// Book has: getTitle(), isAvailable() (boolean)\npublic String availableBooks() {\n    if (_size == 0) return \"No books\";\n    String result = \"Available:\\n\";\n    boolean found = false;\n    for (int i = 0; i < _size; i++) {\n        if (_books[i].isAvailable()) {\n            result += \"- \" + _books[i].getTitle() + \"\\n\";\n            found = true;\n        }\n    }\n    return found ? result : \"None available\";\n}\n// Array:\n// [\"1984\" avail=false, \"Dune\" avail=true,\n//  \"Brave\" avail=false, \"Hobbit\" avail=true]",
+    "options": [
+      {
+        "type": "code",
+        "text": "\"Available:\\n- Dune\\n- Hobbit\\n\""
+      },
+      {
+        "type": "code",
+        "text": "\"None available\""
+      },
+      {
+        "type": "code",
+        "text": "\"Available:\\n- 1984\\n- Brave\\n\""
+      },
+      {
+        "type": "code",
+        "text": "\"No books\""
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "יש ספרים זמינים (Dune ו-Hobbit) לכן הדגל found הופך ל-true ומוחזרת המחרוזת עם הכותרת."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 1984 → not available\ni=1: Dune → available → result += \"- Dune\\n\", found=true\ni=2: Brave → not available\ni=3: Hobbit → available → result += \"- Hobbit\\n\"\nfound=true → return result"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יחזיר הקוד?"
+      }
+    ]
+  },
+  {
+    "topic": "תכנון — השוואת גישות הסרה",
+    "text": "מחלקה Schedule מנהלת מערך ממוין של Appointment לפי שעה. איזו שיטת הסרה נכונה לה?",
+    "code": "// Version A — swap with last (fast, breaks order):\n_appointments[i] = _appointments[_size - 1];\n_appointments[_size - 1] = null;\n_size--;\n\n// Version B — shift left (preserves order):\nfor (int j = i; j < _size - 1; j++)\n    _appointments[j] = _appointments[j + 1];\n_appointments[_size - 1] = null;\n_size--;",
+    "options": [
+      "גרסה ב — כי המערך ממוין, ושמירת הסדר חיונית לפעולות כמו חיפוש בינארי ותצוגה נכונה",
+      "גרסה א — כי היא מהירה יותר ותמיד עדיפה",
+      "שתי הגרסאות שקולות — הסדר לא משנה",
+      "גרסה א — כי גרסה ב גורמת לחריגת גבולות"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כשהמערך חייב להישאר ממוין (לדוגמה לצורך חיפוש בינארי או תצוגה לפי שעה), גרסה א שוברת את הסדר ולכן אינה מתאימה."
+      },
+      {
+        "type": "he",
+        "text": "גרסה ב מחיקה עם הזזה שומרת על הסדר — זה המחיר הנדרש כדי לשמור על האינווריאנט של המערך הממוין."
+      },
+      {
+        "type": "code",
+        "text": "// sorted: [8:00, 9:00, 10:00, 11:00]\n// remove 9:00 (i=1):\n// Version A: [8:00, 11:00, 10:00]  ← order broken!\n// Version B: [8:00, 10:00, 11:00]  ← order preserved ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מחלקה Schedule מנהלת מערך ממוין של Appointment לפי שעה. איזו שיטת הסרה נכונה לה?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה מורכבת — שתי מחלקות",
+    "text": "מה יודפס?",
+    "code": "// Class Course manages an array of Student\n// Student has: getName(), getGrade() (int)\npublic int countPassing(int threshold) {\n    int count = 0;\n    for (int i = 0; i < _size; i++)\n        if (_students[i].getGrade() >= threshold)\n            count++;\n    return count;\n}\npublic Student getTopStudent() {\n    Student top = _students[0];\n    for (int i = 1; i < _size; i++)\n        if (_students[i].getGrade() > top.getGrade())\n            top = _students[i];\n    return top;\n}\n// Course: [Alice=72, Bob=55, Carol=88, Dan=60, Eve=91]\nSystem.out.println(course.countPassing(60) + \" \" +\n    course.getTopStudent().getName());",
+    "options": [
+      "4 Eve",
+      "3 Eve",
+      "4 Carol",
+      "5 Eve"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "countPassing(60) סופרת תלמידים עם ציון >= 60: Alice(72), Carol(88), Dan(60), Eve(91) — ארבעה תלמידים. Bob(55) לא עובר."
+      },
+      {
+        "type": "code",
+        "text": "countPassing(60):\nAlice=72>=60 ✓ Bob=55>=60 ✗\nCarol=88>=60 ✓ Dan=60>=60 ✓ Eve=91>=60 ✓\n→ count=4\n\ngetTopStudent():\ntop=Alice(72)→Carol(88)→Eve(91)\n→ Eve\n\n// output: 4 Eve"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יודפס?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — upgradeAll עם תנאי",
+    "text": "מה יש להשלים במקום ??? כדי שהשיטה תעלה ציון לכל תלמיד שעומד בתנאי, ותחזיר כמה תלמידים קודמו?",
+    "code": "// Class Course manages an array of Student\n// Student has: getGrade(), setGrade(int)\npublic int upgradeAll(int threshold, int bonus) {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        if ( ??? ) {\n            int newGrade = _students[i].getGrade() + bonus;\n            _students[i].setGrade(Math.min(newGrade, 100));\n            count++;\n        }\n    }\n    return count;\n}\n// upgradeAll(60, 5):\n// [Alice=72, Bob=55, Carol=88, Dan=60]",
+    "options": [
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() >= threshold"
+      },
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() > threshold"
+      },
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() <= threshold"
+      },
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() == threshold"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הפרמטר threshold מגדיר ציון מינימלי לקבלת הבונוס — תלמידים עם ציון גדול או שווה ל-threshold מקודמים."
+      },
+      {
+        "type": "he",
+        "text": "שימוש ב-> לא יכלול תלמידים עם ציון השווה לסף (Dan=60 לא יקודם). שימוש ב-<= יקדם רק תלמידים חלשים."
+      },
+      {
+        "type": "code",
+        "text": "// upgradeAll(60, 5):\nAlice=72>=60 ✓ → 77\nBob=55>=60   ✗\nCarol=88>=60 ✓ → 93\nDan=60>=60   ✓ → 65\n// returns 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום ??? כדי שהשיטה תעלה ציון לכל תלמיד שעומד בתנאי, ותחזיר כמה תלמידים קודמו?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "تتبع — دالتان مدمجتان",
+    "text": "ما هو الناتج؟",
+    "code": "// Class Playlist manages an array of Song\n// Song has: getTitle(), getDuration() (int, seconds)\npublic Song getLongest() {\n    if (_size == 0) return null;\n    Song best = _songs[0];\n    for (int i = 1; i < _size; i++)\n        if (_songs[i].getDuration() > best.getDuration())\n            best = _songs[i];\n    return best;\n}\npublic boolean remove(String title) {\n    for (int i = 0; i < _size; i++) {\n        if (_songs[i].getTitle().equals(title)) {\n            _songs[i] = _songs[_size - 1];\n            _songs[_size - 1] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}\n// In main:\n// Playlist: [\"Imagine\"=210, \"Bohemian\"=354, \"Hotel\"=270]\nplaylist.remove(playlist.getLongest().getTitle());\nSystem.out.println(playlist.getLongest().getTitle());",
+    "options": [
+      "Hotel",
+      "Imagine",
+      "Bohemian",
+      "خطأ في التشغيل NullPointerException"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "קודם getLongest מוצאת את השיר הארוך ביותר: Bohemian (354 שניות). remove מסירה אותו — ועכשיו הפלייליסט הוא [Imagine=210, Hotel=270]."
+      },
+      {
+        "type": "he",
+        "text": "קריאה שנייה ל-getLongest מוצאת את הארוך מבין השניים שנותרו: Hotel (270 שניות)."
+      },
+      {
+        "type": "code",
+        "text": "getLongest(): Bohemian (354) → removed\nPlaylist now: [Imagine=210, Hotel=270]\ngetLongest(): Hotel (270)\n// output: Hotel"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو الناتج؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال كود — دمج مصفوفتين مرتبتين",
+    "text": "ماذا يجب إكماله مكان ??? لكي تقوم الدالة بدمج مصفوفتين مرتبتين إلى واحدة مرتبة؟",
+    "code": "// merges two sorted Playlist objects into a new one\n// sorted by duration (ascending)\npublic static Playlist merge(Playlist a, Playlist b) {\n    Playlist result = new Playlist(a._size + b._size);\n    int i = 0, j = 0;\n    while (i < a._size && j < b._size) {\n        if ( ??? ) {\n            result.addSong(a._songs[i]);\n            i++;\n        } else {\n            result.addSong(b._songs[j]);\n            j++;\n        }\n    }\n    while (i < a._size) { result.addSong(a._songs[i]); i++; }\n    while (j < b._size) { result.addSong(b._songs[j]); j++; }\n    return result;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a._songs[i].getDuration() <= b._songs[j].getDuration()"
+      },
+      {
+        "type": "code",
+        "text": "a._songs[i].getDuration() >= b._songs[j].getDuration()"
+      },
+      {
+        "type": "code",
+        "text": "a._songs[i].getDuration() < b._songs[j].getDuration()"
+      },
+      {
+        "type": "code",
+        "text": "i <= j"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "لكي نحافظ على الترتيب التصاعدي، نضيف دائمًا الأصغر بين الرأسين الحاليين. استخدام <= (وليس <) يضمن الاستقرار — القيم المتساوية من a ستُضاف قبل تلك من b."
+      },
+      {
+        "type": "code",
+        "text": "// a: [180, 240]   b: [200, 300]\ni=0,j=0: 180 <= 200 → add a[0]=180, i=1\ni=1,j=0: 240 <= 200? no → add b[0]=200, j=1\ni=1,j=1: 240 <= 300 → add a[1]=240, i=2\n// remaining: add b[1]=300\n// result: [180, 200, 240, 300] ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله مكان ??? لكي تقوم الدالة بدمج مصفوفتين مرتبتين إلى واحدة مرتبة؟"
+      }
+    ]
+  },
+  {
+    "topic": "التخطيط — لماذا لا نعتمد على طول المصفوفة",
+    "text": "فئة Hospital تدير مصفوفة من Patient. كتب مبرمج دالة toString بحيث تتحقق من كل خلية وتطبع فقط إذا لم تكن null. ما المشكلة في هذه الطريقة مقارنة باستخدام خاصية size؟",
+    "code": "// Version A — without size:\npublic String toString() {\n    String result = \"\";\n    for (int i = 0; i < _patients.length; i++) {\n        if (_patients[i] != null)\n            result += _patients[i].getName() + \"\\n\";\n    }\n    return result;\n}\n// Version B — with size:\npublic String toString() {\n    String result = \"\";\n    for (int i = 0; i < _size; i++)\n        result += _patients[i].getName() + \"\\n\";\n    return result;\n}",
+    "options": [
+      "النسخة أ تمر على كل سعة المصفوفة في كل استدعاء — إضاعة للوقت؛ النسخة ب تمر فقط على العناصر النشطة",
+      "النسخة أ ستسبب خطأ NullPointerException؛ النسخة ب آمنة دائمًا",
+      "النسختان متطابقتان في النتيجة والأداء",
+      "النسخة ب ستسبب خطأ إذا حذفنا عنصرًا من الوسط"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "גרסה א עוברת תמיד על כל אורך המערך (לדוגמה 1000 תאים) גם אם יש רק 3 מטופלים. גרסה ב עוברת רק על 3 האיברים הפעילים."
+      },
+      {
+        "type": "he",
+        "text": "גרסה א אמנה בטוחה (בודקת null), אך בזבזנית. גרסה ב נכונה כל עוד שומרים על האינווריאנט: אין חורים לפני אינדקס size."
+      },
+      {
+        "type": "code",
+        "text": "// capacity=1000, _size=3:\n// Version A: loops 1000 times, checks 997 nulls\n// Version B: loops 3 times only ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "فئة Hospital تدير مصفوفة من Patient. كتب مبرمج دالة toString بحيث تتحقق من كل خلية وتطبع فقط إذا لم تكن null. ما المشكلة في هذه الطريقة مقارنة باستخدام خاصية size؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — removeAll مع while",
+    "text": "كم مرة سيتم تنفيذ جسم حلقة while، وما هي قيمة الخاصية size في النهاية؟",
+    "code": "// Class Team manages an array of Player\n// Player has getScore() returning int\npublic int removeWeak(int threshold) {\n    int removed = 0;\n    int i = 0;\n    while (i < _size) {\n        if (_players[i].getScore() < threshold) {\n            _players[i] = _players[_size - 1];\n            _players[_size - 1] = null;\n            _size--;\n            removed++;\n        } else {\n            i++;\n        }\n    }\n    return removed;\n}\n// Array: [score=30, score=80, score=20, score=90, score=10]\n// _size=5\nremoveWeak(50);",
+    "options": [
+      {
+        "type": "code",
+        "text": "// loop body: 5 times, size=2"
+      },
+      {
+        "type": "code",
+        "text": "// loop body: 3 times, size=2"
+      },
+      {
+        "type": "code",
+        "text": "// loop body: 5 times, size=3"
+      },
+      {
+        "type": "code",
+        "text": "// loop body: 3 times, size=3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نتتبع: i=0, score=30 < 50 → تبديل مع الأخير (10), size=4, removed=1. i=0, score=10 < 50 → تبديل مع الأخير (90), size=3, removed=2. i=0, score=90 >= 50 → i=1. i=1, score=80 >= 50 → i=2. i=2, score=20 < 50 → تبديل مع الأخير (20), size=2, removed=3. i=2 >= size=2 → توقف."
+      },
+      {
+        "type": "code",
+        "text": "Iterations: i=0(30), i=0(10), i=0(90), i=1(80), i=2(20)\n→ 5 iterations total\nremoved=3, _size=2\nFinal array: [90, 80]"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "كم مرة سيتم تنفيذ جسم حلقة while، وما هي قيمة الخاصية size في النهاية؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال كود — mostPopular مع حلقة متداخلة",
+    "text": "ماذا يجب إكماله بدلاً من ??? لكي تجد الدالة الفئة الأكثر شيوعًا؟",
+    "code": "// Class Store manages an array of Product\n// Product has getCategory() returning String\npublic String mostPopularCategory() {\n    if (_size == 0) return null;\n    String popular = _products[0].getCategory();\n    int maxCount = 0;\n    for (int i = 0; i < _size; i++) {\n        String current = _products[i].getCategory();\n        int count = 0;\n        for (int j = 0; j < _size; j++) {\n            if (_products[j].getCategory().equals(current))\n                count++;\n        }\n        if ( ??? ) {\n            maxCount = count;\n            popular = current;\n        }\n    }\n    return popular;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "count > maxCount"
+      },
+      {
+        "type": "code",
+        "text": "count >= maxCount"
+      },
+      {
+        "type": "code",
+        "text": "count > 0"
+      },
+      {
+        "type": "code",
+        "text": "count == maxCount"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "يجب أن يقوم الفحص بتحديث المرشح فقط عندما يتم العثور على فئة أكثر شيوعًا من الحد الأقصى الحالي."
+      },
+      {
+        "type": "he",
+        "text": "استخدام ->= سيستبدل المرشح أيضًا عند التساوي — ستكون النتيجة الفئة الأخيرة ذات التكرار الأقصى وليس الأولى. استخدام ->0 سيستبدل دائمًا."
+      },
+      {
+        "type": "code",
+        "text": "// products: [A, B, A, C, B, A]\n// i=0: current=A, count=3 → 3>0 → popular=A, max=3\n// i=1: current=B, count=2 → 2>3? no\n// i=2: current=A, count=3 → 3>3? no (stays A) ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من ??? لكي تجد الدالة الفئة الأكثر شيوعًا؟"
+      }
+    ]
+  },
+  {
+    "topic": "تحديد خطأ — addSorted عند وجود تكرار",
+    "text": "ماذا سيحدث إذا استدعينا addSorted مع كائن يحتوي على معرف موجود بالفعل؟",
+    "code": "// Class Directory manages an array of Contact\n// Contact has getId() returning int\n// Array is kept sorted by id\npublic void addSorted(Contact c) {\n    if (_size >= _contacts.length) return;\n    int i = _size - 1;\n    while (i >= 0 && _contacts[i].getId() > c.getId()) {\n        _contacts[i + 1] = _contacts[i];\n        i--;\n    }\n    _contacts[i + 1] = c;\n    _size++;\n}\n// Array: [id=10, id=20, id=30]\naddSorted(new Contact(20, ...));",
+    "options": [
+      "سيتم إدخال العنصر مكررًا — ستحتوي المصفوفة على جهتي اتصال مع id=20",
+      "خطأ في التشغيل ArrayIndexOutOfBoundsException",
+      "الإضافة ستفشل بصمت — لن يتم إدخال العنصر",
+      "سيتم استبدال العنصر الموجود مع id=20 بالجديد"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الدالة لا تتحقق من التكرارات — هي فقط تجد الموقع الصحيح وتدخل. سيتم إدخال العنصر الجديد مع id=20 بجانب العنصر الموجود."
+      },
+      {
+        "type": "he",
+        "text": "إذا كان يجب منع التكرارات، يجب إضافة حلقة بحث قبل الإدخال وإرجاع false إذا كان id موجودًا بالفعل."
+      },
+      {
+        "type": "code",
+        "text": "// i=2: id=30 > 20 → shift right, i=1\n// i=1: id=20 > 20? no → stop\n// contacts[2] = new Contact(20)\n// Result: [id=10, id=20, id=20, id=30] ← duplicate!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيحدث إذا استدعينا addSorted مع كائن يحتوي على معرف موجود بالفعل؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — toString مع تصفية",
+    "text": "ماذا سيعيد الكود؟",
+    "code": "// Class Library manages an array of Book\n// Book has: getTitle(), isAvailable() (boolean)\npublic String availableBooks() {\n    if (_size == 0) return \"No books\";\n    String result = \"Available:\\n\";\n    boolean found = false;\n    for (int i = 0; i < _size; i++) {\n        if (_books[i].isAvailable()) {\n            result += \"- \" + _books[i].getTitle() + \"\\n\";\n            found = true;\n        }\n    }\n    return found ? result : \"None available\";\n}\n// Array:\n// [\"1984\" avail=false, \"Dune\" avail=true,\n//  \"Brave\" avail=false, \"Hobbit\" avail=true]",
+    "options": [
+      {
+        "type": "code",
+        "text": "\"Available:\\n- Dune\\n- Hobbit\\n\""
+      },
+      {
+        "type": "code",
+        "text": "\"None available\""
+      },
+      {
+        "type": "code",
+        "text": "\"Available:\\n- 1984\\n- Brave\\n\""
+      },
+      {
+        "type": "code",
+        "text": "\"No books\""
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "هناك كتب متاحة (Dune و-Hobbit) لذلك العلم found يصبح true وتُعاد السلسلة مع العنوان."
+      },
+      {
+        "type": "code",
+        "text": "i=0: 1984 → not available\ni=1: Dune → available → result += \"- Dune\\n\", found=true\ni=2: Brave → not available\ni=3: Hobbit → available → result += \"- Hobbit\\n\"\nfound=true → return result"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيعيد الكود؟"
+      }
+    ]
+  },
+  {
+    "topic": "تصميم — مقارنة طرق الإزالة",
+    "text": "فئة Schedule تدير مصفوفة مرتبة من Appointment حسب الساعة. أي دالة إزالة صحيحة لها؟",
+    "code": "// Version A — swap with last (fast, breaks order):\n_appointments[i] = _appointments[_size - 1];\n_appointments[_size - 1] = null;\n_size--;\n\n// Version B — shift left (preserves order):\nfor (int j = i; j < _size - 1; j++)\n    _appointments[j] = _appointments[j + 1];\n_appointments[_size - 1] = null;\n_size--;",
+    "options": [
+      "النسخة ب — لأن المصفوفة مرتبة، والحفاظ على الترتيب ضروري لعمليات مثل البحث الثنائي والعرض الصحيح",
+      "النسخة أ — لأنها أسرع ودائمًا مفضلة",
+      "النسختان متكافئتان — الترتيب لا يهم",
+      "النسخة أ — لأن النسخة ب تسبب استثناء حدود"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "عندما يجب أن تبقى المصفوفة مرتبة (على سبيل المثال لأغراض البحث الثنائي أو العرض حسب الساعة)، فإن النسخة أ تكسر الترتيب وبالتالي غير مناسبة."
+      },
+      {
+        "type": "he",
+        "text": "النسخة ب الإزالة مع الإزاحة تحافظ على الترتيب — هذا هو الثمن المطلوب للحفاظ على الثبات للمصفوفة المرتبة."
+      },
+      {
+        "type": "code",
+        "text": "// sorted: [8:00, 9:00, 10:00, 11:00]\n// remove 9:00 (i=1):\n// Version A: [8:00, 11:00, 10:00]  ← order broken!\n// Version B: [8:00, 10:00, 11:00]  ← order preserved ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "فئة Schedule تدير مصفوفة مرتبة من Appointment حسب الساعة. أي دالة إزالة صحيحة لها؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع معقد — فئتان",
+    "text": "ماذا سيُطبع؟",
+    "code": "// Class Course manages an array of Student\n// Student has: getName(), getGrade() (int)\npublic int countPassing(int threshold) {\n    int count = 0;\n    for (int i = 0; i < _size; i++)\n        if (_students[i].getGrade() >= threshold)\n            count++;\n    return count;\n}\npublic Student getTopStudent() {\n    Student top = _students[0];\n    for (int i = 1; i < _size; i++)\n        if (_students[i].getGrade() > top.getGrade())\n            top = _students[i];\n    return top;\n}\n// Course: [Alice=72, Bob=55, Carol=88, Dan=60, Eve=91]\nSystem.out.println(course.countPassing(60) + \" \" +\n    course.getTopStudent().getName());",
+    "options": [
+      "4 Eve",
+      "3 Eve",
+      "4 Carol",
+      "5 Eve"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "countPassing(60) تحسب الطلاب الذين لديهم درجة >= 60: Alice(72), Carol(88), Dan(60), Eve(91) — أربعة طلاب. Bob(55) لا يمر."
+      },
+      {
+        "type": "code",
+        "text": "countPassing(60):\nAlice=72>=60 ✓ Bob=55>=60 ✗\nCarol=88>=60 ✓ Dan=60>=60 ✓ Eve=91>=60 ✓\n→ count=4\n\ngetTopStudent():\ntop=Alice(72)→Carol(88)→Eve(91)\n→ Eve\n\n// output: 4 Eve"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا سيُطبع؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — upgradeAll مع شرط",
+    "text": "ماذا يجب إكماله بدلاً من ??? لكي تقوم الدالة بزيادة درجة كل طالب يحقق الشرط، وتعيد عدد الطلاب الذين تمت ترقيتهم؟",
+    "code": "// Class Course manages an array of Student\n// Student has: getGrade(), setGrade(int)\npublic int upgradeAll(int threshold, int bonus) {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        if ( ??? ) {\n            int newGrade = _students[i].getGrade() + bonus;\n            _students[i].setGrade(Math.min(newGrade, 100));\n            count++;\n        }\n    }\n    return count;\n}\n// upgradeAll(60, 5):\n// [Alice=72, Bob=55, Carol=88, Dan=60]",
+    "options": [
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() >= threshold"
+      },
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() > threshold"
+      },
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() <= threshold"
+      },
+      {
+        "type": "code",
+        "text": "_students[i].getGrade() == threshold"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "المعامل threshold يحدد درجة الحد الأدنى للحصول على البونص — الطلاب الذين لديهم درجة أكبر أو تساوي threshold يتم ترقيتهم."
+      },
+      {
+        "type": "he",
+        "text": "استخدام > لن يشمل الطلاب الذين لديهم درجة تساوي الحد (Dan=60 لن يتم ترقيته). استخدام <= سيرقي فقط الطلاب الضعفاء."
+      },
+      {
+        "type": "code",
+        "text": "// upgradeAll(60, 5):\nAlice=72>=60 ✓ → 77\nBob=55>=60   ✗\nCarol=88>=60 ✓ → 93\nDan=60>=60   ✓ → 65\n// returns 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من ??? لكي تقوم الدالة بزيادة درجة كل طالب يحقق الشرط، وتعيد عدد الطلاب الذين تمت ترقيتهم؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      const text = typeof option === 'string' ? option : String(option);
+      // זיהוי טקסט עברי — מתחיל בתו עברי (לאחר הסרת ‏)
+      const clean = text.replace(/‏/g, '').trim();
+      const isHebrew = /^[֐-׿יִ-ﭏ]/.test(clean);
+      if (isHebrew) {
+        return `<span class="opt-text-he">${text}</span>`;
+      }
+      // קוד / אנגלית — נשאר LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${text}</span>`;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
