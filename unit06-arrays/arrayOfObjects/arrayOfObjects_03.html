@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           תבנית בסיסית — תרגול לולאת for ב-Java                ║
+  ║                                                                  ║
+  ║  הוראות שימוש:                                                   ║
+  ║  1. שנה את 03 למספר הרמה (לדוגמה: "04")              ║
+  ║  2. שנה את LEVEL_COLOR לצבע הרמה (ראה טבלת צבעים למטה)        ║
+  ║  3. הכנס את שאלות העברית במקום questionsHe = [ ... ]           ║
+  ║  4. הכנס את שאלות הערבית במקום questionsAr = [ ... ]           ║
+  ║                                                                  ║
+  ║  מבנה שאלה:                                                      ║
+  ║  {                                                               ║
+  ║    topic: "נושא השאלה",                                          ║
+  ║    textParts: [                                                   ║
+  ║      { type: "he", text: "טקסט עברי" },                         ║
+  ║      { type: "code", text: "קוד" },                              ║
+  ║      { type: "he", text: "המשך טקסט" }                          ║
+  ║    ],                                                            ║
+  ║    code: `קוד Java להצגה`,                                       ║
+  ║    options: ["א", "ב", "ג", "ד"],                               ║
+  ║    answer: 0,  // אינדקס התשובה הנכונה (0-3)                    ║
+  ║    explanation: [                                                 ║
+  ║      { type: "he", text: "הסבר" },                              ║
+  ║      { type: "code", text: "קוד" }                              ║
+  ║    ]                                                             ║
+  ║  }                                                               ║
+  ║                                                                  ║
+  ║  טבלת צבעים לפי רמה:                                            ║
+  ║  רמה 01 — סגול:   #7F77DD / #EEEDFE / #3C3489                  ║
+  ║  רמה 02 — כתום:   #D4900A / #FFF3CD / #856404                  ║
+  ║  רמה 03 — אדום:   #C0392B / #FCE8E8 / #8B1A1A                  ║
+  ║  רמה 04 — ירוק:   #27AE60 / #E8F8EE / #1A5E35  (הצעה)         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ══════════════════════════════════════════
+       שנה כאן את מספר הרמה בכותרת הדפדפן
+  ══════════════════════════════════════════ -->
+  <title>תרגול לולאת for ב-Java — רמה 03</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    /* ══════════════════════════════════════════
+       צבע הרמה — שנה את הערכים בהתאם לטבלה
+    ══════════════════════════════════════════ */
+    :root {
+      --color-main:   #C0392B;   /* לדוגמה: #C0392B */
+      --color-light:  #FCE8E8;  /* לדוגמה: #FCE8E8 */
+      --color-dark:   #8B1A1A;   /* לדוגמה: #8B1A1A */
+      --color-border: #F5C0C0; /* לדוגמה: #F5C0C0 */
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    #screen-he, #screen-ar { display: none; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #888;
+      background: none;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge { font-size: 12px; color: #888; }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .q-text-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 0;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 22px;
+      color: #aaa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show { display: block; }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover { background: #f5f5f5; }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">תרגול מערך אוביקטים ב- Java</div>
+      <div class="home-title-ar">تدريب على مصفوفة الكائنات في Java</div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <!-- שנה את מספר הרמה כאן -->
+      <div class="home-level-badge">רמה 03 &nbsp;|&nbsp; المستوى 03</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">רמה 03</span>
+          תרגול מערך אוביקטים ב- Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <!-- שנה את מספר הרמה כאן -->
+          <span class="level-tag">المستوى 03</span>
+          تدريب على مصفوفة الكائنات في Java
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+       כל שאלה במבנה הבא:
+       {
+         topic: "נושא השאלה",
+         textParts: [
+           { type: "he",   text: "טקסט עברי" },
+           { type: "code", text: "קוד" },
+           { type: "he",   text: "המשך טקסט" }
+         ],
+         code: `קוד Java`,
+         options: ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],
+         answer: 0,
+         explanation: [
+           { type: "he",   text: "הסבר" },
+           { type: "code", text: "קוד" }
+         ]
+       }
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "topic": "השלמת תנאי — addStudent",
+    "text": "מה יש להשלים במקום ??? כדי שהשיטה תוסיף תלמיד רק אם יש מקום ואין כפילות מזהה?",
+    "code": "// Class Camp manages an array of Student\npublic boolean addStudent(Student s) {\n    for (int i = 0; i < _size; i++) {\n        if (_students[i].getId() == s.getId())\n            return false;\n    }\n    if ( ??? )\n        return false;\n    _students[_size] = s;\n    _size++;\n    return true;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_size >= _students.length"
+      },
+      {
+        "type": "code",
+        "text": "_size > _students.length"
+      },
+      {
+        "type": "code",
+        "text": "_size == 0"
+      },
+      {
+        "type": "code",
+        "text": "_size <= _students.length"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הבדיקה חייבת לוודא שאין מקום פנוי לפני ההוספה. כשהתכונה size שווה לאורך המערך — הוא מלא."
+      },
+      {
+        "type": "he",
+        "text": "שימוש ב-> יגרום לבדיקה מאוחרת מדי ויאפשר מצב בו size גדול מהאורך. שימוש ב-<= יחזיר false גם כשיש מקום."
+      },
+      {
+        "type": "code",
+        "text": "// array size=5, _size=5:\n_size >= _students.length → 5 >= 5 → true → return false ✓\n_size > _students.length  → 5 > 5  → false → continues → exception! ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום ??? כדי שהשיטה תוסיף תלמיד רק אם יש מקום ואין כפילות מזהה?"
+      }
+    ]
+  },
+  {
+    "topic": "זיהוי שגיאה — removeBook",
+    "text": "מה הבאג בשיטת removeBook הבאה?",
+    "code": "// Class Library manages an array of Book\npublic boolean removeBook(String title) {\n    for (int i = 0; i < _size; i++) {\n        if (_books[i].getTitle().equals(title)) {\n            _books[i] = _books[_size];  // ← bug here?\n            _books[_size] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}",
+    "options": [
+      "גישה ל-_books[_size] — זהו תא מחוץ לאיברים הפעילים ועשוי להיות null",
+      "הלולאה צריכה להתחיל מ-i=1 ולא מ-i=0",
+      "חסרה בדיקה שהמערך לא ריק לפני הלולאה",
+      "אין שגיאה — הקוד נכון"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "האיבר האחרון הפעיל נמצא באינדקס size-1, לא size. הגישה ל-books[size] מגיעה לתא שמעבר לאיברים הפעילים — שם יש null."
+      },
+      {
+        "type": "he",
+        "text": "התיקון: להשתמש ב-books[size - 1]."
+      },
+      {
+        "type": "code",
+        "text": "// _size=4, active elements: indices 0..3\n_books[_size]   = _books[4] = null  ✗\n_books[_size-1] = _books[3] = last element ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה הבאג בשיטת removeBook הבאה?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת לולאה — mostExpensive",
+    "text": "מה יש להשלים במקום ??? כדי שהשיטה תמצא את המוצר היקר ביותר?",
+    "code": "// Class Store manages an array of Product\npublic Product mostExpensive() {\n    if (_size == 0) return null;\n    Product best = _products[0];\n    for (int i = 1; i < _size; i++) {\n        if ( ??? ) {\n            best = _products[i];\n        }\n    }\n    return best;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_products[i].getPrice() > best.getPrice()"
+      },
+      {
+        "type": "code",
+        "text": "_products[i].getPrice() < best.getPrice()"
+      },
+      {
+        "type": "code",
+        "text": "_products[i].getPrice() > _products[0].getPrice()"
+      },
+      {
+        "type": "code",
+        "text": "_products[i] > best"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "משווים את המחיר של הרכיב הנוכחי לעומת המועמד הנוכחי (best). שימוש ב-products[0] במקום best לא יעדכן את המועמד כראוי אחרי העדכון הראשון."
+      },
+      {
+        "type": "he",
+        "text": "לא ניתן להשוות ישירות אובייקטים עם > — צריך לגשת לשדה המספרי."
+      },
+      {
+        "type": "code",
+        "text": "// best updates when a higher price is found:\nbest = products[0]  // init\ni=1: price[1] > price[best]? yes → best = products[1]\ni=2: price[2] > price[best]? ... and so on"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום ??? כדי שהשיטה תמצא את המוצר היקר ביותר?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה מורכבת — countByCategory",
+    "text": "מה יחזיר countByCategory(\"Sport\") ?",
+    "code": "// Class EventManager manages an array of Event\n// Each Event has a category field of type String\npublic int countByCategory(String cat) {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        if (_events[i].getCategory().equals(cat))\n            count++;\n    }\n    return count;\n}\n// The array:\n// [Music, Sport, Sport, Culture, Sport]\n// _size = 5",
+    "options": [
+      {
+        "type": "code",
+        "text": "3"
+      },
+      {
+        "type": "code",
+        "text": "2"
+      },
+      {
+        "type": "code",
+        "text": "5"
+      },
+      {
+        "type": "code",
+        "text": "1"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה עוברת על כל 5 האירועים ומונה את אלה שהקטגוריה שלהם שווה ל-Sport."
+      },
+      {
+        "type": "code",
+        "text": "i=0: Music   == Sport? no\ni=1: Sport   == Sport? yes → count=1\ni=2: Sport   == Sport? yes → count=2\ni=3: Culture == Sport? no\ni=4: Sport   == Sport? yes → count=3\n// return 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יחזיר countByCategory(\"Sport\") ?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — removeByCategory",
+    "text": "מה יש להשלים במקום ??? כדי שהשיטה תסיר את כל האירועים מקטגוריה מסוימת?",
+    "code": "public int removeByCategory(String cat) {\n    int removed = 0;\n    int i = 0;\n    while (i < _size) {\n        if (_events[i].getCategory().equals(cat)) {\n            _events[i] = _events[_size - 1];\n            _events[_size - 1] = null;\n            _size--;\n            ???\n        } else {\n            i++;\n        }\n    }\n    return removed;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "removed++"
+      },
+      {
+        "type": "code",
+        "text": "i++"
+      },
+      {
+        "type": "code",
+        "text": "removed++; i++"
+      },
+      {
+        "type": "code",
+        "text": "i--"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לאחר שמחליפים את האיבר הנוכחי באחרון, האיבר החדש ב-i עדיין לא נבדק — לכן לא מקדמים את i."
+      },
+      {
+        "type": "he",
+        "text": "אבל כן צריך לספור שהסרה בוצעה, לכן רק removed++."
+      },
+      {
+        "type": "code",
+        "text": "// if we did i++ after the swap:\n// the new element at i would not be checked → missed!\n// solution: stay on same i, only count: removed++"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום ??? כדי שהשיטה תסיר את כל האירועים מקטגוריה מסוימת?"
+      }
+    ]
+  },
+  {
+    "topic": "זיהוי שגיאה — toString עם קריאה על null",
+    "text": "מה הבאג בשיטת toString?",
+    "code": "// Class Clinic manages an array of Patient\npublic String toString() {\n    String result = \"Patients:\\n\";\n    for (int i = 0; i < _patients.length; i++) {\n        result += _patients[i].getName() + \"\\n\";\n    }\n    return result;\n}",
+    "options": [
+      "הלולאה רצה עד אורך המערך ולא עד התכונה size — תאים פנויים יגרמו ל-NullPointerException",
+      "חסרה כותרת בתחילת המחרוזת",
+      "צריך להשתמש ב-println ולא ב-+=",
+      "אין שגיאה — הקוד נכון"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה עוברת עד אורך המערך — כולל תאים שמעבר לאיברים הפעילים, שם הערך הוא null."
+      },
+      {
+        "type": "he",
+        "text": "קריאה לשיטת getName על null תגרום ל-NullPointerException. הפתרון: להשתמש בתכונה size כגבול הלולאה."
+      },
+      {
+        "type": "code",
+        "text": "// size=3, _patients.length=10:\n// cells 3..9 are null\n// i=3: _patients[3].getName() → NullPointerException!\n\n// fix:\nfor (int i = 0; i < _size; i++)"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה הבאג בשיטת toString?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — לולאה מקוננת",
+    "text": "מה יחזיר foo לנתון הבא?",
+    "code": "// Class SchoolClass manages an array of Student\n// Each Student has a name (String)\npublic int foo() {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        for (int j = i + 1; j < _size; j++) {\n            if (_students[i].getName()\n                    .equals(_students[j].getName()))\n                count++;\n        }\n    }\n    return count;\n}\n// The array: [Dana, Yosi, Dana, Michal, Yosi, Dana]\n// _size = 6",
+    "options": [
+      {
+        "type": "code",
+        "text": "4"
+      },
+      {
+        "type": "code",
+        "text": "3"
+      },
+      {
+        "type": "code",
+        "text": "2"
+      },
+      {
+        "type": "code",
+        "text": "6"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה הפנימית מתחילה מ-j=i+1, כך שכל זוג נספר פעם אחת בלבד."
+      },
+      {
+        "type": "code",
+        "text": "// Pairs found:\nDana(0)-Dana(2):  count=1\nDana(0)-Dana(5):  count=2\nYosi(1)-Yosi(4):  count=3\nDana(2)-Dana(5):  count=4\n// return 4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יחזיר foo לנתון הבא?"
+      }
+    ]
+  },
+  {
+    "topic": "השלמת קוד — findByRange",
+    "text": "מה יש להשלים במקום ??? כדי שהשיטה תמצא את הספר הראשון עם מספר עמודים בטווח נתון?",
+    "code": "// Class Library manages an array of Book\n// Each Book has getPages() returning int\npublic Book findByRange(int min, int max) {\n    for (int i = 0; i < _size; i++) {\n        if ( ??? )\n            return _books[i];\n    }\n    return null;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_books[i].getPages() >= min &&\n_books[i].getPages() <= max"
+      },
+      {
+        "type": "code",
+        "text": "_books[i].getPages() > min &&\n_books[i].getPages() < max"
+      },
+      {
+        "type": "code",
+        "text": "_books[i].getPages() >= min ||\n_books[i].getPages() <= max"
+      },
+      {
+        "type": "code",
+        "text": "_books[i].getPages() == min"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הטווח כולל את גבולותיו, לכן >= ו-<=. שימוש ב-> ו-< לא כולל את הגבולות עצמם."
+      },
+      {
+        "type": "he",
+        "text": "שימוש ב-|| במקום && יחזיר כמעט כל ספר (כי אחד מהתנאים כמעט תמיד מתקיים)."
+      },
+      {
+        "type": "code",
+        "text": "// book with 150 pages, min=100, max=200:\n150 >= 100 && 150 <= 200 → true ✓\n150 > 100  && 150 < 200  → true (but excludes 100 and 200) ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יש להשלים במקום ??? כדי שהשיטה תמצא את הספר הראשון עם מספר עמודים בטווח נתון?"
+      }
+    ]
+  },
+  {
+    "topic": "עקיבה — add ממוין",
+    "text": "מה יהיה תוכן המערך לאחר הוספת הסטודנט עם id=25 לרשימה ממוינת?",
+    "code": "// addStudent sorted in ascending order by id\npublic void addSorted(Student s) {\n    int i = _size - 1;\n    while (i >= 0 && _students[i].getId() > s.getId()) {\n        _students[i + 1] = _students[i];\n        i--;\n    }\n    _students[i + 1] = s;\n    _size++;\n}\n// Before: [id=10, id=20, id=30, id=40]\n// _size = 4\naddSorted(new Student(25, ...));",
+    "options": [
+      "id=10, id=20, id=25, id=30, id=40",
+      "id=10, id=20, id=30, id=25, id=40",
+      "id=25, id=10, id=20, id=30, id=40",
+      "id=10, id=20, id=30, id=40, id=25"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הלולאה מזיזה ימינה את כל האיברים הגדולים מ-25 (כלומר 30 ו-40), ואז מוסיפה 25 במיקום הנכון."
+      },
+      {
+        "type": "code",
+        "text": "i=3: students[3]=40 > 25 → students[4]=40, i=2\ni=2: students[2]=30 > 25 → students[3]=30, i=1\ni=1: students[1]=20 > 25? no → stop\nstudents[2] = s(25)\n// [10, 20, 25, 30, 40] ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה תוכן המערך לאחר הוספת הסטודנט עם id=25 לרשימה ממוינת?"
+      }
+    ]
+  },
+  {
+    "topic": "תכנון — מדוע צריך תכונת size נפרדת",
+    "text": "מחלקה Playlist מנהלת מערך של Song. מפתח הציע לא לשמור תכונת size ובמקום זאת לספור בכל פעם את האיברים שאינם null. מה הבעיה בגישה זו?",
+    "code": "// Instead of _size, count each time:\npublic int getSize() {\n    int count = 0;\n    for (int i = 0; i < _songs.length; i++) {\n        if (_songs[i] != null)\n            count++;\n    }\n    return count;\n}\n// Usage:\npublic void addSong(Song s) {\n    int sz = getSize();\n    if (sz < _songs.length)\n        _songs[sz] = s;\n}",
+    "options": [
+      "הגישה מניחה שהאיברים הפעילים תמיד רצופים מההתחלה — לאחר הסרה עשויים להיות חורים שישבשו את sz",
+      "לא ניתן לקרוא לשיטה בתוך שיטה אחרת ב-Java",
+      "getSize תמיד תחזיר 0 כי מערכי אובייקטים מאותחלים ל-null",
+      "אין בעיה — זו גישה תקינה לחלוטין"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אם בוצעה הסרה עם swap-with-last, עשויים להיות null בתוך המערך ולא רק בסוף. ספירת non-null לא תיתן את האינדקס הנכון להוספה."
+      },
+      {
+        "type": "he",
+        "text": "בנוסף, ספירה בכל קריאה יקרה יותר מגישה לתכונה שמתעדכנת רק בשינויים. תכונת size היא גישה נכונה ויעילה יותר."
+      },
+      {
+        "type": "code",
+        "text": "// after remove with swap:\n// [A, C, null, null]  ← sz=2, correct\n// after remove leaving a hole:\n// [A, null, C, null]  ← sz=2, but _songs[2]=C !\n// addSong writes to _songs[2] and overwrites C!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מחלקה Playlist מנהלת מערך של Song. מפתח הציע לא לשמור תכונת size ובמקום זאת לספור בכל פעם את האיברים שאינם null. מה הבעיה בגישה זו?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "topic": "إكمال شرط — addStudent",
+    "text": "ماذا يجب إكماله بدلاً من ??? لكي تضيف الدالة طالبًا فقط إذا كان هناك مكان ولا يوجد تكرار للمعرف؟",
+    "code": "// Class Camp manages an array of Student\npublic boolean addStudent(Student s) {\n    for (int i = 0; i < _size; i++) {\n        if (_students[i].getId() == s.getId())\n            return false;\n    }\n    if ( ??? )\n        return false;\n    _students[_size] = s;\n    _size++;\n    return true;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_size >= _students.length"
+      },
+      {
+        "type": "code",
+        "text": "_size > _students.length"
+      },
+      {
+        "type": "code",
+        "text": "_size == 0"
+      },
+      {
+        "type": "code",
+        "text": "_size <= _students.length"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "التحقق يجب أن يضمن عدم وجود مكان فارغ قبل الإضافة. عندما تكون الخاصية size مساوية لطول المصفوفة — فهي ممتلئة."
+      },
+      {
+        "type": "he",
+        "text": "استخدام > سيتسبب في تحقق متأخر جدًا وسيسمح بحالة يكون فيها size أكبر من الطول. استخدام <= سيعيد false حتى عندما يكون هناك مكان."
+      },
+      {
+        "type": "code",
+        "text": "// array size=5, _size=5:\n_size >= _students.length → 5 >= 5 → true → return false ✓\n_size > _students.length  → 5 > 5  → false → continues → exception! ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من ??? لكي تضيف الدالة طالبًا فقط إذا كان هناك مكان ولا يوجد تكرار للمعرف؟"
+      }
+    ]
+  },
+  {
+    "topic": "تحديد خطأ — removeBook",
+    "text": "ما هو الخطأ في الدالة removeBook التالية؟",
+    "code": "// Class Library manages an array of Book\npublic boolean removeBook(String title) {\n    for (int i = 0; i < _size; i++) {\n        if (_books[i].getTitle().equals(title)) {\n            _books[i] = _books[_size];  // ← bug here?\n            _books[_size] = null;\n            _size--;\n            return true;\n        }\n    }\n    return false;\n}",
+    "options": [
+      "الوصول إلى _books[_size] — هذا هو خانة خارج العناصر النشطة وقد يكون null",
+      "يجب أن تبدأ الحلقة من i=1 وليس من i=0",
+      "ينقص فحص أن المصفوفة ليست فارغة قبل الحلقة",
+      "لا يوجد خطأ — الكود صحيح"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "العنصر الأخير النشط موجود في الفهرس size-1، وليس size. الوصول إلى books[size] يصل إلى خانة خارج العناصر النشطة — حيث يوجد null."
+      },
+      {
+        "type": "he",
+        "text": "التصحيح: استخدام books[size - 1]."
+      },
+      {
+        "type": "code",
+        "text": "// _size=4, active elements: indices 0..3\n_books[_size]   = _books[4] = null  ✗\n_books[_size-1] = _books[3] = last element ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو الخطأ في الدالة removeBook التالية؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال حلقة — mostExpensive",
+    "text": "ماذا يجب إكماله بدلاً من ??? لكي تجد الدالة المنتج الأغلى؟",
+    "code": "// Class Store manages an array of Product\npublic Product mostExpensive() {\n    if (_size == 0) return null;\n    Product best = _products[0];\n    for (int i = 1; i < _size; i++) {\n        if ( ??? ) {\n            best = _products[i];\n        }\n    }\n    return best;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_products[i].getPrice() > best.getPrice()"
+      },
+      {
+        "type": "code",
+        "text": "_products[i].getPrice() < best.getPrice()"
+      },
+      {
+        "type": "code",
+        "text": "_products[i].getPrice() > _products[0].getPrice()"
+      },
+      {
+        "type": "code",
+        "text": "_products[i] > best"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نقارن سعر العنصر الحالي مع المرشح الحالي (best). استخدام products[0] بدلاً من best لن يحدث المرشح بشكل صحيح بعد التحديث الأول."
+      },
+      {
+        "type": "he",
+        "text": "لا يمكن مقارنة الكائنات مباشرة باستخدام > — يجب الوصول إلى الحقل الرقمي."
+      },
+      {
+        "type": "code",
+        "text": "// best updates when a higher price is found:\nbest = products[0]  // init\ni=1: price[1] > price[best]? yes → best = products[1]\ni=2: price[2] > price[best]? ... and so on"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من ??? لكي تجد الدالة المنتج الأغلى؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع معقد — countByCategory",
+    "text": "ماذا ستعيد countByCategory(\"Sport\") ؟",
+    "code": "// Class EventManager manages an array of Event\n// Each Event has a category field of type String\npublic int countByCategory(String cat) {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        if (_events[i].getCategory().equals(cat))\n            count++;\n    }\n    return count;\n}\n// The array:\n// [Music, Sport, Sport, Culture, Sport]\n// _size = 5",
+    "options": [
+      {
+        "type": "code",
+        "text": "3"
+      },
+      {
+        "type": "code",
+        "text": "2"
+      },
+      {
+        "type": "code",
+        "text": "5"
+      },
+      {
+        "type": "code",
+        "text": "1"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تمر على جميع الأحداث الخمسة وتعدّ تلك التي تكون فئتها تساوي Sport."
+      },
+      {
+        "type": "code",
+        "text": "i=0: Music   == Sport? no\ni=1: Sport   == Sport? yes → count=1\ni=2: Sport   == Sport? yes → count=2\ni=3: Culture == Sport? no\ni=4: Sport   == Sport? yes → count=3\n// return 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا ستعيد countByCategory(\"Sport\") ؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — removeByCategory",
+    "text": "ماذا يجب إكماله بدلاً من ??? لكي تقوم الدالة بإزالة جميع الأحداث من فئة معينة؟",
+    "code": "public int removeByCategory(String cat) {\n    int removed = 0;\n    int i = 0;\n    while (i < _size) {\n        if (_events[i].getCategory().equals(cat)) {\n            _events[i] = _events[_size - 1];\n            _events[_size - 1] = null;\n            _size--;\n            ???\n        } else {\n            i++;\n        }\n    }\n    return removed;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "removed++"
+      },
+      {
+        "type": "code",
+        "text": "i++"
+      },
+      {
+        "type": "code",
+        "text": "removed++; i++"
+      },
+      {
+        "type": "code",
+        "text": "i--"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "לאחר שמחליפים את האיבר הנוכחי באחרון, האיבר החדש ב-i עדיין לא נבדק — לכן לא מקדמים את i."
+      },
+      {
+        "type": "he",
+        "text": "אבל כן צריך לספור שהסרה בוצעה, לכן רק removed++."
+      },
+      {
+        "type": "code",
+        "text": "// if we did i++ after the swap:\n// the new element at i would not be checked → missed!\n// solution: stay on same i, only count: removed++"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من ??? لكي تقوم الدالة بإزالة جميع الأحداث من فئة معينة؟"
+      }
+    ]
+  },
+  {
+    "topic": "تحديد خطأ — toString مع استدعاء على null",
+    "text": "ما هو الخطأ في دالة toString؟",
+    "code": "// Class Clinic manages an array of Patient\npublic String toString() {\n    String result = \"Patients:\\n\";\n    for (int i = 0; i < _patients.length; i++) {\n        result += _patients[i].getName() + \"\\n\";\n    }\n    return result;\n}",
+    "options": [
+      "الحلقة تعمل حتى طول المصفوفة وليس حتى الخاصية size — الخلايا الفارغة ستسبب NullPointerException",
+      "العنوان مفقود في بداية السلسلة",
+      "يجب استخدام println بدلاً من +=",
+      "لا يوجد خطأ — الكود صحيح"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تمر حتى طول المصفوفة — بما في ذلك الخلايا التي تتجاوز العناصر النشطة، حيث تكون القيمة null."
+      },
+      {
+        "type": "he",
+        "text": "استدعاء دالة getName على null سيسبب NullPointerException. الحل: استخدام الخاصية size كحد للحلقة."
+      },
+      {
+        "type": "code",
+        "text": "// size=3, _patients.length=10:\n// cells 3..9 are null\n// i=3: _patients[3].getName() → NullPointerException!\n\n// fix:\nfor (int i = 0; i < _size; i++)"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو الخطأ في دالة toString؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — حلقة متداخلة",
+    "text": "ماذا ستعيد الدالة foo للبيانات التالية؟",
+    "code": "// Class SchoolClass manages an array of Student\n// Each Student has a name (String)\npublic int foo() {\n    int count = 0;\n    for (int i = 0; i < _size; i++) {\n        for (int j = i + 1; j < _size; j++) {\n            if (_students[i].getName()\n                    .equals(_students[j].getName()))\n                count++;\n        }\n    }\n    return count;\n}\n// The array: [Dana, Yosi, Dana, Michal, Yosi, Dana]\n// _size = 6",
+    "options": [
+      {
+        "type": "code",
+        "text": "4"
+      },
+      {
+        "type": "code",
+        "text": "3"
+      },
+      {
+        "type": "code",
+        "text": "2"
+      },
+      {
+        "type": "code",
+        "text": "6"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة الداخلية تبدأ من j=i+1، لذلك كل زوج يُحسب مرة واحدة فقط."
+      },
+      {
+        "type": "code",
+        "text": "// Pairs found:\nDana(0)-Dana(2):  count=1\nDana(0)-Dana(5):  count=2\nYosi(1)-Yosi(4):  count=3\nDana(2)-Dana(5):  count=4\n// return 4"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا ستعيد الدالة foo للبيانات التالية؟"
+      }
+    ]
+  },
+  {
+    "topic": "إكمال الكود — findByRange",
+    "text": "ماذا يجب إكماله بدلاً من ??? لكي تجد الدالة الكتاب الأول بعدد صفحات ضمن نطاق معين؟",
+    "code": "// Class Library manages an array of Book\n// Each Book has getPages() returning int\npublic Book findByRange(int min, int max) {\n    for (int i = 0; i < _size; i++) {\n        if ( ??? )\n            return _books[i];\n    }\n    return null;\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "_books[i].getPages() >= min &&\n_books[i].getPages() <= max"
+      },
+      {
+        "type": "code",
+        "text": "_books[i].getPages() > min &&\n_books[i].getPages() < max"
+      },
+      {
+        "type": "code",
+        "text": "_books[i].getPages() >= min ||\n_books[i].getPages() <= max"
+      },
+      {
+        "type": "code",
+        "text": "_books[i].getPages() == min"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "النطاق يشمل حدوده، لذلك >= و <=. استخدام > و < لا يشمل الحدود نفسها."
+      },
+      {
+        "type": "he",
+        "text": "استخدام || بدلاً من && سيعيد تقريباً أي كتاب (لأن أحد الشروط يتحقق تقريباً دائماً)."
+      },
+      {
+        "type": "code",
+        "text": "// book with 150 pages, min=100, max=200:\n150 >= 100 && 150 <= 200 → true ✓\n150 > 100  && 150 < 200  → true (but excludes 100 and 200) ✗"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ماذا يجب إكماله بدلاً من ??? لكي تجد الدالة الكتاب الأول بعدد صفحات ضمن نطاق معين؟"
+      }
+    ]
+  },
+  {
+    "topic": "تتبع — إضافة مصفوفة مرتبة",
+    "text": "ما هو محتوى المصفوفة بعد إضافة الطالب مع id=25 إلى القائمة المرتبة؟",
+    "code": "// addStudent sorted in ascending order by id\npublic void addSorted(Student s) {\n    int i = _size - 1;\n    while (i >= 0 && _students[i].getId() > s.getId()) {\n        _students[i + 1] = _students[i];\n        i--;\n    }\n    _students[i + 1] = s;\n    _size++;\n}\n// Before: [id=10, id=20, id=30, id=40]\n// _size = 4\naddSorted(new Student(25, ...));",
+    "options": [
+      "id=10, id=20, id=25, id=30, id=40",
+      "id=10, id=20, id=30, id=25, id=40",
+      "id=25, id=10, id=20, id=30, id=40",
+      "id=10, id=20, id=30, id=40, id=25"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحلقة تحرك جميع العناصر الأكبر من 25 (أي 30 و 40) إلى اليمين، ثم تضيف 25 في الموقع الصحيح."
+      },
+      {
+        "type": "code",
+        "text": "i=3: students[3]=40 > 25 → students[4]=40, i=2\ni=2: students[2]=30 > 25 → students[3]=30, i=1\ni=1: students[1]=20 > 25? no → stop\nstudents[2] = s(25)\n// [10, 20, 25, 30, 40] ✓"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو محتوى المصفوفة بعد إضافة الطالب مع id=25 إلى القائمة المرتبة؟"
+      }
+    ]
+  },
+  {
+    "topic": "التخطيط — لماذا نحتاج خاصية size منفصلة",
+    "text": "فئة Playlist تدير مصفوفة من Song. اقترح مطور عدم الاحتفاظ بخاصية size وبدلاً من ذلك عدّ العناصر التي ليست null في كل مرة. ما المشكلة في هذا النهج؟",
+    "code": "// Instead of _size, count each time:\npublic int getSize() {\n    int count = 0;\n    for (int i = 0; i < _songs.length; i++) {\n        if (_songs[i] != null)\n            count++;\n    }\n    return count;\n}\n// Usage:\npublic void addSong(Song s) {\n    int sz = getSize();\n    if (sz < _songs.length)\n        _songs[sz] = s;\n}",
+    "options": [
+      "النهج يفترض أن العناصر النشطة دائمًا متتالية من البداية — بعد الإزالة قد تكون هناك فجوات تشوش sz",
+      "لا يمكن استدعاء دالة داخل دالة أخرى في Java",
+      "getSize دائمًا ستعيد 0 لأن مصفوفات الكائنات تُهيأ إلى null",
+      "لا توجد مشكلة — هذا نهج صحيح تمامًا"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "إذا تم تنفيذ إزالة مع swap-with-last، قد يكون هناك null داخل المصفوفة وليس فقط في النهاية. عدّ non-null لن يعطي الفهرس الصحيح للإضافة."
+      },
+      {
+        "type": "he",
+        "text": "بالإضافة إلى ذلك، العدّ في كل استدعاء أكثر تكلفة من الوصول إلى خاصية يتم تحديثها فقط عند التغييرات. خاصية size هي نهج صحيح وأكثر كفاءة."
+      },
+      {
+        "type": "code",
+        "text": "// after remove with swap:\n// [A, C, null, null]  ← sz=2, correct\n// after remove leaving a hole:\n// [A, null, C, null]  ← sz=2, but _songs[2]=C !\n// addSong writes to _songs[2] and overwrites C!"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "فئة Playlist تدير مصفوفة من Song. اقترح مطور عدم الاحتفاظ بخاصية size وبدلاً من ذلك عدّ العناصر التي ليست null في كل مرة. ما المشكلة في هذا النهج؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    function shuffleOptions(questions) {
+      return questions.map(q => {
+        const indices = q.options.map((_, i) => i);
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const newOptions = indices.map(i => q.options[i]);
+        const newAnswer  = indices.indexOf(q.answer);
+        return { ...q, options: newOptions, answer: newAnswer };
+      });
+    }
+
+    let shuffledHe = [];
+    let shuffledAr = [];
+
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על לולאות for',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة حلقات for',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`
+      }
+    };
+
+    function buildExplanation(lines) {
+      return lines.map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${l.text.replace(/\n/g, '<br>')}</span>`
+          : `<span class="exp-line">${l.text}</span>`
+      ).join('');
+    }
+
+    function buildQuestionText(parts) {
+      return parts.map(p =>
+        p.type === 'code'
+          ? `<span class="q-text-code">${p.text}</span>`
+          : `<span class="q-text-line">${p.text}</span>`
+      ).join('');
+    }
+
+    function buildOption(option) {
+      if (typeof option === 'object' && option.type === 'code') {
+        return `<span class="opt-code">${option.text}</span>`;
+      }
+      const text = typeof option === 'string' ? option : String(option);
+      // זיהוי טקסט עברי — מתחיל בתו עברי (לאחר הסרת ‏)
+      const clean = text.replace(/‏/g, '').trim();
+      const isHebrew = /^[֐-׿יִ-ﭏ]/.test(clean);
+      if (isHebrew) {
+        return `<span class="opt-text-he">${text}</span>`;
+      }
+      // קוד / אנגלית — נשאר LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${text}</span>`;
+    }
+
+    function render(lang) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const letters = ['A', 'B', 'C', 'D'];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${q.topic}</span>
+          </div>
+          <div class="q-text">${buildQuestionText(q.textParts)}</div>
+          <div class="code-block">${q.code}</div>
+          <div class="options" id="opts-${lang}">
+            ${q.options.map((o, i) => `<button class="opt" onclick="choose('${lang}',${i})"><span class="opt-letter">${letters[i]}.</span>${buildOption(o)}</button>`).join('')}
+          </div>
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function choose(lang, idx) {
+      const questions = lang === 'he' ? shuffledHe : shuffledAr;
+      const q = questions[state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      opts[idx].classList.add(idx === q.answer ? 'correct' : 'wrong');
+      if (idx !== q.answer) opts[q.answer].classList.add('correct');
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (idx === q.answer) state[lang].score++;
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    function restartQuiz(lang) {
+      state[lang] = { current: 0, score: 0 };
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      render(lang);
+    }
+
+    function startQuiz(lang) {
+      if (lang === 'he') shuffledHe = shuffleOptions(questionsHe);
+      else               shuffledAr = shuffleOptions(questionsAr);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+  </script>
+</body>
+
+</html>
