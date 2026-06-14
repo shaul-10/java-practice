@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>תרגיל: מערכת הרשמה לקייטנה</title>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --primary: #1d4ed8;
+      --primary-light: #eff6ff;
+      --border: #e2e8f0;
+      --green: #166534;
+      --green-light: #dcfce7;
+      --yellow: #854d0e;
+      --yellow-light: #fef9c3;
+      --red: #991b1b;
+      --red-light: #fee2e2;
+      --blue-light: #dbeafe;
+      --purple: #4c1d95;
+      --section-num: #6366f1;
+
+      /* Eclipse syntax colors */
+      --syn-bg:      #ffffff;
+      --syn-border:  #c8c8c8;
+      --syn-text:    #000000;
+      --syn-keyword: #7400b8;
+      --syn-type:    #0000c0;
+      --syn-string:  #2a00ff;
+      --syn-number:  #a90000;
+      --syn-comment: #3f7f5f;
+      --syn-method:  #000000;
+      --syn-param:   #000000;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    header {
+      background: linear-gradient(135deg, #1d4ed8 0%, #0891b2 100%);
+      color: white;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    header h1 { font-size: 2.2rem; margin-bottom: 12px; }
+    header p { max-width: 800px; margin: 0 auto; font-size: 1.05rem; opacity: 0.92; }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+
+    nav {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 20px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 8px;
+      z-index: 10;
+    }
+    nav h2 { font-size: 0.95rem; color: var(--muted); margin-bottom: 10px; }
+    nav ul { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; }
+    nav a {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--blue-light);
+      border-radius: 8px;
+      padding: 5px 10px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    nav a:hover { background: var(--blue-light); }
+
+    section {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    section h2 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--blue-light);
+    }
+
+    .method-card {
+      background: #fafbfc;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+    }
+    .method-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .method-num {
+      background: var(--section-num);
+      color: white;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.9rem; flex-shrink: 0;
+    }
+    .method-card h3 { font-size: 1.1rem; color: var(--text); }
+
+    /* ===== IntelliJ Light syntax highlighting ===== */
+    pre {
+      background: var(--syn-bg);
+      border: 2px solid var(--syn-border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin: 12px 0;
+      direction: ltr;
+      text-align: left;
+      color: var(--syn-text);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .kw  { color: var(--syn-keyword); font-weight: bold; }   /* keywords */
+    .tp  { color: var(--syn-type); }                          /* types */
+    .st  { color: var(--syn-string); }                        /* strings */
+    .nm  { color: var(--syn-number); }                        /* numbers */
+    .cm  { color: var(--syn-comment); font-style: italic; }   /* comments */
+    .mt  { color: var(--syn-method); }                        /* method names */
+    .pm  { color: var(--syn-param); }                         /* params/vars */
+
+    code { font-family: 'Courier New', monospace; font-size: 0.9em; }
+    p code, li code {
+      background: #eef2ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #3730a3;
+      font-size: 0.88em;
+    }
+
+    .note { background: var(--yellow-light); border-right: 4px solid #ca8a04; border-radius: 8px; padding: 12px 16px; margin: 12px 0; color: var(--yellow); font-size: 0.95rem; }
+    .tip  { background: var(--green-light);  border-right: 4px solid #16a34a; border-radius: 8px; padding: 12px 16px; margin: 12px 0; color: var(--green);  font-size: 0.95rem; }
+    .info { background: var(--primary-light); border-right: 4px solid var(--primary); border-radius: 8px; padding: 12px 16px; margin: 12px 0; color: var(--primary); font-size: 0.95rem; }
+    .warn { background: var(--red-light); border-right: 4px solid #dc2626; border-radius: 8px; padding: 12px 16px; margin: 12px 0; color: var(--red); font-size: 0.95rem; }
+
+    ul, ol { padding-right: 24px; margin: 8px 0; }
+    li { margin: 4px 0; }
+    p { margin: 8px 0; }
+
+    .signature {
+      display: inline-block;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      direction: ltr;
+      margin: 8px 0;
+    }
+
+    .tester-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 12px 0;
+    }
+    .tester-box h4 { color: var(--green); margin-bottom: 8px; font-size: 0.95rem; }
+
+    .back-top { margin-top: 16px; }
+    .back-top a { color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 700; }
+
+    .difficulty { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 12px; margin-right: 8px; font-weight: 700; }
+    .d1 { background: #dcfce7; color: #166534; }
+    .d2 { background: #fef9c3; color: #854d0e; }
+    .d3 { background: #fee2e2; color: #991b1b; }
+    .d4 { background: #ede9fe; color: #4c1d95; }
+
+    footer { text-align: center; color: var(--muted); padding: 32px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<header id="top">
+  <h1>תרגיל: מערכת הרשמה לקייטנה</h1>
+  <p>
+    לקראת הקיץ מוצעות קייטנות רבות לתלמידים. כדי לנהל את ההרשמה ביעילות,
+    נבנה מערכת תוכנה המאפשרת להוסיף משתתפים, לחפש פרטים, לעדכן מידע ולהציג את הרשימה.
+    המערכת בנויה משתי מחלקות: מחלקת <strong>Camper</strong> המייצגת משתתף בודד,
+    ומחלקת <strong>Camp</strong> המנהלת את מערך המשתתפים ומספקת את כל הפעולות על הקייטנה.
+  </p>
+</header>
+
+<main class="container">
+
+  <nav>
+    <h2>ניווט מהיר</h2>
+    <ul>
+      <li><a href="#instructions">Instructions</a></li>
+      <li><a href="#camper">Class Camper</a></li>
+      <li><a href="#camp-skeleton">Class Camp</a></li>
+      <li><a href="#tester-guide">Tester Guide</a></li>
+      <li><a href="#s1">1 — Constructors</a></li>
+      <li><a href="#s2">2 — add</a></li>
+      <li><a href="#s3">3 — toString</a></li>
+      <li><a href="#s4">4 — averageAge</a></li>
+      <li><a href="#s5">5 — oldestCamper</a></li>
+      <li><a href="#s6">6 — phoneById</a></li>
+      <li><a href="#s7">7 — getIdByName</a></li>
+      <li><a href="#s8">8 — phoneByName</a></li>
+      <li><a href="#s9">9 — updatePhone</a></li>
+      <li><a href="#s10">10 — aboveAge</a></li>
+      <li><a href="#s11">11 — removeSwap</a></li>
+      <li><a href="#s12">12 — remove</a></li>
+      <li><a href="#s13">13 — addSorted</a></li>
+      <li><a href="#s14">14 — addSortedNoDupId</a></li>
+      <li><a href="#s15">15 — printByAge</a></li>
+      <li><a href="#s16">16 — printByName</a></li>
+      <li><a href="#s17">17 — doubleNames</a></li>
+      <li><a href="#s18">18 — merge</a></li>
+      <li><a href="#tester">Tester File</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== הוראות ===== -->
+  <section id="instructions">
+    <h2>הוראות כלליות</h2>
+    <p>בתרגיל זה תממשו שלב אחר שלב את מחלקת <code>Camp</code>.</p>
+    <div class="tip">
+      <strong>חופש בחירה:</strong> ניתן לפתור את הסעיפים לפי הסדר שנוח לכם — אין חובה לפתור את כולם ואין חובה לפתור לפי הסדר. מומלץ להתחיל מסעיפים 1–3 (בנאים, add, toString) כדי שתוכלו לבדוק את שאר הסעיפים, אך מכאן אפשר לבחור בחופשיות.
+    </div>
+    <p><strong>שלבי העבודה:</strong></p>
+    <ol>
+      <li>
+        <strong>הורידו את שלושת קבצי הפרויקט</strong> והכניסו אותם לאותה תיקייה בסביבת הפיתוח שלכם.
+        <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap;">
+          <a id="dl-camper-top" style="display:inline-block; background:#1d4ed8; color:white; padding:8px 18px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.9rem;">⬇ Camper.java</a>
+          <a id="dl-camp-top"   style="display:inline-block; background:#0891b2; color:white; padding:8px 18px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.9rem;">⬇ Camp.java</a>
+          <a id="dl-main-top"   style="display:inline-block; background:#059669; color:white; padding:8px 18px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.9rem;">⬇ Main.java</a>
+        </div>
+        <p style="margin-top:8px; font-size:0.9rem; color:var(--muted);">לינקים נוספים להורדה גם בתחתית הדף.</p>
+      </li>
+      <li>קראו את תיאור השיטה בסעיף הרלוונטי.</li>
+      <li>ממשו את השיטה בתוך <code>Camp.java</code>.</li>
+      <li>הפעילו את הפונקציה המתאימה בטסטר לפי ההוראות בסעיף.</li>
+      <li>ודאו שכל הבדיקות מדפיסות <strong>PASS</strong>.</li>
+    </ol>
+    <div class="note">
+      המערך צריך להיות <strong>ללא חורים</strong> בכל שלב — כל המחנאים הרשומים יופיעו ברצף מתחילת המערך.
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <!-- ===== מחלקת Camper ===== -->
+  <section id="camper">
+    <h2>מחלקת Camper — נתונה</h2>
+    <p>מחלקה זו מייצגת משתתף בודד בקייטנה. היא ניתנת לכם מוכנה — אין צורך לשנות אותה.</p>
+    <p>תכונות:</p>
+    <ul>
+      <li><code>_name</code> — שם המשתתף (String)</li>
+      <li><code>_id</code> — תעודת זהות (String)</li>
+      <li><code>_phone</code> — מספר טלפון (String)</li>
+      <li><code>_age</code> — גיל (int)</li>
+    </ul>
+<pre><span class="kw">public class</span> <span class="tp">Camper</span> {
+    <span class="kw">private</span> <span class="tp">String</span> <span class="pm">_name</span>;
+    <span class="kw">private</span> <span class="tp">String</span> <span class="pm">_id</span>;
+    <span class="kw">private</span> <span class="tp">String</span> <span class="pm">_phone</span>;
+    <span class="kw">private</span> <span class="tp">int</span>    <span class="pm">_age</span>;
+
+    <span class="kw">public</span> <span class="mt">Camper</span>(<span class="tp">String</span> <span class="pm">id</span>, <span class="tp">String</span> <span class="pm">name</span>, <span class="tp">String</span> <span class="pm">phone</span>, <span class="tp">int</span> <span class="pm">age</span>) {
+        <span class="pm">_id</span>    = <span class="pm">id</span>;
+        <span class="pm">_name</span>  = <span class="pm">name</span>;
+        <span class="pm">_phone</span> = <span class="pm">phone</span>;
+        <span class="pm">_age</span>   = <span class="pm">age</span>;
+    }
+
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">getName</span>()  { <span class="kw">return</span> <span class="pm">_name</span>;  }
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">getId</span>()    { <span class="kw">return</span> <span class="pm">_id</span>;    }
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">getPhone</span>() { <span class="kw">return</span> <span class="pm">_phone</span>; }
+    <span class="kw">public</span> <span class="tp">int</span>    <span class="mt">getAge</span>()   { <span class="kw">return</span> <span class="pm">_age</span>;   }
+
+    <span class="kw">public void</span> <span class="mt">setPhone</span>(<span class="tp">String</span> <span class="pm">phone</span>) { <span class="pm">_phone</span> = <span class="pm">phone</span>; }
+    <span class="kw">public void</span> <span class="mt">setAge</span>(<span class="tp">int</span> <span class="pm">age</span>)       { <span class="pm">_age</span>   = <span class="pm">age</span>;   }
+
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">toString</span>() {
+        <span class="kw">return</span> <span class="pm">_id</span> + <span class="st">" | "</span> + <span class="pm">_name</span> + <span class="st">" | "</span> + <span class="pm">_phone</span> + <span class="st">" | age:"</span> + <span class="pm">_age</span>;
+    }
+}</pre>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <!-- ===== שלד Camp ===== -->
+  <section id="camp-skeleton">
+    <h2>שלד Camp.java — נקודת ההתחלה שלכם</h2>
+    <p>מחלקה זו מנהלת את מערך המשתתפים ומספקת את כל הפעולות על הקייטנה — הוספה, חיפוש, עדכון, הסרה והצגה.</p>
+    <p>העתיקו את השלד הבא ל-<code>Camp.java</code> ומלאו את ה-TODO אחד אחד לפי סדר הסעיפים.</p>
+<pre><span class="kw">public class</span> <span class="tp">Camp</span> {
+
+    <span class="kw">public static final int</span> DEFAULT_MAX = <span class="nm">20</span>;
+
+    <span class="kw">private</span> <span class="tp">Camper</span>[] <span class="pm">_campers</span>;
+    <span class="kw">private int</span> <span class="pm">_size</span>;
+
+    <span class="cm">// Section 1: constructors</span>
+    <span class="kw">public</span> <span class="mt">Camp</span>(<span class="tp">int</span> <span class="pm">maxCampers</span>) { <span class="cm">// TODO</span> }
+
+    <span class="kw">public</span> <span class="mt">Camp</span>() { <span class="cm">// TODO - use DEFAULT_MAX</span> }
+
+    <span class="kw">public int</span> <span class="mt">getNumCampers</span>() { <span class="cm">// TODO</span>
+        <span class="kw">return</span> <span class="nm">0</span>;
+    }
+
+    <span class="cm">// Section 2: add - no order, no duplicate id</span>
+    <span class="kw">public boolean</span> <span class="mt">add</span>(<span class="tp">String</span> <span class="pm">id</span>, <span class="tp">String</span> <span class="pm">name</span>, <span class="tp">String</span> <span class="pm">phone</span>, <span class="tp">int</span> <span class="pm">age</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 3: toString</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">toString</span>() {
+        <span class="cm">// TODO - return "No campers" if empty</span>
+        <span class="kw">return</span> <span class="st">""</span>;
+    }
+
+    <span class="cm">// Section 4: averageAge</span>
+    <span class="kw">public double</span> <span class="mt">averageAge</span>() {
+        <span class="cm">// TODO - return 0 if empty</span>
+        <span class="kw">return</span> <span class="nm">0</span>;
+    }
+
+    <span class="cm">// Section 5: oldestCamper</span>
+    <span class="kw">public</span> <span class="tp">Camper</span> <span class="mt">oldestCamper</span>() {
+        <span class="cm">// TODO - return null if empty</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 6: phoneById - sequential search</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">phoneById</span>(<span class="tp">String</span> <span class="pm">id</span>) {
+        <span class="cm">// TODO - return null if not found</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 7: getIdByName - return id of first match</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">getIdByName</span>(<span class="tp">String</span> <span class="pm">name</span>) {
+        <span class="cm">// TODO - return null if not found</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 8: phoneByName - use getIdByName + phoneById</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">phoneByName</span>(<span class="tp">String</span> <span class="pm">name</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 9: updatePhone - update phone by id</span>
+    <span class="kw">public boolean</span> <span class="mt">updatePhone</span>(<span class="tp">String</span> <span class="pm">id</span>, <span class="tp">String</span> <span class="pm">newPhone</span>) {
+        <span class="cm">// TODO - return false if not found</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 10: aboveAge - return new array</span>
+    <span class="kw">public</span> <span class="tp">Camper</span>[] <span class="mt">aboveAge</span>(<span class="tp">int</span> <span class="pm">age</span>) {
+        <span class="cm">// TODO - return empty array (not null) if none found</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 11: removeSwap - no order preserved, no return value</span>
+    <span class="kw">public boolean</span> <span class="mt">removeSwap</span>(<span class="tp">String</span> <span class="pm">id</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 12: remove - preserve order, return removed camper</span>
+    <span class="kw">public</span> <span class="tp">Camper</span> <span class="mt">remove</span>(<span class="tp">String</span> <span class="pm">id</span>) {
+        <span class="cm">// TODO - return null if not found</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 13: addSorted - sorted by id, duplicate names allowed</span>
+    <span class="kw">public boolean</span> <span class="mt">addSorted</span>(<span class="tp">String</span> <span class="pm">id</span>, <span class="tp">String</span> <span class="pm">name</span>, <span class="tp">String</span> <span class="pm">phone</span>, <span class="tp">int</span> <span class="pm">age</span>) {
+        <span class="cm">// TODO - use compareTo</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 14: addSortedNoDupId - sorted by id, no duplicate id</span>
+    <span class="kw">public boolean</span> <span class="mt">addSortedNoDupId</span>(<span class="tp">String</span> <span class="pm">id</span>, <span class="tp">String</span> <span class="pm">name</span>, <span class="tp">String</span> <span class="pm">phone</span>, <span class="tp">int</span> <span class="pm">age</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 15: printByAge - do NOT change _campers, hint: helper array</span>
+    <span class="kw">public void</span> <span class="mt">printByAge</span>() {
+        <span class="cm">// TODO</span>
+    }
+
+    <span class="cm">// Section 16: printByName - do NOT change _campers, hint: helper array</span>
+    <span class="kw">public void</span> <span class="mt">printByName</span>() {
+        <span class="cm">// TODO</span>
+    }
+
+    <span class="cm">// Section 17: doubleNames - nested loop</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">doubleNames</span>() {
+        <span class="cm">// TODO - each duplicate name appears once in result</span>
+        <span class="kw">return</span> <span class="st">""</span>;
+    }
+
+    <span class="cm">// Section 18: merge - static, merge two sorted arrays</span>
+    <span class="kw">public static</span> <span class="tp">Camper</span>[] <span class="mt">merge</span>(<span class="tp">Camper</span>[] <span class="pm">arr1</span>, <span class="tp">int</span> <span class="pm">size1</span>,
+                                   <span class="tp">Camper</span>[] <span class="pm">arr2</span>, <span class="tp">int</span> <span class="pm">size2</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+}</pre>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <!-- ===== כיצד להפעיל את הטסטר ===== -->
+  <section id="tester-guide">
+    <h2>כיצד להפעיל את הטסטר</h2>
+    <p>קובץ הטסטר <code>Main.java</code> מכיל פונקציית <code>main</code> ו-18 פונקציות בדיקה — אחת לכל סעיף.</p>
+    <div class="tip">
+      <strong>כלל הזהב:</strong> הפעילו רק את הסעיפים שסיימתם לממש. שאר הסעיפים מופיעים כהערה.
+    </div>
+    <p><strong>שלבי העבודה לכל סעיף:</strong></p>
+    <ol>
+      <li>ממשו את השיטה ב-<code>Camp.java</code>.</li>
+      <li>פתחו את <code>Main.java</code>.</li>
+      <li>ב-<code>main</code> — הסירו את <code>//</code> לפני הקריאה לסעיף המתאים.</li>
+      <li>הריצו את התוכנית.</li>
+      <li>ודאו שכל הבדיקות מדפיסות PASS.</li>
+    </ol>
+    <div class="note">
+      כל פונקציית בדיקה בונה את הנתונים שלה מאפס — אין תלות בין הסעיפים.
+    </div>
+    <p>דוגמה להרצת סעיפים 1, 2, 3 של השאלה — שאר הסעיפים לא נבדקים כי מופיעה הערה:</p>
+<pre><span class="kw">public static void</span> <span class="mt">main</span>(<span class="tp">String</span>[] <span class="pm">args</span>) {
+    <span class="mt">testSection1</span>();
+    <span class="mt">testSection2</span>();
+    <span class="mt">testSection3</span>();
+    <span class="cm">// testSection4();  &lt;-- remove // when section 4 is ready</span>
+    <span class="cm">// testSection5();</span>
+    <span class="cm">// ...</span>
+}</pre>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <!-- ===== סעיפי השאלות ===== -->
+
+  <section id="s1">
+    <h2>סעיף 1 — בנאים ו-getNumCampers <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">1א</div><h3>בנאי עם פרמטר</h3></div>
+      <div class="signature">public Camp(int maxCampers)</div>
+      <p>יוצר קייטנה המסוגלת לקלוט עד <code>maxCampers</code> משתתפים. יש לאתחל את המערך ואת מספר המשתתפים ל-0.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">1ב</div><h3>בנאי ברירת מחדל</h3></div>
+      <div class="signature">public Camp()</div>
+      <p>יוצר קייטנה עם קיבולת ברירת מחדל של <code>DEFAULT_MAX</code> משתתפים. השתמשו בקבוע הציבורי.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">1ג</div><h3>getNumCampers</h3></div>
+      <div class="signature">public int getNumCampers()</div>
+      <p>מחזירה את מספר המשתתפים הרשומים כרגע.</p>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection1</h4>
+      <p>פלט צפוי: כל שורה מדפיסה PASS.</p>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s2">
+    <h2>סעיף 2 — add <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">2</div><h3>הוספת משתתף — ללא סדר, ללא כפילות id</h3></div>
+      <div class="signature">public boolean add(String id, String name, String phone, int age)</div>
+      <p>מוסיפה משתתף חדש לסוף המערך. מחזירה <code>true</code> אם ההוספה הצליחה.</p>
+      <p>מחזירה <code>false</code> אם: המערך מלא, או קיים כבר משתתף עם אותה תעודת זהות.</p>
+      <div class="note">אין צורך לשמור על סדר — מוסיפים בסוף המערך.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection2</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s3">
+    <h2>סעיף 3 — toString <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">3</div><h3>הצגת רשימת המשתתפים</h3></div>
+      <div class="signature">public String toString()</div>
+      <p>מחזירה מחרוזת המציגה את כל המשתתפים לפי סדרם במערך, כל משתתף בשורה נפרדת.</p>
+      <p>אם אין משתתפים, מחזירה את המחרוזת <code>"No campers"</code>.</p>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection3</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s4">
+    <h2>סעיף 4 — averageAge <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">4</div><h3>ממוצע גיל</h3></div>
+      <div class="signature">public double averageAge()</div>
+      <p>מחזירה את ממוצע הגיל של כל המשתתפים. אם אין משתתפים, מחזירה <code>0</code>.</p>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection4</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s5">
+    <h2>סעיף 5 — oldestCamper <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">5</div><h3>המשתתף המבוגר ביותר</h3></div>
+      <div class="signature">public Camper oldestCamper()</div>
+      <p>מחזירה את אובייקט המשתתף בעל הגיל הגבוה ביותר. אם יש כמה באותו גיל מקסימלי — מחזירים את הראשון. אם אין משתתפים — מחזירים <code>null</code>.</p>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection5</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s6">
+    <h2>סעיף 6 — phoneById <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">6</div><h3>חיפוש טלפון לפי תעודת זהות</h3></div>
+      <div class="signature">public String phoneById(String id)</div>
+      <p>מחזירה את מספר הטלפון של המשתתף עם תעודת הזהות הנתונה. מחזירה <code>null</code> אם לא נמצא.</p>
+      <div class="tip">חיפוש סדרתי — עברו על כל המערך עד שמוצאים התאמה.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection6</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s7">
+    <h2>סעיף 7 — getIdByName <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">7</div><h3>חיפוש תעודת זהות לפי שם</h3></div>
+      <div class="signature">public String getIdByName(String name)</div>
+      <p>מחזירה את תעודת הזהות של המשתתף הראשון שנמצא עם השם הנתון. מחזירה <code>null</code> אם לא נמצא.</p>
+      <div class="note">אם יש כמה משתתפים עם אותו שם — מחזירים את ה-id של הראשון שנמצא.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection7</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s8">
+    <h2>סעיף 8 — phoneByName <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">8</div><h3>חיפוש טלפון לפי שם</h3></div>
+      <div class="signature">public String phoneByName(String name)</div>
+      <p>מחזירה את מספר הטלפון של המשתתף הראשון עם השם הנתון. מחזירה <code>null</code> אם לא נמצא.</p>
+      <div class="tip"><strong>רמז:</strong> ממשו בעזרת השיטות getIdByName ו-phoneById — לא נדרשת לולאה חדשה!</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection8</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s9">
+    <h2>סעיף 9 — updatePhone <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">9</div><h3>עדכון מספר טלפון</h3></div>
+      <div class="signature">public boolean updatePhone(String id, String newPhone)</div>
+      <p>מחפשת את המשתתף לפי תעודת זהות ומעדכנת את מספר הטלפון שלו.</p>
+      <p>מחזירה <code>true</code> אם העדכון בוצע, <code>false</code> אם המשתתף לא נמצא.</p>
+      <div class="tip">השתמשו בשיטת setPhone של מחלקת Camper.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection9</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s10">
+    <h2>סעיף 10 — aboveAge <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">10</div><h3>משתתפים מעל גיל נתון</h3></div>
+      <div class="signature">public Camper[] aboveAge(int age)</div>
+      <p>מחזירה <strong>מערך חדש</strong> המכיל את כל המשתתפים שגילם <strong>גדול ממש</strong> מהפרמטר.</p>
+      <p>גודל המערך החוזר יהיה בדיוק מספר המשתתפים שעמדו בתנאי. אם אין כאלה — מחזירה מערך ריק (לא null).</p>
+      <div class="tip"><strong>רמז:</strong> נדרשות שתי סריקות — הראשונה לספירת הזכאים, השנייה למילוי המערך החדש.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection10</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s11">
+    <h2>סעיף 11 — removeSwap <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">11</div><h3>הסרת משתתף — ללא שמירת סדר</h3></div>
+      <div class="signature">public boolean removeSwap(String id)</div>
+      <p>מסירה את המשתתף עם תעודת הזהות הנתונה. מחזירה <code>true</code> אם הוסר, <code>false</code> אם לא נמצא.</p>
+      <p><strong>אסטרטגיה:</strong> החליפו את המשתתף שנמחק באחרון ומחקו את האחרון (swap-with-last). הסדר אינו נשמר.</p>
+      <div class="warn">שיטה זו אינה שומרת על הסדר המקורי — השתמשו בה רק כשסדר אינו חשוב.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection11</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s12">
+    <h2>סעיף 12 — remove <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">12</div><h3>הסרת משתתף — עם שמירת סדר</h3></div>
+      <div class="signature">public Camper remove(String id)</div>
+      <p>מסירה את המשתתף עם תעודת הזהות הנתונה תוך <strong>שמירה על הסדר</strong>.</p>
+      <p>מחזירה את אובייקט <code>Camper</code> שהוסר, או <code>null</code> אם לא נמצא.</p>
+      <p>כל המשתתפים שהיו אחריו מוזזים שמאלה — המערך נשאר ללא חורים.</p>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection12</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s13">
+    <h2>סעיף 13 — addSorted <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">13</div><h3>הוספה ממוינת לפי תעודת זהות</h3></div>
+      <div class="signature">public boolean addSorted(String id, String name, String phone, int age)</div>
+      <p>מוסיפה משתתף תוך שמירה על <strong>סדר עולה לפי תעודת זהות</strong>. שמות כפולים מותרים. מחזירה <code>false</code> אם המערך מלא.</p>
+      <div class="tip"><strong>רמז:</strong> מצאו את מיקום ההכנסה הנכון תוך הזזת האיברים הגדולים ימינה. השתמשו ב-compareTo.</div>
+      <div class="info"><strong>שימו לב:</strong> שיטה זו נפרדת מ-add — כל testSection שמשתמש בה בונה מערך חדש.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection13</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s14">
+    <h2>סעיף 14 — addSortedNoDupId <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">14</div><h3>הוספה ממוינת — ללא כפילות תעודת זהות</h3></div>
+      <div class="signature">public boolean addSortedNoDupId(String id, String name, String phone, int age)</div>
+      <p>כמו addSorted, אך דוחה הוספה אם תעודת הזהות כבר קיימת. מחזירה <code>false</code> אם המערך מלא או אם ה-id כבר קיים.</p>
+      <div class="tip"><strong>רמז:</strong> ניתן לנצל את העובדה שהמערך ממוין — בדקו כפילות במהלך חיפוש המיקום.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection14</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s15">
+    <h2>סעיף 15 — printByAge <span class="difficulty d4">⭐⭐⭐⭐ מאתגר</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">15</div><h3>הדפסה לפי גיל</h3></div>
+      <div class="signature">public void printByAge()</div>
+      <p>מדפיסה את המשתתפים לפי סדר עולה של גיל. <strong>אין לשנות את המערך המקורי.</strong></p>
+      <div class="tip"><strong>רמז:</strong> צרו מערך עזר מסוג Camper, העתיקו אליו את ההפניות, מיינו אותו לפי גיל, הדפיסו ממנו.</div>
+      <div class="warn">לאחר קריאה לשיטה, הסדר המקורי של _campers חייב להישמר.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection15</h4>
+      <p>הפלט מודפס ישירות למסך — ודאו שהסדר נכון ושהמערך המקורי לא השתנה.</p>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s16">
+    <h2>סעיף 16 — printByName <span class="difficulty d4">⭐⭐⭐⭐ מאתגר</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">16</div><h3>הדפסה לפי שם</h3></div>
+      <div class="signature">public void printByName()</div>
+      <p>מדפיסה את המשתתפים לפי סדר אלפביתי עולה של שמות. <strong>אין לשנות את המערך המקורי.</strong></p>
+      <div class="tip"><strong>רמז:</strong> בדיוק כמו printByAge — מערך עזר, מיון לפי שם עם compareTo, הדפסה.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection16</h4>
+      <p>הפלט מודפס ישירות למסך.</p>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s17">
+    <h2>סעיף 17 — doubleNames <span class="difficulty d4">⭐⭐⭐⭐ מאתגר</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">17</div><h3>שמות כפולים</h3></div>
+      <div class="signature">public String doubleNames()</div>
+      <p>מחזירה מחרוזת עם כל השמות שמופיעים <strong>יותר מפעם אחת</strong>. השמות יופרדו בפסיק ורווח. כל שם כפול יופיע פעם אחת בלבד.</p>
+      <div class="tip"><strong>רמז:</strong> לולאה מקוננת — עבור כל משתתף i, ספרו כמה פעמים שמו מופיע. היזהרו מלהוסיף שם כפול פעמיים לתוצאה.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection17</h4>
+      <p>הטסטר בודק שהשמות הכפולים נמצאים במחרוזת ושהשמות שאינם כפולים לא נמצאים.</p>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <section id="s18">
+    <h2>סעיף 18 — merge <span class="difficulty d4">⭐⭐⭐⭐⭐ אתגר</span></h2>
+    <div class="method-card">
+      <div class="method-header"><div class="method-num">18</div><h3>מיזוג שני מערכים ממוינים</h3></div>
+      <div class="signature">public static Camper[] merge(Camper[] arr1, int size1, Camper[] arr2, int size2)</div>
+      <p>מקבלת שני מערכים של משתתפים, כשכל אחד כבר ממוין לפי תעודת זהות. מחזירה מערך חדש ממוין המכיל את כל המשתתפים.</p>
+      <p>השיטה היא <code>static</code> — שייכת למחלקה ולא לאובייקט.</p>
+      <div class="tip"><strong>רמז:</strong> שלוש לולאות — לולאה ראשית שמשווה ראשי שני המערכים ומכניסה את הקטן, ושתי לולאות להשלמת שאריות.</div>
+    </div>
+    <div class="tester-box">
+      <h4>הפעלת הטסטר — הסירו את // לפני testSection18</h4>
+    </div>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+  <!-- ===== קובץ הטסטר המלא ===== -->
+  <section id="tester">
+    <h2>קובץ הטסטר — Main.java</h2>
+    <p>העתיקו את הקובץ הבא ל-<code>Main.java</code>. הפעילו סעיף אחד בכל פעם.</p>
+<pre><span class="kw">public class</span> <span class="tp">Main</span> {
+
+    <span class="kw">public static void</span> <span class="mt">main</span>(<span class="tp">String</span>[] <span class="pm">args</span>) {
+        <span class="mt">testSection1</span>();
+        <span class="mt">testSection2</span>();
+        <span class="mt">testSection3</span>();
+        <span class="cm">// testSection4();  &lt;-- remove // when ready</span>
+        <span class="cm">// testSection5();</span>
+        <span class="cm">// testSection6();</span>
+        <span class="cm">// testSection7();</span>
+        <span class="cm">// testSection8();</span>
+        <span class="cm">// testSection9();</span>
+        <span class="cm">// testSection10();</span>
+        <span class="cm">// testSection11();</span>
+        <span class="cm">// testSection12();</span>
+        <span class="cm">// testSection13();</span>
+        <span class="cm">// testSection14();</span>
+        <span class="cm">// testSection15();</span>
+        <span class="cm">// testSection16();</span>
+        <span class="cm">// testSection17();</span>
+        <span class="cm">// testSection18();</span>
+    }
+
+    <span class="kw">private static void</span> <span class="mt">check</span>(<span class="tp">String</span> <span class="pm">label</span>, <span class="tp">boolean</span> <span class="pm">passed</span>) {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="pm">label</span> + <span class="st">": "</span> + (<span class="pm">passed</span> ? <span class="st">"PASS"</span> : <span class="st">"FAIL"</span>));
+    }
+
+    <span class="kw">private static void</span> <span class="mt">checkStr</span>(<span class="tp">String</span> <span class="pm">label</span>, <span class="tp">String</span> <span class="pm">actual</span>, <span class="tp">String</span> <span class="pm">expected</span>) {
+        <span class="tp">boolean</span> <span class="pm">ok</span> = <span class="pm">actual</span> != <span class="kw">null</span> &amp;&amp; <span class="pm">actual</span>.<span class="mt">equals</span>(<span class="pm">expected</span>);
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="pm">label</span> + <span class="st">": "</span> + (<span class="pm">ok</span> ? <span class="st">"PASS"</span> : <span class="st">"FAIL (got: "</span> + <span class="pm">actual</span> + <span class="st">")"</span>));
+    }
+
+    <span class="cm">// ---- Section 1: Constructors ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection1</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 1: Constructors ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c1</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="mt">check</span>(<span class="st">"Camp(5) size is 0"</span>, <span class="pm">c1</span>.<span class="mt">getNumCampers</span>() == <span class="nm">0</span>);
+        <span class="tp">Camp</span> <span class="pm">c2</span> = <span class="kw">new</span> <span class="tp">Camp</span>();
+        <span class="mt">check</span>(<span class="st">"Camp() size is 0"</span>, <span class="pm">c2</span>.<span class="mt">getNumCampers</span>() == <span class="nm">0</span>);
+        <span class="mt">check</span>(<span class="st">"DEFAULT_MAX is 20"</span>, <span class="tp">Camp</span>.DEFAULT_MAX == <span class="nm">20</span>);
+    }
+
+    <span class="cm">// ---- Section 2: add ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection2</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 2: add ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="mt">check</span>(<span class="st">"add Ron returns true"</span>,    <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>));
+        <span class="mt">check</span>(<span class="st">"add Dana returns true"</span>,   <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>));
+        <span class="mt">check</span>(<span class="st">"add Noa returns true"</span>,    <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"Noa"</span>,  <span class="st">"050-3333333"</span>, <span class="nm">13</span>));
+        <span class="mt">check</span>(<span class="st">"dup id returns false"</span>,    !<span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron2"</span>, <span class="st">"050-9999999"</span>, <span class="nm">15</span>));
+        <span class="mt">check</span>(<span class="st">"full camp returns false"</span>,  !<span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"999999999"</span>, <span class="st">"Zoe"</span>,  <span class="st">"050-0000000"</span>, <span class="nm">11</span>));
+        <span class="mt">check</span>(<span class="st">"size is 3"</span>, <span class="pm">c</span>.<span class="mt">getNumCampers</span>() == <span class="nm">3</span>);
+    }
+
+    <span class="cm">// ---- Section 3: toString ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection3</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 3: toString ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">empty</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="mt">checkStr</span>(<span class="st">"empty camp"</span>, <span class="pm">empty</span>.<span class="mt">toString</span>(), <span class="st">"No campers"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"315555555"</span>, <span class="st">"Noa"</span>,  <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="tp">String</span> <span class="pm">expected</span> = <span class="st">"123456789 | Ron | 050-1111111 | age:14\n"</span>
+                        + <span class="st">"204444444 | Dana | 050-2222222 | age:12\n"</span>
+                        + <span class="st">"315555555 | Noa | 050-3333333 | age:13"</span>;
+        <span class="mt">checkStr</span>(<span class="st">"3 campers toString"</span>, <span class="pm">c</span>.<span class="mt">toString</span>(), <span class="pm">expected</span>);
+        <span class="mt">check</span>(<span class="st">"toString contains Ron"</span>,  <span class="pm">c</span>.<span class="mt">toString</span>().<span class="mt">contains</span>(<span class="st">"Ron"</span>));
+        <span class="mt">check</span>(<span class="st">"toString contains Dana"</span>, <span class="pm">c</span>.<span class="mt">toString</span>().<span class="mt">contains</span>(<span class="st">"Dana"</span>));
+    }
+
+    <span class="cm">// ---- Section 4: averageAge ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection4</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 4: averageAge ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">empty</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="mt">check</span>(<span class="st">"empty average is 0.0"</span>, <span class="pm">empty</span>.<span class="mt">averageAge</span>() == <span class="nm">0.0</span>);
+        <span class="tp">Camp</span> <span class="pm">c1</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"A"</span>, <span class="st">"050-1"</span>, <span class="nm">14</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"222222222"</span>, <span class="st">"B"</span>, <span class="st">"050-2"</span>, <span class="nm">12</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"333333333"</span>, <span class="st">"C"</span>, <span class="st">"050-3"</span>, <span class="nm">13</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"444444444"</span>, <span class="st">"D"</span>, <span class="st">"050-4"</span>, <span class="nm">15</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"555555555"</span>, <span class="st">"E"</span>, <span class="st">"050-5"</span>, <span class="nm">11</span>);
+        <span class="mt">check</span>(<span class="st">"average of 14,12,13,15,11 is 13.0"</span>, <span class="pm">c1</span>.<span class="mt">averageAge</span>() == <span class="nm">13.0</span>);
+        <span class="tp">Camp</span> <span class="pm">c2</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">2</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"A"</span>, <span class="st">"050-1"</span>, <span class="nm">10</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"222222222"</span>, <span class="st">"B"</span>, <span class="st">"050-2"</span>, <span class="nm">17</span>);
+        <span class="mt">check</span>(<span class="st">"average of 10,17 is 13.5"</span>, <span class="pm">c2</span>.<span class="mt">averageAge</span>() == <span class="nm">13.5</span>);
+    }
+
+    <span class="cm">// ---- Section 5: oldestCamper ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection5</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 5: oldestCamper ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">empty</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="mt">check</span>(<span class="st">"empty returns null"</span>, <span class="pm">empty</span>.<span class="mt">oldestCamper</span>() == <span class="kw">null</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">4</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"316666666"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4444444"</span>, <span class="nm">16</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"409876543"</span>, <span class="st">"Yael"</span>,  <span class="st">"050-6666666"</span>, <span class="nm">13</span>);
+        <span class="mt">check</span>(<span class="st">"oldest is Tamar (16)"</span>, <span class="pm">c</span>.<span class="mt">oldestCamper</span>().<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Tamar"</span>));
+        <span class="mt">check</span>(<span class="st">"oldest age is 16"</span>,     <span class="pm">c</span>.<span class="mt">oldestCamper</span>().<span class="mt">getAge</span>() == <span class="nm">16</span>);
+        <span class="tp">Camp</span> <span class="pm">c2</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"Amit"</span>, <span class="st">"050-5555555"</span>, <span class="nm">15</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"222222222"</span>, <span class="st">"Roni"</span>, <span class="st">"050-7777777"</span>, <span class="nm">15</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"333333333"</span>, <span class="st">"Lior"</span>, <span class="st">"050-8888888"</span>, <span class="nm">12</span>);
+        <span class="mt">check</span>(<span class="st">"tie: first oldest is Amit"</span>, <span class="pm">c2</span>.<span class="mt">oldestCamper</span>().<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Amit"</span>));
+    }
+
+    <span class="cm">// ---- Section 6: phoneById ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection6</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 6: phoneById ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"315555555"</span>, <span class="st">"Noa"</span>,  <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="mt">checkStr</span>(<span class="st">"phone of 204444444"</span>, <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"204444444"</span>), <span class="st">"050-2222222"</span>);
+        <span class="mt">checkStr</span>(<span class="st">"phone of 123456789"</span>, <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"123456789"</span>), <span class="st">"050-1111111"</span>);
+        <span class="mt">checkStr</span>(<span class="st">"phone of 315555555"</span>, <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"315555555"</span>), <span class="st">"050-3333333"</span>);
+        <span class="mt">check</span>(<span class="st">"not found returns null"</span>, <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"999999999"</span>) == <span class="kw">null</span>);
+    }
+
+    <span class="cm">// ---- Section 7: getIdByName ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection7</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 7: getIdByName ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">4</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"Noa"</span>,  <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"315555555"</span>, <span class="st">"Noa"</span>,  <span class="st">"050-9999999"</span>, <span class="nm">11</span>);
+        <span class="mt">checkStr</span>(<span class="st">"id of Ron"</span>,          <span class="pm">c</span>.<span class="mt">getIdByName</span>(<span class="st">"Ron"</span>),     <span class="st">"123456789"</span>);
+        <span class="mt">checkStr</span>(<span class="st">"id of Dana"</span>,         <span class="pm">c</span>.<span class="mt">getIdByName</span>(<span class="st">"Dana"</span>),    <span class="st">"204444444"</span>);
+        <span class="mt">checkStr</span>(<span class="st">"id of Noa (first)"</span>,  <span class="pm">c</span>.<span class="mt">getIdByName</span>(<span class="st">"Noa"</span>),     <span class="st">"111111111"</span>);
+        <span class="mt">check</span>(<span class="st">"Unknown returns null"</span>, <span class="pm">c</span>.<span class="mt">getIdByName</span>(<span class="st">"Unknown"</span>) == <span class="kw">null</span>);
+    }
+
+    <span class="cm">// ---- Section 8: phoneByName ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection8</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 8: phoneByName ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"315555555"</span>, <span class="st">"Dana"</span>, <span class="st">"050-7777777"</span>, <span class="nm">11</span>);
+        <span class="mt">checkStr</span>(<span class="st">"phone of Ron"</span>,          <span class="pm">c</span>.<span class="mt">phoneByName</span>(<span class="st">"Ron"</span>),     <span class="st">"050-1111111"</span>);
+        <span class="mt">checkStr</span>(<span class="st">"phone of Dana (first)"</span>, <span class="pm">c</span>.<span class="mt">phoneByName</span>(<span class="st">"Dana"</span>),    <span class="st">"050-2222222"</span>);
+        <span class="mt">check</span>(<span class="st">"Unknown returns null"</span>,   <span class="pm">c</span>.<span class="mt">phoneByName</span>(<span class="st">"Unknown"</span>) == <span class="kw">null</span>);
+    }
+
+    <span class="cm">// ---- Section 9: updatePhone ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection9</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 9: updatePhone ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="mt">check</span>(<span class="st">"update Ron returns true"</span>,      <span class="pm">c</span>.<span class="mt">updatePhone</span>(<span class="st">"123456789"</span>, <span class="st">"052-9999999"</span>));
+        <span class="mt">checkStr</span>(<span class="st">"Ron new phone"</span>,              <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"123456789"</span>), <span class="st">"052-9999999"</span>);
+        <span class="mt">checkStr</span>(<span class="st">"Dana phone unchanged"</span>,       <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"204444444"</span>), <span class="st">"050-2222222"</span>);
+        <span class="mt">check</span>(<span class="st">"update not found returns false"</span>, !<span class="pm">c</span>.<span class="mt">updatePhone</span>(<span class="st">"999999999"</span>, <span class="st">"052-0000000"</span>));
+    }
+
+    <span class="cm">// ---- Section 10: aboveAge ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection10</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 10: aboveAge ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"316666666"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4444444"</span>, <span class="nm">16</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"333333333"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"409999999"</span>, <span class="st">"Yael"</span>,  <span class="st">"050-6666666"</span>, <span class="nm">15</span>);
+        <span class="tp">Camper</span>[] <span class="pm">above13</span> = <span class="pm">c</span>.<span class="mt">aboveAge</span>(<span class="nm">13</span>);
+        <span class="mt">check</span>(<span class="st">"above 13: count is 3"</span>,         <span class="pm">above13</span>.length == <span class="nm">3</span>);
+        <span class="mt">check</span>(<span class="st">"above 13: contains Ron"</span>,       <span class="pm">above13</span>[<span class="nm">0</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Ron"</span>)
+                                            || <span class="pm">above13</span>[<span class="nm">1</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Ron"</span>)
+                                            || <span class="pm">above13</span>[<span class="nm">2</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Ron"</span>));
+        <span class="mt">check</span>(<span class="st">"above 13: contains Tamar"</span>,     <span class="pm">above13</span>[<span class="nm">0</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Tamar"</span>)
+                                            || <span class="pm">above13</span>[<span class="nm">1</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Tamar"</span>)
+                                            || <span class="pm">above13</span>[<span class="nm">2</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Tamar"</span>));
+        <span class="mt">check</span>(<span class="st">"above 20: empty array"</span>,        <span class="pm">c</span>.<span class="mt">aboveAge</span>(<span class="nm">20</span>).length == <span class="nm">0</span>);
+        <span class="mt">check</span>(<span class="st">"above 20: not null"</span>,           <span class="pm">c</span>.<span class="mt">aboveAge</span>(<span class="nm">20</span>) != <span class="kw">null</span>);
+        <span class="mt">check</span>(<span class="st">"above 11: count is 4"</span>,         <span class="pm">c</span>.<span class="mt">aboveAge</span>(<span class="nm">11</span>).length == <span class="nm">4</span>);
+    }
+
+    <span class="cm">// ---- Section 11: removeSwap ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection11</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 11: removeSwap ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">4</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"315555555"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"409876543"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4444444"</span>, <span class="nm">16</span>);
+        <span class="mt">check</span>(<span class="st">"removeSwap Dana returns true"</span>,    <span class="pm">c</span>.<span class="mt">removeSwap</span>(<span class="st">"204444444"</span>));
+        <span class="mt">check</span>(<span class="st">"size after remove is 3"</span>,          <span class="pm">c</span>.<span class="mt">getNumCampers</span>() == <span class="nm">3</span>);
+        <span class="mt">check</span>(<span class="st">"not found returns false"</span>,         !<span class="pm">c</span>.<span class="mt">removeSwap</span>(<span class="st">"999999999"</span>));
+        <span class="mt">check</span>(<span class="st">"removeSwap Noa returns true"</span>,     <span class="pm">c</span>.<span class="mt">removeSwap</span>(<span class="st">"315555555"</span>));
+        <span class="mt">check</span>(<span class="st">"size after 2 removes is 2"</span>,       <span class="pm">c</span>.<span class="mt">getNumCampers</span>() == <span class="nm">2</span>);
+        <span class="mt">check</span>(<span class="st">"Ron still present"</span>,              <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"111111111"</span>) != <span class="kw">null</span>);
+    }
+
+    <span class="cm">// ---- Section 12: remove ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection12</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 12: remove ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">4</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"315555555"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"409876543"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4444444"</span>, <span class="nm">16</span>);
+        <span class="tp">Camper</span> <span class="pm">removed</span> = <span class="pm">c</span>.<span class="mt">remove</span>(<span class="st">"204444444"</span>);
+        <span class="mt">check</span>(<span class="st">"removed is Dana"</span>,           <span class="pm">removed</span> != <span class="kw">null</span> &amp;&amp; <span class="pm">removed</span>.<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Dana"</span>));
+        <span class="mt">check</span>(<span class="st">"size after remove is 3"</span>,    <span class="pm">c</span>.<span class="mt">getNumCampers</span>() == <span class="nm">3</span>);
+        <span class="mt">check</span>(<span class="st">"Ron still at index 0"</span>,      <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"123456789"</span>) != <span class="kw">null</span>);
+        <span class="mt">check</span>(<span class="st">"Noa still present"</span>,         <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"315555555"</span>) != <span class="kw">null</span>);
+        <span class="mt">check</span>(<span class="st">"not found returns null"</span>,    <span class="pm">c</span>.<span class="mt">remove</span>(<span class="st">"999999999"</span>) == <span class="kw">null</span>);
+        <span class="tp">Camper</span> <span class="pm">removedRon</span> = <span class="pm">c</span>.<span class="mt">remove</span>(<span class="st">"123456789"</span>);
+        <span class="mt">check</span>(<span class="st">"removed is Ron"</span>,            <span class="pm">removedRon</span>.<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Ron"</span>));
+        <span class="mt">check</span>(<span class="st">"Noa now first"</span>,             <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"315555555"</span>) != <span class="kw">null</span>);
+        <span class="mt">check</span>(<span class="st">"size is now 2"</span>,             <span class="pm">c</span>.<span class="mt">getNumCampers</span>() == <span class="nm">2</span>);
+    }
+
+    <span class="cm">// ---- Section 13: addSorted ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection13</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 13: addSorted ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="mt">check</span>(<span class="st">"addSorted Ron(123)"</span>,    <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>));
+        <span class="mt">check</span>(<span class="st">"addSorted Dana(204)"</span>,   <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>));
+        <span class="mt">check</span>(<span class="st">"addSorted Noa(111)"</span>,    <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"111111111"</span>, <span class="st">"Noa"</span>,  <span class="st">"050-3333333"</span>, <span class="nm">13</span>));
+        <span class="mt">check</span>(<span class="st">"addSorted Tamar(316)"</span>,  <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"316666666"</span>, <span class="st">"Tamar"</span>,<span class="st">"050-4444444"</span>, <span class="nm">16</span>));
+        <span class="mt">check</span>(<span class="st">"addSorted Yael(101)"</span>,   <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"101010101"</span>, <span class="st">"Yael"</span>, <span class="st">"050-7777777"</span>, <span class="nm">15</span>));
+        <span class="cm">// verify sorted order by checking phone of each id</span>
+        <span class="mt">checkStr</span>(<span class="st">"first is Yael(101)"</span>,  <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"101010101"</span>), <span class="st">"050-7777777"</span>);
+        <span class="mt">checkStr</span>(<span class="st">"Noa(111) present"</span>,   <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"111111111"</span>), <span class="st">"050-3333333"</span>);
+        <span class="mt">check</span>(<span class="st">"full camp returns false"</span>, !<span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"999999999"</span>, <span class="st">"X"</span>, <span class="st">"050-0"</span>, <span class="nm">10</span>));
+        <span class="mt">check</span>(<span class="st">"size is 5"</span>, <span class="pm">c</span>.<span class="mt">getNumCampers</span>() == <span class="nm">5</span>);
+    }
+
+    <span class="cm">// ---- Section 14: addSortedNoDupId ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection14</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 14: addSortedNoDupId ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="mt">check</span>(<span class="st">"add Ron(123)"</span>,         <span class="pm">c</span>.<span class="mt">addSortedNoDupId</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,  <span class="st">"050-1111111"</span>, <span class="nm">14</span>));
+        <span class="mt">check</span>(<span class="st">"add Dana(204)"</span>,        <span class="pm">c</span>.<span class="mt">addSortedNoDupId</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>, <span class="st">"050-2222222"</span>, <span class="nm">12</span>));
+        <span class="mt">check</span>(<span class="st">"add Noa(111)"</span>,         <span class="pm">c</span>.<span class="mt">addSortedNoDupId</span>(<span class="st">"111111111"</span>, <span class="st">"Noa"</span>,  <span class="st">"050-3333333"</span>, <span class="nm">13</span>));
+        <span class="mt">check</span>(<span class="st">"dup Ron(123) false"</span>,   !<span class="pm">c</span>.<span class="mt">addSortedNoDupId</span>(<span class="st">"123456789"</span>, <span class="st">"Ron2"</span>, <span class="st">"050-9999999"</span>, <span class="nm">15</span>));
+        <span class="mt">check</span>(<span class="st">"size still 3"</span>,         <span class="pm">c</span>.<span class="mt">getNumCampers</span>() == <span class="nm">3</span>);
+        <span class="mt">check</span>(<span class="st">"add Tamar(316)"</span>,       <span class="pm">c</span>.<span class="mt">addSortedNoDupId</span>(<span class="st">"316666666"</span>, <span class="st">"Tamar"</span>,<span class="st">"050-4444444"</span>, <span class="nm">16</span>));
+        <span class="mt">checkStr</span>(<span class="st">"Noa(111) before Ron(123)"</span>, <span class="pm">c</span>.<span class="mt">phoneById</span>(<span class="st">"111111111"</span>), <span class="st">"050-3333333"</span>);
+    }
+
+    <span class="cm">// ---- Section 15: printByAge ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection15</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 15: printByAge ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">5</span>);
+        <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"111111111"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"316666666"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4444444"</span>, <span class="nm">16</span>);
+        <span class="pm">c</span>.<span class="mt">addSorted</span>(<span class="st">"409876543"</span>, <span class="st">"Yael"</span>,  <span class="st">"050-6666666"</span>, <span class="nm">15</span>);
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"--- printed by age (expected: Dana12, Noa13, Ron14, Yael15, Tamar16) ---"</span>);
+        <span class="pm">c</span>.<span class="mt">printByAge</span>();
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"--- original order must be unchanged (by id: Noa111, Ron123, Dana204, Tamar316, Yael409) ---"</span>);
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="pm">c</span>);
+    }
+
+    <span class="cm">// ---- Section 16: printByName ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection16</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 16: printByName ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">6</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"316666666"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4444444"</span>, <span class="nm">16</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"409876543"</span>, <span class="st">"Yael"</span>,  <span class="st">"050-6666666"</span>, <span class="nm">15</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="pm">c</span>.<span class="mt">add</span>(<span class="st">"121212121"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-8888888"</span>, <span class="nm">11</span>);
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"--- printed by name (expected: Dana, Noa, Noa, Ron, Tamar, Yael) ---"</span>);
+        <span class="pm">c</span>.<span class="mt">printByName</span>();
+    }
+
+    <span class="cm">// ---- Section 17: doubleNames ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection17</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 17: doubleNames ---"</span>);
+        <span class="tp">Camp</span> <span class="pm">c1</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">7</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1"</span>, <span class="nm">14</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"222222222"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2"</span>, <span class="nm">12</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"333333333"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-3"</span>, <span class="nm">13</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"444444444"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4"</span>, <span class="nm">16</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"555555555"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-5"</span>, <span class="nm">15</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"666666666"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-6"</span>, <span class="nm">11</span>);
+        <span class="pm">c1</span>.<span class="mt">add</span>(<span class="st">"777777777"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-7"</span>, <span class="nm">12</span>);
+        <span class="tp">String</span> <span class="pm">result1</span> = <span class="pm">c1</span>.<span class="mt">doubleNames</span>();
+        <span class="mt">check</span>(<span class="st">"contains Noa"</span>,          <span class="pm">result1</span>.<span class="mt">contains</span>(<span class="st">"Noa"</span>));
+        <span class="mt">check</span>(<span class="st">"contains Dana"</span>,         <span class="pm">result1</span>.<span class="mt">contains</span>(<span class="st">"Dana"</span>));
+        <span class="mt">check</span>(<span class="st">"no Ron (appears once)"</span>, !<span class="pm">result1</span>.<span class="mt">contains</span>(<span class="st">"Ron"</span>));
+        <span class="mt">check</span>(<span class="st">"no Tamar (once)"</span>,       !<span class="pm">result1</span>.<span class="mt">contains</span>(<span class="st">"Tamar"</span>));
+        <span class="mt">check</span>(<span class="st">"Noa not duplicated in result"</span>,
+              <span class="pm">result1</span>.<span class="mt">indexOf</span>(<span class="st">"Noa"</span>) == <span class="pm">result1</span>.<span class="mt">lastIndexOf</span>(<span class="st">"Noa"</span>));
+        <span class="mt">check</span>(<span class="st">"Dana not duplicated in result"</span>,
+              <span class="pm">result1</span>.<span class="mt">indexOf</span>(<span class="st">"Dana"</span>) == <span class="pm">result1</span>.<span class="mt">lastIndexOf</span>(<span class="st">"Dana"</span>));
+        <span class="tp">Camp</span> <span class="pm">c2</span> = <span class="kw">new</span> <span class="tp">Camp</span>(<span class="nm">3</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"111111111"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1"</span>, <span class="nm">14</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"222222222"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2"</span>, <span class="nm">12</span>);
+        <span class="pm">c2</span>.<span class="mt">add</span>(<span class="st">"333333333"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-3"</span>, <span class="nm">13</span>);
+        <span class="tp">String</span> <span class="pm">result2</span> = <span class="pm">c2</span>.<span class="mt">doubleNames</span>();
+        <span class="mt">check</span>(<span class="st">"no doubles: empty result"</span>, <span class="pm">result2</span>.<span class="mt">isEmpty</span>());
+    }
+
+    <span class="cm">// ---- Section 18: merge ----</span>
+    <span class="kw">static void</span> <span class="mt">testSection18</span>() {
+        <span class="tp">System</span>.out.<span class="mt">println</span>(<span class="st">"\n--- Section 18: merge ---"</span>);
+        <span class="tp">Camper</span>[] <span class="pm">arr1</span> = <span class="kw">new</span> <span class="tp">Camper</span>[<span class="nm">3</span>];
+        <span class="pm">arr1</span>[<span class="nm">0</span>] = <span class="kw">new</span> <span class="tp">Camper</span>(<span class="st">"111111111"</span>, <span class="st">"Noa"</span>,   <span class="st">"050-3333333"</span>, <span class="nm">13</span>);
+        <span class="pm">arr1</span>[<span class="nm">1</span>] = <span class="kw">new</span> <span class="tp">Camper</span>(<span class="st">"204444444"</span>, <span class="st">"Dana"</span>,  <span class="st">"050-2222222"</span>, <span class="nm">12</span>);
+        <span class="pm">arr1</span>[<span class="nm">2</span>] = <span class="kw">new</span> <span class="tp">Camper</span>(<span class="st">"409876543"</span>, <span class="st">"Yael"</span>,  <span class="st">"050-6666666"</span>, <span class="nm">15</span>);
+        <span class="tp">Camper</span>[] <span class="pm">arr2</span> = <span class="kw">new</span> <span class="tp">Camper</span>[<span class="nm">4</span>];
+        <span class="pm">arr2</span>[<span class="nm">0</span>] = <span class="kw">new</span> <span class="tp">Camper</span>(<span class="st">"123456789"</span>, <span class="st">"Ron"</span>,   <span class="st">"050-1111111"</span>, <span class="nm">14</span>);
+        <span class="pm">arr2</span>[<span class="nm">1</span>] = <span class="kw">new</span> <span class="tp">Camper</span>(<span class="st">"315555555"</span>, <span class="st">"Lior"</span>,  <span class="st">"050-9999999"</span>, <span class="nm">11</span>);
+        <span class="pm">arr2</span>[<span class="nm">2</span>] = <span class="kw">new</span> <span class="tp">Camper</span>(<span class="st">"505050505"</span>, <span class="st">"Tamar"</span>, <span class="st">"050-4444444"</span>, <span class="nm">16</span>);
+        <span class="pm">arr2</span>[<span class="nm">3</span>] = <span class="kw">new</span> <span class="tp">Camper</span>(<span class="st">"707070707"</span>, <span class="st">"Maya"</span>,  <span class="st">"050-0000000"</span>, <span class="nm">13</span>);
+        <span class="tp">Camper</span>[] <span class="pm">merged</span> = <span class="tp">Camp</span>.<span class="mt">merge</span>(<span class="pm">arr1</span>, <span class="nm">3</span>, <span class="pm">arr2</span>, <span class="nm">4</span>);
+        <span class="mt">check</span>(<span class="st">"merged length is 7"</span>,     <span class="pm">merged</span>.length == <span class="nm">7</span>);
+        <span class="mt">check</span>(<span class="st">"first is Noa(111)"</span>,       <span class="pm">merged</span>[<span class="nm">0</span>].<span class="mt">getId</span>().<span class="mt">equals</span>(<span class="st">"111111111"</span>));
+        <span class="mt">check</span>(<span class="st">"second is Ron(123)"</span>,      <span class="pm">merged</span>[<span class="nm">1</span>].<span class="mt">getId</span>().<span class="mt">equals</span>(<span class="st">"123456789"</span>));
+        <span class="mt">check</span>(<span class="st">"third is Dana(204)"</span>,      <span class="pm">merged</span>[<span class="nm">2</span>].<span class="mt">getId</span>().<span class="mt">equals</span>(<span class="st">"204444444"</span>));
+        <span class="mt">check</span>(<span class="st">"last is Maya(707)"</span>,       <span class="pm">merged</span>[<span class="nm">6</span>].<span class="mt">getId</span>().<span class="mt">equals</span>(<span class="st">"707070707"</span>));
+        <span class="tp">Camper</span>[] <span class="pm">empty</span> = <span class="kw">new</span> <span class="tp">Camper</span>[<span class="nm">0</span>];
+        <span class="tp">Camper</span>[] <span class="pm">merged2</span> = <span class="tp">Camp</span>.<span class="mt">merge</span>(<span class="pm">arr1</span>, <span class="nm">3</span>, <span class="pm">empty</span>, <span class="nm">0</span>);
+        <span class="mt">check</span>(<span class="st">"merge with empty: length 3"</span>, <span class="pm">merged2</span>.length == <span class="nm">3</span>);
+        <span class="mt">check</span>(<span class="st">"merge with empty: first Noa"</span>, <span class="pm">merged2</span>[<span class="nm">0</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Noa"</span>));
+    }
+}</pre>
+    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+  </section>
+
+
+  <!-- ===== הורדת קבצים ===== -->
+  <section id="download" style="text-align:center; padding:32px;">
+    <h2 style="margin-bottom:20px;">הורדת קבצי הפרויקט</h2>
+    <p style="margin-bottom:20px; color: var(--muted);">הורידו את שלושת הקבצים והכניסו אותם לאותה תיקייה בסביבת הפיתוח שלכם.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a id="dl-camper" style="display:inline-block; background:#1d4ed8; color:white; padding:12px 24px; border-radius:10px; text-decoration:none; font-weight:700; font-size:1rem;">
+        ⬇ Camper.java
+      </a>
+      <a id="dl-camp" style="display:inline-block; background:#0891b2; color:white; padding:12px 24px; border-radius:10px; text-decoration:none; font-weight:700; font-size:1rem;">
+        ⬇ Camp.java
+      </a>
+      <a id="dl-main" style="display:inline-block; background:#059669; color:white; padding:12px 24px; border-radius:10px; text-decoration:none; font-weight:700; font-size:1rem;">
+        ⬇ Main.java
+      </a>
+    </div>
+  </section>
+
+  <script>
+  // Generate download links for the three Java files
+  function makeDownload(id, filename, content) {
+    const blob = new Blob([content], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    document.getElementById(id).href = url;
+    document.getElementById(id).download = filename;
+  }
+
+  const camperJava = `public class Camper {
+    private String _name;
+    private String _id;
+    private String _phone;
+    private int    _age;
+
+    public Camper(String id, String name, String phone, int age) {
+        _id    = id;
+        _name  = name;
+        _phone = phone;
+        _age   = age;
+    }
+
+    public String getName()  { return _name;  }
+    public String getId()    { return _id;    }
+    public String getPhone() { return _phone; }
+    public int    getAge()   { return _age;   }
+
+    public void setPhone(String phone) { _phone = phone; }
+    public void setAge(int age)        { _age   = age;   }
+
+    public String toString() {
+        return _id + " | " + _name + " | " + _phone + " | age:" + _age;
+    }
+}`;
+
+  const campJava = `public class Camp {
+
+    public static final int DEFAULT_MAX = 20;
+
+    private Camper[] _campers;
+    private int _size;
+
+    // Section 1: constructors
+    public Camp(int maxCampers) { /* TODO */ }
+
+    public Camp() { /* TODO - use DEFAULT_MAX */ }
+
+    public int getNumCampers() { /* TODO */ return 0; }
+
+    // Section 2: add - no order, no duplicate id
+    public boolean add(String id, String name, String phone, int age) {
+        // TODO
+        return false;
+    }
+
+    // Section 3: toString
+    public String toString() {
+        // TODO - return "No campers" if empty
+        return "";
+    }
+
+    // Section 4: averageAge
+    public double averageAge() {
+        // TODO - return 0 if empty
+        return 0;
+    }
+
+    // Section 5: oldestCamper
+    public Camper oldestCamper() {
+        // TODO - return null if empty
+        return null;
+    }
+
+    // Section 6: phoneById - sequential search
+    public String phoneById(String id) {
+        // TODO - return null if not found
+        return null;
+    }
+
+    // Section 7: getIdByName - return id of first match
+    public String getIdByName(String name) {
+        // TODO - return null if not found
+        return null;
+    }
+
+    // Section 8: phoneByName - use getIdByName + phoneById
+    public String phoneByName(String name) {
+        // TODO
+        return null;
+    }
+
+    // Section 9: updatePhone - update phone by id
+    public boolean updatePhone(String id, String newPhone) {
+        // TODO - return false if not found
+        return false;
+    }
+
+    // Section 10: aboveAge - return new array
+    public Camper[] aboveAge(int age) {
+        // TODO - return empty array (not null) if none found
+        return null;
+    }
+
+    // Section 11: removeSwap - no order preserved, no return value
+    public boolean removeSwap(String id) {
+        // TODO
+        return false;
+    }
+
+    // Section 12: remove - preserve order, return removed camper
+    public Camper remove(String id) {
+        // TODO - return null if not found
+        return null;
+    }
+
+    // Section 13: addSorted - sorted by id, duplicate names allowed
+    public boolean addSorted(String id, String name, String phone, int age) {
+        // TODO - use compareTo
+        return false;
+    }
+
+    // Section 14: addSortedNoDupId - sorted by id, no duplicate id
+    public boolean addSortedNoDupId(String id, String name, String phone, int age) {
+        // TODO
+        return false;
+    }
+
+    // Section 15: printByAge - do NOT change _campers, hint: helper array
+    public void printByAge() {
+        // TODO
+    }
+
+    // Section 16: printByName - do NOT change _campers, hint: helper array
+    public void printByName() {
+        // TODO
+    }
+
+    // Section 17: doubleNames - nested loop
+    public String doubleNames() {
+        // TODO - each duplicate name appears once in result
+        return "";
+    }
+
+    // Section 18: merge - static, merge two sorted arrays
+    public static Camper[] merge(Camper[] arr1, int size1,
+                                  Camper[] arr2, int size2) {
+        // TODO
+        return null;
+    }
+}`;
+
+  const mainJava = `public class Main {
+
+    public static void main(String[] args) {
+        testSection1();
+        // testSection2();
+        // testSection3();
+        // testSection4();
+        // testSection5();
+        // testSection6();
+        // testSection7();
+        // testSection8();
+        // testSection9();
+        // testSection10();
+        // testSection11();
+        // testSection12();
+        // testSection13();
+        // testSection14();
+        // testSection15();
+        // testSection16();
+        // testSection17();
+        // testSection18();
+    }
+
+    private static void check(String label, boolean passed) {
+        System.out.println(label + ": " + (passed ? "PASS" : "FAIL"));
+    }
+
+    private static void checkStr(String label, String actual, String expected) {
+        boolean ok = actual != null && actual.equals(expected);
+        System.out.println(label + ": " + (ok ? "PASS" : "FAIL (got: " + actual + ")"));
+    }
+
+    static void testSection1() {
+        System.out.println("\n--- Section 1: Constructors ---");
+        Camp c1 = new Camp(5);
+        check("Camp(5) size is 0", c1.getNumCampers() == 0);
+        Camp c2 = new Camp();
+        check("Camp() size is 0", c2.getNumCampers() == 0);
+        check("DEFAULT_MAX is 20", Camp.DEFAULT_MAX == 20);
+    }
+
+    static void testSection2() {
+        System.out.println("\n--- Section 2: add ---");
+        Camp c = new Camp(3);
+        check("add Ron returns true",    c.add("123456789", "Ron",  "050-1111111", 14));
+        check("add Dana returns true",   c.add("204444444", "Dana", "050-2222222", 12));
+        check("add Noa returns true",    c.add("111111111", "Noa",  "050-3333333", 13));
+        check("dup id returns false",    !c.add("123456789", "Ron2", "050-9999999", 15));
+        check("full camp returns false", !c.add("999999999", "Zoe",  "050-0000000", 11));
+        check("size is 3", c.getNumCampers() == 3);
+    }
+
+    static void testSection3() {
+        System.out.println("\n--- Section 3: toString ---");
+        Camp empty = new Camp(5);
+        checkStr("empty camp", empty.toString(), "No campers");
+        Camp c = new Camp(3);
+        c.add("123456789", "Ron",  "050-1111111", 14);
+        c.add("204444444", "Dana", "050-2222222", 12);
+        c.add("315555555", "Noa",  "050-3333333", 13);
+        String expected = "123456789 | Ron | 050-1111111 | age:14\n"
+                        + "204444444 | Dana | 050-2222222 | age:12\n"
+                        + "315555555 | Noa | 050-3333333 | age:13";
+        checkStr("3 campers toString", c.toString(), expected);
+        check("toString contains Ron",  c.toString().contains("Ron"));
+        check("toString contains Dana", c.toString().contains("Dana"));
+    }
+
+    static void testSection4() {
+        System.out.println("\n--- Section 4: averageAge ---");
+        Camp empty = new Camp(5);
+        check("empty average is 0.0", empty.averageAge() == 0.0);
+        Camp c1 = new Camp(5);
+        c1.add("111111111","A","050-1",14); c1.add("222222222","B","050-2",12);
+        c1.add("333333333","C","050-3",13); c1.add("444444444","D","050-4",15);
+        c1.add("555555555","E","050-5",11);
+        check("average of 14,12,13,15,11 is 13.0", c1.averageAge() == 13.0);
+        Camp c2 = new Camp(2);
+        c2.add("111111111","A","050-1",10); c2.add("222222222","B","050-2",17);
+        check("average of 10,17 is 13.5", c2.averageAge() == 13.5);
+    }
+
+    static void testSection5() {
+        System.out.println("\n--- Section 5: oldestCamper ---");
+        Camp empty = new Camp(3);
+        check("empty returns null", empty.oldestCamper() == null);
+        Camp c = new Camp(4);
+        c.add("123456789","Ron",  "050-1111111",14); c.add("204444444","Dana", "050-2222222",12);
+        c.add("316666666","Tamar","050-4444444",16); c.add("409876543","Yael", "050-6666666",13);
+        check("oldest is Tamar (16)", c.oldestCamper().getName().equals("Tamar"));
+        check("oldest age is 16",     c.oldestCamper().getAge() == 16);
+        Camp c2 = new Camp(3);
+        c2.add("111111111","Amit","050-5555555",15);
+        c2.add("222222222","Roni","050-7777777",15);
+        c2.add("333333333","Lior","050-8888888",12);
+        check("tie: first oldest is Amit", c2.oldestCamper().getName().equals("Amit"));
+    }
+
+    static void testSection6() {
+        System.out.println("\n--- Section 6: phoneById ---");
+        Camp c = new Camp(3);
+        c.add("123456789","Ron","050-1111111",14);
+        c.add("204444444","Dana","050-2222222",12);
+        c.add("315555555","Noa","050-3333333",13);
+        checkStr("phone of 204444444", c.phoneById("204444444"), "050-2222222");
+        checkStr("phone of 123456789", c.phoneById("123456789"), "050-1111111");
+        checkStr("phone of 315555555", c.phoneById("315555555"), "050-3333333");
+        check("not found returns null", c.phoneById("999999999") == null);
+    }
+
+    static void testSection7() {
+        System.out.println("\n--- Section 7: getIdByName ---");
+        Camp c = new Camp(4);
+        c.add("123456789","Ron","050-1111111",14); c.add("204444444","Dana","050-2222222",12);
+        c.add("111111111","Noa","050-3333333",13); c.add("315555555","Noa","050-9999999",11);
+        checkStr("id of Ron",         c.getIdByName("Ron"),     "123456789");
+        checkStr("id of Dana",        c.getIdByName("Dana"),    "204444444");
+        checkStr("id of Noa (first)", c.getIdByName("Noa"),     "111111111");
+        check("Unknown returns null", c.getIdByName("Unknown") == null);
+    }
+
+    static void testSection8() {
+        System.out.println("\n--- Section 8: phoneByName ---");
+        Camp c = new Camp(3);
+        c.add("123456789","Ron","050-1111111",14);
+        c.add("204444444","Dana","050-2222222",12);
+        c.add("315555555","Dana","050-7777777",11);
+        checkStr("phone of Ron",          c.phoneByName("Ron"),     "050-1111111");
+        checkStr("phone of Dana (first)", c.phoneByName("Dana"),    "050-2222222");
+        check("Unknown returns null",     c.phoneByName("Unknown") == null);
+    }
+
+    static void testSection9() {
+        System.out.println("\n--- Section 9: updatePhone ---");
+        Camp c = new Camp(3);
+        c.add("123456789","Ron","050-1111111",14);
+        c.add("204444444","Dana","050-2222222",12);
+        check("update Ron returns true",       c.updatePhone("123456789","052-9999999"));
+        checkStr("Ron new phone",              c.phoneById("123456789"), "052-9999999");
+        checkStr("Dana phone unchanged",       c.phoneById("204444444"), "050-2222222");
+        check("not found returns false",      !c.updatePhone("999999999","052-0000000"));
+    }
+
+    static void testSection10() {
+        System.out.println("\n--- Section 10: aboveAge ---");
+        Camp c = new Camp(5);
+        c.add("123456789","Ron",  "050-1111111",14); c.add("204444444","Dana", "050-2222222",12);
+        c.add("316666666","Tamar","050-4444444",16); c.add("333333333","Noa",  "050-3333333",13);
+        c.add("409999999","Yael", "050-6666666",15);
+        Camper[] above13 = c.aboveAge(13);
+        check("above 13: count is 3", above13.length == 3);
+        boolean hasRon   = false, hasTamar = false, hasYael = false;
+        for (int i = 0; i < above13.length; i++) {
+            if (above13[i].getName().equals("Ron"))   hasRon   = true;
+            if (above13[i].getName().equals("Tamar")) hasTamar = true;
+            if (above13[i].getName().equals("Yael"))  hasYael  = true;
+        }
+        check("above 13: contains Ron",   hasRon);
+        check("above 13: contains Tamar", hasTamar);
+        check("above 13: contains Yael",  hasYael);
+        check("above 20: empty array",    c.aboveAge(20).length == 0);
+        check("above 20: not null",       c.aboveAge(20) != null);
+        check("above 11: count is 4",     c.aboveAge(11).length == 4);
+    }
+
+    static void testSection11() {
+        System.out.println("\n--- Section 11: removeSwap ---");
+        Camp c = new Camp(4);
+        c.add("111111111","Ron",  "050-1111111",14); c.add("204444444","Dana", "050-2222222",12);
+        c.add("315555555","Noa",  "050-3333333",13); c.add("409876543","Tamar","050-4444444",16);
+        check("removeSwap Dana returns true",  c.removeSwap("204444444"));
+        check("size after remove is 3",        c.getNumCampers() == 3);
+        check("not found returns false",      !c.removeSwap("999999999"));
+        check("removeSwap Noa returns true",   c.removeSwap("315555555"));
+        check("size after 2 removes is 2",     c.getNumCampers() == 2);
+        check("Ron still present",             c.phoneById("111111111") != null);
+    }
+
+    static void testSection12() {
+        System.out.println("\n--- Section 12: remove ---");
+        Camp c = new Camp(4);
+        c.add("123456789","Ron",  "050-1111111",14); c.add("204444444","Dana", "050-2222222",12);
+        c.add("315555555","Noa",  "050-3333333",13); c.add("409876543","Tamar","050-4444444",16);
+        Camper removed = c.remove("204444444");
+        check("removed is Dana",        removed != null && removed.getName().equals("Dana"));
+        check("size after remove is 3", c.getNumCampers() == 3);
+        check("Ron still present",      c.phoneById("123456789") != null);
+        check("Noa still present",      c.phoneById("315555555") != null);
+        check("not found returns null", c.remove("999999999") == null);
+        Camper removedRon = c.remove("123456789");
+        check("removed is Ron",         removedRon.getName().equals("Ron"));
+        check("size is now 2",          c.getNumCampers() == 2);
+    }
+
+    static void testSection13() {
+        System.out.println("\n--- Section 13: addSorted ---");
+        Camp c = new Camp(5);
+        check("addSorted Ron(123)",   c.addSorted("123456789","Ron",  "050-1111111",14));
+        check("addSorted Dana(204)",  c.addSorted("204444444","Dana", "050-2222222",12));
+        check("addSorted Noa(111)",   c.addSorted("111111111","Noa",  "050-3333333",13));
+        check("addSorted Tamar(316)", c.addSorted("316666666","Tamar","050-4444444",16));
+        check("addSorted Yael(101)",  c.addSorted("101010101","Yael", "050-7777777",15));
+        checkStr("Yael(101) present", c.phoneById("101010101"), "050-7777777");
+        checkStr("Noa(111) present",  c.phoneById("111111111"), "050-3333333");
+        check("full camp false",     !c.addSorted("999999999","X","050-0",10));
+        check("size is 5",            c.getNumCampers() == 5);
+    }
+
+    static void testSection14() {
+        System.out.println("\n--- Section 14: addSortedNoDupId ---");
+        Camp c = new Camp(5);
+        check("add Ron(123)",       c.addSortedNoDupId("123456789","Ron",  "050-1111111",14));
+        check("add Dana(204)",      c.addSortedNoDupId("204444444","Dana", "050-2222222",12));
+        check("add Noa(111)",       c.addSortedNoDupId("111111111","Noa",  "050-3333333",13));
+        check("dup Ron false",     !c.addSortedNoDupId("123456789","Ron2", "050-9999999",15));
+        check("size still 3",       c.getNumCampers() == 3);
+        check("add Tamar(316)",     c.addSortedNoDupId("316666666","Tamar","050-4444444",16));
+        checkStr("Noa(111) ok",     c.phoneById("111111111"), "050-3333333");
+    }
+
+    static void testSection15() {
+        System.out.println("\n--- Section 15: printByAge ---");
+        Camp c = new Camp(5);
+        c.addSorted("111111111","Noa",  "050-3333333",13); c.addSorted("123456789","Ron",  "050-1111111",14);
+        c.addSorted("204444444","Dana", "050-2222222",12); c.addSorted("316666666","Tamar","050-4444444",16);
+        c.addSorted("409876543","Yael", "050-6666666",15);
+        System.out.println("Expected order: Dana(12), Noa(13), Ron(14), Yael(15), Tamar(16)");
+        c.printByAge();
+        System.out.println("Original must be unchanged - expected: Noa(111), Ron(123), Dana(204), Tamar(316), Yael(409)");
+        System.out.println(c);
+    }
+
+    static void testSection16() {
+        System.out.println("\n--- Section 16: printByName ---");
+        Camp c = new Camp(6);
+        c.add("123456789","Ron",  "050-1111111",14); c.add("204444444","Dana", "050-2222222",12);
+        c.add("316666666","Tamar","050-4444444",16); c.add("409876543","Yael", "050-6666666",15);
+        c.add("111111111","Noa",  "050-3333333",13); c.add("121212121","Noa",  "050-8888888",11);
+        System.out.println("Expected order: Dana, Noa, Noa, Ron, Tamar, Yael");
+        c.printByName();
+    }
+
+    static void testSection17() {
+        System.out.println("\n--- Section 17: doubleNames ---");
+        Camp c1 = new Camp(7);
+        c1.add("111111111","Ron",  "050-1",14); c1.add("222222222","Dana", "050-2",12);
+        c1.add("333333333","Noa",  "050-3",13); c1.add("444444444","Tamar","050-4",16);
+        c1.add("555555555","Noa",  "050-5",15); c1.add("666666666","Dana", "050-6",11);
+        c1.add("777777777","Noa",  "050-7",12);
+        String result1 = c1.doubleNames();
+        check("contains Noa",               result1.contains("Noa"));
+        check("contains Dana",              result1.contains("Dana"));
+        check("no Ron (appears once)",     !result1.contains("Ron"));
+        check("no Tamar (once)",           !result1.contains("Tamar"));
+        check("Noa not duplicated",         result1.indexOf("Noa")  == result1.lastIndexOf("Noa"));
+        check("Dana not duplicated",        result1.indexOf("Dana") == result1.lastIndexOf("Dana"));
+        Camp c2 = new Camp(3);
+        c2.add("111111111","Ron","050-1",14); c2.add("222222222","Dana","050-2",12);
+        c2.add("333333333","Tamar","050-3",13);
+        check("no doubles: empty result",   c2.doubleNames().isEmpty());
+    }
+
+    static void testSection18() {
+        System.out.println("\n--- Section 18: merge ---");
+        Camper[] arr1 = new Camper[3];
+        arr1[0] = new Camper("111111111","Noa",  "050-3333333",13);
+        arr1[1] = new Camper("204444444","Dana", "050-2222222",12);
+        arr1[2] = new Camper("409876543","Yael", "050-6666666",15);
+        Camper[] arr2 = new Camper[4];
+        arr2[0] = new Camper("123456789","Ron",  "050-1111111",14);
+        arr2[1] = new Camper("315555555","Lior", "050-9999999",11);
+        arr2[2] = new Camper("505050505","Tamar","050-4444444",16);
+        arr2[3] = new Camper("707070707","Maya", "050-0000000",13);
+        Camper[] merged = Camp.merge(arr1, 3, arr2, 4);
+        check("merged length is 7",     merged.length == 7);
+        check("first is Noa(111)",      merged[0].getId().equals("111111111"));
+        check("second is Ron(123)",     merged[1].getId().equals("123456789"));
+        check("third is Dana(204)",     merged[2].getId().equals("204444444"));
+        check("last is Maya(707)",      merged[6].getId().equals("707070707"));
+        Camper[] empty = new Camper[0];
+        Camper[] merged2 = Camp.merge(arr1, 3, empty, 0);
+        check("merge with empty: length 3",  merged2.length == 3);
+        check("merge with empty: first Noa", merged2[0].getName().equals("Noa"));
+    }
+}`;
+
+  window.onload = function() {
+    makeDownload('dl-camper',     'Camper.java', camperJava);
+    makeDownload('dl-camp',       'Camp.java',   campJava);
+    makeDownload('dl-main',       'Main.java',   mainJava);
+    makeDownload('dl-camper-top', 'Camper.java', camperJava);
+    makeDownload('dl-camp-top',   'Camp.java',   campJava);
+    makeDownload('dl-main-top',   'Main.java',   mainJava);
+  };
+  </script>
+
+</main>
+<footer>
+  תרגיל — מערך של אובייקטים בשפת Java | מבוא למדעי המחשב
+</footer>
+</body>
+</html>
