@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>תרגיל: מערכת הרשמה לקייטנה</title>
+  <title>تمرين: نظام التسجيل في المخيّم</title>
   <style>
     :root {
       --bg: #f0f4f8;
@@ -195,19 +195,19 @@
 <body>
 
 <header id="top">
-  <h1>תרגיל: מערכת הרשמה לקייטנה</h1>
+  <h1>تمرين: نظام التسجيل في المخيّم</h1>
   <p>
-    לקראת הקיץ מוצעות קייטנות רבות לתלמידים. כדי לנהל את ההרשמה ביעילות,
-    נבנה מערכת תוכנה המאפשרת להוסיף משתתפים, לחפש פרטים, לעדכן מידע ולהציג את הרשימה.
-    המערכת בנויה משתי מחלקות: מחלקת <strong>Camper</strong> המייצגת משתתף בודד,
-    ומחלקת <strong>Camp</strong> המנהלת את מערך המשתתפים ומספקת את כל הפעולות על הקייטנה.
+    مع اقتراب فصل الصيف، تُعرض مخيّمات كثيرة للطلاب. لإدارة التسجيل بكفاءة،
+    سنبني نظام برمجي يتيح إضافة المشاركين، والبحث عن بياناتهم، وتحديث المعلومات وعرض القائمة.
+    يتكوّن النظام من صنفين: صنف <strong>Camper</strong> الذي يمثّل مشاركًا واحدًا،
+    وصنف <strong>Camp</strong> الذي يدير مصفوفة المشاركين ويوفّر جميع العمليات على المخيّم.
   </p>
 </header>
 
 <main class="container">
 
   <nav>
-    <h2>ניווט מהיר</h2>
+    <h2>التنقل السريع</h2>
     <ul>
       <li><a href="#instructions">Instructions</a></li>
       <li><a href="#camper">Class Camper</a></li>
@@ -235,45 +235,45 @@
     </ul>
   </nav>
 
-  <!-- ===== הוראות ===== -->
+  <!-- ===== Instructions ===== -->
   <section id="instructions">
-    <h2>הוראות כלליות</h2>
-    <p>בתרגיל זה תממשו שלב אחר שלב את מחלקת <code>Camp</code>.</p>
+    <h2>التعليمات العامة</h2>
+    <p>في هذا التمرين ستُنفّذون خطوةً بخطوة صنف <code>Camp</code>.</p>
     <div class="tip">
-      <strong>חופש בחירה:</strong> ניתן לפתור את הסעיפים לפי הסדר שנוח לכם — אין חובה לפתור את כולם ואין חובה לפתור לפי הסדר. מומלץ להתחיל מסעיפים 1–3 (בנאים, add, toString) כדי שתוכלו לבדוק את שאר הסעיפים, אך מכאן אפשר לבחור בחופשיות.
+      <strong>حرية الاختيار:</strong> يمكنكم حلّ البنود بالترتيب الذي يناسبكم — لا يلزم حلّ جميعها ولا يلزم الالتزام بالترتيب. يُنصح بالبدء بالبنود 1–3 (البنّاؤون، add، toString) حتى تتمكّنوا من اختبار بقية البنود، ومن هنا يمكنكم الاختيار بحرية.
     </div>
-    <p><strong>שלבי העבודה:</strong></p>
+    <p><strong>خطوات العمل:</strong></p>
     <ol>
       <li>
-        <strong>הורידו את שלושת קבצי הפרויקט</strong> והכניסו אותם לאותה תיקייה בסביבת הפיתוח שלכם.
+        <strong>نزّلوا ملفات المشروع الثلاثة</strong> وضعوها في نفس المجلد في بيئة التطوير لديكم.
         <div style="margin-top:10px; display:flex; gap:12px; flex-wrap:wrap;">
           <a id="dl-camper-top" style="display:inline-block; background:#1d4ed8; color:white; padding:8px 18px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.9rem;">⬇ Camper.java</a>
           <a id="dl-camp-top"   style="display:inline-block; background:#0891b2; color:white; padding:8px 18px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.9rem;">⬇ Camp.java</a>
           <a id="dl-main-top"   style="display:inline-block; background:#059669; color:white; padding:8px 18px; border-radius:8px; text-decoration:none; font-weight:700; font-size:0.9rem;">⬇ Main.java</a>
         </div>
-        <p style="margin-top:8px; font-size:0.9rem; color:var(--muted);">לינקים נוספים להורדה גם בתחתית הדף.</p>
+        <p style="margin-top:8px; font-size:0.9rem; color:var(--muted);">روابط إضافية للتنزيل متوفّرة أيضًا في أسفل الصفحة.</p>
       </li>
-      <li>קראו את תיאור השיטה בסעיף הרלוונטי.</li>
-      <li>ממשו את השיטה בתוך <code>Camp.java</code>.</li>
-      <li>הפעילו את הפונקציה המתאימה בטסטר לפי ההוראות בסעיף.</li>
-      <li>ודאו שכל הבדיקות מדפיסות <strong>PASS</strong>.</li>
+      <li>اقرأوا وصف التابع في البند المعني.</li>
+      <li>نفّذوا التابع داخل <code>Camp.java</code>.</li>
+      <li>شغّلوا الدالة المناسبة في المختبر وفق التعليمات الواردة في البند.</li>
+      <li>تأكّدوا من أن جميع الاختبارات تطبع <strong>PASS</strong>.</li>
     </ol>
     <div class="note">
-      המערך צריך להיות <strong>ללא חורים</strong> בכל שלב — כל המחנאים הרשומים יופיעו ברצף מתחילת המערך.
+      يجب أن تكون المصفوفة <strong>بدون فجوات</strong> في كل مرحلة — يجب أن يظهر جميع المشاركين المسجّلين بشكل متتالٍ من بداية المصفوفة.
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
-  <!-- ===== מחלקת Camper ===== -->
+  <!-- ===== Class Camper ===== -->
   <section id="camper">
-    <h2>מחלקת Camper — נתונה</h2>
-    <p>מחלקה זו מייצגת משתתף בודד בקייטנה. היא ניתנת לכם מוכנה — אין צורך לשנות אותה.</p>
-    <p>תכונות:</p>
+    <h2>صنف Camper — مُعطى</h2>
+    <p>يمثّل هذا الصنف مشاركًا واحدًا في المخيّم. يُعطى لكم جاهزًا — لا حاجة لتعديله.</p>
+    <p>الخصائص:</p>
     <ul>
-      <li><code>_name</code> — שם המשתתף (String)</li>
-      <li><code>_id</code> — תעודת זהות (String)</li>
-      <li><code>_phone</code> — מספר טלפון (String)</li>
-      <li><code>_age</code> — גיל (int)</li>
+      <li><code>_name</code> — اسم المشارك (String)</li>
+      <li><code>_id</code> — رقم الهوية (String)</li>
+      <li><code>_phone</code> — رقم الهاتف (String)</li>
+      <li><code>_age</code> — العمر (int)</li>
     </ul>
 <pre><span class="kw">public class</span> <span class="tp">Camper</span> {
     <span class="kw">private</span> <span class="tp">String</span> <span class="pm">_name</span>;
@@ -300,14 +300,14 @@
         <span class="kw">return</span> <span class="pm">_id</span> + <span class="st">" | "</span> + <span class="pm">_name</span> + <span class="st">" | "</span> + <span class="pm">_phone</span> + <span class="st">" | age:"</span> + <span class="pm">_age</span>;
     }
 }</pre>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
-  <!-- ===== שלד Camp ===== -->
+  <!-- ===== Camp Skeleton ===== -->
   <section id="camp-skeleton">
-    <h2>שלד Camp.java — נקודת ההתחלה שלכם</h2>
-    <p>מחלקה זו מנהלת את מערך המשתתפים ומספקת את כל הפעולות על הקייטנה — הוספה, חיפוש, עדכון, הסרה והצגה.</p>
-    <p>העתיקו את השלד הבא ל-<code>Camp.java</code> ומלאו את ה-TODO אחד אחד לפי סדר הסעיפים.</p>
+    <h2>هيكل Camp.java — نقطة البداية</h2>
+    <p>يدير هذا الصنف مصفوفة المشاركين ويوفّر جميع العمليات على المخيّم — الإضافة والبحث والتحديث والحذف والعرض.</p>
+    <p>انسخوا الهيكل التالي إلى <code>Camp.java</code> واملأوا كل TODO وفق ترتيب البنود.</p>
 <pre><span class="kw">public class</span> <span class="tp">Camp</span> {
 
     <span class="kw">public static final int</span> DEFAULT_MAX = <span class="nm">20</span>;
@@ -425,28 +425,28 @@
         <span class="kw">return null</span>;
     }
 }</pre>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
-  <!-- ===== כיצד להפעיל את הטסטר ===== -->
+  <!-- ===== Tester Guide ===== -->
   <section id="tester-guide">
-    <h2>כיצד להפעיל את הטסטר</h2>
-    <p>קובץ הטסטר <code>Main.java</code> מכיל פונקציית <code>main</code> ו-18 פונקציות בדיקה — אחת לכל סעיף.</p>
+    <h2>كيفية تشغيل المختبر</h2>
+    <p>يحتوي ملف المختبر <code>Main.java</code> على دالة <code>main</code> و-18 دالة اختبار — واحدة لكل بند.</p>
     <div class="tip">
-      <strong>כלל הזהב:</strong> הפעילו רק את הסעיפים שסיימתם לממש. שאר הסעיפים מופיעים כהערה.
+      <strong>القاعدة الذهبية:</strong> شغّلوا فقط البنود التي أنهيتم تنفيذها. بقية البنود تظهر كتعليق.
     </div>
-    <p><strong>שלבי העבודה לכל סעיף:</strong></p>
+    <p><strong>خطوات العمل لكل بند:</strong></p>
     <ol>
-      <li>ממשו את השיטה ב-<code>Camp.java</code>.</li>
-      <li>פתחו את <code>Main.java</code>.</li>
-      <li>ב-<code>main</code> — הסירו את <code>//</code> לפני הקריאה לסעיף המתאים.</li>
-      <li>הריצו את התוכנית.</li>
-      <li>ודאו שכל הבדיקות מדפיסות PASS.</li>
+      <li>نفّذوا التابع في <code>Camp.java</code>.</li>
+      <li>افتحوا <code>Main.java</code>.</li>
+      <li>في <code>main</code> — احذفوا <code>//</code> قبل استدعاء البند المعني.</li>
+      <li>شغّلوا البرنامج.</li>
+      <li>تأكّدوا من أن جميع الاختبارات تطبع PASS.</li>
     </ol>
     <div class="note">
-      כל פונקציית בדיקה בונה את הנתונים שלה מאפס — אין תלות בין הסעיפים.
+      كل دالة اختبار تبني بياناتها من الصفر — لا تبعية بين البنود.
     </div>
-    <p>דוגמה להרצת סעיפים 1, 2, 3 של השאלה — שאר הסעיפים לא נבדקים כי מופיעה הערה:</p>
+    <p>مثال على تشغيل البنود 1 و2 و3 — بقية البنود لا تُختبر لأنها تظهر كتعليق:</p>
 <pre><span class="kw">public static void</span> <span class="mt">main</span>(<span class="tp">String</span>[] <span class="pm">args</span>) {
     <span class="mt">testSection1</span>();
     <span class="mt">testSection2</span>();
@@ -455,286 +455,286 @@
     <span class="cm">// testSection5();</span>
     <span class="cm">// ...</span>
 }</pre>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
-  <!-- ===== סעיפי השאלות ===== -->
+  <!-- ===== Sections ===== -->
 
   <section id="s1">
-    <h2>סעיף 1 — בנאים ו-getNumCampers <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <h2>البند 1 — البنّاؤون و-getNumCampers <span class="difficulty d1">⭐ أساسي</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">1א</div><h3>בנאי עם פרמטר</h3></div>
+      <div class="method-header"><div class="method-num">1א</div><h3>بنّاء بمعامل</h3></div>
       <div class="signature">public Camp(int maxCampers)</div>
-      <p>יוצר קייטנה המסוגלת לקלוט עד <code>maxCampers</code> משתתפים. יש לאתחל את המערך ואת מספר המשתתפים ל-0.</p>
+      <p>يُنشئ مخيّمًا قادرًا على استيعاب ما يصل إلى <code>maxCampers</code> مشاركًا. يجب تهيئة المصفوفة وعدد المشاركين إلى 0.</p>
     </div>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">1ב</div><h3>בנאי ברירת מחדל</h3></div>
+      <div class="method-header"><div class="method-num">1ב</div><h3>بنّاء افتراضي</h3></div>
       <div class="signature">public Camp()</div>
-      <p>יוצר קייטנה עם קיבולת ברירת מחדל של <code>DEFAULT_MAX</code> משתתפים. השתמשו בקבוע הציבורי.</p>
+      <p>يُنشئ مخيّمًا بسعة افتراضية تساوي <code>DEFAULT_MAX</code> مشاركًا. استخدموا الثابت العام.</p>
     </div>
     <div class="method-card">
       <div class="method-header"><div class="method-num">1ג</div><h3>getNumCampers</h3></div>
       <div class="signature">public int getNumCampers()</div>
-      <p>מחזירה את מספר המשתתפים הרשומים כרגע.</p>
+      <p>تُعيد عدد المشاركين المسجّلين حاليًا.</p>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection1</h4>
-      <p>פלט צפוי: כל שורה מדפיסה PASS.</p>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection1</h4>
+      <p>الإخراج المتوقّع: كل سطر يطبع PASS.</p>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s2">
-    <h2>סעיף 2 — add <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <h2>البند 2 — add <span class="difficulty d1">⭐ أساسي</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">2</div><h3>הוספת משתתף — ללא סדר, ללא כפילות id</h3></div>
+      <div class="method-header"><div class="method-num">2</div><h3>إضافة مشارك — بدون ترتيب، بدون تكرار id</h3></div>
       <div class="signature">public boolean add(String id, String name, String phone, int age)</div>
-      <p>מוסיפה משתתף חדש לסוף המערך. מחזירה <code>true</code> אם ההוספה הצליחה.</p>
-      <p>מחזירה <code>false</code> אם: המערך מלא, או קיים כבר משתתף עם אותה תעודת זהות.</p>
-      <div class="note">אין צורך לשמור על סדר — מוסיפים בסוף המערך.</div>
+      <p>تُضيف مشاركًا جديدًا إلى نهاية المصفوفة. تُعيد <code>true</code> إذا نجحت الإضافة.</p>
+      <p>تُعيد <code>false</code> إذا: كانت المصفوفة ممتلئة، أو كان مشارك برقم هوية مطابق موجودًا مسبقًا.</p>
+      <div class="note">لا حاجة للحفاظ على أي ترتيب — تُضاف العناصر في نهاية المصفوفة.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection2</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection2</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s3">
-    <h2>סעיף 3 — toString <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <h2>البند 3 — toString <span class="difficulty d1">⭐ أساسي</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">3</div><h3>הצגת רשימת המשתתפים</h3></div>
+      <div class="method-header"><div class="method-num">3</div><h3>عرض قائمة المشاركين</h3></div>
       <div class="signature">public String toString()</div>
-      <p>מחזירה מחרוזת המציגה את כל המשתתפים לפי סדרם במערך, כל משתתף בשורה נפרדת.</p>
-      <p>אם אין משתתפים, מחזירה את המחרוזת <code>"No campers"</code>.</p>
+      <p>تُعيد سلسلة نصية تعرض جميع المشاركين وفق ترتيبهم في المصفوفة، كل مشارك في سطر منفصل.</p>
+      <p>إذا لم يكن هناك مشاركون، تُعيد السلسلة <code>"No campers"</code>.</p>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection3</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection3</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s4">
-    <h2>סעיף 4 — averageAge <span class="difficulty d1">⭐ בסיסי</span></h2>
+    <h2>البند 4 — averageAge <span class="difficulty d1">⭐ أساسي</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">4</div><h3>ממוצע גיל</h3></div>
+      <div class="method-header"><div class="method-num">4</div><h3>متوسط العمر</h3></div>
       <div class="signature">public double averageAge()</div>
-      <p>מחזירה את ממוצע הגיל של כל המשתתפים. אם אין משתתפים, מחזירה <code>0</code>.</p>
+      <p>تُعيد متوسط عمر جميع المشاركين. إذا لم يكن هناك مشاركون، تُعيد <code>0</code>.</p>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection4</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection4</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s5">
-    <h2>סעיף 5 — oldestCamper <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <h2>البند 5 — oldestCamper <span class="difficulty d2">⭐⭐ متوسط</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">5</div><h3>המשתתף המבוגר ביותר</h3></div>
+      <div class="method-header"><div class="method-num">5</div><h3>المشارك الأكبر سنًّا</h3></div>
       <div class="signature">public Camper oldestCamper()</div>
-      <p>מחזירה את אובייקט המשתתף בעל הגיל הגבוה ביותר. אם יש כמה באותו גיל מקסימלי — מחזירים את הראשון. אם אין משתתפים — מחזירים <code>null</code>.</p>
+      <p>تُعيد كائن المشارك ذي العمر الأكبر. إذا تعدّد المشاركون بنفس العمر الأقصى — تُعاد أول واحد. إذا لم يكن هناك مشاركون — تُعاد <code>null</code>.</p>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection5</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection5</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s6">
-    <h2>סעיף 6 — phoneById <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <h2>البند 6 — phoneById <span class="difficulty d2">⭐⭐ متوسط</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">6</div><h3>חיפוש טלפון לפי תעודת זהות</h3></div>
+      <div class="method-header"><div class="method-num">6</div><h3>البحث عن الهاتف برقم الهوية</h3></div>
       <div class="signature">public String phoneById(String id)</div>
-      <p>מחזירה את מספר הטלפון של המשתתף עם תעודת הזהות הנתונה. מחזירה <code>null</code> אם לא נמצא.</p>
-      <div class="tip">חיפוש סדרתי — עברו על כל המערך עד שמוצאים התאמה.</div>
+      <p>تُعيد رقم هاتف المشارك ذي رقم الهوية المُعطى. تُعيد <code>null</code> إذا لم يُعثر عليه.</p>
+      <div class="tip">بحث تسلسلي — مرّوا على كل المصفوفة حتى تجدوا التطابق.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection6</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection6</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s7">
-    <h2>סעיף 7 — getIdByName <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <h2>البند 7 — getIdByName <span class="difficulty d2">⭐⭐ متوسط</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">7</div><h3>חיפוש תעודת זהות לפי שם</h3></div>
+      <div class="method-header"><div class="method-num">7</div><h3>البحث عن رقم الهوية بالاسم</h3></div>
       <div class="signature">public String getIdByName(String name)</div>
-      <p>מחזירה את תעודת הזהות של המשתתף הראשון שנמצא עם השם הנתון. מחזירה <code>null</code> אם לא נמצא.</p>
-      <div class="note">אם יש כמה משתתפים עם אותו שם — מחזירים את ה-id של הראשון שנמצא.</div>
+      <p>تُعيد رقم هوية أول مشارك وُجد بالاسم المُعطى. تُعيد <code>null</code> إذا لم يُعثر عليه.</p>
+      <div class="note">إذا تعدّد المشاركون بنفس الاسم — يُعاد رقم هوية أول واحد يُعثر عليه.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection7</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection7</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s8">
-    <h2>סעיף 8 — phoneByName <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <h2>البند 8 — phoneByName <span class="difficulty d2">⭐⭐ متوسط</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">8</div><h3>חיפוש טלפון לפי שם</h3></div>
+      <div class="method-header"><div class="method-num">8</div><h3>البحث عن الهاتف بالاسم</h3></div>
       <div class="signature">public String phoneByName(String name)</div>
-      <p>מחזירה את מספר הטלפון של המשתתף הראשון עם השם הנתון. מחזירה <code>null</code> אם לא נמצא.</p>
-      <div class="tip"><strong>רמז:</strong> ממשו בעזרת השיטות getIdByName ו-phoneById — לא נדרשת לולאה חדשה!</div>
+      <p>تُعيد رقم هاتف أول مشارك بالاسم المُعطى. تُعيد <code>null</code> إذا لم يُعثر عليه.</p>
+      <div class="tip"><strong>تلميح:</strong> نفّذوا بمساعدة التابعَين getIdByName و-phoneById — لا حاجة لحلقة جديدة!</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection8</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection8</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s9">
-    <h2>סעיף 9 — updatePhone <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <h2>البند 9 — updatePhone <span class="difficulty d2">⭐⭐ متوسط</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">9</div><h3>עדכון מספר טלפון</h3></div>
+      <div class="method-header"><div class="method-num">9</div><h3>تحديث رقم الهاتف</h3></div>
       <div class="signature">public boolean updatePhone(String id, String newPhone)</div>
-      <p>מחפשת את המשתתף לפי תעודת זהות ומעדכנת את מספר הטלפון שלו.</p>
-      <p>מחזירה <code>true</code> אם העדכון בוצע, <code>false</code> אם המשתתף לא נמצא.</p>
-      <div class="tip">השתמשו בשיטת setPhone של מחלקת Camper.</div>
+      <p>تبحث عن المشارك برقم الهوية وتحدّث رقم هاتفه.</p>
+      <p>تُعيد <code>true</code> إذا نجح التحديث، و<code>false</code> إذا لم يُعثر على المشارك.</p>
+      <div class="tip">استخدموا تابع setPhone الخاص بصنف Camper.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection9</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection9</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s10">
-    <h2>סעיף 10 — aboveAge <span class="difficulty d2">⭐⭐ בינוני</span></h2>
+    <h2>البند 10 — aboveAge <span class="difficulty d2">⭐⭐ متوسط</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">10</div><h3>משתתפים מעל גיל נתון</h3></div>
+      <div class="method-header"><div class="method-num">10</div><h3>المشاركون فوق عمر معيّن</h3></div>
       <div class="signature">public Camper[] aboveAge(int age)</div>
-      <p>מחזירה <strong>מערך חדש</strong> המכיל את כל המשתתפים שגילם <strong>גדול ממש</strong> מהפרמטר.</p>
-      <p>גודל המערך החוזר יהיה בדיוק מספר המשתתפים שעמדו בתנאי. אם אין כאלה — מחזירה מערך ריק (לא null).</p>
-      <div class="tip"><strong>רמז:</strong> נדרשות שתי סריקות — הראשונה לספירת הזכאים, השנייה למילוי המערך החדש.</div>
+      <p>تُعيد <strong>مصفوفة جديدة</strong> تحتوي على جميع المشاركين الذين أعمارهم <strong>أكبر تمامًا</strong> من المعامل.</p>
+      <p>حجم المصفوفة المُعادة يساوي تمامًا عدد المشاركين الذين استوفوا الشرط. إذا لم يكن هناك أحد — تُعاد مصفوفة فارغة (لا null).</p>
+      <div class="tip"><strong>تلميح:</strong> يلزم مسحان — الأول لعدّ المستحقّين، والثاني لملء المصفوفة الجديدة.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection10</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection10</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s11">
-    <h2>סעיף 11 — removeSwap <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <h2>البند 11 — removeSwap <span class="difficulty d3">⭐⭐⭐ متقدّم</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">11</div><h3>הסרת משתתף — ללא שמירת סדר</h3></div>
+      <div class="method-header"><div class="method-num">11</div><h3>إزالة مشارك — بدون الحفاظ على الترتيب</h3></div>
       <div class="signature">public boolean removeSwap(String id)</div>
-      <p>מסירה את המשתתף עם תעודת הזהות הנתונה. מחזירה <code>true</code> אם הוסר, <code>false</code> אם לא נמצא.</p>
-      <p><strong>אסטרטגיה:</strong> החליפו את המשתתף שנמחק באחרון ומחקו את האחרון (swap-with-last). הסדר אינו נשמר.</p>
-      <div class="warn">שיטה זו אינה שומרת על הסדר המקורי — השתמשו בה רק כשסדר אינו חשוב.</div>
+      <p>تُزيل المشارك ذا رقم الهوية المُعطى. تُعيد <code>true</code> إذا أُزيل، و<code>false</code> إذا لم يُعثر عليه.</p>
+      <p><strong>الاستراتيجية:</strong> استبدلوا المشارك المحذوف بالأخير ثم احذفوا الأخير (swap-with-last). الترتيب لا يُحفظ.</p>
+      <div class="warn">لا يحفظ هذا التابع الترتيب الأصلي — استخدموه فقط حين لا يكون الترتيب مهمًّا.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection11</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection11</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s12">
-    <h2>סעיף 12 — remove <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <h2>البند 12 — remove <span class="difficulty d3">⭐⭐⭐ متقدّم</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">12</div><h3>הסרת משתתף — עם שמירת סדר</h3></div>
+      <div class="method-header"><div class="method-num">12</div><h3>إزالة مشارك — مع الحفاظ على الترتيب</h3></div>
       <div class="signature">public Camper remove(String id)</div>
-      <p>מסירה את המשתתף עם תעודת הזהות הנתונה תוך <strong>שמירה על הסדר</strong>.</p>
-      <p>מחזירה את אובייקט <code>Camper</code> שהוסר, או <code>null</code> אם לא נמצא.</p>
-      <p>כל המשתתפים שהיו אחריו מוזזים שמאלה — המערך נשאר ללא חורים.</p>
+      <p>تُزيل المشارك ذا رقم الهوية المُعطى مع <strong>الحفاظ على الترتيب</strong>.</p>
+      <p>تُعيد كائن <code>Camper</code> الذي أُزيل، أو <code>null</code> إذا لم يُعثر عليه.</p>
+      <p>تُزاح جميع العناصر التي تليه إلى اليسار — تبقى المصفوفة بدون فجوات.</p>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection12</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection12</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s13">
-    <h2>סעיף 13 — addSorted <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <h2>البند 13 — addSorted <span class="difficulty d3">⭐⭐⭐ متقدّم</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">13</div><h3>הוספה ממוינת לפי תעודת זהות</h3></div>
+      <div class="method-header"><div class="method-num">13</div><h3>إضافة مرتّبة حسب رقم الهوية</h3></div>
       <div class="signature">public boolean addSorted(String id, String name, String phone, int age)</div>
-      <p>מוסיפה משתתף תוך שמירה על <strong>סדר עולה לפי תעודת זהות</strong>. שמות כפולים מותרים. מחזירה <code>false</code> אם המערך מלא.</p>
-      <div class="tip"><strong>רמז:</strong> מצאו את מיקום ההכנסה הנכון תוך הזזת האיברים הגדולים ימינה. השתמשו ב-compareTo.</div>
-      <div class="info"><strong>שימו לב:</strong> שיטה זו נפרדת מ-add — כל testSection שמשתמש בה בונה מערך חדש.</div>
+      <p>تُضيف مشاركًا مع الحفاظ على <strong>الترتيب التصاعدي لرقم الهوية</strong>. الأسماء المكرّرة مسموح بها. تُعيد <code>false</code> إذا كانت المصفوفة ممتلئة.</p>
+      <div class="tip"><strong>تلميح:</strong> ابحثوا عن موضع الإدراج الصحيح مع إزاحة العناصر الأكبر إلى اليمين. استخدموا compareTo.</div>
+      <div class="info"><strong>ملاحظة:</strong> هذا التابع منفصل عن add — كل testSection يستخدمه يبني مصفوفة جديدة.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection13</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection13</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s14">
-    <h2>סעיף 14 — addSortedNoDupId <span class="difficulty d3">⭐⭐⭐ מתקדם</span></h2>
+    <h2>البند 14 — addSortedNoDupId <span class="difficulty d3">⭐⭐⭐ متقدّم</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">14</div><h3>הוספה ממוינת — ללא כפילות תעודת זהות</h3></div>
+      <div class="method-header"><div class="method-num">14</div><h3>إضافة مرتّبة — بدون تكرار رقم الهوية</h3></div>
       <div class="signature">public boolean addSortedNoDupId(String id, String name, String phone, int age)</div>
-      <p>כמו addSorted, אך דוחה הוספה אם תעודת הזהות כבר קיימת. מחזירה <code>false</code> אם המערך מלא או אם ה-id כבר קיים.</p>
-      <div class="tip"><strong>רמז:</strong> ניתן לנצל את העובדה שהמערך ממוין — בדקו כפילות במהלך חיפוש המיקום.</div>
+      <p>مثل addSorted، لكنها ترفض الإضافة إذا كان رقم الهوية موجودًا مسبقًا. تُعيد <code>false</code> إذا كانت المصفوفة ممتلئة أو كان رقم الهوية موجودًا.</p>
+      <div class="tip"><strong>تلميح:</strong> يمكن الاستفادة من كون المصفوفة مرتّبة — افحصوا التكرار أثناء البحث عن الموضع.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection14</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection14</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s15">
-    <h2>סעיף 15 — printByAge <span class="difficulty d4">⭐⭐⭐⭐ מאתגר</span></h2>
+    <h2>البند 15 — printByAge <span class="difficulty d4">⭐⭐⭐⭐ تحدٍّ</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">15</div><h3>הדפסה לפי גיל</h3></div>
+      <div class="method-header"><div class="method-num">15</div><h3>الطباعة حسب العمر</h3></div>
       <div class="signature">public void printByAge()</div>
-      <p>מדפיסה את המשתתפים לפי סדר עולה של גיל. <strong>אין לשנות את המערך המקורי.</strong></p>
-      <div class="tip"><strong>רמז:</strong> צרו מערך עזר מסוג Camper, העתיקו אליו את ההפניות, מיינו אותו לפי גיל, הדפיסו ממנו.</div>
-      <div class="warn">לאחר קריאה לשיטה, הסדר המקורי של _campers חייב להישמר.</div>
+      <p>تطبع المشاركين بترتيب تصاعدي للعمر. <strong>لا يجوز تغيير المصفوفة الأصلية.</strong></p>
+      <div class="tip"><strong>تلميح:</strong> أنشئوا مصفوفة مساعدة من نوع Camper، انسخوا إليها المراجع، رتّبوها حسب العمر، واطبعوا منها.</div>
+      <div class="warn">بعد استدعاء التابع، يجب أن يظل الترتيب الأصلي لـ _campers محفوظًا.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection15</h4>
-      <p>הפלט מודפס ישירות למסך — ודאו שהסדר נכון ושהמערך המקורי לא השתנה.</p>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection15</h4>
+      <p>يُطبع الإخراج مباشرةً على الشاشة — تأكّدوا من صحة الترتيب وأن المصفوفة الأصلية لم تتغيّر.</p>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s16">
-    <h2>סעיף 16 — printByName <span class="difficulty d4">⭐⭐⭐⭐ מאתגר</span></h2>
+    <h2>البند 16 — printByName <span class="difficulty d4">⭐⭐⭐⭐ تحدٍّ</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">16</div><h3>הדפסה לפי שם</h3></div>
+      <div class="method-header"><div class="method-num">16</div><h3>الطباعة حسب الاسم</h3></div>
       <div class="signature">public void printByName()</div>
-      <p>מדפיסה את המשתתפים לפי סדר אלפביתי עולה של שמות. <strong>אין לשנות את המערך המקורי.</strong></p>
-      <div class="tip"><strong>רמז:</strong> בדיוק כמו printByAge — מערך עזר, מיון לפי שם עם compareTo, הדפסה.</div>
+      <p>تطبع المشاركين بترتيب أبجدي تصاعدي للأسماء. <strong>لا يجوز تغيير المصفوفة الأصلية.</strong></p>
+      <div class="tip"><strong>تلميح:</strong> تمامًا كـ printByAge — مصفوفة مساعدة، ترتيب حسب الاسم بـ compareTo، طباعة.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection16</h4>
-      <p>הפלט מודפס ישירות למסך.</p>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection16</h4>
+      <p>يُطبع الإخراج مباشرةً على الشاشة.</p>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s17">
-    <h2>סעיף 17 — doubleNames <span class="difficulty d4">⭐⭐⭐⭐ מאתגר</span></h2>
+    <h2>البند 17 — doubleNames <span class="difficulty d4">⭐⭐⭐⭐ تحدٍّ</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">17</div><h3>שמות כפולים</h3></div>
+      <div class="method-header"><div class="method-num">17</div><h3>الأسماء المكرّرة</h3></div>
       <div class="signature">public String doubleNames()</div>
-      <p>מחזירה מחרוזת עם כל השמות שמופיעים <strong>יותר מפעם אחת</strong>. השמות יופרדו בפסיק ורווח. כל שם כפול יופיע פעם אחת בלבד.</p>
-      <div class="tip"><strong>רמז:</strong> לולאה מקוננת — עבור כל משתתף i, ספרו כמה פעמים שמו מופיע. היזהרו מלהוסיף שם כפול פעמיים לתוצאה.</div>
+      <p>تُعيد سلسلة نصية تحتوي على جميع الأسماء التي تظهر <strong>أكثر من مرة</strong>. تُفصل الأسماء بفاصلة ومسافة. يظهر كل اسم مكرّر مرةً واحدة فقط.</p>
+      <div class="tip"><strong>تلميح:</strong> حلقة متداخلة — لكل مشارك i، عدّوا كم مرة يظهر اسمه. احذروا من إضافة الاسم المكرّر مرتين إلى النتيجة.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection17</h4>
-      <p>הטסטר בודק שהשמות הכפולים נמצאים במחרוזת ושהשמות שאינם כפולים לא נמצאים.</p>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection17</h4>
+      <p>يفحص المختبر أن الأسماء المكرّرة موجودة في السلسلة وأن الأسماء غير المكرّرة غائبة.</p>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
   <section id="s18">
-    <h2>סעיף 18 — merge <span class="difficulty d4">⭐⭐⭐⭐⭐ אתגר</span></h2>
+    <h2>البند 18 — merge <span class="difficulty d4">⭐⭐⭐⭐⭐ تحدٍّ كبير</span></h2>
     <div class="method-card">
-      <div class="method-header"><div class="method-num">18</div><h3>מיזוג שני מערכים ממוינים</h3></div>
+      <div class="method-header"><div class="method-num">18</div><h3>دمج مصفوفتين مرتّبتين</h3></div>
       <div class="signature">public static Camper[] merge(Camper[] arr1, int size1, Camper[] arr2, int size2)</div>
-      <p>מקבלת שני מערכים של משתתפים, כשכל אחד כבר ממוין לפי תעודת זהות. מחזירה מערך חדש ממוין המכיל את כל המשתתפים.</p>
-      <p>השיטה היא <code>static</code> — שייכת למחלקה ולא לאובייקט.</p>
-      <div class="tip"><strong>רמז:</strong> שלוש לולאות — לולאה ראשית שמשווה ראשי שני המערכים ומכניסה את הקטן, ושתי לולאות להשלמת שאריות.</div>
+      <p>تستقبل مصفوفتين من المشاركين، كل منهما مرتّبة حسب رقم الهوية. تُعيد مصفوفة جديدة مرتّبة تحتوي على جميع المشاركين.</p>
+      <p>التابع <code>static</code> — ينتمي إلى الصنف لا إلى الكائن.</p>
+      <div class="tip"><strong>تلميح:</strong> ثلاث حلقات — حلقة رئيسية تقارن رأسَي المصفوفتين وتُدرج الأصغر، وحلقتان لإكمال بقايا كل مصفوفة.</div>
     </div>
     <div class="tester-box">
-      <h4>הפעלת הטסטר — הסירו את // לפני testSection18</h4>
+      <h4>تشغيل المختبر — احذفوا // قبل testSection18</h4>
     </div>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
-  <!-- ===== קובץ הטסטר המלא ===== -->
+  <!-- ===== Full Tester File ===== -->
   <section id="tester">
-    <h2>קובץ הטסטר — Main.java</h2>
-    <p>העתיקו את הקובץ הבא ל-<code>Main.java</code>. הפעילו סעיף אחד בכל פעם.</p>
+    <h2>ملف المختبر — Main.java</h2>
+    <p>انسخوا الملف التالي إلى <code>Main.java</code>. شغّلوا بندًا واحدًا في كل مرة.</p>
 <pre><span class="kw">public class</span> <span class="tp">Main</span> {
 
     <span class="kw">public static void</span> <span class="mt">main</span>(<span class="tp">String</span>[] <span class="pm">args</span>) {
@@ -1062,14 +1062,14 @@
         <span class="mt">check</span>(<span class="st">"merge with empty: first Noa"</span>, <span class="pm">merged2</span>[<span class="nm">0</span>].<span class="mt">getName</span>().<span class="mt">equals</span>(<span class="st">"Noa"</span>));
     }
 }</pre>
-    <div class="back-top"><a href="#top">חזרה למעלה</a></div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
   </section>
 
 
-  <!-- ===== הורדת קבצים ===== -->
+  <!-- ===== Download ===== -->
   <section id="download" style="text-align:center; padding:32px;">
-    <h2 style="margin-bottom:20px;">הורדת קבצי הפרויקט</h2>
-    <p style="margin-bottom:20px; color: var(--muted);">הורידו את שלושת הקבצים והכניסו אותם לאותה תיקייה בסביבת הפיתוח שלכם.</p>
+    <h2 style="margin-bottom:20px;">تنزيل ملفات المشروع</h2>
+    <p style="margin-bottom:20px; color: var(--muted);">نزّلوا الملفات الثلاثة وضعوها في نفس المجلد في بيئة التطوير لديكم.</p>
     <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
       <a id="dl-camper" style="display:inline-block; background:#1d4ed8; color:white; padding:12px 24px; border-radius:10px; text-decoration:none; font-weight:700; font-size:1rem;">
         ⬇ Camper.java
@@ -1532,7 +1532,7 @@
 
 </main>
 <footer>
-  תרגיל — מערך של אובייקטים בשפת Java | מבוא למדעי המחשב
+  تمرين — مصفوفة الكائنات بلغة Java | مقدمة في علوم الحاسوب
 </footer>
 </body>
 </html>
