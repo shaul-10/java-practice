@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تمرين: نظام قائمة التشغيل</title>
+  <style>
+    :root {
+      --bg:#f0f4f8;--card:#ffffff;--text:#1e293b;--muted:#64748b;
+      --primary:#1d4ed8;--primary-light:#eff6ff;--border:#e2e8f0;
+      --green:#166534;--green-light:#dcfce7;--yellow:#854d0e;
+      --yellow-light:#fef9c3;--red:#991b1b;--red-light:#fee2e2;
+      --blue-light:#dbeafe;--section-num:#6366f1;
+      --syn-bg:#ffffff;--syn-border:#c8c8c8;--syn-text:#000000;
+      --syn-keyword:#7400b8;--syn-type:#0000c0;--syn-string:#2a00ff;
+      --syn-number:#a90000;--syn-comment:#3f7f5f;
+      --syn-method:#000000;--syn-param:#000000;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:1rem;}
+    header{background:linear-gradient(135deg,#6d28d9 0%,#0891b2 100%);color:white;padding:48px 24px;text-align:center;}
+    header h1{font-size:2.2rem;margin-bottom:12px;}
+    header p{max-width:800px;margin:0 auto;font-size:1.05rem;opacity:.92;}
+    .container{max-width:1000px;margin:0 auto;padding:24px;}
+    nav{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin:20px 0;box-shadow:0 4px 16px rgba(0,0,0,.06);position:sticky;top:8px;z-index:10;}
+    nav h2{font-size:.95rem;color:var(--muted);margin-bottom:10px;}
+    nav ul{display:flex;flex-wrap:wrap;gap:6px;list-style:none;}
+    nav a{display:inline-block;background:var(--primary-light);color:var(--primary);border:1px solid var(--blue-light);border-radius:8px;padding:5px 10px;text-decoration:none;font-size:.82rem;font-weight:700;white-space:nowrap;}
+    nav a:hover{background:var(--blue-light);}
+    section{background:var(--card);border-radius:16px;padding:28px;margin:20px 0;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.04);scroll-margin-top:255px;}
+    section h2{font-size:1.4rem;color:var(--primary);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--blue-light);}
+    .method-card{background:#fafbfc;border-radius:14px;padding:24px;margin:16px 0;border:1px solid var(--border);}
+    .method-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+    .method-num{background:var(--section-num);color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;}
+    .method-card h3{font-size:1.1rem;color:var(--text);}
+    pre{background:var(--syn-bg);border:2px solid var(--syn-border);border-radius:10px;padding:18px 20px;overflow-x:auto;font-family:'Courier New',monospace;font-size:.88rem;line-height:1.7;margin:12px 0;direction:ltr;text-align:left;color:var(--syn-text);box-shadow:inset 0 1px 3px rgba(0,0,0,.06);}
+    .kw{color:var(--syn-keyword);font-weight:bold;}
+    .tp{color:var(--syn-type);}
+    .st{color:var(--syn-string);}
+    .nm{color:var(--syn-number);}
+    .cm{color:var(--syn-comment);font-style:italic;}
+    .mt{color:var(--syn-method);}
+    .pm{color:var(--syn-param);}
+    code{font-family:'Courier New',monospace;font-size:.9em;}
+    p code,li code{background:#eef2ff;padding:2px 6px;border-radius:4px;color:#3730a3;font-size:.88em;}
+    .note{background:var(--yellow-light);border-right:4px solid #ca8a04;border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--yellow);font-size:.95rem;}
+    .tip{background:var(--green-light);border-right:4px solid #16a34a;border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--green);font-size:.95rem;}
+    .info{background:var(--primary-light);border-right:4px solid var(--primary);border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--primary);font-size:.95rem;}
+    .warn{background:var(--red-light);border-right:4px solid #dc2626;border-radius:8px;padding:12px 16px;margin:12px 0;color:var(--red);font-size:.95rem;}
+    ul,ol{padding-right:24px;margin:8px 0;}
+    li{margin:4px 0;}
+    p{margin:8px 0;}
+    .signature{display:inline-block;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;border-radius:8px;padding:8px 14px;font-family:'Courier New',monospace;font-size:.9rem;direction:ltr;margin:8px 0;}
+    .tester-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 18px;margin:12px 0;}
+    .tester-box h4{color:var(--green);margin-bottom:8px;font-size:.95rem;}
+    .back-top{margin-top:16px;}
+    .back-top a{color:var(--primary);text-decoration:none;font-size:.9rem;font-weight:700;}
+    .difficulty{display:inline-block;font-size:.8rem;padding:2px 8px;border-radius:12px;margin-right:8px;font-weight:700;}
+    .d1{background:#dcfce7;color:#166534;}
+    .d2{background:#fef9c3;color:#854d0e;}
+    .d3{background:#fee2e2;color:#991b1b;}
+    .d4{background:#ede9fe;color:#4c1d95;}
+    footer{text-align:center;color:var(--muted);padding:32px;font-size:.9rem;}
+  </style>
+</head>
+<body>
+<header id="top">
+  <h1>&#127925; تمرين: نظام قائمة التشغيل</h1>
+  <p>في هذا التمرين ستُنفّذون نظامًا لإدارة قائمة تشغيل بأسلوب Spotify. يتيح النظام إضافة أغانٍ وتشغيلها والتنقل بينها وخلطها وغير ذلك. يتكوّن النظام من صنفين: صنف <strong>Song</strong> الذي يمثّل أغنية واحدة، وصنف <strong>PlayList</strong> الذي يدير قائمة الأغاني.</p>
+</header>
+<main class="container">
+  <nav>
+    <h2>التنقل السريع</h2>
+    <ul>
+      <li><a href="#instructions">Instructions</a></li>
+      <li><a href="#song">Class Song</a></li>
+      <li><a href="#playlist-skeleton">Class PlayList</a></li>
+      <li><a href="#tester-guide">Tester Guide</a></li>
+      <li><a href="#s1">1 &#8212; Constructors</a></li>
+      <li><a href="#s2">2 &#8212; add</a></li>
+      <li><a href="#s3">3 &#8212; toString</a></li>
+      <li><a href="#s4">4 &#8212; totalDuration</a></li>
+      <li><a href="#s5">5 &#8212; currentSong</a></li>
+      <li><a href="#s6">6 &#8212; nextSong</a></li>
+      <li><a href="#s7">7 &#8212; getSongsByArtist</a></li>
+      <li><a href="#s8">8 &#8212; play</a></li>
+      <li><a href="#s9">9 &#8212; mostPlayed</a></li>
+      <li><a href="#s10">10 &#8212; removeSwap</a></li>
+      <li><a href="#s11">11 &#8212; remove</a></li>
+      <li><a href="#s12">12 &#8212; addSorted</a></li>
+      <li><a href="#s13">13 &#8212; randomSong</a></li>
+      <li><a href="#s14">14 &#8212; shuffle</a></li>
+      <li><a href="#s15">15 &#8212; printByDuration</a></li>
+      <li><a href="#s16">16 &#8212; printByPlays</a></li>
+      <li><a href="#s17">17 &#8212; doubleArtist</a></li>
+      <li><a href="#s18">18 &#8212; merge</a></li>
+    </ul>
+  </nav>
+
+  <!-- Instructions -->
+  <section id="instructions">
+    <h2>التعليمات العامة</h2>
+    <p>في هذا التمرين ستُنفّذون خطوةً بخطوة صنف <code>PlayList</code>.</p>
+    <div class="tip"><strong>حرية الاختيار:</strong> يمكنكم حلّ البنود بالترتيب الذي يناسبكم &#8212; لا يلزم حلّ جميعها ولا الالتزام بالترتيب. يُنصح بالبدء بالبنود 1&#8211;3 (البنّاؤون، add، toString) حتى تتمكّنوا من اختبار بقية البنود.</div>
+    <p><strong>خطوات العمل:</strong></p>
+    <ol>
+      <li><strong>نزّلوا ملفات المشروع الثلاثة</strong> وضعوها في نفس المجلد.
+        <div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;">
+          <a id="dl-song-top" style="display:inline-block;background:#6d28d9;color:white;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.9rem;">&#11015; Song.java</a>
+          <a id="dl-playList-top" style="display:inline-block;background:#0891b2;color:white;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.9rem;">&#11015; PlayList.java</a>
+          <a id="dl-main-top" style="display:inline-block;background:#059669;color:white;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.9rem;">&#11015; Main.java</a>
+        </div>
+        <p style="margin-top:8px;font-size:.9rem;color:var(--muted);">روابط إضافية للتنزيل متوفّرة أيضًا في أسفل الصفحة.</p>
+      </li>
+      <li>اقرأوا وصف التابع في البند المعني.</li>
+      <li>نفّذوا التابع داخل <code>PlayList.java</code>.</li>
+      <li>شغّلوا دالة الاختبار المناسبة في المختبر.</li>
+      <li>تأكّدوا من أن جميع الاختبارات تطبع <strong>PASS</strong>.</li>
+    </ol>
+    <div class="note">يجب أن تكون المصفوفة <strong>بدون فجوات</strong> في كل مرحلة.</div>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <!-- Class Song -->
+  <section id="song">
+    <h2>الصنف Song &#8212; مُعطى</h2>
+    <p>تمثّل أغنية واحدة في قائمة التشغيل. مُعطاة جاهزة &#8212; لا حاجة لتعديلها.</p>
+    <ul>
+      <li><code>title</code> &#8212; اسم الأغنية (String)</li>
+      <li><code>artist</code> &#8212; اسم الفنان (String)</li>
+      <li><code>duration</code> &#8212; المدة بالثواني (int)</li>
+      <li><code>plays</code> &#8212; عدد مرات التشغيل (int، يُهيَّأ إلى 0)</li>
+    </ul>
+    <div class="info"><strong>ملاحظة:</strong> تابع <code>equals</code> يفحص كلًّا من title وartist &#8212; تُعدّ الأغنيتان متطابقتين فقط إذا كانا كلاهما متطابقَين.</div>
+<pre><span class="kw">public class</span> <span class="tp">Song</span> {
+    <span class="kw">private</span> <span class="tp">String</span> <span class="pm">_title</span>;
+    <span class="kw">private</span> <span class="tp">String</span> <span class="pm">_artist</span>;
+    <span class="kw">private</span> <span class="tp">int</span>    <span class="pm">_duration</span>;
+    <span class="kw">private</span> <span class="tp">int</span>    <span class="pm">_plays</span>;
+
+    <span class="kw">public</span> <span class="mt">Song</span>(<span class="tp">String</span> <span class="pm">title</span>, <span class="tp">String</span> <span class="pm">artist</span>, <span class="tp">int</span> <span class="pm">duration</span>) {
+        <span class="pm">_title</span>=<span class="pm">title</span>; <span class="pm">_artist</span>=<span class="pm">artist</span>; <span class="pm">_duration</span>=<span class="pm">duration</span>; <span class="pm">_plays</span>=<span class="nm">0</span>;
+    }
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">getTitle</span>()    { <span class="kw">return</span> <span class="pm">_title</span>;    }
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">getArtist</span>()   { <span class="kw">return</span> <span class="pm">_artist</span>;   }
+    <span class="kw">public</span> <span class="tp">int</span>    <span class="mt">getDuration</span>() { <span class="kw">return</span> <span class="pm">_duration</span>; }
+    <span class="kw">public</span> <span class="tp">int</span>    <span class="mt">getPlays</span>()    { <span class="kw">return</span> <span class="pm">_plays</span>;    }
+    <span class="kw">public void</span> <span class="mt">setPlays</span>(<span class="tp">int</span> <span class="pm">plays</span>) { <span class="pm">_plays</span>=<span class="pm">plays</span>; }
+    <span class="kw">public void</span> <span class="mt">addPlay</span>()           { <span class="pm">_plays</span>++;     }
+    <span class="kw">public boolean</span> <span class="mt">equals</span>(<span class="tp">Song</span> <span class="pm">other</span>) {
+        <span class="kw">return</span> <span class="pm">_title</span>.<span class="mt">equals</span>(<span class="pm">other</span>.<span class="pm">_title</span>) &amp;&amp; <span class="pm">_artist</span>.<span class="mt">equals</span>(<span class="pm">other</span>.<span class="pm">_artist</span>);
+    }
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">toString</span>() {
+        <span class="kw">return</span> <span class="pm">_title</span>+<span class="st">" | "</span>+<span class="pm">_artist</span>+<span class="st">" | "</span>+<span class="pm">_duration</span>+<span class="st">"s | plays:"</span>+<span class="pm">_plays</span>;
+    }
+}</pre>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <!-- Class PlayList skeleton -->
+  <section id="playlist-skeleton">
+    <h2>الصنف PlayList &#8212; نقطة البداية</h2>
+    <p>يدير هذا الصنف قائمة الأغاني ويوفّر جميع العمليات &#8212; الإضافة والتشغيل والخلط والحذف والعرض.</p>
+    <p>خصائص الصنف:</p>
+    <ul>
+      <li><code>_songs</code> &#8212; مصفوفة الأغاني</li>
+      <li><code>_size</code> &#8212; عدد الأغاني المسجّلة حاليًا (لا حجم المصفوفة!)</li>
+      <li><code>_curSong</code> &#8212; فهرس الأغنية المُشغَّلة حاليًا. يُهيَّأ إلى 0 (الأغنية الأولى). يتحدّث عند الانتقال للأغنية التالية أو العشوائية أو الخلط</li>
+    </ul>
+<pre><span class="kw">import</span> java.util.Random;
+
+<span class="kw">public class</span> <span class="tp">PlayList</span> {
+
+    <span class="kw">public static final int</span> MAX_SONGS = <span class="nm">50</span>;
+
+    <span class="kw">private</span> <span class="tp">Song</span>[] <span class="pm">_songs</span>;    <span class="cm">// the songs array</span>
+    <span class="kw">private int</span>    <span class="pm">_size</span>;     <span class="cm">// number of songs currently in the list</span>
+    <span class="kw">private int</span>    <span class="pm">_curSong</span>;  <span class="cm">// index of the currently playing song (0 at start)</span>
+
+    <span class="cm">// Section 1: constructors</span>
+    <span class="kw">public</span> <span class="mt">PlayList</span>(<span class="tp">int</span> <span class="pm">maxSongs</span>) {
+        <span class="cm">// TODO</span>
+    }
+
+    <span class="kw">public</span> <span class="mt">PlayList</span>() {
+        <span class="cm">// TODO - use MAX_SONGS</span>
+    }
+
+    <span class="kw">public int</span> <span class="mt">getSize</span>() {
+        <span class="cm">// TODO</span>
+        <span class="kw">return</span> <span class="nm">0</span>;
+    }
+
+    <span class="cm">// Section 2: no order, no duplicate (title+artist)</span>
+    <span class="kw">public boolean</span> <span class="mt">add</span>(<span class="tp">String</span> <span class="pm">title</span>, <span class="tp">String</span> <span class="pm">artist</span>, <span class="tp">int</span> <span class="pm">duration</span>) {
+        <span class="cm">// TODO - use Song.equals to check duplicates</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 3: return "Empty playlist" if empty</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">toString</span>() {
+        <span class="cm">// TODO</span>
+        <span class="kw">return</span> <span class="st">""</span>;
+    }
+
+    <span class="cm">// Section 4: return 0 if empty</span>
+    <span class="kw">public int</span> <span class="mt">totalDuration</span>() {
+        <span class="cm">// TODO</span>
+        <span class="kw">return</span> <span class="nm">0</span>;
+    }
+
+    <span class="cm">// Section 5: return null if empty</span>
+    <span class="kw">public</span> <span class="tp">Song</span> <span class="mt">currentSong</span>() {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 6: advance _curSong with wrap-around (%)</span>
+    <span class="kw">public</span> <span class="tp">Song</span> <span class="mt">nextSong</span>() {
+        <span class="cm">// TODO - return null if empty</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 7: return new array, empty array (not null) if none found</span>
+    <span class="kw">public</span> <span class="tp">Song</span>[] <span class="mt">getSongsByArtist</span>(<span class="tp">String</span> <span class="pm">artist</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 8: find by title, call addPlay, return false if not found</span>
+    <span class="kw">public boolean</span> <span class="mt">play</span>(<span class="tp">String</span> <span class="pm">title</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 9: return null if empty</span>
+    <span class="kw">public</span> <span class="tp">Song</span> <span class="mt">mostPlayed</span>() {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 10: swap with last element, return boolean</span>
+    <span class="kw">public boolean</span> <span class="mt">removeSwap</span>(<span class="tp">String</span> <span class="pm">title</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 11: preserve order, return removed Song (null if not found)</span>
+    <span class="kw">public</span> <span class="tp">Song</span> <span class="mt">remove</span>(<span class="tp">String</span> <span class="pm">title</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 12: sorted by title (compareTo), use equals for duplicate check</span>
+    <span class="kw">public boolean</span> <span class="mt">addSorted</span>(<span class="tp">String</span> <span class="pm">title</span>, <span class="tp">String</span> <span class="pm">artist</span>, <span class="tp">int</span> <span class="pm">duration</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return false</span>;
+    }
+
+    <span class="cm">// Section 13: create local Random, update _curSong, return null if empty</span>
+    <span class="kw">public</span> <span class="tp">Song</span> <span class="mt">randomSong</span>() {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+
+    <span class="cm">// Section 14: Fisher-Yates shuffle with local Random, reset _curSong to 0</span>
+    <span class="kw">public void</span> <span class="mt">shuffle</span>() {
+        <span class="cm">// TODO - create local Random</span>
+    }
+
+    <span class="cm">// Section 15: print ascending by duration, do NOT change _songs array</span>
+    <span class="kw">public void</span> <span class="mt">printByDuration</span>() {
+        <span class="cm">// TODO - hint: use a helper array</span>
+    }
+
+    <span class="cm">// Section 16: print descending by plays, do NOT change _songs array</span>
+    <span class="kw">public void</span> <span class="mt">printByPlays</span>() {
+        <span class="cm">// TODO - hint: use a helper array</span>
+    }
+
+    <span class="cm">// Section 17: nested loop, each duplicate artist appears once in result</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="mt">doubleArtist</span>() {
+        <span class="cm">// TODO</span>
+        <span class="kw">return</span> <span class="st">""</span>;
+    }
+
+    <span class="cm">// Section 18: static method, merge two arrays sorted by title</span>
+    <span class="kw">public static</span> <span class="tp">Song</span>[] <span class="mt">merge</span>(<span class="tp">Song</span>[] <span class="pm">arr1</span>, <span class="tp">int</span> <span class="pm">size1</span>,
+                                  <span class="tp">Song</span>[] <span class="pm">arr2</span>, <span class="tp">int</span> <span class="pm">size2</span>) {
+        <span class="cm">// TODO</span>
+        <span class="kw">return null</span>;
+    }
+}</pre>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <!-- Tester Guide -->
+  <section id="tester-guide">
+    <h2>كيفية تشغيل المختبر</h2>
+    <p>يحتوي ملف المختبر <code>Main.java</code> على 18 دالة اختبار &#8212; واحدة لكل بند.</p>
+    <div class="tip"><strong>القاعدة الذهبية:</strong> شغّلوا فقط البنود التي أنهيتم تنفيذها.</div>
+    <ol>
+      <li>نفّذوا التابع في <code>PlayList.java</code>.</li>
+      <li>في <code>main</code> &#8212; احذفوا <code>//</code> قبل استدعاء البند المعني.</li>
+      <li>شغّلوا وتأكّدوا من PASS في جميع الاختبارات.</li>
+    </ol>
+    <div class="note">كل دالة اختبار تبني بياناتها من الصفر &#8212; لا تبعية بين البنود.</div>
+    <p>مثال على تشغيل البنود 1 و2 و3 &#8212; بقية البنود لا تُختبر لأنها تظهر كتعليق:</p>
+<pre><span class="kw">public static void</span> <span class="mt">main</span>(<span class="tp">String</span>[] <span class="pm">args</span>) {
+    <span class="mt">testSection1</span>();
+    <span class="mt">testSection2</span>();
+    <span class="mt">testSection3</span>();
+    <span class="cm">// testSection4();  &lt;-- remove // when ready</span>
+    <span class="cm">// ...</span>
+}</pre>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s1">
+    <h2>البند 1 &#8212; البنّاؤون و-getSize <span class="difficulty d1">&#11088; أساسي</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">1א</div><h3>بنّاء بمعامل</h3></div>
+      <div class="signature">public PlayList(int maxSongs)</div>
+      <p>يُنشئ قائمة بسعة <code>maxSongs</code> أغنية. هيّئوا المصفوفة و<code>_size</code> و<code>_curSong</code> إلى 0.</p>
+    </div>
+    <div class="method-card"><div class="method-header"><div class="method-num">1ב</div><h3>بنّاء افتراضي</h3></div>
+      <div class="signature">public PlayList()</div>
+      <p>يُنشئ قائمة بسعة افتراضية <code>MAX_SONGS = 50</code>.</p>
+    </div>
+    <div class="method-card"><div class="method-header"><div class="method-num">1ג</div><h3>getSize</h3></div>
+      <div class="signature">public int getSize()</div>
+      <p>تُعيد عدد الأغاني المسجّلة.</p>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection1</h4></div><p style="padding:0 14px 10px">الإخراج المتوقّع: كل سطر يطبع PASS.</p>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s2">
+    <h2>البند 2 &#8212; add <span class="difficulty d1">&#11088; أساسي</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">2</div><h3>إضافة أغنية &#8212; بدون ترتيب، بدون تكرار</h3></div>
+      <div class="signature">public boolean add(String title, String artist, int duration)</div>
+      <p>تُضيف أغنية إلى نهاية القائمة. تُعيد <code>true</code> إذا نجحت.</p>
+      <p>تُعيد <code>false</code> إذا: كانت القائمة ممتلئة، أو كانت أغنية بنفس title+artist موجودة مسبقًا.</p>
+      <div class="tip"><strong>تلميح:</strong> استخدموا تابع equals الخاص بـ Song لفحص التكرار.</div>
+      <div class="note">أغنيتان بنفس title لكن فنانَين مختلفَين &#8212; مسموح بهما!</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection2</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s3">
+    <h2>البند 3 &#8212; toString <span class="difficulty d1">&#11088; أساسي</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">3</div><h3>عرض القائمة</h3></div>
+      <div class="signature">public String toString()</div>
+      <p>تُعيد سلسلة نصية تحتوي على جميع الأغاني وفق ترتيبها، كل أغنية في سطر منفصل.</p>
+      <p>إذا كانت القائمة فارغة &#8212; تُعيد <code>"Empty playlist"</code>.</p>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection3</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s4">
+    <h2>البند 4 &#8212; totalDuration <span class="difficulty d1">&#11088; أساسي</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">4</div><h3>المدة الإجمالية</h3></div>
+      <div class="signature">public int totalDuration()</div>
+      <p>تُعيد مجموع مدد جميع الأغاني بالثواني. إذا كانت القائمة فارغة &#8212; تُعيد <code>0</code>.</p>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection4</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s5">
+    <h2>البند 5 &#8212; currentSong <span class="difficulty d1">&#11088; أساسي</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">5</div><h3>الأغنية الحالية</h3></div>
+      <div class="signature">public Song currentSong()</div>
+      <p>تُعيد الأغنية في الفهرس <code>_curSong</code>. إذا كانت القائمة فارغة &#8212; <code>null</code>.</p>
+      <div class="info"><code>_curSong</code> يُهيَّأ إلى 0 في البنّاء.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection5</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s6">
+    <h2>البند 6 &#8212; nextSong <span class="difficulty d2">&#11088;&#11088; متوسط</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">6</div><h3>الأغنية التالية</h3></div>
+      <div class="signature">public Song nextSong()</div>
+      <p>تُقدّم <code>_curSong</code> وتُعيد الأغنية التالية. عند الوصول إلى النهاية &#8212; تعود للبداية. إذا فارغة &#8212; <code>null</code>.</p>
+      <div class="tip"><strong>تلميح:</strong> <code>_curSong = (_curSong + 1) % _size</code></div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection6</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s7">
+    <h2>البند 7 &#8212; getSongsByArtist <span class="difficulty d2">&#11088;&#11088; متوسط</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">7</div><h3>أغاني فنان معيّن</h3></div>
+      <div class="signature">public Song[] getSongsByArtist(String artist)</div>
+      <p>تُعيد <strong>مصفوفة جديدة</strong> تحتوي على جميع أغاني الفنان. حجمها يساوي تمامًا عدد الأغاني الموجودة. إذا لم توجد &#8212; مصفوفة فارغة (لا null).</p>
+      <div class="tip"><strong>تلميح:</strong> مسحان &#8212; الأول للعدّ، والثاني للملء.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection7</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s8">
+    <h2>البند 8 &#8212; play <span class="difficulty d2">&#11088;&#11088; متوسط</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">8</div><h3>تشغيل أغنية</h3></div>
+      <div class="signature">public boolean play(String title)</div>
+      <p>تبحث عن أغنية بالـ title وتُضيف تشغيلًا بواسطة addPlay. تُعيد <code>true</code> إذا نجحت، و<code>false</code> إذا لم تُوجَد.</p>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection8</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s9">
+    <h2>البند 9 &#8212; mostPlayed <span class="difficulty d2">&#11088;&#11088; متوسط</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">9</div><h3>الأغنية الأكثر تشغيلًا</h3></div>
+      <div class="signature">public Song mostPlayed()</div>
+      <p>تُعيد الأغنية ذات أعلى عدد تشغيلات. إذا تعدّدت &#8212; الأولى. إذا فارغة &#8212; <code>null</code>.</p>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection9</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s10">
+    <h2>البند 10 &#8212; removeSwap <span class="difficulty d3">&#11088;&#11088;&#11088; متقدّم</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">10</div><h3>حذف &#8212; بدون الحفاظ على الترتيب</h3></div>
+      <div class="signature">public boolean removeSwap(String title)</div>
+      <p>تُزيل أول أغنية بالـ title المُعطى. تُعيد <code>true</code> إذا أُزيلت، و<code>false</code> إذا لم تُوجَد.</p>
+      <p><strong>الاستراتيجية:</strong> استبدلوا الأغنية المحذوفة بالأخيرة ثم احذفوا الأخيرة (swap-with-last).</p>
+      <div class="warn">لا يحفظ هذا التابع الترتيب الأصلي.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection10</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s11">
+    <h2>البند 11 &#8212; remove <span class="difficulty d3">&#11088;&#11088;&#11088; متقدّم</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">11</div><h3>حذف &#8212; مع الحفاظ على الترتيب</h3></div>
+      <div class="signature">public Song remove(String title)</div>
+      <p>تُزيل أول أغنية بالـ title المُعطى مع <strong>الحفاظ على الترتيب</strong>. تُعيد كائن Song المُزال، أو <code>null</code>.</p>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection11</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s12">
+    <h2>البند 12 &#8212; addSorted <span class="difficulty d3">&#11088;&#11088;&#11088; متقدّم</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">12</div><h3>إضافة مرتّبة حسب title</h3></div>
+      <div class="signature">public boolean addSorted(String title, String artist, int duration)</div>
+      <p>تُضيف أغنية مع الحفاظ على <strong>الترتيب التصاعدي لـ title</strong>. تفحص التكرار بـ equals. تُعيد <code>false</code> إذا امتلأت أو وُجد تكرار.</p>
+      <div class="tip"><strong>تلميح:</strong> إزاحة العناصر يمينًا باستخدام compareTo.</div>
+      <div class="info"><strong>ملاحظة:</strong> منفصلة عن add &#8212; كل testSection يستخدمها يبني قائمة جديدة.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection12</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s13">
+    <h2>البند 13 &#8212; randomSong <span class="difficulty d3">&#11088;&#11088;&#11088; متقدّم</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">13</div><h3>أغنية عشوائية</h3></div>
+      <div class="signature">public Song randomSong()</div>
+      <p>تختار أغنية عشوائية، تُحدّث <code>_curSong</code> وتُعيد الأغنية. إذا فارغة &#8212; <code>null</code>.</p>
+      <div class="tip"><strong>تلميح:</strong> <code>Random rand = new Random();</code> ثم <code>rand.nextInt(_size)</code>.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection13</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s14">
+    <h2>البند 14 &#8212; shuffle <span class="difficulty d3">&#11088;&#11088;&#11088; متقدّم</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">14</div><h3>خلط القائمة</h3></div>
+      <div class="signature">public void shuffle()</div>
+      <p>تخلط الأغاني عشوائيًا وتُعيد <code>_curSong</code> إلى 0.</p>
+      <div class="tip"><strong>تلميح &#8212; خوارزمية Fisher-Yates:</strong>
+<pre><span class="tp">Random</span> <span class="pm">rand</span> = <span class="kw">new</span> <span class="tp">Random</span>();
+<span class="kw">for</span> (<span class="tp">int</span> <span class="pm">i</span> = <span class="pm">_size</span>-<span class="nm">1</span>; <span class="pm">i</span> &gt; <span class="nm">0</span>; <span class="pm">i</span>--) {
+    <span class="tp">int</span> <span class="pm">j</span> = <span class="pm">rand</span>.<span class="mt">nextInt</span>(<span class="pm">i</span>+<span class="nm">1</span>);
+    <span class="cm">// swap _songs[i] and _songs[j]</span>
+}</pre></div>
+      <div class="note">بعد shuffle جميع الأغاني لا تزال موجودة &#8212; الترتيب فقط هو الذي تغيّر.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection14</h4></div><p style="padding:0 14px 10px">يتحقق الاختبار من بقاء جميع الأغاني وأن curSong أُعيد إلى 0.</p>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s15">
+    <h2>البند 15 &#8212; printByDuration <span class="difficulty d4">&#11088;&#11088;&#11088;&#11088; تحدٍّ</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">15</div><h3>الطباعة حسب المدة &#8212; تصاعدي</h3></div>
+      <div class="signature">public void printByDuration()</div>
+      <p>تطبع الأغاني بترتيب تصاعدي للمدة. <strong>لا يجوز تغيير المصفوفة الأصلية.</strong></p>
+      <div class="tip"><strong>تلميح:</strong> أنشئوا مصفوفة مساعدة من نوع Song، انسخوا المراجع، رتّبوها حسب duration، واطبعوا.</div>
+      <div class="warn">يجب أن يظل الترتيب الأصلي لـ _songs محفوظًا بعد الاستدعاء.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection15</h4></div><p style="padding:0 14px 10px">يُطبع الإخراج على الشاشة &#8212; تأكّدوا من صحة الترتيب وبقاء الأصلي.</p>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s16">
+    <h2>البند 16 &#8212; printByPlays <span class="difficulty d4">&#11088;&#11088;&#11088;&#11088; تحدٍّ</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">16</div><h3>الطباعة حسب التشغيلات &#8212; تنازلي</h3></div>
+      <div class="signature">public void printByPlays()</div>
+      <p>تطبع الأغاني بترتيب <strong>تنازلي</strong> للتشغيلات (الأكثر تشغيلًا أولًا). <strong>لا يجوز تغيير المصفوفة الأصلية.</strong></p>
+      <div class="tip"><strong>تلميح:</strong> تمامًا كـ printByDuration &#8212; مصفوفة مساعدة، لكن الترتيب معكوس.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection16</h4></div><p style="padding:0 14px 10px">يُطبع الإخراج على الشاشة.</p>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s17">
+    <h2>البند 17 &#8212; doubleArtist <span class="difficulty d4">&#11088;&#11088;&#11088;&#11088; تحدٍّ</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">17</div><h3>فنانون بأكثر من أغنية واحدة</h3></div>
+      <div class="signature">public String doubleArtist()</div>
+      <p>تُعيد سلسلة نصية بأسماء الفنانين الذين لديهم <strong>أكثر من أغنية واحدة</strong>، مفصولة بفاصلة ومسافة. كل فنان مرةً واحدة. إذا لم يكن هناك أحد &#8212; سلسلة فارغة.</p>
+      <div class="tip"><strong>تلميح:</strong> حلقة متداخلة. لكل أغنية i &#8212; عدّوا كم أغنية إضافية للفنان نفسه.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection17</h4></div><p style="padding:0 14px 10px">يفحص المختبر contains و-indexOf==lastIndexOf.</p>
+    <div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+  <section id="s18">
+    <h2>البند 18 &#8212; merge <span class="difficulty d4">&#11088;&#11088;&#11088;&#11088;&#11088; تحدٍّ كبير</span></h2>
+    <div class="method-card"><div class="method-header"><div class="method-num">18</div><h3>دمج قائمتين مرتّبتين</h3></div>
+      <div class="signature">public static Song[] merge(Song[] arr1, int size1, Song[] arr2, int size2)</div>
+      <p>تستقبل مصفوفتين مرتّبتين حسب title. تُعيد مصفوفة جديدة مرتّبة تحتوي على جميع الأغاني. التابع <code>static</code>.</p>
+      <div class="tip"><strong>تلميح:</strong> ثلاث حلقات &#8212; رئيسية تقارن رأسَي المصفوفتين (compareTo) وتُدرج الأصغر، وحلقتان لإكمال البقايا.</div>
+    </div>
+    <div class="tester-box"><h4>تشغيل المختبر &#8212; احذفوا // قبل testSection18</h4></div><div class="back-top"><a href="#top">العودة للأعلى</a></div>
+  </section>
+
+
+  <!-- Download -->
+  <section id="download" style="text-align:center;padding:32px;">
+    <h2 style="margin-bottom:20px;">تنزيل ملفات المشروع</h2>
+    <p style="margin-bottom:20px;color:var(--muted);">نزّلوا الملفات الثلاثة وضعوها في نفس المجلد.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a id="dl-song"     style="display:inline-block;background:#6d28d9;color:white;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;">&#11015; Song.java</a>
+      <a id="dl-playList" style="display:inline-block;background:#0891b2;color:white;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;">&#11015; PlayList.java</a>
+      <a id="dl-main"     style="display:inline-block;background:#059669;color:white;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;">&#11015; Main.java</a>
+    </div>
+  </section>
+
+  <script>
+  function makeDownload(id, filename, content) {
+    const blob = new Blob([content], {type: 'text/plain'});
+    document.getElementById(id).href = URL.createObjectURL(blob);
+    document.getElementById(id).download = filename;
+  }
+  const songJava = `public class Song {
+    private String title;
+    private String artist;
+    private int    duration;
+    private int    plays;
+
+    public Song(String title, String artist, int duration) {
+        title = title; artist = artist;
+        duration = duration; plays = 0;
+    }
+    public String getTitle()    { return title;    }
+    public String getArtist()   { return artist;   }
+    public int    getDuration() { return duration; }
+    public int    getPlays()    { return plays;    }
+    public void setPlays(int plays) { plays = plays; }
+    public void addPlay()           { plays++;       }
+    public boolean equals(Song other) {
+        return title.equals(other.title) && artist.equals(other.artist);
+    }
+    public String toString() {
+        return title + " | " + artist + " | " + duration + "s | plays:" + plays;
+    }
+}`;
+  const playlistJava = `import java.util.Random;
+public class PlayList {
+    public static final int MAX_SONGS = 50;
+    private Song[] songs;
+    private int    size;
+    private int    curSong;
+
+    public PlayList(int maxSongs) {
+        // TODO
+    }
+
+    public PlayList() {
+        // TODO - use MAX_SONGS
+    }
+    public int getSize() { /* TODO */ return 0; }
+
+    // Section 2: no order, no dup (title+artist)
+    public boolean add(String title, String artist, int duration) { return false; }
+
+    // Section 3: "Empty playlist" if empty
+    public String toString() { return ""; }
+
+    // Section 4
+    public int totalDuration() { return 0; }
+
+    // Section 5: null if empty
+    public Song currentSong() { return null; }
+
+    // Section 6: wrap with %
+    public Song nextSong() { return null; }
+
+    // Section 7: empty array (not null) if none found
+    public Song[] getSongsByArtist(String artist) { return null; }
+
+    // Section 8: find by title, call addPlay
+    public boolean play(String title) { return false; }
+
+    // Section 9: null if empty
+    public Song mostPlayed() { return null; }
+
+    // Section 10: swap-with-last
+    public boolean removeSwap(String title) { return false; }
+
+    // Section 11: preserve order, return removed Song
+    public Song remove(String title) { return null; }
+
+    // Section 12: sorted by title (compareTo), use equals for dup
+    public boolean addSorted(String title, String artist, int duration) { return false; }
+
+    // Section 13: local Random, update curSong
+    public Song randomSong() { return null; }
+
+    // Section 14: Fisher-Yates with local Random, reset curSong=0
+    public void shuffle() { }
+
+    // Section 15: ascending, do NOT change songs (hint: helper array)
+    public void printByDuration() { }
+
+    // Section 16: descending plays, do NOT change songs
+    public void printByPlays() { }
+
+    // Section 17: nested loop, each artist once
+    public String doubleArtist() { return ""; }
+
+    // Section 18: static, sorted by title
+    public static Song[] merge(Song[] arr1, int size1, Song[] arr2, int size2) { return null; }
+}`;
+  const mainJava = `public class Main {
+    public static void main(String[] args) {
+        testSection1();
+        // testSection2();
+        // testSection3();
+        // testSection4();
+        // testSection5();
+        // testSection6();
+        // testSection7();
+        // testSection8();
+        // testSection9();
+        // testSection10();
+        // testSection11();
+        // testSection12();
+        // testSection13();
+        // testSection14();
+        // testSection15();
+        // testSection16();
+        // testSection17();
+        // testSection18();
+    }
+    private static void check(String label, boolean ok) {
+        System.out.println(label + ": " + (ok ? "PASS" : "FAIL"));
+    }
+    private static void checkStr(String label, String actual, String exp) {
+        boolean ok = actual != null && actual.equals(exp);
+        System.out.println(label + ": " + (ok ? "PASS" : "FAIL (got: " + actual + ")"));
+    }
+    static void testSection1() {
+        System.out.println("\\n--- Section 1: Constructors ---");
+        PlayList p1 = new PlayList(5);
+        check("Playlist(5) size=0", p1.getSize() == 0);
+        PlayList p2 = new PlayList();
+        check("Playlist() size=0", p2.getSize() == 0);
+        check("MAX_SONGS=50", PlayList.MAX_SONGS == 50);
+        check("currentSong null if empty", p1.currentSong() == null);
+    }
+    static void testSection2() {
+        System.out.println("\\n--- Section 2: add ---");
+        PlayList p = new PlayList(3);
+        check("add Imagine: true",         p.add("Imagine","Lennon",187));
+        check("add Bohemian: true",        p.add("Bohemian Rhapsody","Queen",354));
+        check("add Hotel: true",           p.add("Hotel California","Eagles",391));
+        check("dup: false",               !p.add("Imagine","Lennon",187));
+        check("full: false",              !p.add("Yesterday","Beatles",125));
+        check("size=3",                    p.getSize()==3);
+        PlayList p2 = new PlayList(3); p2.add("Imagine","Lennon",187);
+        check("same title diff artist: true", p2.add("Imagine","Ariana",200));
+    }
+    static void testSection3() {
+        System.out.println("\\n--- Section 3: toString ---");
+        checkStr("empty", new PlayList(3).toString(), "Empty playlist");
+        PlayList p = new PlayList(3);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391);
+        String exp = "Imagine | Lennon | 187s | plays:0\\n"
+                   + "Bohemian Rhapsody | Queen | 354s | plays:0\\n"
+                   + "Hotel California | Eagles | 391s | plays:0";
+        checkStr("3 songs", p.toString(), exp);
+        check("contains Queen", p.toString().contains("Queen"));
+    }
+    static void testSection4() {
+        System.out.println("\\n--- Section 4: totalDuration ---");
+        check("empty=0", new PlayList(3).totalDuration()==0);
+        PlayList p = new PlayList(3);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391);
+        check("187+354+391=932", p.totalDuration()==932);
+        PlayList p2 = new PlayList(2);
+        p2.add("Yesterday","Beatles",125); p2.add("Let It Be","Beatles",243);
+        check("125+243=368", p2.totalDuration()==368);
+    }
+    static void testSection5() {
+        System.out.println("\\n--- Section 5: currentSong ---");
+        check("empty=null", new PlayList(3).currentSong()==null);
+        PlayList p = new PlayList(3);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        checkStr("current=Imagine", p.currentSong().getTitle(), "Imagine");
+    }
+    static void testSection6() {
+        System.out.println("\\n--- Section 6: nextSong ---");
+        check("empty=null", new PlayList(3).nextSong()==null);
+        PlayList p = new PlayList(3);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391);
+        checkStr("next=Bohemian", p.nextSong().getTitle(), "Bohemian Rhapsody");
+        checkStr("next=Hotel",    p.nextSong().getTitle(), "Hotel California");
+        checkStr("wrap=Imagine",  p.nextSong().getTitle(), "Imagine");
+        checkStr("again=Bohemian",p.nextSong().getTitle(), "Bohemian Rhapsody");
+    }
+    static void testSection7() {
+        System.out.println("\\n--- Section 7: getSongsByArtist ---");
+        PlayList p = new PlayList(5);
+        p.add("Bohemian Rhapsody","Queen",354); p.add("Imagine","Lennon",187);
+        p.add("We Will Rock You","Queen",122);  p.add("Yesterday","Beatles",125);
+        p.add("We Are The Champions","Queen",179);
+        Song[] q = p.getSongsByArtist("Queen");
+        check("Queen count=3", q.length==3);
+        check("q[0]=Bohemian", q[0].getTitle().equals("Bohemian Rhapsody"));
+        Song[] none = p.getSongsByArtist("Unknown");
+        check("Unknown: empty", none.length==0);
+        check("Unknown: not null", none!=null);
+    }
+    static void testSection8() {
+        System.out.println("\\n--- Section 8: play ---");
+        PlayList p = new PlayList(3);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391);
+        check("play Imagine: true",  p.play("Imagine"));
+        check("Imagine plays=1",     p.getSongsByArtist("Lennon")[0].getPlays()==1);
+        check("play again: true",    p.play("Imagine"));
+        check("Imagine plays=2",     p.getSongsByArtist("Lennon")[0].getPlays()==2);
+        check("Unknown: false",     !p.play("Unknown"));
+        check("Hotel plays=0",       p.getSongsByArtist("Eagles")[0].getPlays()==0);
+    }
+    static void testSection9() {
+        System.out.println("\\n--- Section 9: mostPlayed ---");
+        check("empty=null", new PlayList(3).mostPlayed()==null);
+        PlayList p = new PlayList(3);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391);
+        p.play("Bohemian Rhapsody"); p.play("Bohemian Rhapsody"); p.play("Bohemian Rhapsody");
+        p.play("Hotel California");
+        checkStr("most=Bohemian", p.mostPlayed().getTitle(), "Bohemian Rhapsody");
+        check("plays=3", p.mostPlayed().getPlays()==3);
+        PlayList p2 = new PlayList(2);
+        p2.add("Yesterday","Beatles",125); p2.add("Let It Be","Beatles",243);
+        checkStr("tie: first=Yesterday", p2.mostPlayed().getTitle(), "Yesterday");
+    }
+    static void testSection10() {
+        System.out.println("\\n--- Section 10: removeSwap ---");
+        PlayList p = new PlayList(4);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391); p.add("Yesterday","Beatles",125);
+        check("remove Bohemian: true",  p.removeSwap("Bohemian Rhapsody"));
+        check("size=3",                 p.getSize()==3);
+        check("not found: false",      !p.removeSwap("Unknown"));
+        check("Imagine present",        p.getSongsByArtist("Lennon").length==1);
+        check("remove Imagine: true",   p.removeSwap("Imagine"));
+        check("size=2",                 p.getSize()==2);
+    }
+    static void testSection11() {
+        System.out.println("\\n--- Section 11: remove ---");
+        PlayList p = new PlayList(4);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391); p.add("Yesterday","Beatles",125);
+        Song r = p.remove("Bohemian Rhapsody");
+        checkStr("removed=Bohemian", r.getTitle(), "Bohemian Rhapsody");
+        check("size=3",               p.getSize()==3);
+        check("Imagine present",      p.getSongsByArtist("Lennon").length==1);
+        check("Hotel present",        p.getSongsByArtist("Eagles").length==1);
+        check("Unknown: null",        p.remove("Unknown")==null);
+        Song r2 = p.remove("Imagine");
+        checkStr("removed=Imagine",   r2.getTitle(), "Imagine");
+        check("size=2",               p.getSize()==2);
+    }
+    static void testSection12() {
+        System.out.println("\\n--- Section 12: addSorted ---");
+        PlayList p = new PlayList(5);
+        check("Imagine: true",    p.addSorted("Imagine","Lennon",187));
+        check("Bohemian: true",   p.addSorted("Bohemian Rhapsody","Queen",354));
+        check("Yesterday: true",  p.addSorted("Yesterday","Beatles",125));
+        check("Hotel: true",      p.addSorted("Hotel California","Eagles",391));
+        check("dup Imagine: false",!p.addSorted("Imagine","Lennon",187));
+        check("size=4",            p.getSize()==4);
+        checkStr("1st=Bohemian",   p.currentSong().getTitle(), "Bohemian Rhapsody");
+        checkStr("2nd=Hotel",      p.nextSong().getTitle(),    "Hotel California");
+        checkStr("3rd=Imagine",    p.nextSong().getTitle(),    "Imagine");
+        checkStr("4th=Yesterday",  p.nextSong().getTitle(),    "Yesterday");
+    }
+    static void testSection13() {
+        System.out.println("\\n--- Section 13: randomSong ---");
+        check("empty=null", new PlayList(3).randomSong()==null);
+        PlayList p = new PlayList(3);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391);
+        Song r = p.randomSong();
+        check("not null", r!=null);
+        check("in playlist", r.getTitle().equals("Imagine")||
+            r.getTitle().equals("Bohemian Rhapsody")||
+            r.getTitle().equals("Hotel California"));
+        check("curSong updated", p.currentSong().getTitle().equals(r.getTitle()));
+        check("size unchanged",  p.getSize()==3);
+    }
+    static void testSection14() {
+        System.out.println("\\n--- Section 14: shuffle ---");
+        PlayList p = new PlayList(4);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391); p.add("Yesterday","Beatles",125);
+        p.shuffle();
+        check("size=4",           p.getSize()==4);
+        check("curSong reset",    p.currentSong()!=null);
+        String all = p.toString();
+        check("Imagine present",  all.contains("Imagine"));
+        check("Bohemian present", all.contains("Bohemian Rhapsody"));
+        check("Hotel present",    all.contains("Hotel California"));
+        check("Yesterday present",all.contains("Yesterday"));
+    }
+    static void testSection15() {
+        System.out.println("\\n--- Section 15: printByDuration ---");
+        PlayList p = new PlayList(4);
+        p.add("Bohemian Rhapsody","Queen",354); p.add("Yesterday","Beatles",125);
+        p.add("Hotel California","Eagles",391); p.add("Imagine","Lennon",187);
+        System.out.println("Expected: Yesterday(125), Imagine(187), Bohemian(354), Hotel(391)");
+        p.printByDuration();
+        System.out.println("Original must be unchanged: Bohemian, Yesterday, Hotel, Imagine");
+        System.out.println(p);
+    }
+    static void testSection16() {
+        System.out.println("\\n--- Section 16: printByPlays ---");
+        PlayList p = new PlayList(4);
+        p.add("Imagine","Lennon",187); p.add("Bohemian Rhapsody","Queen",354);
+        p.add("Hotel California","Eagles",391); p.add("Yesterday","Beatles",125);
+        p.play("Bohemian Rhapsody"); p.play("Bohemian Rhapsody"); p.play("Bohemian Rhapsody");
+        p.play("Hotel California"); p.play("Hotel California");
+        p.play("Yesterday");
+        System.out.println("Expected (desc): Bohemian(3), Hotel(2), Yesterday(1), Imagine(0)");
+        p.printByPlays();
+    }
+    static void testSection17() {
+        System.out.println("\\n--- Section 17: doubleArtist ---");
+        PlayList p = new PlayList(6);
+        p.add("Bohemian Rhapsody","Queen",354); p.add("Imagine","Lennon",187);
+        p.add("We Will Rock You","Queen",122);  p.add("Yesterday","Beatles",125);
+        p.add("We Are The Champions","Queen",179); p.add("Let It Be","Beatles",243);
+        String r = p.doubleArtist();
+        check("has Queen",   r.contains("Queen"));
+        check("has Beatles", r.contains("Beatles"));
+        check("no Lennon",  !r.contains("Lennon"));
+        check("Queen once",  r.indexOf("Queen")  ==r.lastIndexOf("Queen"));
+        check("Beatles once",r.indexOf("Beatles")==r.lastIndexOf("Beatles"));
+        PlayList p2 = new PlayList(3);
+        p2.add("Imagine","Lennon",187); p2.add("Yesterday","Beatles",125);
+        p2.add("Hotel","Eagles",391);
+        check("no doubles: empty", p2.doubleArtist().isEmpty());
+    }
+    static void testSection18() {
+        System.out.println("\\n--- Section 18: merge ---");
+        Song[] a1 = new Song[3];
+        a1[0]=new Song("Bohemian Rhapsody","Queen",354);
+        a1[1]=new Song("Imagine","Lennon",187);
+        a1[2]=new Song("Yesterday","Beatles",125);
+        Song[] a2 = new Song[3];
+        a2[0]=new Song("Hotel California","Eagles",391);
+        a2[1]=new Song("Let It Be","Beatles",243);
+        a2[2]=new Song("We Will Rock You","Queen",122);
+        Song[] m = PlayList.merge(a1,3,a2,3);
+        check("length=6",          m.length==6);
+        checkStr("[0]=Bohemian",   m[0].getTitle(),"Bohemian Rhapsody");
+        checkStr("[1]=Hotel",      m[1].getTitle(),"Hotel California");
+        checkStr("[2]=Imagine",    m[2].getTitle(),"Imagine");
+        checkStr("[3]=Let It Be",  m[3].getTitle(),"Let It Be");
+        checkStr("[4]=We Will",    m[4].getTitle(),"We Will Rock You");
+        checkStr("[5]=Yesterday",  m[5].getTitle(),"Yesterday");
+        Song[] m2 = PlayList.merge(a1,3,new Song[0],0);
+        check("empty merge: length=3",    m2.length==3);
+        checkStr("empty merge: [0]",      m2[0].getTitle(),"Bohemian Rhapsody");
+    }
+}`;
+  window.onload = function() {
+    makeDownload('dl-song',         'Song.java',     songJava);
+    makeDownload('dl-playList',     'PlayList.java', playlistJava);
+    makeDownload('dl-main',         'Main.java',     mainJava);
+    makeDownload('dl-song-top',     'Song.java',     songJava);
+    makeDownload('dl-playList-top', 'PlayList.java', playlistJava);
+    makeDownload('dl-main-top',     'Main.java',     mainJava);
+  };
+  </script>
+
+</main>
+<footer>تمرين &#8212; مصفوفة الكائنات بلغة Java | مقدمة في علوم الحاسوب</footer>
+</body>
+</html>
