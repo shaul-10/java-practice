@@ -1,0 +1,575 @@
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .wrap {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+  }
+
+  .card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 16px;
+    padding: 1.5rem;
+    max-width: 580px;
+    width: 100%;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .header-title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 3px;
+  }
+
+  .step {
+    border: 1.5px solid #CECBF6;
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 0.85rem;
+    background: #EEEDFE22;
+  }
+
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 0.75rem;
+  }
+
+  .badge {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #7F77DD;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .badge.done {
+    background: #1D9E75;
+  }
+
+  .step-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #3C3489;
+  }
+
+  .step-sub {
+    font-size: 11px;
+    color: #534AB7;
+    margin-top: 1px;
+  }
+
+  .upload-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .ubox {
+    border: 1.5px dashed #AFA9EC;
+    border-radius: 8px;
+    padding: 0.7rem;
+    text-align: center;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.15s;
+  }
+
+  .ubox:hover {
+    border-color: #7F77DD;
+    background: #EEEDFE55;
+  }
+
+  .ubox.loaded {
+    border-style: solid;
+    border-color: #1D9E75;
+    background: #E1F5EE44;
+  }
+
+  .ubox-full {
+    border: 1.5px dashed #AFA9EC;
+    border-radius: 8px;
+    padding: 0.7rem;
+    text-align: center;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.15s;
+  }
+
+  .ubox-full:hover {
+    border-color: #7F77DD;
+    background: #EEEDFE55;
+  }
+  .ubox.drag-over, .ubox-full.drag-over {
+    border-color: #7F77DD;
+    background: #EEEDFE88;
+    border-style: solid;
+  }
+
+  .ubox-full.loaded {
+    border-style: solid;
+    border-color: #1D9E75;
+    background: #E1F5EE44;
+  }
+
+  .ubox-lbl {
+    font-size: 12px;
+    color: #534AB7;
+    margin-top: 3px;
+  }
+
+  .ubox-lbl.done {
+    color: #085041;
+    font-weight: 500;
+  }
+
+  .ulang {
+    font-size: 11px;
+    color: #534AB7;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  .pinfo {
+    font-size: 11px;
+    color: #0F6E56;
+    margin-top: 4px;
+    text-align: center;
+  }
+
+  input[type=file] {
+    display: none;
+  }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .fld label {
+    display: block;
+    font-size: 11px;
+    color: #534AB7;
+    margin-bottom: 3px;
+    font-weight: 500;
+  }
+
+  .fld input[type=text] {
+    width: 100%;
+    font-size: 13px;
+    padding: 5px 8px;
+    border: 1px solid #CECBF6;
+    border-radius: 6px;
+    background: #fff;
+    color: var(--color-text-primary);
+    font-family: inherit;
+  }
+
+  .fld input[type=text]:focus {
+    outline: none;
+    border-color: #7F77DD;
+  }
+
+  .hint {
+    font-size: 10px;
+    color: #7F77DD;
+    margin-top: 2px;
+  }
+
+  .lvl-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+
+  .lo {
+    border: 1.5px solid #CECBF6;
+    border-radius: 8px;
+    padding: 6px 2px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    color: #534AB7;
+    background: #fff;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+
+  .lo:hover {
+    border-color: #7F77DD;
+  }
+
+  .lo.sel {
+    border-width: 2px;
+  }
+
+  .l1.sel {
+    background: #EEEDFE;
+    border-color: #7F77DD;
+    color: #3C3489;
+  }
+
+  .l2.sel {
+    background: #FAEEDA;
+    border-color: #EF9F27;
+    color: #633806;
+  }
+
+  .l3.sel {
+    background: #FCEBEB;
+    border-color: #E24B4A;
+    color: #791F1F;
+  }
+
+  .l4.sel {
+    background: #EAF3DE;
+    border-color: #639922;
+    color: #27500A;
+  }
+
+  .l2 {
+    color: #BA7517;
+  }
+
+  .l3 {
+    color: #A32D2D;
+  }
+
+  .l4 {
+    color: #3B6D11;
+  }
+
+  .small-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gen-btn {
+    width: 100%;
+    padding: 11px;
+    border-radius: 10px;
+    border: 2px solid #7F77DD;
+    background: #7F77DD;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 0.25rem;
+    transition: background 0.15s;
+  }
+
+  .gen-btn:hover:not(:disabled) {
+    background: #534AB7;
+    border-color: #534AB7;
+  }
+
+  .gen-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .ok-msg {
+    font-size: 12px;
+    background: #E1F5EE;
+    color: #085041;
+    border-radius: 7px;
+    padding: 7px 10px;
+    margin-top: 8px;
+    display: none;
+    text-align: center;
+  }
+
+  .err-msg {
+    font-size: 12px;
+    background: #FCEBEB;
+    color: #791F1F;
+    border-radius: 7px;
+    padding: 7px 10px;
+    margin-top: 8px;
+    display: none;
+    text-align: center;
+  }
+
+  .ok-msg.show,
+  .err-msg.show {
+    display: block;
+  }
+</style>
+
+<div class="wrap">
+  <div class="card">
+
+    <div class="header">
+      <div class="header-title">Quiz Builder - בונה שאלון לתרגול </div>
+      <div class="header-sub">upload html template & questions files to create a quiz</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <div class="badge" id="b1">1</div>
+        <div>
+          <div class="step-title"> HTML קובץ התבנית</div>
+          <div class="step-sub">template.html או כל תבנית אחרת</div>
+        </div>
+      </div>
+      <div class="ubox-full" id="ub-html" onclick="document.getElementById('fi-html').click()">
+        <div style="font-size:18px;">📄</div>
+        <div class="ubox-lbl" id="ul-html">HTML לחץ או גרור קובץ</div>
+      </div>
+      <input type="file" id="fi-html" accept=".html" onchange="loadFile('html',this)">
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <div class="badge" id="b2">2</div>
+        <div>
+          <div class="step-title">שאלות JSON</div>
+          <div class="step-sub">עברית ו/או ערבית</div>
+        </div>
+      </div>
+      <div class="upload-row">
+        <div>
+          <div class="ulang">עברית </div>
+          <div class="ubox" id="ub-he" onclick="document.getElementById('fi-he').click()">
+            <div style="font-size:15px;">📋</div>
+            <div class="ubox-lbl" id="ul-he">לחץ או גרור JSON עברית</div>
+          </div>
+          <input type="file" id="fi-he" accept=".json" onchange="loadFile('he',this)">
+          <div class="pinfo" id="pi-he"></div>
+        </div>
+        <div>
+          <div class="ulang">ערבית </div>
+          <div class="ubox" id="ub-ar" onclick="document.getElementById('fi-ar').click()">
+            <div style="font-size:15px;">📋</div>
+            <div class="ubox-lbl" id="ul-ar">לחץ או גרור JSON ערבית</div>
+          </div>
+          <input type="file" id="fi-ar" accept=".json" onchange="loadFile('ar',this)">
+          <div class="pinfo" id="pi-ar"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <div class="badge" id="b3">3</div>
+        <div>
+          <div class="step-title">כותרות עמוד פתיחה</div>
+          <div class="step-sub">הטקסט שיוצג על המסך הראשי</div>
+        </div>
+      </div>
+      <div class="grid2" style="margin-bottom:8px;">
+        <div class="fld">
+          <label>כותרת עברית</label>
+          <input type="text" id="title-he" value="תרגול לולאת for ב-Java">
+        </div>
+        <div class="fld">
+          <label>כותרת ערבית</label>
+          <input type="text" id="title-ar" value="تدريب على حلقة for في Java" dir="rtl">
+        </div>
+      </div>
+      <div class="grid2" style="margin-bottom:8px;">
+        <div class="fld">
+          <label>תיאור עברית</label>
+          <input type="text" id="sub-he" value="10 שאלות אמריקאיות עם הסברים מפורטים">
+        </div>
+        <div class="fld">
+          <label>تيأور عربي</label>
+          <input type="text" id="sub-ar" value="١٠ أسئلة اختيار من متعدد مع شرح مفصّل" dir="rtl">
+        </div>
+      </div>
+      <div class="fld small-row">
+        <label style="white-space:nowrap;">אימוג'י</label>
+        <input type="text" id="icon" value="💻" style="width:56px;text-align:center;">
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <div class="badge" id="b4">4</div>
+        <div>
+          <div class="step-title">רמה וצבע</div>
+          <div class="step-sub">בחר רמה — הצבע מוגדר אוטומטית</div>
+        </div>
+      </div>
+      <div class="lvl-row">
+        <div class="lo l1 sel" id="lo1" onclick="selLvl(1)">רמה 01<br>סגול</div>
+        <div class="lo l2" id="lo2" onclick="selLvl(2)">רמה 02<br>כתום</div>
+        <div class="lo l3" id="lo3" onclick="selLvl(3)">רמה 03<br>אדום</div>
+        <div class="lo l4" id="lo4" onclick="selLvl(4)">רמה 04<br>ירוק</div>
+      </div>
+      <div class="fld small-row">
+        <label style="white-space:nowrap;">מספר רמה מותאם</label>
+        <input type="text" id="lvl-custom" value="01" style="width:56px;text-align:center;"
+          oninput="customLvl(this.value)">
+        <span class="hint">ניתן גם 05, 06...</span>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="gen-btn" onclick="generate()" disabled>יצור קובץ שאלון ←</button>
+    <div class="ok-msg" id="ok-msg"></div>
+    <div class="err-msg" id="err-msg"></div>
+
+  </div>
+</div>
+
+<script>
+  const S = { html: null, he: null, ar: null, lvl: 1, lvlStr: '01' };
+  const C = {
+    1: { main: '#7F77DD', light: '#EEEDFE', dark: '#3C3489', border: '#CECBF6' },
+    2: { main: '#D4900A', light: '#FFF3CD', dark: '#856404', border: '#FAC775' },
+    3: { main: '#C0392B', light: '#FCE8E8', dark: '#8B1A1A', border: '#F5C0C0' },
+    4: { main: '#27AE60', light: '#E8F8EE', dark: '#1A5E35', border: '#9FE1CB' }
+  };
+  function normalizeQuestions(questions) {
+    return questions.map((q, idx) => {
+      // Format B: {question, answers:{A,B,C,D}, correct:"A", explanation:"string"}
+      if (q.question !== undefined && q.answers !== undefined) {
+        const letters = ['A','B','C','D'];
+        const options = letters.map(l => q.answers[l] || '');
+        const correctLetter = q.correct || 'A';
+        const answer = letters.indexOf(correctLetter);
+        const expText = typeof q.explanation === 'string' ? q.explanation : '';
+        return {
+          topic: q.topic || ('שאלה ' + (idx + 1)),
+          textParts: [{ type: 'he', text: q.question }],
+          code: q.code || '',
+          options,
+          answer: answer >= 0 ? answer : 0,
+          explanation: expText ? [{ type: 'he', text: expText }] : []
+        };
+      }
+      // Format A: {topic, text, options:[...], answer:0, explanation:[...]}
+      if (!q.textParts && q.text) {
+        q = { ...q, textParts: [{ type: 'he', text: q.text }] };
+      }
+      return q;
+    });
+  }
+  function loadFile(t, inp) {
+    const f = inp.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+      if (t === 'html') {
+        S.html = e.target.result;
+        mark('ub-html', 'ul-html', f.name, 'b1');
+      } else {
+        try {
+          const d = JSON.parse(e.target.result);
+          const key = t === 'he' ? 'questionsHe' : 'questionsAr';
+          const q = d[key] || d.questions || d;
+          S[t] = Array.isArray(q) ? normalizeQuestions(q) : null;
+          if (!S[t]) throw new Error('מבנה לא תקין');
+          mark('ub-' + t, 'ul-' + t, f.name, null);
+          document.getElementById('pi-' + t).textContent = S[t].length + ' שאלות';
+        } catch (e2) { showErr('שגיאה ב-JSON ' + (t === 'he' ? 'עברית' : 'ערבית')); S[t] = null; }
+      }
+      checkReady();
+    };
+    r.readAsText(f, 'UTF-8');
+  }
+  function mark(boxId, lblId, name, badgeId) {
+    document.getElementById(boxId).classList.add('loaded');
+    const l = document.getElementById(lblId);
+    l.textContent = '✓ ' + name; l.classList.add('done');
+    if (badgeId) { const b = document.getElementById(badgeId); b.textContent = '✓'; b.classList.add('done'); }
+  }
+  function selLvl(n) {
+    S.lvl = n; S.lvlStr = String(n).padStart(2, '0');
+    document.getElementById('lvl-custom').value = S.lvlStr;
+    [1, 2, 3, 4].forEach(i => document.getElementById('lo' + i).classList.remove('sel'));
+    document.getElementById('lo' + n).classList.add('sel');
+  }
+  function customLvl(v) {
+    S.lvlStr = v;
+    [1, 2, 3, 4].forEach(i => document.getElementById('lo' + i).classList.remove('sel'));
+  }
+  function checkReady() {
+    const ok = S.html && (S.he || S.ar);
+    document.getElementById('gen-btn').disabled = !ok;
+  }
+  function generate() {
+    if (!S.html) return showErr('נא להעלות קובץ HTML');
+    let h = S.html;
+    const lv = S.lvlStr || '01';
+    const c = C[S.lvl] || C[3];
+    h = h.replace(/LEVEL_NUMBER/g, lv);
+    h = h.replace(/LEVEL_COLOR_MAIN/g, c.main);
+    h = h.replace(/LEVEL_COLOR_LIGHT/g, c.light);
+    h = h.replace(/LEVEL_COLOR_DARK/g, c.dark);
+    h = h.replace(/LEVEL_COLOR_BORDER/g, c.border);
+    const heJS = S.he ? JSON.stringify(S.he, null, 2) : '[]';
+    const arJS = S.ar ? JSON.stringify(S.ar, null, 2) : '[]';
+    h = h.replace(/const questionsHe = \[\s*\/\/ הכנס שאלות כאן\s*\];/, `const questionsHe = ${heJS};`);
+    h = h.replace(/const questionsAr = \[\s*\/\/ הכנס שאלות כאן\s*\];/, `const questionsAr = ${arJS};`);
+    const tHe = document.getElementById('title-he').value;
+    const tAr = document.getElementById('title-ar').value;
+    const sHe = document.getElementById('sub-he').value;
+    const sAr = document.getElementById('sub-ar').value;
+    const ic = document.getElementById('icon').value;
+    h = h.replace(/<div class="home-icon">.*?<\/div>/, `<div class="home-icon">${ic}</div>`);
+    h = h.replace(/<div class="home-title-he">.*?<\/div>/s, `<div class="home-title-he">${tHe}</div>`);
+    h = h.replace(/<div class="home-title-ar">.*?<\/div>/s, `<div class="home-title-ar">${tAr}</div>`);
+    h = h.replace(/<span class="he">.*?<\/span>/s, `<span class="he">${sHe}</span>`);
+    h = h.replace(/QUIZ_TITLE_HE/g, tHe);
+    h = h.replace(/QUIZ_TITLE_AR/g, tAr);
+    h = h.replace(/<span class="ar">.*?<\/span>/s, `<span class="ar">${sAr}</span>`);
+    const blob = new Blob([h], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `quiz_level${lv}.html`; a.click();
+    URL.revokeObjectURL(url);
+    showOk('הקובץ נוצר! quiz_level' + lv + '.html');
+  }
+  function showOk(m) { const e = document.getElementById('ok-msg'); e.textContent = m; e.classList.add('show'); document.getElementById('err-msg').classList.remove('show'); }
+  function showErr(m) { const e = document.getElementById('err-msg'); e.textContent = m; e.classList.add('show'); document.getElementById('ok-msg').classList.remove('show'); }
+
+  function setupDrop(boxId, fileType) {
+    const box = document.getElementById(boxId);
+    box.addEventListener('dragover', e => {
+      e.preventDefault();
+      box.classList.add('drag-over');
+    });
+    box.addEventListener('dragleave', () => box.classList.remove('drag-over'));
+    box.addEventListener('drop', e => {
+      e.preventDefault();
+      box.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
+      const fakeInp = { files: [file] };
+      loadFile(fileType, fakeInp);
+    });
+  }
+  setupDrop('ub-html', 'html');
+  setupDrop('ub-he',   'he');
+  setupDrop('ub-ar',   'ar');
+</script>
