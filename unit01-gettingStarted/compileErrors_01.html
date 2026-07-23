@@ -86,10 +86,10 @@
     #screen-he, #screen-ar { display: none; }
     .quiz-header {
       display: flex; justify-content: space-between; align-items: center;
-      background: var(--color-dark); color: #fff;
+      background: linear-gradient(135deg, var(--color-dark), var(--color-main)); color: #fff;
       padding: 18px 24px; border-radius: 12px;
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
     }
     .quiz-title { font-size: 18px; font-weight: 700; color: #fff; direction: rtl; }
     .quiz-title .level-tag {
@@ -138,7 +138,7 @@
     /* ── אפשרויות multichoice ── */
     .options { display: flex; flex-direction: column; gap: 8px; }
     .opt {
-      display: flex; flex-direction: row-reverse; align-items: center; gap: 10px;
+      display: flex; flex-direction: row; align-items: center; gap: 10px;
       padding: 10px 14px; border: 1.5px solid #E2E4F3; border-radius: 9px;
       cursor: pointer; font-size: 14px; background: transparent;
       width: 100%; direction: rtl; text-align: right;
@@ -157,6 +157,7 @@
       background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px;
       font-family: 'Courier New', monospace; font-size: 13px;
       white-space: pre-wrap; word-break: break-word;
+      direction: ltr; text-align: left; flex: 1;
       display: inline-block; text-align: left; direction: ltr;
     }
 
@@ -1173,7 +1174,7 @@
         : '';
       const opts = q.options.map((o, i) =>
         `<button class="opt" onclick="chooseOpt('${lang}',${i})">
-           ${buildOption(o)}<span class="opt-letter">${letters[i]}.</span>
+           <span class="opt-letter">${letters[i]}.</span>${buildOption(o)}
          </button>`
       ).join('');
       return `${codeBlock}<div class="options" id="opts-${lang}">${opts}</div>`;
