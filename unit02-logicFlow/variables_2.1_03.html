@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║      תבנית v2 — שאלון Java עם 3 סוגי שאלות                     ║
+  ║      multichoice / gapselect / cloze                             ║
+  ║                                                                  ║
+  ║  נתמך ע"י quiz_builder_tool.html — פלייסהולדרים:                ║
+  ║  03, #C0392B/LIGHT/DARK/BORDER,               ║
+  ║  Java - Variables 2.1, , questionsHe, questionsAr          ║
+  ║                                                                  ║
+  ║  מבנה שאלה multichoice:                                          ║
+  ║  { type:"multichoice", topic, text, code|null,                   ║
+  ║    options:[ "טקסט" | {type:"code",text:"..."} ],               ║
+  ║    answer:0, explanation:[{type:"he"|"code",text}] }             ║
+  ║                                                                  ║
+  ║  מבנה שאלה gapselect:                                            ║
+  ║  { type:"gapselect", topic, text, output?, text2?,               ║
+  ║    codeLines:[ "שורת קוד עם [[1]]" ],                           ║
+  ║    gaps:[{id:1,options:[...],answer:"..."}], explanation }       ║
+  ║                                                                  ║
+  ║  מבנה שאלה cloze:                                                ║
+  ║  { type:"cloze", topic, text, output?, text2?,                   ║
+  ║    codeLines:[ {before, blank:{options,answer}|null, after} ],   ║
+  ║    explanation }                                                 ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java - Variables 2.1 — רמה 03</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    :root {
+      --color-main:   #C0392B;
+      --color-light:  #FCE8E8;
+      --color-dark:   #8B1A1A;
+      --color-border: #F5C0C0;
+    }
+
+    /* ── מסך פתיחה ── */
+    #screen-home {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 80vh; text-align: center;
+    }
+    .home-icon { font-size: 48px; margin-bottom: 1.2rem; }
+    .home-title-he { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; direction: rtl; }
+    .home-title-ar { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 0.5rem; direction: rtl; }
+    .home-sub { font-size: 13px; color: #888; margin-bottom: 1rem; line-height: 1.8; }
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+    .home-level-badge {
+      display: inline-block; font-size: 12px; font-weight: 600;
+      padding: 3px 14px; border-radius: 20px;
+      background: var(--color-light); color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem; margin-bottom: 2.5rem;
+    }
+    .lang-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .lang-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 22px 36px; border: 2px solid #ddd; border-radius: 14px;
+      background: #fff; cursor: pointer; font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s; min-width: 160px;
+    }
+    .lang-btn:hover { border-color: var(--color-main); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    .lang-btn .lang-name { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .lang-btn .lang-sub  { font-size: 11px; color: #aaa; }
+
+    /* ── מסכי שאלון ── */
+    #screen-he, #screen-ar { display: none; }
+    .quiz-header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(135deg, var(--color-dark), var(--color-main)); color: #fff;
+      padding: 18px 24px; border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .quiz-title { font-size: 18px; font-weight: 700; color: #fff; direction: rtl; }
+    .quiz-title .level-tag {
+      font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px;
+      background: rgba(255,255,255,0.2); color: #fff;
+      margin-right: 8px; vertical-align: middle;
+    }
+    .back-btn {
+      font-size: 12px; color: #fff; background: none;
+      border: 1px solid rgba(255,255,255,0.4); border-radius: 6px;
+      padding: 4px 12px; cursor: pointer; font-family: inherit; white-space: nowrap;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.15); }
+
+    .progress-bar-bg { height: 4px; background: #ddd; border-radius: 2px; margin-bottom: 1.5rem; }
+    .progress-bar-fill { height: 4px; background: var(--color-main); border-radius: 2px; transition: width 0.4s; }
+
+    .q-card {
+      background: #fff; border: 1px solid #E2E4F3;
+      border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    .q-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .q-num-badge { font-size: 12px; color: #888; }
+    .q-topic { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--color-main); color: #fff; font-weight: 500; }
+
+    .q-text { font-size: 15px; margin-bottom: 12px; line-height: 1.8; }
+    .q-text-line { display: block; direction: rtl; text-align: right; }
+
+    .code-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; white-space: pre; overflow-x: auto;
+      line-height: 1.7; direction: ltr; text-align: left;
+    }
+
+    /* בלוק פלט רצוי — LTR תמיד */
+    .output-block {
+      background: #fff; border: 1px dashed var(--color-border); border-radius: 8px;
+      padding: 10px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 12px; white-space: pre; overflow-x: auto;
+      line-height: 1.7; direction: ltr; text-align: left;
+      color: var(--color-dark);
+    }
+
+    /* ── אפשרויות multichoice ── */
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .opt {
+      display: flex; flex-direction: row; align-items: center; gap: 10px;
+      padding: 10px 14px; border: 1.5px solid #E2E4F3; border-radius: 9px;
+      cursor: pointer; font-size: 14px; background: transparent;
+      width: 100%; direction: rtl; text-align: right;
+      font-family: 'Courier New', monospace; color: #1a1a1a; transition: background 0.15s;
+    }
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+    .opt-letter { font-size: 12px; font-weight: 700; min-width: 22px; color: var(--color-main); font-family: 'Segoe UI', Arial, sans-serif; flex-shrink: 0; }
+    .opt-text-he {
+      direction: rtl; text-align: right; flex: 1;
+      unicode-bidi: embed; font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .opt-code {
+      background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px;
+      font-family: 'Courier New', monospace; font-size: 13px;
+      white-space: pre-wrap; word-break: break-word;
+      direction: ltr; text-align: left; flex: 1;
+      display: inline-block; text-align: left; direction: ltr;
+    }
+
+    /* ── gapselect ── */
+    .gap-code-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; direction: ltr; text-align: left;
+      line-height: 2.2; overflow-x: auto;
+    }
+    .gap-code-block .code-line { display: block; white-space: pre; }
+    .gap-select, .cloze-select {
+      font-family: 'Courier New', monospace; font-size: 13px;
+      padding: 1px 4px; border: 1px solid var(--color-border);
+      border-radius: 4px; background: var(--color-light);
+      color: var(--color-dark); cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .gap-select:focus, .cloze-select:focus { outline: none; border-color: var(--color-main); }
+    .gap-select.correct-gap, .cloze-select.correct-gap { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .gap-select.wrong-gap,   .cloze-select.wrong-gap   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .gap-select:disabled, .cloze-select:disabled { cursor: not-allowed; }
+
+    .gap-check-btn {
+      margin-top: 0.75rem; padding: 8px 20px;
+      border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 13px;
+      color: var(--color-dark); font-family: inherit;
+    }
+    .gap-check-btn:hover { background: var(--color-light); }
+    .gap-check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── cloze ── */
+    .cloze-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; direction: ltr; text-align: left;
+      line-height: 2.4; overflow-x: auto;
+    }
+    .cloze-line { display: block; white-space: pre; }
+
+    /* ── הסבר ── */
+    .explanation {
+      display: none; margin-top: 12px; padding: 10px 14px;
+      font-size: 13px; color: #555; line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8; direction: rtl; text-align: right;
+    }
+    .explanation.show { display: block; }
+    .exp-line { display: block; direction: rtl; text-align: right; }
+    .exp-code {
+      display: block; direction: ltr; text-align: left;
+      font-family: 'Courier New', monospace; font-size: 12px;
+      background: #fff; padding: 3px 8px; border-radius: 4px; margin: 2px 0;
+      white-space: pre-wrap;
+    }
+
+    .next-btn {
+      display: none; margin-top: 1rem; padding: 10px 22px;
+      border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px;
+      color: var(--color-dark); font-family: inherit;
+    }
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box { text-align: center; padding: 3rem 1rem; }
+    .score-num { font-size: 56px; font-weight: 500; color: #1a1a1a; }
+    .score-label { font-size: 16px; color: #666; margin-top: 8px; }
+    .score-actions { display: flex; gap: 12px; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+    .restart-btn {
+      padding: 10px 28px; border: 1px solid #ccc; border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px; font-family: inherit; color: #1a1a1a;
+    }
+    .restart-btn:hover { background: #f5f5f5; }
+    .home-return-btn {
+      padding: 10px 28px; border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px; font-family: inherit; color: var(--color-dark);
+    }
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">Java - Variables 2.1</div>
+      <div class="home-title-ar"></div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <div class="home-level-badge">רמה 03 &nbsp;|&nbsp; المستوى 03</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">רמה 03</span>
+          Java - Variables 2.1
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">المستوى 03</span>
+          
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "type": "multichoice",
+    "topic": "תכנון — בחירת סוגים לפי מפרט",
+    "text": "ברצוננו לכתוב תוכנית לניהול מלאי בחנות. עבור כל מוצר יש לשמור שלושה נתונים: כמות הפריטים במלאי, המחיר ליחידה בשקלים ובאגורות, וקוד המוצר — מספר בן ארבע ספרות. איזו קבוצת הגדרות מתאימה לדרישות?",
+    "code": null,
+    "options": [
+      {
+        "type": "code",
+        "text": "int    amount = 40;\ndouble price  = 12.9;\nint    code   = 3251;"
+      },
+      {
+        "type": "code",
+        "text": "double amount = 40;\ndouble price  = 12.9;\ndouble code   = 3251;"
+      },
+      {
+        "type": "code",
+        "text": "int    amount = 40;\nint    price  = 12.9;\nint    code   = 3251;"
+      },
+      {
+        "type": "code",
+        "text": "int    amount = 40;\ndouble price  = 12.9;\ndouble code   = 3251;"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כמות פריטים היא תמיד מספר שלם, וגם קוד מוצר הוא רצף ספרות שאין לו חלק עשרוני — לכן שניהם int. המחיר כולל אגורות, כלומר חלק עשרוני, ולכן הוא חייב להיות double. ההגדרה int price = 12.9; כלל אינה מתקמפלת. שאר האפשרויות אמנם מתקמפלות, אך הן שגויות מבחינת התכנון: משתנה double שנשמר בו הערך 40 יודפס כ-40.0, וקוד מוצר יודפס כ-3251.0 — פלט שאינו מתאים לנתון. בבחירת סוג יש לשאול מהו אופי הנתון, ולא רק אם הקוד מתקמפל."
+      },
+      {
+        "type": "code",
+        "text": "int    amount = 40;\ndouble price  = 12.9;\nint    code   = 3251;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו לכתוב תוכנית לניהול מלאי בחנות. עבור כל מוצר יש לשמור שלושה נתונים: כמות הפריטים במלאי, המחיר ליחידה בשקלים ובאגורות, וקוד המוצר — מספר בן ארבע ספרות. איזו קבוצת הגדרות מתאימה לדרישות?"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "תכנון — הגדרה לפי תיאור מילולי",
+    "text": "תוכנית שומרת נתונים על ספר: מספר העמודים, מחיר הספר בשקלים ובאגורות, ושנת ההוצאה לאור. הפלט הנדרש הוא:",
+    "output": "pages = 320\nprice = 89.9\nyear = 2019",
+    "text2": "השלימו את סוגי המשתנים ואת פקודת ההדפסה האחרונה:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    [[1]] pages = 320;",
+      "    [[2]] price = 89.9;",
+      "    [[3]] year = 2019;",
+      "    System.out.println(\"pages = \" + pages);",
+      "    System.out.println(\"price = \" + price);",
+      "    System.out.println(\"year = \" + [[4]]);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "int",
+          "double"
+        ],
+        "answer": "int"
+      },
+      {
+        "id": 2,
+        "options": [
+          "double",
+          "int"
+        ],
+        "answer": "double"
+      },
+      {
+        "id": 3,
+        "options": [
+          "int",
+          "double"
+        ],
+        "answer": "int"
+      },
+      {
+        "id": 4,
+        "options": [
+          "year",
+          "\"year\""
+        ],
+        "answer": "year"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "מספר עמודים ושנה הם נתונים שלמים במהותם, ולכן int — וגם הפלט מאשר זאת: הם מודפסים כ-320 וכ-2019 ולא כ-320.0 וכ-2019.0. המחיר כולל אגורות ולכן הוא double, והפלט מציג 89.9. בחור האחרון יש לכתוב את שם המשתנה ללא מרכאות, אחרת היה מודפס רצף התווים year במקום הערך 2019. שימו לב שגם כאן, כמו במפרט מילולי אמיתי, סוג המשתנה נגזר מאופי הנתון ולא מהערך המסוים שהוצב בו."
+      },
+      {
+        "type": "code",
+        "text": "int    pages = 320;\ndouble price = 89.9;\nint    year  = 2019;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "תוכנית שומרת נתונים על ספר: מספר העמודים, מחיר הספר בשקלים ובאגורות, ושנת ההוצאה לאור. הפלט הנדרש הוא:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "מעקב אחר שרשרת השמות",
+    "text": "מה יהיה הפלט בהרצת התוכנית הבאה?",
+    "code": "public static void main(String [] args) {\n    int a = 4;\n    int b = a + 3;\n    int c = a + b;\n    a = c;\n    b = a + b;\n    System.out.println(\"a = \" + a);\n    System.out.println(\"b = \" + b);\n    System.out.println(\"c = \" + c);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a = 11\nb = 18\nc = 11"
+      },
+      {
+        "type": "code",
+        "text": "a = 4\nb = 7\nc = 11"
+      },
+      {
+        "type": "code",
+        "text": "a = 11\nb = 18\nc = 18"
+      },
+      {
+        "type": "code",
+        "text": "a = 11\nb = 11\nc = 11"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "נעקוב פקודה אחר פקודה: a מקבל 4, ואז b מקבל 4 ועוד 3, כלומר 7. המשתנה c מקבל את סכום הערכים שבמשתנים באותו רגע, 4 ועוד 7, כלומר 11. בפקודה a = c מוצב ב-a הערך 11, והערך 4 שהיה בו נמחק. הפקודה האחרונה מחשבת את סכום הערכים העדכניים, 11 ועוד 7, ומציבה ב-b את הערך 18. המשתנה c לא השתנה מאז שקיבל את ערכו, ולכן נשאר 11. הנקודה המרכזית: בכל פקודה משתמשים בערכים העדכניים של המשתנים באותו רגע, ולא בערכיהם המקוריים."
+      },
+      {
+        "type": "code",
+        "text": "a = 11\nb = 18\nc = 11"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה הפלט בהרצת התוכנית הבאה?"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "החלפת ערכים בעזרת משתנה עזר",
+    "text": "ברצוננו להחליף בין ערכיהם של שני המשתנים, כך שיתקבל הפלט הבא:",
+    "output": "before: 6 9\nafter: 9 6",
+    "text2": "השלימו את שלוש פקודות ההחלפה:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int a = 6;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int b = 9;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    System.out.println(\"before: \" + a + \" \" + b);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int temp = ",
+        "blank": {
+          "options": [
+            "a",
+            "b"
+          ],
+          "answer": "a"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    a = ",
+        "blank": {
+          "options": [
+            "b",
+            "temp"
+          ],
+          "answer": "b"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    b = ",
+        "blank": {
+          "options": [
+            "temp",
+            "a"
+          ],
+          "answer": "temp"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    System.out.println(\"after: \" + a + \" \" + b);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כדי להחליף בין שני ערכים, יש לשמור תחילה עותק של אחד מהם במשתנה עזר — אחרת הוא יידרס ויאבד. לכן temp מקבל את ערכו של a, שהוא 6. לאחר מכן מוצב ב-a ערכו של b, כלומר 9. בשלב זה הערך 6 קיים רק ב-temp, ולכן הפקודה האחרונה חייבת להיות b = temp. אילו נכתב שם b = a, היה מוצב ב-b הערך 9 שכבר נמצא ב-a, ושני המשתנים היו מכילים 9. סדר שלוש הפקודות הוא קריטי — נסו לשנות אותו ולראות מה מתקבל."
+      },
+      {
+        "type": "code",
+        "text": "int temp = a;\na = b;\nb = temp;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו להחליף בין ערכיהם של שני המשתנים, כך שיתקבל הפלט הבא:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "מטרת קטע הקוד",
+    "text": "מהי מטרת קטע הקוד הבא?",
+    "code": "public static void main(String [] args) {\n    int a = 7;\n    int b = 3;\n    a = a + b;\n    b = a - b;\n    a = a - b;\n    System.out.println(\"a = \" + a);\n    System.out.println(\"b = \" + b);\n}",
+    "options": [
+      "להחליף בין ערכיהם של שני המשתנים, בלי להשתמש במשתנה עזר נוסף",
+      "לחשב את סכום שני המספרים ואת ההפרש ביניהם, ולהדפיס את שתי התוצאות",
+      "להציב בשני המשתנים את סכום הערכים המקוריים ולהדפיס אותו פעמיים",
+      "לסדר את שני המשתנים כך שהערך הגדול מביניהם יודפס ראשון"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "נעקוב אחר הערכים: בפקודה הראשונה a מקבל את סכום השניים, 10 — וכעת a מכיל למעשה את שני הערכים המקוריים יחד, ומשמש כזיכרון שלהם. בפקודה השנייה b מקבל 10 פחות 3, כלומר 7, שהוא הערך המקורי של a. בפקודה השלישית a מקבל 10 פחות 7, כלומר 3, שהוא הערך המקורי של b. התוצאה היא החלפה מלאה בין הערכים, בלי משתנה עזר. שימו לב ששיטה זו מתאימה למספרים בלבד, ובמספרים גדולים מאוד הסכום עלול לחרוג מטווח הסוג; לכן בפועל השיטה עם משתנה עזר מועדפת, גם משום שהיא קריאה וברורה יותר."
+      },
+      {
+        "type": "code",
+        "text": "a = 7, b = 3\na = 7 + 3 = 10\nb = 10 - 3 = 7\na = 10 - 7 = 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מהי מטרת קטע הקוד הבא?"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "צבירה לתוך משתנה",
+    "text": "מה יהיה הפלט בהרצת התוכנית הבאה?",
+    "code": "public static void main(String [] args) {\n    int total = 0;\n    int price = 12;\n    total = total + price;\n    price = 20;\n    total = total + price;\n    System.out.println(\"total = \" + total);\n    System.out.println(\"price = \" + price);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "total = 32\nprice = 20"
+      },
+      {
+        "type": "code",
+        "text": "total = 40\nprice = 20"
+      },
+      {
+        "type": "code",
+        "text": "total = 24\nprice = 20"
+      },
+      {
+        "type": "code",
+        "text": "total = 32\nprice = 12"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "המשתנה total משמש לצבירה: בכל פעם מוצב בו סכום ערכו הנוכחי עם ערך נוסף. תחילה הוא מכיל 0, ולאחר הפקודה הראשונה הוא מכיל 12. לאחר מכן משתנה ערכו של price ל-20, אך שינוי זה אינו משפיע רטרואקטיבית על total — הערך 12 כבר נצבר בתוכו ואינו מקושר יותר ל-price. לכן הפקודה האחרונה מוסיפה 20 ומתקבל 32. המשתנה price שומר את ערכו האחרון, 20. זהו העיקרון שמאפשר לצבור סכומים לאורך תוכנית, ונשתמש בו רבות בהמשך."
+      },
+      {
+        "type": "code",
+        "text": "total = 32\nprice = 20"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה הפלט בהרצת התוכנית הבאה?"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "בניית פלט מרובה שורות",
+    "text": "ברצוננו לקבל את הפלט הבא:",
+    "output": "x = 5\ny = 8\nx = 5 y = 8",
+    "text2": "השלימו את שתי פקודות ההדפסה האחרונות כך שייווצר בדיוק הפלט המבוקש:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int x = 5;",
+      "    int y = 8;",
+      "    System.out.println(\"x = \" + x);",
+      "    System.out.println(\"y = \" + y);",
+      "    System.out.[[1]](\"x = \" + x + [[2]]);",
+      "    System.out.[[3]](\"y = \" + y);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "print",
+          "println"
+        ],
+        "answer": "print"
+      },
+      {
+        "id": 2,
+        "options": [
+          "\" \"",
+          "\"\""
+        ],
+        "answer": "\" \""
+      },
+      {
+        "id": 3,
+        "options": [
+          "println",
+          "print"
+        ],
+        "answer": "println"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השורה השלישית בפלט מכילה את שני הנתונים יחד, ולכן ההדפסה הראשונה מבין השתיים חייבת להיות print — פקודה שאינה יורדת שורה ומשאירה את ההדפסה הבאה באותה שורה. בין שני החלקים מופיע רווח, וכיוון שאף פקודה אינה מוסיפה רווח מעצמה, יש לכתוב אותו במפורש כמחרוזת. המחרוזת הריקה אינה מוסיפה דבר לפלט, והתוצאה הייתה שני החלקים דבוקים זה לזה. ההדפסה האחרונה היא println כדי לסיים את השורה כראוי."
+      },
+      {
+        "type": "code",
+        "text": "x = 5 y = 8      // with \" \"\nx = 5y = 8       // with \"\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו לקבל את הפלט הבא:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "זיהוי מטרת התוכנית",
+    "text": "מהי מטרת התוכנית הבאה?",
+    "code": "public static void main(String [] args) {\n    int a = 26;\n    int b = 4;\n    int c = a - b;\n    a = a + b;\n    System.out.println(a + \" \" + c);\n}",
+    "options": [
+      "להדפיס את סכום שני המספרים המקוריים ואת ההפרש ביניהם",
+      "להדפיס את שני המספרים המקוריים, כל אחד מהם לאחר שהוגדל ב-4",
+      "להדפיס את סכום שני המספרים, ואת ההפרש בין הסכום החדש לבין המספר השני",
+      "להדפיס פעמיים את סכום שני המספרים, בשתי דרכי חישוב שונות"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "סדר הפקודות הוא המפתח כאן. המשתנה c מחושב לפני שערכו של a משתנה, ולכן הוא מקבל את ההפרש בין הערכים המקוריים: 26 פחות 4, כלומר 22. רק לאחר מכן מוצב ב-a הסכום 30. אילו הפקודות היו מוחלפות בסדרן, c היה מקבל 30 פחות 4, כלומר 26 — וזו בדיוק האפשרות השגויה השלישית. הפלט המתקבל הוא 30 22, כלומר הסכום וההפרש של שני הערכים שהוגדרו בתחילת התוכנית. שימו לב שהשמות a, b ו-c אינם רומזים דבר על התפקיד — לכן חובה לעקוב אחר הזרימה. בתוכנית אמיתית עדיף היה לקרוא למשתנים sum ו-diff."
+      },
+      {
+        "type": "code",
+        "text": "a = 26, b = 4\nc = 26 - 4 = 22\na = 26 + 4 = 30"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מהי מטרת התוכנית הבאה?"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "תכנון תוכנית — היקף טרפז",
+    "text": "ברצוננו לכתוב תוכנית המחשבת את היקפו של טרפז שווה שוקיים. אורכי הבסיסים הם 8.0 ו-20.0, ואורך כל אחת מהשוקיים הוא 10.0. הפלט הנדרש הוא:",
+    "output": "perimeter = 48.0",
+    "text2": "השלימו את התוכנית כך שתיצור את הפלט המבוקש:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    ",
+        "blank": {
+          "options": [
+            "double",
+            "int"
+          ],
+          "answer": "double"
+        },
+        "after": " base1 = 8.0, base2 = 20.0, side = 10.0;"
+      },
+      {
+        "before": "    double perimeter = base1 + base2 + ",
+        "blank": {
+          "options": [
+            "side + side",
+            "side"
+          ],
+          "answer": "side + side"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    System.out.println(\"perimeter = \" + ",
+        "blank": {
+          "options": [
+            "perimeter",
+            "\"perimeter\""
+          ],
+          "answer": "perimeter"
+        },
+        "after": ");"
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "אורכי הצלעות הם מספרים ממשיים, ולכן הסוג חייב להיות double — הגדרה מסוג int אף לא הייתה מתקמפלת, כי לא ניתן לשמור את הערך 8.0 במשתנה שלם. שימו לב שבפקודת הגדרה אחת אפשר להגדיר את שלושת המשתנים יחד, כי כולם מאותו סוג. בטרפז שווה שוקיים שתי השוקיים שוות באורכן, ולכן ההיקף הוא סכום שני הבסיסים ועוד השוק פעמיים: 8.0 ועוד 20.0 ועוד 10.0 ועוד 10.0, כלומר 48.0. משתנה שהוגדר לשמירת תוצאה מקבל את ערכו מביטוי החישוב, ובהדפסה מציינים את שמו ללא מרכאות."
+      },
+      {
+        "type": "code",
+        "text": "double perimeter = base1 + base2 + side + side;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו לכתוב תוכנית המחשבת את היקפו של טרפז שווה שוקיים. אורכי הבסיסים הם 8.0 ו-20.0, ואורך כל אחת מהשוקיים הוא 10.0. הפלט הנדרש הוא:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "איתור תקלה בתוכנית",
+    "text": "התוכנית הבאה אמורה להדפיס את סכום שני המספרים, אך היא אינה מתקמפלת. מה יש לתקן?",
+    "code": "public static void main(String [] args) {\n    int a = 5;\n    int b = 7;\n    int sum;\n    System.out.println(\"sum = \" + sum);\n    sum = a + b;\n}",
+    "options": [
+      "יש להעביר את הפקודה ‏sum = a + b; אל השורה שלפני פקודת ההדפסה",
+      "יש לשנות את סוגו של המשתנה ‏sum ל-‏double, כי תוצאת חיבור אינה יכולה להישמר במשתנה שלם",
+      "יש להסיר את המרכאות מסביב לטקסט בפקודת ההדפסה, כדי שיודפס ערכו של המשתנה",
+      "יש להחליף את סימן ה-‏+ שבפקודת ההדפסה בפסיק, כי אי אפשר לצרף טקסט למספר"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בזמן ביצוע פקודת ההדפסה, המשתנה sum אמנם הוגדר אך מעולם לא הוצב בו ערך — ולכן הקומפיילר מודיע על שגיאה והתוכנית כלל אינה רצה. הפקודה שמציבה בו את הסכום נמצאת אחרי ההדפסה, ולכן אינה מועילה. התיקון הוא בסדר הפקודות בלבד: תחילה מחשבים ומציבים, ורק אחר כך מדפיסים. אפשר גם לאחד את שתי הפקודות לכדי הגדרה אחת עם ערך התחלתי. שאר האפשרויות אינן נכונות: סכום של שני שלמים נשמר היטב במשתנה int, המרכאות סביב הטקסט נחוצות, וסימן ה-+ הוא הדרך התקנית לצרף טקסט לערך של משתנה."
+      },
+      {
+        "type": "code",
+        "text": "int sum = a + b;\nSystem.out.println(\"sum = \" + sum);"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "התוכנית הבאה אמורה להדפיס את סכום שני המספרים, אך היא אינה מתקמפלת. מה יש לתקן?"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "type": "multichoice",
+    "topic": "التخطيط — اختيار الأنواع وفقًا للمواصفات",
+    "text": "نرغب في كتابة برنامج لإدارة المخزون في متجر. لكل منتج يجب حفظ ثلاثة بيانات: كمية العناصر في المخزون، السعر لكل وحدة بالشيكل والأغورات، وكود المنتج — رقم مكون من أربع خانات. أي مجموعة من التعريفات تناسب المتطلبات؟",
+    "code": null,
+    "options": [
+      {
+        "type": "code",
+        "text": "int    amount = 40;\ndouble price  = 12.9;\nint    code   = 3251;"
+      },
+      {
+        "type": "code",
+        "text": "double amount = 40;\ndouble price  = 12.9;\ndouble code   = 3251;"
+      },
+      {
+        "type": "code",
+        "text": "int    amount = 40;\nint    price  = 12.9;\nint    code   = 3251;"
+      },
+      {
+        "type": "code",
+        "text": "int    amount = 40;\ndouble price  = 12.9;\ndouble code   = 3251;"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "كمية العناصر هي دائمًا عدد صحيح، وكذلك كود المنتج هو تسلسل أرقام ليس له جزء عشري — لذلك كلاهما int. السعر يشمل الأغورات، أي جزء عشري، ولذلك يجب أن يكون double. التعريف int price = 12.9; لا يتم ترجمته على الإطلاق. الخيارات الأخرى على الرغم من أنها يتم ترجمتها، إلا أنها خاطئة من ناحية التخطيط: متغير double الذي يتم حفظ القيمة 40 فيه سيُطبع كـ 40.0، وكود المنتج سيُطبع كـ 3251.0 — مخرجات غير مناسبة للبيانات. عند اختيار النوع يجب أن نسأل ما هي طبيعة البيانات، وليس فقط إذا كان الكود يتم ترجمته."
+      },
+      {
+        "type": "code",
+        "text": "int    amount = 40;\ndouble price  = 12.9;\nint    code   = 3251;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نرغب في كتابة برنامج لإدارة المخزون في متجر. لكل منتج يجب حفظ ثلاثة بيانات: كمية العناصر في المخزون، السعر لكل وحدة بالشيكل والأغورات، وكود المنتج — رقم مكون من أربع خانات. أي مجموعة من التعريفات تناسب المتطلبات؟"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "تخطيط — تعريف حسب وصف لفظي",
+    "text": "برنامج يحفظ بيانات عن كتاب: عدد الصفحات، سعر الكتاب بالشيكل والأغورات، وسنة النشر. المخرجات المطلوبة هي:",
+    "output": "pages = 320\nprice = 89.9\nyear = 2019",
+    "text2": "أكملوا أنواع المتغيرات وأمر الطباعة الأخير:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    [[1]] pages = 320;",
+      "    [[2]] price = 89.9;",
+      "    [[3]] year = 2019;",
+      "    System.out.println(\"pages = \" + pages);",
+      "    System.out.println(\"price = \" + price);",
+      "    System.out.println(\"year = \" + [[4]]);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "int",
+          "double"
+        ],
+        "answer": "int"
+      },
+      {
+        "id": 2,
+        "options": [
+          "double",
+          "int"
+        ],
+        "answer": "double"
+      },
+      {
+        "id": 3,
+        "options": [
+          "int",
+          "double"
+        ],
+        "answer": "int"
+      },
+      {
+        "id": 4,
+        "options": [
+          "year",
+          "\"year\""
+        ],
+        "answer": "year"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "מספר עמודים ושנה הם נתונים שלמים במהותם, ולכן int — וגם הפלט מאשר זאת: הם מודפסים כ-320 וכ-2019 ולא כ-320.0 וכ-2019.0. המחיר כולל אגורות ולכן הוא double, והפלט מציג 89.9. בחור האחרון יש לכתוב את שם המשתנה ללא מרכאות, אחרת היה מודפס רצף התווים year במקום הערך 2019. שימו לב שגם כאן, כמו במפרט מילולי אמיתי, סוג המשתנה נגזר מאופי הנתון ולא מהערך המסוים שהוצב בו."
+      },
+      {
+        "type": "code",
+        "text": "int    pages = 320;\ndouble price = 89.9;\nint    year  = 2019;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "برنامج يحفظ بيانات عن كتاب: عدد الصفحات، سعر الكتاب بالشيكل والأغورات، وسنة النشر. المخرجات المطلوبة هي:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "تتبع سلسلة الأسماء",
+    "text": "ما هو المخرجات عند تشغيل البرنامج التالي؟",
+    "code": "public static void main(String [] args) {\n    int a = 4;\n    int b = a + 3;\n    int c = a + b;\n    a = c;\n    b = a + b;\n    System.out.println(\"a = \" + a);\n    System.out.println(\"b = \" + b);\n    System.out.println(\"c = \" + c);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a = 11\nb = 18\nc = 11"
+      },
+      {
+        "type": "code",
+        "text": "a = 4\nb = 7\nc = 11"
+      },
+      {
+        "type": "code",
+        "text": "a = 11\nb = 18\nc = 18"
+      },
+      {
+        "type": "code",
+        "text": "a = 11\nb = 11\nc = 11"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نتتبع الأمر تلو الآخر: a يأخذ 4، ثم b يأخذ 4 زائد 3، أي 7. المتغير c يأخذ مجموع القيم في المتغيرات في تلك اللحظة، 4 زائد 7، أي 11. في الأمر a = c يتم وضع القيمة 11 في a، وتُحذف القيمة 4 التي كانت فيه. الأمر الأخير يحسب مجموع القيم الحالية، 11 زائد 7، ويضع في b القيمة 18. المتغير c لم يتغير منذ أن أخذ قيمته، لذلك يبقى 11. النقطة الرئيسية: في كل أمر نستخدم القيم الحالية للمتغيرات في تلك اللحظة، وليس قيمها الأصلية."
+      },
+      {
+        "type": "code",
+        "text": "a = 11\nb = 18\nc = 11"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو المخرجات عند تشغيل البرنامج التالي؟"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "استبدال القيم باستخدام متغير مساعد",
+    "text": "نريد استبدال قيم متغيرين بحيث نحصل على المخرجات التالية:",
+    "output": "before: 6 9\nafter: 9 6",
+    "text2": "أكملوا أوامر الاستبدال الثلاثة:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int a = 6;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int b = 9;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    System.out.println(\"before: \" + a + \" \" + b);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int temp = ",
+        "blank": {
+          "options": [
+            "a",
+            "b"
+          ],
+          "answer": "a"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    a = ",
+        "blank": {
+          "options": [
+            "b",
+            "temp"
+          ],
+          "answer": "b"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    b = ",
+        "blank": {
+          "options": [
+            "temp",
+            "a"
+          ],
+          "answer": "temp"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    System.out.println(\"after: \" + a + \" \" + b);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "لكي نستبدل بين قيمتين، يجب أولاً حفظ نسخة من إحداهما في متغير مساعد — وإلا سيتم الكتابة فوقه وفقدانه. لذلك temp يحصل على قيمة a، وهي 6. بعد ذلك يتم وضع قيمة b في a، أي 9. في هذه المرحلة، القيمة 6 موجودة فقط في temp، لذلك يجب أن تكون الأمر الأخير هو b = temp. إذا كتبنا b = a، سيتم وضع القيمة 9 في b التي هي بالفعل موجودة في a، وسيحتوي كلا المتغيرين على 9. ترتيب الأوامر الثلاثة حاسم — حاولوا تغييره وانظروا ما الذي يحدث."
+      },
+      {
+        "type": "code",
+        "text": "int temp = a;\na = b;\nb = temp;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نريد استبدال قيم متغيرين بحيث نحصل على المخرجات التالية:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "هدف مقطع الكود",
+    "text": "ما هو هدف مقطع الكود التالي؟",
+    "code": "public static void main(String [] args) {\n    int a = 7;\n    int b = 3;\n    a = a + b;\n    b = a - b;\n    a = a - b;\n    System.out.println(\"a = \" + a);\n    System.out.println(\"b = \" + b);\n}",
+    "options": [
+      "استبدال بين قيمتي المتغيرين، دون استخدام متغير مساعد إضافي",
+      "حساب مجموع الرقمين والفرق بينهما، وطباعتهما",
+      "تعيين في المتغيرين مجموع القيم الأصلية وطباعته مرتين",
+      "ترتيب المتغيرين بحيث يتم طباعة القيمة الأكبر أولاً"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "نتابع القيم: في الأمر الأول a يحصل على مجموع الاثنين، 10 — والآن a يحتوي فعليًا على القيمتين الأصليتين معًا، ويعمل كذاكرة لهما. في الأمر الثاني b يحصل على 10 ناقص 3، أي 7، وهو القيمة الأصلية لـ a. في الأمر الثالث a يحصل على 10 ناقص 7، أي 3، وهو القيمة الأصلية لـ b. النتيجة هي استبدال كامل بين القيم، دون متغير مساعد. لاحظ أن هذه الطريقة تناسب الأرقام فقط، وفي الأرقام الكبيرة جدًا قد يتجاوز المجموع نطاق النوع؛ لذلك في الواقع الطريقة مع متغير مساعد مفضلة، أيضًا لأنها أكثر وضوحًا وقراءة."
+      },
+      {
+        "type": "code",
+        "text": "a = 7, b = 3\na = 7 + 3 = 10\nb = 10 - 3 = 7\na = 10 - 7 = 3"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو هدف مقطع الكود التالي؟"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "تجميع داخل متغير",
+    "text": "ما هو المخرجات عند تشغيل البرنامج التالي؟",
+    "code": "public static void main(String [] args) {\n    int total = 0;\n    int price = 12;\n    total = total + price;\n    price = 20;\n    total = total + price;\n    System.out.println(\"total = \" + total);\n    System.out.println(\"price = \" + price);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "total = 32\nprice = 20"
+      },
+      {
+        "type": "code",
+        "text": "total = 40\nprice = 20"
+      },
+      {
+        "type": "code",
+        "text": "total = 24\nprice = 20"
+      },
+      {
+        "type": "code",
+        "text": "total = 32\nprice = 12"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "المتغير total يُستخدم للتجميع: في كل مرة يتم وضع مجموع قيمته الحالية مع قيمة إضافية. في البداية يحتوي على 0، وبعد الأمر الأول يحتوي على 12. بعد ذلك تتغير قيمة price إلى 20، لكن هذا التغيير لا يؤثر بأثر رجعي على total — القيمة 12 قد تم تجميعها بالفعل داخله ولم تعد مرتبطة بـprice. لذلك الأمر الأخير يضيف 20 ويصبح المجموع 32. المتغير price يحتفظ بقيمته الأخيرة، 20. هذا هو المبدأ الذي يسمح بتجميع المجموعات على طول البرنامج، وسنستخدمه كثيرًا لاحقًا."
+      },
+      {
+        "type": "code",
+        "text": "total = 32\nprice = 20"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو المخرجات عند تشغيل البرنامج التالي؟"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "بناء مخرجات متعددة الأسطر",
+    "text": "نريد الحصول على المخرجات التالية:",
+    "output": "x = 5\ny = 8\nx = 5 y = 8",
+    "text2": "أكملوا آخر أمرين للطباعة بحيث يتم إنشاء المخرجات المطلوبة بالضبط:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int x = 5;",
+      "    int y = 8;",
+      "    System.out.println(\"x = \" + x);",
+      "    System.out.println(\"y = \" + y);",
+      "    System.out.[[1]](\"x = \" + x + [[2]]);",
+      "    System.out.[[3]](\"y = \" + y);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "print",
+          "println"
+        ],
+        "answer": "print"
+      },
+      {
+        "id": 2,
+        "options": [
+          "\" \"",
+          "\"\""
+        ],
+        "answer": "\" \""
+      },
+      {
+        "id": 3,
+        "options": [
+          "println",
+          "print"
+        ],
+        "answer": "println"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "السطر الثالث في المخرجات يحتوي على البيانات معًا، لذلك يجب أن تكون الطباعة الأولى بين الاثنين هي print — أمر لا ينزل سطرًا ويترك الطباعة التالية في نفس السطر. بين الجزئين يظهر مسافة، ولأن أي أمر لا يضيف مسافة من تلقاء نفسه، يجب كتابتها صراحة كنص. النص الفارغ لا يضيف شيئًا للمخرجات، والنتيجة كانت أن الجزئين ملتصقين ببعضهما. الطباعة الأخيرة هي println لإنهاء السطر بشكل صحيح."
+      },
+      {
+        "type": "code",
+        "text": "x = 5 y = 8      // with \" \"\nx = 5y = 8       // with \"\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نريد الحصول على المخرجات التالية:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "تحديد هدف البرنامج",
+    "text": "ما هو هدف البرنامج التالي؟",
+    "code": "public static void main(String [] args) {\n    int a = 26;\n    int b = 4;\n    int c = a - b;\n    a = a + b;\n    System.out.println(a + \" \" + c);\n}",
+    "options": [
+      "طباعة مجموع الرقمين الأصليين والفرق بينهما",
+      "طباعة الرقمين الأصليين، كل منهما بعد زيادته بمقدار 4",
+      "طباعة مجموع الرقمين، والفرق بين المجموع الجديد والرقم الثاني",
+      "طباعة مجموع الرقمين مرتين، بطريقتي حساب مختلفتين"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ترتيب الأوامر هو المفتاح هنا. المتغير c يُحسب قبل أن يتغير قيمة a، لذلك يحصل على الفرق بين القيم الأصلية: 26 ناقص 4، أي 22. فقط بعد ذلك يتم تعيين المجموع 30 في a. إذا تم تبديل الأوامر، كان c سيحصل على 30 ناقص 4، أي 26 — وهذه هي بالضبط الخيار الثالث الخاطئ. المخرجات الناتجة هي 30 22، أي المجموع والفرق بين القيمتين المحددتين في بداية البرنامج. لاحظ أن الأسماء a، b و-c لا تشير إلى أي دور — لذلك من الضروري متابعة التدفق. في برنامج حقيقي، كان من الأفضل تسمية المتغيرات مجموع وفرق."
+      },
+      {
+        "type": "code",
+        "text": "a = 26, b = 4\nc = 26 - 4 = 22\na = 26 + 4 = 30"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو هدف البرنامج التالي؟"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "تصميم برنامج — محيط شبه منحرف متساوي الساقين",
+    "text": "نريد كتابة برنامج يحسب محيط شبه منحرف متساوي الساقين. أطوال القواعد هي 8.0 و-20.0، وطول كل من الساقين هو 10.0. المخرجات المطلوبة هي:",
+    "output": "perimeter = 48.0",
+    "text2": "أكمل البرنامج بحيث ينتج المخرجات المطلوبة:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    ",
+        "blank": {
+          "options": [
+            "double",
+            "int"
+          ],
+          "answer": "double"
+        },
+        "after": " base1 = 8.0, base2 = 20.0, side = 10.0;"
+      },
+      {
+        "before": "    double perimeter = base1 + base2 + ",
+        "blank": {
+          "options": [
+            "side + side",
+            "side"
+          ],
+          "answer": "side + side"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    System.out.println(\"perimeter = \" + ",
+        "blank": {
+          "options": [
+            "perimeter",
+            "\"perimeter\""
+          ],
+          "answer": "perimeter"
+        },
+        "after": ");"
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "أطوال الأضلاع هي أرقام حقيقية، لذلك يجب أن يكون النوع double — تعريف من نوع int لم يكن ليتم ترجمته، لأنه لا يمكن حفظ القيمة 8.0 في متغير عدد صحيح. لاحظ أنه في أمر تعريف واحد يمكن تعريف الثلاثة متغيرات معًا، لأنهم جميعًا من نفس النوع. في شبه منحرف متساوي الساقين الساقين متساويتان في الطول، لذلك المحيط هو مجموع القاعدتين بالإضافة إلى الساق مرتين: 8.0 بالإضافة إلى 20.0 بالإضافة إلى 10.0 بالإضافة إلى 10.0، أي 48.0. المتغير الذي تم تعريفه لحفظ نتيجة يحصل على قيمته من تعبير الحساب، وفي الطباعة يتم ذكر اسمه بدون علامات اقتباس."
+      },
+      {
+        "type": "code",
+        "text": "double perimeter = base1 + base2 + side + side;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نريد كتابة برنامج يحسب محيط شبه منحرف متساوي الساقين. أطوال القواعد هي 8.0 و-20.0، وطول كل من الساقين هو 10.0. المخرجات المطلوبة هي:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "تحديد خطأ في البرنامج",
+    "text": "البرنامج التالي من المفترض أن يطبع مجموع رقمين، لكنه لا يتم ترجمته. ما الذي يجب تصحيحه؟",
+    "code": "public static void main(String [] args) {\n    int a = 5;\n    int b = 7;\n    int sum;\n    System.out.println(\"sum = \" + sum);\n    sum = a + b;\n}",
+    "options": [
+      "يجب نقل الأمر ‏sum = a + b; إلى السطر الذي يسبق أمر الطباعة",
+      "يجب تغيير نوع المتغير ‏sum إلى ‏double، لأن نتيجة الجمع لا يمكن حفظها في متغير عدد صحيح",
+      "يجب إزالة علامات الاقتباس حول النص في أمر الطباعة، لكي يتم طباعة قيمة المتغير",
+      "يجب استبدال علامة ‏+ في أمر الطباعة بفاصلة، لأنه لا يمكن إلحاق نص برقم"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "أثناء تنفيذ أمر الطباعة، المتغير sum تم تعريفه ولكنه لم يتم تعيين قيمة له — لذلك المترجم يبلغ عن خطأ والبرنامج لا يعمل على الإطلاق. الأمر الذي يعين له المجموع موجود بعد الطباعة، ولذلك لا يفيد. التصحيح هو في ترتيب الأوامر فقط: أولاً نحسب ونعين، ثم نطبع. يمكن أيضاً دمج الأمرين في تعريف واحد مع قيمة ابتدائية. الخيارات الأخرى غير صحيحة: مجموع عددين صحيحين يتم حفظه بشكل جيد في متغير int، علامات الاقتباس حول النص ضرورية، وعلامة + هي الطريقة الصحيحة لإلحاق نص بقيمة متغير."
+      },
+      {
+        "type": "code",
+        "text": "int sum = a + b;\nSystem.out.println(\"sum = \" + sum);"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "البرنامج التالي من المفترض أن يطبع مجموع رقمين، لكنه لا يتم ترجمته. ما الذي يجب تصحيحه؟"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על החומר',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`,
+        check: 'בדוק תשובות',
+        mustAnswer: 'יש לבחור תשובה בכל התיבות'
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة المادة',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`,
+        check: 'تحقق من الإجابات',
+        mustAnswer: 'يجب اختيار إجابة في كل الخانات'
+      }
+    };
+
+    /* ── עזרים ── */
+
+    function escHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function shuffleArr(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /* ── הכנת שאלות: סדר קבוע, ערבוב אפשרויות בלבד ── */
+
+    function prepMultichoice(q) {
+      const idxs = shuffleArr(q.options.map((_, i) => i));
+      return {
+        ...q,
+        options: idxs.map(i => q.options[i]),
+        answer:  idxs.indexOf(q.answer)
+      };
+    }
+
+    function prepGapselect(q) {
+      return {
+        ...q,
+        gaps: q.gaps.map(g => ({ ...g, options: shuffleArr(g.options) }))
+      };
+    }
+
+    function prepCloze(q) {
+      return {
+        ...q,
+        codeLines: q.codeLines.map(line =>
+          line.blank
+            ? { ...line, blank: { ...line.blank, options: shuffleArr(line.blank.options) } }
+            : line
+        )
+      };
+    }
+
+    function prepareQuiz(questions) {
+      return questions.map(q => {
+        if (q.type === 'gapselect') return prepGapselect(q);
+        if (q.type === 'cloze')     return prepCloze(q);
+        // ברירת מחדל: multichoice (גם שאלות ישנות ללא שדה type)
+        if (q.options) return prepMultichoice(q);
+        return q;
+      });
+    }
+
+    /* ── מצב ── */
+
+    const quiz  = { he: [], ar: [] };
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    function startQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+    function restartQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      render(lang);
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    /* ── בניית טקסטים ── */
+
+    function buildText(text) {
+      if (!text) return '';
+      return String(text).split('\n').map(line =>
+        `<span class="q-text-line">${escHtml(line)}</span>`
+      ).join('');
+    }
+
+    function buildExplanation(lines) {
+      return (lines || []).map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${escHtml(l.text)}</span>`
+          : `<span class="exp-line">${escHtml(l.text)}</span>`
+      ).join('');
+    }
+
+    function buildOption(o) {
+      // אפשרות מסוג קוד — תומכת בירידות שורה ורווחים
+      if (typeof o === 'object' && o !== null && o.type === 'code') {
+        return `<span class="opt-code">${escHtml(o.text).replace(/\n/g, '<br>')}</span>`;
+      }
+      const text = typeof o === 'string' ? o : String(o);
+      const clean = text.replace(/\u200f/g, '').trim();
+      // עברית או ערבית — RTL
+      const isRtl = /^[\u0590-\u05FF\u0600-\u06FF\uFB1D-\uFB4F]/.test(clean);
+      if (isRtl) {
+        return `<span class="opt-text-he">${escHtml(text)}</span>`;
+      }
+      // קוד / אנגלית — LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${escHtml(text)}</span>`;
+    }
+
+    /* ── רינדור ראשי ── */
+
+    function render(lang) {
+      const questions = quiz[lang];
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q   = questions[s.current];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      let bodyHTML = '';
+      if      (q.type === 'gapselect') bodyHTML = renderGapselect(q, lang);
+      else if (q.type === 'cloze')     bodyHTML = renderCloze(q, lang);
+      else                             bodyHTML = renderMultichoice(q, lang);
+
+      const outputBlock = q.output
+        ? `<div class="output-block">${escHtml(q.output)}</div>`
+        : '';
+      const text2Block = q.text2
+        ? `<div class="q-text">${buildText(q.text2)}</div>`
+        : '';
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${escHtml(q.topic || '')}</span>
+          </div>
+          <div class="q-text">${buildText(q.text)}</div>
+          ${outputBlock}
+          ${text2Block}
+          ${bodyHTML}
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function showExplanation(lang, correct) {
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (correct) state[lang].score++;
+    }
+
+    /* ── multichoice ── */
+
+    function renderMultichoice(q, lang) {
+      const letters = lang === 'he' ? ['א', 'ב', 'ג', 'ד', 'ה'] : ['أ', 'ب', 'ج', 'د', 'هـ'];
+      const codeBlock = q.code
+        ? `<div class="code-block">${escHtml(q.code)}</div>`
+        : '';
+      const opts = q.options.map((o, i) =>
+        `<button class="opt" onclick="chooseOpt('${lang}',${i})">
+           <span class="opt-letter">${letters[i]}.</span>${buildOption(o)}
+         </button>`
+      ).join('');
+      return `${codeBlock}<div class="options" id="opts-${lang}">${opts}</div>`;
+    }
+
+    function chooseOpt(lang, idx) {
+      const q    = quiz[lang][state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      const correct = (idx === q.answer);
+      opts[idx].classList.add(correct ? 'correct' : 'wrong');
+      if (!correct) opts[q.answer].classList.add('correct');
+      showExplanation(lang, correct);
+    }
+
+    /* ── gapselect ── */
+
+    function renderGapselect(q, lang) {
+      const gapMap = {};
+      q.gaps.forEach(g => { gapMap[g.id] = g; });
+
+      const lines = q.codeLines.map(line => {
+        const replaced = escHtml(line).replace(/\[\[(\d+)\]\]/g, (_, id) => {
+          const gap = gapMap[parseInt(id)];
+          const opts = ['<option value="" selected disabled>?</option>']
+            .concat(gap.options.map(o => `<option value="${escHtml(o)}">${escHtml(o)}</option>`))
+            .join('');
+          return `<select class="gap-select" id="gap-${lang}-${id}">${opts}</select>`;
+        });
+        return `<span class="code-line">${replaced}</span>`;
+      }).join('');
+
+      return `
+        <div class="gap-code-block">${lines}</div>
+        <button class="gap-check-btn" id="gap-check-${lang}" onclick="checkGaps('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkGaps(lang) {
+      const q = quiz[lang][state[lang].current];
+      const unanswered = q.gaps.some(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      q.gaps.forEach(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === gap.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`gap-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+    /* ── cloze ── */
+
+    function renderCloze(q, lang) {
+      const lines = q.codeLines.map((line, li) => {
+        if (!line.blank) {
+          return `<span class="cloze-line">${escHtml(line.before)}${escHtml(line.after)}</span>`;
+        }
+        const id = `cloze-${lang}-${li}`;
+        const opts = ['<option value="" selected disabled>?</option>']
+          .concat(line.blank.options.map(o =>
+            `<option value="${escHtml(o)}">${escHtml(o)}</option>`
+          )).join('');
+        return `<span class="cloze-line">${escHtml(line.before)}<select class="cloze-select" id="${id}">${opts}</select>${escHtml(line.after)}</span>`;
+      }).join('');
+
+      return `
+        <div class="cloze-block">${lines}</div>
+        <button class="gap-check-btn" id="cloze-check-${lang}" onclick="checkCloze('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkCloze(lang) {
+      const q = quiz[lang][state[lang].current];
+      const blanks = q.codeLines
+        .map((line, li) => ({ line, li }))
+        .filter(x => x.line.blank);
+
+      const unanswered = blanks.some(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      blanks.forEach(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === x.line.blank.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`cloze-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+  </script>
+</body>
+
+</html>

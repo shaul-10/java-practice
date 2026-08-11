@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║      תבנית v2 — שאלון Java עם 3 סוגי שאלות                     ║
+  ║      multichoice / gapselect / cloze                             ║
+  ║                                                                  ║
+  ║  נתמך ע"י quiz_builder_tool.html — פלייסהולדרים:                ║
+  ║  02, #D4900A/LIGHT/DARK/BORDER,               ║
+  ║  Java - If, Else If, Switch 2.7, , questionsHe, questionsAr          ║
+  ║                                                                  ║
+  ║  מבנה שאלה multichoice:                                          ║
+  ║  { type:"multichoice", topic, text, code|null,                   ║
+  ║    options:[ "טקסט" | {type:"code",text:"..."} ],               ║
+  ║    answer:0, explanation:[{type:"he"|"code",text}] }             ║
+  ║                                                                  ║
+  ║  מבנה שאלה gapselect:                                            ║
+  ║  { type:"gapselect", topic, text, output?, text2?,               ║
+  ║    codeLines:[ "שורת קוד עם [[1]]" ],                           ║
+  ║    gaps:[{id:1,options:[...],answer:"..."}], explanation }       ║
+  ║                                                                  ║
+  ║  מבנה שאלה cloze:                                                ║
+  ║  { type:"cloze", topic, text, output?, text2?,                   ║
+  ║    codeLines:[ {before, blank:{options,answer}|null, after} ],   ║
+  ║    explanation }                                                 ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java - If, Else If, Switch 2.7 — רמה 02</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    :root {
+      --color-main:   #D4900A;
+      --color-light:  #FFF3CD;
+      --color-dark:   #856404;
+      --color-border: #FAC775;
+    }
+
+    /* ── מסך פתיחה ── */
+    #screen-home {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 80vh; text-align: center;
+    }
+    .home-icon { font-size: 48px; margin-bottom: 1.2rem; }
+    .home-title-he { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; direction: rtl; }
+    .home-title-ar { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 0.5rem; direction: rtl; }
+    .home-sub { font-size: 13px; color: #888; margin-bottom: 1rem; line-height: 1.8; }
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+    .home-level-badge {
+      display: inline-block; font-size: 12px; font-weight: 600;
+      padding: 3px 14px; border-radius: 20px;
+      background: var(--color-light); color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem; margin-bottom: 2.5rem;
+    }
+    .lang-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .lang-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 22px 36px; border: 2px solid #ddd; border-radius: 14px;
+      background: #fff; cursor: pointer; font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s; min-width: 160px;
+    }
+    .lang-btn:hover { border-color: var(--color-main); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    .lang-btn .lang-name { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .lang-btn .lang-sub  { font-size: 11px; color: #aaa; }
+
+    /* ── מסכי שאלון ── */
+    #screen-he, #screen-ar { display: none; }
+    .quiz-header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(135deg, var(--color-dark), var(--color-main)); color: #fff;
+      padding: 18px 24px; border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .quiz-title { font-size: 18px; font-weight: 700; color: #fff; direction: rtl; }
+    .quiz-title .level-tag {
+      font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px;
+      background: rgba(255,255,255,0.2); color: #fff;
+      margin-right: 8px; vertical-align: middle;
+    }
+    .back-btn {
+      font-size: 12px; color: #fff; background: none;
+      border: 1px solid rgba(255,255,255,0.4); border-radius: 6px;
+      padding: 4px 12px; cursor: pointer; font-family: inherit; white-space: nowrap;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.15); }
+
+    .progress-bar-bg { height: 4px; background: #ddd; border-radius: 2px; margin-bottom: 1.5rem; }
+    .progress-bar-fill { height: 4px; background: var(--color-main); border-radius: 2px; transition: width 0.4s; }
+
+    .q-card {
+      background: #fff; border: 1px solid #E2E4F3;
+      border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    .q-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .q-num-badge { font-size: 12px; color: #888; }
+    .q-topic { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--color-main); color: #fff; font-weight: 500; }
+
+    .q-text { font-size: 15px; margin-bottom: 12px; line-height: 1.8; }
+    .q-text-line { display: block; direction: rtl; text-align: right; }
+
+    .code-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; white-space: pre; overflow-x: auto;
+      line-height: 1.7; direction: ltr; text-align: left;
+    }
+
+    /* בלוק פלט רצוי — LTR תמיד */
+    .output-block {
+      background: #fff; border: 1px dashed var(--color-border); border-radius: 8px;
+      padding: 10px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 12px; white-space: pre; overflow-x: auto;
+      line-height: 1.7; direction: ltr; text-align: left;
+      color: var(--color-dark);
+    }
+
+    /* ── אפשרויות multichoice ── */
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .opt {
+      display: flex; flex-direction: row; align-items: center; gap: 10px;
+      padding: 10px 14px; border: 1.5px solid #E2E4F3; border-radius: 9px;
+      cursor: pointer; font-size: 14px; background: transparent;
+      width: 100%; direction: rtl; text-align: right;
+      font-family: 'Courier New', monospace; color: #1a1a1a; transition: background 0.15s;
+    }
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+    .opt-letter { font-size: 12px; font-weight: 700; min-width: 22px; color: var(--color-main); font-family: 'Segoe UI', Arial, sans-serif; flex-shrink: 0; }
+    .opt-text-he {
+      direction: rtl; text-align: right; flex: 1;
+      unicode-bidi: embed; font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .opt-code {
+      background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px;
+      font-family: 'Courier New', monospace; font-size: 13px;
+      white-space: pre-wrap; word-break: break-word;
+      direction: ltr; text-align: left; flex: 1;
+      display: inline-block; text-align: left; direction: ltr;
+    }
+
+    /* ── gapselect ── */
+    .gap-code-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; direction: ltr; text-align: left;
+      line-height: 2.2; overflow-x: auto;
+    }
+    .gap-code-block .code-line { display: block; white-space: pre; }
+    .gap-select, .cloze-select {
+      font-family: 'Courier New', monospace; font-size: 13px;
+      padding: 1px 4px; border: 1px solid var(--color-border);
+      border-radius: 4px; background: var(--color-light);
+      color: var(--color-dark); cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .gap-select:focus, .cloze-select:focus { outline: none; border-color: var(--color-main); }
+    .gap-select.correct-gap, .cloze-select.correct-gap { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .gap-select.wrong-gap,   .cloze-select.wrong-gap   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .gap-select:disabled, .cloze-select:disabled { cursor: not-allowed; }
+
+    .gap-check-btn {
+      margin-top: 0.75rem; padding: 8px 20px;
+      border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 13px;
+      color: var(--color-dark); font-family: inherit;
+    }
+    .gap-check-btn:hover { background: var(--color-light); }
+    .gap-check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── cloze ── */
+    .cloze-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; direction: ltr; text-align: left;
+      line-height: 2.4; overflow-x: auto;
+    }
+    .cloze-line { display: block; white-space: pre; }
+
+    /* ── הסבר ── */
+    .explanation {
+      display: none; margin-top: 12px; padding: 10px 14px;
+      font-size: 13px; color: #555; line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8; direction: rtl; text-align: right;
+    }
+    .explanation.show { display: block; }
+    .exp-line { display: block; direction: rtl; text-align: right; }
+    .exp-code {
+      display: block; direction: ltr; text-align: left;
+      font-family: 'Courier New', monospace; font-size: 12px;
+      background: #fff; padding: 3px 8px; border-radius: 4px; margin: 2px 0;
+      white-space: pre-wrap;
+    }
+
+    .next-btn {
+      display: none; margin-top: 1rem; padding: 10px 22px;
+      border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px;
+      color: var(--color-dark); font-family: inherit;
+    }
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box { text-align: center; padding: 3rem 1rem; }
+    .score-num { font-size: 56px; font-weight: 500; color: #1a1a1a; }
+    .score-label { font-size: 16px; color: #666; margin-top: 8px; }
+    .score-actions { display: flex; gap: 12px; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+    .restart-btn {
+      padding: 10px 28px; border: 1px solid #ccc; border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px; font-family: inherit; color: #1a1a1a;
+    }
+    .restart-btn:hover { background: #f5f5f5; }
+    .home-return-btn {
+      padding: 10px 28px; border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px; font-family: inherit; color: var(--color-dark);
+    }
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">Java - If, Else If, Switch 2.7</div>
+      <div class="home-title-ar"></div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <div class="home-level-badge">רמה 02 &nbsp;|&nbsp; المستوى 02</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">רמה 02</span>
+          Java - If, Else If, Switch 2.7
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">المستوى 02</span>
+          
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "type": "multichoice",
+    "topic": "כמה ערכים מייצרים",
+    "text": "המשתמש מקליד מספר שלם בין 1 ל-6 ולוחץ אנטר. עבור כמה מהערכים האלה יתקבל הפלט הבא?",
+    "output": "A\nB",
+    "text2": "התוכנית:",
+    "code": "public static void main(String [] args) {\n    Scanner scan = new Scanner(System.in);\n    int n = scan.nextInt();\n    switch (n) {\n        case 1:\n        case 2:\n            System.out.println(\"A\");\n        case 3:\n            System.out.println(\"B\");\n            break;\n        case 4:\n            System.out.println(\"C\");\n            break;\n        default:\n            System.out.println(\"D\");\n    }\n}",
+    "options": [
+      "2",
+      "1",
+      "3",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "שתי החוליות הראשונות אינן עוצרות ולכן ממשיכות אל ההדפסה שאחריהן. הכניסה הישירה לחוליה השלישית מדלגת על הראשונה."
+      },
+      {
+        "type": "code",
+        "text": "n = 1  ->  A B\nn = 2  ->  A B\nn = 3  ->  B\nn = 4  ->  C\nn = 5  ->  D\nn = 6  ->  D"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "המשתמש מקליד מספר שלם בין 1 ל-6 ולוחץ אנטר. עבור כמה מהערכים האלה יתקבל הפלט הבא?"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "הגדלה בתוך הבורר",
+    "text": "מה יהיה פלט התוכנית הבאה?",
+    "code": "public static void main(String [] args) {\n    int n = 2;\n    int total = 0;\n    switch (n++) {\n        case 2:\n            total = total + n;\n        case 3:\n            total = total + n;\n            break;\n        case 4:\n            total = total + 10;\n    }\n    System.out.println(\"n = \" + n);\n    System.out.println(\"total = \" + total);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "n = 3\ntotal = 6"
+      },
+      {
+        "type": "code",
+        "text": "n = 3\ntotal = 4"
+      },
+      {
+        "type": "code",
+        "text": "n = 2\ntotal = 6"
+      },
+      {
+        "type": "code",
+        "text": "n = 3\ntotal = 3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "הבורר מחזיר את הערך שלפני ההגדלה, אך ההגדלה כבר בוצעה. שתי הצבירות שאחריה משתמשות בערך החדש."
+      },
+      {
+        "type": "code",
+        "text": "switch (n++)    // selects by 2, n becomes 3\ncase 2:  total = 0 + 3;    // 3\ncase 3:  total = 3 + 3;    // 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה פלט התוכנית הבאה?"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "אילו ערכים התחלתיים",
+    "text": "ברצוננו לקבל את הפלט הבא:",
+    "output": "mid\nhigh\na = 3",
+    "text2": "בחרו את הערכים ההתחלתיים כך שייווצר הפלט המבוקש:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int a = [[1]];",
+      "    int b = [[2]];",
+      "    switch (a + b) {",
+      "        case 5:",
+      "            System.out.println(\"low\");",
+      "            break;",
+      "        case 8:",
+      "            System.out.println(\"mid\");",
+      "        case 9:",
+      "            System.out.println(\"high\");",
+      "            break;",
+      "        default:",
+      "            System.out.println(\"other\");",
+      "    }",
+      "    System.out.println(\"a = \" + a);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "3",
+          "5",
+          "8",
+          "2"
+        ],
+        "answer": "3"
+      },
+      {
+        "id": 2,
+        "options": [
+          "5",
+          "3",
+          "6",
+          "4"
+        ],
+        "answer": "5"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השורה האחרונה קובעת את הערך הראשון, וסכום השניים חייב להתאים לחוליה שאין אחריה עצירה."
+      },
+      {
+        "type": "code",
+        "text": "int a = 3;\nint b = 5;\na + b     // 8  ->  mid, then high"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו לקבל את הפלט הבא:"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "אילו ערך וסף",
+    "text": "ברצוננו לקבל את הפלט הבא:",
+    "output": "grade = B\ntens = 8",
+    "text2": "בחרו את הערך ההתחלתי ואת הסף כך שייווצר הפלט המבוקש:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int score = [[1]];",
+      "    if (score >= 90) {",
+      "        System.out.println(\"grade = A\");",
+      "    } else if (score >= [[2]]) {",
+      "        System.out.println(\"grade = B\");",
+      "    } else if (score >= 70) {",
+      "        System.out.println(\"grade = C\");",
+      "    } else {",
+      "        System.out.println(\"grade = D\");",
+      "    }",
+      "    System.out.println(\"tens = \" + score / 10);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "85",
+          "95",
+          "75",
+          "65"
+        ],
+        "answer": "85"
+      },
+      {
+        "id": 2,
+        "options": [
+          "80",
+          "90",
+          "86",
+          "95"
+        ],
+        "answer": "80"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "השורה השנייה מצמצמת את הערך לעשרות, והסף חייב להיות נמוך ממנו — אחרת הבדיקה נכשלת והשרשרת ממשיכה הלאה."
+      },
+      {
+        "type": "code",
+        "text": "int score = 85;\nscore >= 90    // false\nscore >= 80    // true   ->  grade = B\nscore / 10     // 8"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו לקבל את הפלט הבא:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "ברירת מחדל באמצע",
+    "text": "מה יהיה פלט התוכנית הבאה?",
+    "code": "public static void main(String [] args) {\n    int n = 9;\n    switch (n) {\n        case 1:\n            System.out.println(\"one\");\n            break;\n        default:\n            System.out.println(\"other\");\n        case 2:\n            System.out.println(\"two\");\n            break;\n        case 3:\n            System.out.println(\"three\");\n            break;\n    }\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "other\ntwo"
+      },
+      {
+        "type": "code",
+        "text": "other"
+      },
+      {
+        "type": "code",
+        "text": "other\ntwo\nthree"
+      },
+      "שגיאת קומפילציה"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ברירת המחדל אינה חייבת להיכתב אחרונה. גם ממנה, בהיעדר עצירה, הביצוע ממשיך אל החוליה שאחריה."
+      },
+      {
+        "type": "code",
+        "text": "int n = 9;\ndefault:  System.out.println(\"other\");\ncase 2:   System.out.println(\"two\");\nbreak;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה פלט התוכנית הבאה?"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "שאלה מסכמת",
+    "text": "לפניכם שלושה משפטים על מבנה הבחירה לפי ערכים (‏switch):\nמשפט 1 — כשאין פקודת עצירה (‏break) בחוליה (‏case), הביצוע ממשיך אל פקודות החוליה הבאה גם אם ערכה שונה.\nמשפט 2 — ברירת המחדל (‏default) חייבת להיכתב אחרונה, אחרי כל החוליות.\nמשפט 3 — הביטוי שבסוגריים מחושב פעם אחת בלבד, בכניסה למבנה.\nאילו משפטים נכונים?",
+    "code": null,
+    "options": [
+      "משפטים 1 ו-3 בלבד",
+      "משפטים 1 ו-2 בלבד",
+      "משפטים 2 ו-3 בלבד",
+      "כל שלושת המשפטים"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "מקומה של ברירת המחדל חופשי, והיא נבחרת רק כשאין התאמה. שני המשפטים האחרים מתארים נכונה את אופן הביצוע."
+      },
+      {
+        "type": "code",
+        "text": "switch (n) {\n    default:\n        System.out.println(\"other\");\n    case 2:\n        System.out.println(\"two\");\n}    // legal"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "לפניכם שלושה משפטים על מבנה הבחירה לפי ערכים (‏switch):\nמשפט 1 — כשאין פקודת עצירה (‏break) בחוליה (‏case), הביצוע ממשיך אל פקודות החוליה הבאה גם אם ערכה שונה.\nמשפט 2 — ברירת המחדל (‏default) חייבת להיכתב אחרונה, אחרי כל החוליות.\nמשפט 3 — הביטוי שבסוגריים מחושב פעם אחת בלבד, בכניסה למבנה.\nאילו משפטים נכונים?"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "היכן לעצור",
+    "text": "ברצוננו לקבל את הפלט הבא:",
+    "output": "A\nB",
+    "text2": "השלימו את התוכנית כך שתיצור את הפלט המבוקש:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int n = [[1]];",
+      "    switch (n) {",
+      "        case 1:",
+      "            System.out.println(\"A\");",
+      "            [[2]]",
+      "        case 2:",
+      "            System.out.println(\"B\");",
+      "            [[3]]",
+      "        case 3:",
+      "            System.out.println(\"C\");",
+      "            break;",
+      "        default:",
+      "            System.out.println(\"D\");",
+      "    }",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "answer": "1"
+      },
+      {
+        "id": 2,
+        "options": [
+          "// no break",
+          "break;"
+        ],
+        "answer": "// no break"
+      },
+      {
+        "id": 3,
+        "options": [
+          "break;",
+          "// no break"
+        ],
+        "answer": "break;"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "כדי לקבל שתי הדפסות רצופות, החוליה הראשונה נשארת בלי עצירה — והעצירה נדרשת מיד אחרי ההדפסה השנייה."
+      },
+      {
+        "type": "code",
+        "text": "int n = 1;\ncase 1:  A     // no break, continues\ncase 2:  B     // break, stops here\ncase 3:  C     // never printed"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו לקבל את הפלט הבא:"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "השלמת בורר וחוליה",
+    "text": "נתונה תוכנית המדפיסה את הפלט הבא:",
+    "output": "medium\ndone",
+    "text2": "השלימו את התוכנית:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int n = 14;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    switch (n ",
+        "blank": {
+          "options": [
+            "%",
+            "/",
+            "+",
+            "-"
+          ],
+          "answer": "%"
+        },
+        "after": " 5) {"
+      },
+      {
+        "before": "        case 2:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"low\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case ",
+        "blank": {
+          "options": [
+            "4",
+            "2",
+            "5",
+            "6"
+          ],
+          "answer": "4"
+        },
+        "after": ":"
+      },
+      {
+        "before": "            System.out.println(\"medium\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        default:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"high\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    System.out.println(\"done\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "שארית החלוקה מצמצמת כל ערך לתחום קטן וידוע, ולכן היא מתאימה כבורר. רק ערך אחד תואם את הפלט."
+      },
+      {
+        "type": "code",
+        "text": "int n = 14;\nn % 5     // 4   ->  medium\nn / 5     // 2   ->  low"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "נתונה תוכנית המדפיסה את הפלט הבא:"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "שרשרת ובורר יחד",
+    "text": "ברצוננו לקבל את הפלט הבא:",
+    "output": "size = big\ntype = odd",
+    "text2": "השלימו את התוכנית כך שתיצור את הפלט המבוקש:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int n = 25;",
+      "    if ([[1]]) {",
+      "        System.out.println(\"size = huge\");",
+      "    } else if ([[2]]) {",
+      "        System.out.println(\"size = big\");",
+      "    } else {",
+      "        System.out.println(\"size = small\");",
+      "    }",
+      "    switch ([[3]]) {",
+      "        case 0:",
+      "            System.out.println(\"type = even\");",
+      "            break;",
+      "        case 1:",
+      "            System.out.println(\"type = odd\");",
+      "            break;",
+      "        default:",
+      "            System.out.println(\"type = other\");",
+      "    }",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "n > 30",
+          "n > 20",
+          "n >= 25",
+          "n != 30"
+        ],
+        "answer": "n > 30"
+      },
+      {
+        "id": 2,
+        "options": [
+          "n > 20",
+          "n > 30",
+          "n < 20",
+          "n == 20"
+        ],
+        "answer": "n > 20"
+      },
+      {
+        "id": 3,
+        "options": [
+          "n % 2",
+          "n / 2",
+          "n - 2",
+          "n + 2"
+        ],
+        "answer": "n % 2"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "התנאי הראשון חייב להיכשל כדי שהשני ייבדק. הבורר חייב להצטמצם לערך שקיים בחוליות, ולא ליפול לברירת המחדל."
+      },
+      {
+        "type": "code",
+        "text": "int n = 25;\nn > 30    // false  ->  next condition\nn > 20    // true   ->  size = big\nn % 2     // 1      ->  type = odd"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ברצוננו לקבל את הפלט הבא:"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "מעבר בין קבוצות",
+    "text": "נתונה תוכנית המדפיסה את הפלט הבא:",
+    "output": "mid\nhigh\nend",
+    "text2": "השלימו את התוכנית:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int n = ",
+        "blank": {
+          "options": [
+            "4",
+            "1",
+            "6",
+            "9"
+          ],
+          "answer": "4"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    switch (n) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 1:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 2:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"low\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 3:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case ",
+        "blank": {
+          "options": [
+            "4",
+            "5",
+            "6",
+            "7"
+          ],
+          "answer": "4"
+        },
+        "after": ":"
+      },
+      {
+        "before": "            System.out.println(\"mid\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            ",
+        "blank": {
+          "options": [
+            "// no break",
+            "break;"
+          ],
+          "answer": "// no break"
+        },
+        "after": ""
+      },
+      {
+        "before": "        case 5:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 6:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"high\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        default:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"other\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    System.out.println(\"end\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "שתי ההדפסות הרצופות מחייבות כניסה לקבוצה האמצעית והמשך אל הקבוצה שאחריה. ערך שכבר מופיע בחוליה אחרת יגרום לשגיאת קומפילציה."
+      },
+      {
+        "type": "code",
+        "text": "int n = 4;\ncase 4:  mid     // no break, continues\ncase 6:  high    // break, stops here"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "נתונה תוכנית המדפיסה את הפלט הבא:"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "type": "multichoice",
+    "topic": "كم عدد القيم التي تنتج",
+    "text": "المستخدم يدخل عدد صحيح بين 1 و-6 ويضغط إنتر. لكم من هذه القيم سيتم الحصول على المخرجات التالية؟",
+    "output": "A\nB",
+    "text2": "البرنامج:",
+    "code": "public static void main(String [] args) {\n    Scanner scan = new Scanner(System.in);\n    int n = scan.nextInt();\n    switch (n) {\n        case 1:\n        case 2:\n            System.out.println(\"A\");\n        case 3:\n            System.out.println(\"B\");\n            break;\n        case 4:\n            System.out.println(\"C\");\n            break;\n        default:\n            System.out.println(\"D\");\n    }\n}",
+    "options": [
+      "2",
+      "1",
+      "3",
+      "4"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "شريحتان الأوليان لا تتوقفان وبالتالي تستمران إلى الطباعة التي تليهما. الدخول المباشر إلى الشريحة الثالثة يتجاوز الأولى."
+      },
+      {
+        "type": "code",
+        "text": "n = 1  ->  A B\nn = 2  ->  A B\nn = 3  ->  B\nn = 4  ->  C\nn = 5  ->  D\nn = 6  ->  D"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "المستخدم يدخل عدد صحيح بين 1 و-6 ويضغط إنتر. لكم من هذه القيم سيتم الحصول على المخرجات التالية؟"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "زيادة داخل البورر",
+    "text": "ما هي مخرجات البرنامج التالي؟",
+    "code": "public static void main(String [] args) {\n    int n = 2;\n    int total = 0;\n    switch (n++) {\n        case 2:\n            total = total + n;\n        case 3:\n            total = total + n;\n            break;\n        case 4:\n            total = total + 10;\n    }\n    System.out.println(\"n = \" + n);\n    System.out.println(\"total = \" + total);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "n = 3\ntotal = 6"
+      },
+      {
+        "type": "code",
+        "text": "n = 3\ntotal = 4"
+      },
+      {
+        "type": "code",
+        "text": "n = 2\ntotal = 6"
+      },
+      {
+        "type": "code",
+        "text": "n = 3\ntotal = 3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "البورر يعيد القيمة قبل الزيادة، لكن الزيادة قد تمت بالفعل. التجميعات التالية تستخدم القيمة الجديدة."
+      },
+      {
+        "type": "code",
+        "text": "switch (n++)    // selects by 2, n becomes 3\ncase 2:  total = 0 + 3;    // 3\ncase 3:  total = 3 + 3;    // 6"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هي مخرجات البرنامج التالي؟"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "ما هي القيم الابتدائية",
+    "text": "نريد الحصول على المخرجات التالية:",
+    "output": "mid\nhigh\na = 3",
+    "text2": "اختر القيم الابتدائية بحيث يتم إنشاء المخرجات المطلوبة:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int a = [[1]];",
+      "    int b = [[2]];",
+      "    switch (a + b) {",
+      "        case 5:",
+      "            System.out.println(\"low\");",
+      "            break;",
+      "        case 8:",
+      "            System.out.println(\"mid\");",
+      "        case 9:",
+      "            System.out.println(\"high\");",
+      "            break;",
+      "        default:",
+      "            System.out.println(\"other\");",
+      "    }",
+      "    System.out.println(\"a = \" + a);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "3",
+          "5",
+          "8",
+          "2"
+        ],
+        "answer": "3"
+      },
+      {
+        "id": 2,
+        "options": [
+          "5",
+          "3",
+          "6",
+          "4"
+        ],
+        "answer": "5"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "السطر الأخير يحدد القيمة الأولى، ومجموع الاثنين يجب أن يتناسب مع الحالة التي لا يوجد بعدها توقف."
+      },
+      {
+        "type": "code",
+        "text": "int a = 3;\nint b = 5;\na + b     // 8  ->  mid, then high"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نريد الحصول على المخرجات التالية:"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "أي قيمة وعَتبة",
+    "text": "نريد الحصول على المخرجات التالية:",
+    "output": "grade = B\ntens = 8",
+    "text2": "اختر القيمة الابتدائية والعتبة بحيث يتم إنشاء المخرجات المطلوبة:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int score = [[1]];",
+      "    if (score >= 90) {",
+      "        System.out.println(\"grade = A\");",
+      "    } else if (score >= [[2]]) {",
+      "        System.out.println(\"grade = B\");",
+      "    } else if (score >= 70) {",
+      "        System.out.println(\"grade = C\");",
+      "    } else {",
+      "        System.out.println(\"grade = D\");",
+      "    }",
+      "    System.out.println(\"tens = \" + score / 10);",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "85",
+          "95",
+          "75",
+          "65"
+        ],
+        "answer": "85"
+      },
+      {
+        "id": 2,
+        "options": [
+          "80",
+          "90",
+          "86",
+          "95"
+        ],
+        "answer": "80"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "السطر الثاني يقلل القيمة إلى العشرات، ويجب أن تكون العتبة أقل منها — وإلا فإن الفحص سيفشل وستستمر السلسلة إلى الأمام."
+      },
+      {
+        "type": "code",
+        "text": "int score = 85;\nscore >= 90    // false\nscore >= 80    // true   ->  grade = B\nscore / 10     // 8"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نريد الحصول على المخرجات التالية:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "الافتراضي في الوسط",
+    "text": "ما هي مخرجات البرنامج التالي؟",
+    "code": "public static void main(String [] args) {\n    int n = 9;\n    switch (n) {\n        case 1:\n            System.out.println(\"one\");\n            break;\n        default:\n            System.out.println(\"other\");\n        case 2:\n            System.out.println(\"two\");\n            break;\n        case 3:\n            System.out.println(\"three\");\n            break;\n    }\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "other\ntwo"
+      },
+      {
+        "type": "code",
+        "text": "other"
+      },
+      {
+        "type": "code",
+        "text": "other\ntwo\nthree"
+      },
+      "خطأ في الترجمة"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الافتراضي لا يجب أن يُكتب في النهاية. أيضًا منه، في غياب التوقف، يستمر التنفيذ إلى العنصر التالي."
+      },
+      {
+        "type": "code",
+        "text": "int n = 9;\ndefault:  System.out.println(\"other\");\ncase 2:   System.out.println(\"two\");\nbreak;"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هي مخرجات البرنامج التالي؟"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "سؤال ملخص",
+    "text": "أمامكم ثلاثة جمل عن بنية الاختيار حسب القيم (‏switch):\nجملة 1 — عندما لا يوجد أمر توقف (‏break) في الحالة (‏case)، يستمر التنفيذ إلى أوامر الحالة التالية حتى لو كانت قيمتها مختلفة.\nجملة 2 — يجب كتابة الافتراضي (‏default) في النهاية، بعد كل الحالات.\nجملة 3 — يتم حساب التعبير الموجود بين الأقواس مرة واحدة فقط، عند الدخول إلى البنية.\nأي الجمل صحيحة؟",
+    "code": null,
+    "options": [
+      "الجمل 1 و-3 فقط",
+      "الجمل 1 و-2 فقط",
+      "الجمل 2 و-3 فقط",
+      "كل الجمل الثلاثة"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "موقع الافتراضي حر، ويتم اختياره فقط عندما لا يوجد تطابق. الجملتان الأخريان تصفان بشكل صحيح كيفية التنفيذ."
+      },
+      {
+        "type": "code",
+        "text": "switch (n) {\n    default:\n        System.out.println(\"other\");\n    case 2:\n        System.out.println(\"two\");\n}    // legal"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "أمامكم ثلاثة جمل عن بنية الاختيار حسب القيم (‏switch):\nجملة 1 — عندما لا يوجد أمر توقف (‏break) في الحالة (‏case)، يستمر التنفيذ إلى أوامر الحالة التالية حتى لو كانت قيمتها مختلفة.\nجملة 2 — يجب كتابة الافتراضي (‏default) في النهاية، بعد كل الحالات.\nجملة 3 — يتم حساب التعبير الموجود بين الأقواس مرة واحدة فقط، عند الدخول إلى البنية.\nأي الجمل صحيحة؟"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "أين نتوقف",
+    "text": "نريد الحصول على المخرجات التالية:",
+    "output": "A\nB",
+    "text2": "أكمل البرنامج بحيث ينتج المخرجات المطلوبة:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int n = [[1]];",
+      "    switch (n) {",
+      "        case 1:",
+      "            System.out.println(\"A\");",
+      "            [[2]]",
+      "        case 2:",
+      "            System.out.println(\"B\");",
+      "            [[3]]",
+      "        case 3:",
+      "            System.out.println(\"C\");",
+      "            break;",
+      "        default:",
+      "            System.out.println(\"D\");",
+      "    }",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "answer": "1"
+      },
+      {
+        "id": 2,
+        "options": [
+          "// no break",
+          "break;"
+        ],
+        "answer": "// no break"
+      },
+      {
+        "id": 3,
+        "options": [
+          "break;",
+          "// no break"
+        ],
+        "answer": "break;"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "لكي نحصل على طباعة متتالية، تبقى الحلقة الأولى بدون توقف — والتوقف مطلوب مباشرة بعد الطباعة الثانية."
+      },
+      {
+        "type": "code",
+        "text": "int n = 1;\ncase 1:  A     // no break, continues\ncase 2:  B     // break, stops here\ncase 3:  C     // never printed"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نريد الحصول على المخرجات التالية:"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "إكمال المُحدد والحلقة",
+    "text": "معطى برنامج يطبع المخرجات التالية:",
+    "output": "medium\ndone",
+    "text2": "أكمل البرنامج:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int n = 14;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    switch (n ",
+        "blank": {
+          "options": [
+            "%",
+            "/",
+            "+",
+            "-"
+          ],
+          "answer": "%"
+        },
+        "after": " 5) {"
+      },
+      {
+        "before": "        case 2:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"low\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case ",
+        "blank": {
+          "options": [
+            "4",
+            "2",
+            "5",
+            "6"
+          ],
+          "answer": "4"
+        },
+        "after": ":"
+      },
+      {
+        "before": "            System.out.println(\"medium\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        default:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"high\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    System.out.println(\"done\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "باقي القسمة يقلل كل قيمة إلى نطاق صغير ومعروف، ولذلك هو مناسب كمحدد. فقط قيمة واحدة تطابق المخرجات."
+      },
+      {
+        "type": "code",
+        "text": "int n = 14;\nn % 5     // 4   ->  medium\nn / 5     // 2   ->  low"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "معطى برنامج يطبع المخرجات التالية:"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "سلسلة ومحدد معًا",
+    "text": "نريد الحصول على المخرجات التالية:",
+    "output": "size = big\ntype = odd",
+    "text2": "أكمل البرنامج بحيث ينتج المخرجات المطلوبة:",
+    "codeLines": [
+      "public static void main(String [] args) {",
+      "    int n = 25;",
+      "    if ([[1]]) {",
+      "        System.out.println(\"size = huge\");",
+      "    } else if ([[2]]) {",
+      "        System.out.println(\"size = big\");",
+      "    } else {",
+      "        System.out.println(\"size = small\");",
+      "    }",
+      "    switch ([[3]]) {",
+      "        case 0:",
+      "            System.out.println(\"type = even\");",
+      "            break;",
+      "        case 1:",
+      "            System.out.println(\"type = odd\");",
+      "            break;",
+      "        default:",
+      "            System.out.println(\"type = other\");",
+      "    }",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "n > 30",
+          "n > 20",
+          "n >= 25",
+          "n != 30"
+        ],
+        "answer": "n > 30"
+      },
+      {
+        "id": 2,
+        "options": [
+          "n > 20",
+          "n > 30",
+          "n < 20",
+          "n == 20"
+        ],
+        "answer": "n > 20"
+      },
+      {
+        "id": 3,
+        "options": [
+          "n % 2",
+          "n / 2",
+          "n - 2",
+          "n + 2"
+        ],
+        "answer": "n % 2"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "يجب أن يفشل الشرط الأول لكي يتم فحص الثاني. يجب أن يقتصر المحدد على قيمة موجودة في الحالات، وليس السقوط إلى الافتراضي."
+      },
+      {
+        "type": "code",
+        "text": "int n = 25;\nn > 30    // false  ->  next condition\nn > 20    // true   ->  size = big\nn % 2     // 1      ->  type = odd"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "نريد الحصول على المخرجات التالية:"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "الانتقال بين المجموعات",
+    "text": "معطى برنامج يطبع المخرجات التالية:",
+    "output": "mid\nhigh\nend",
+    "text2": "أكمل البرنامج:",
+    "codeLines": [
+      {
+        "before": "public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    int n = ",
+        "blank": {
+          "options": [
+            "4",
+            "1",
+            "6",
+            "9"
+          ],
+          "answer": "4"
+        },
+        "after": ";"
+      },
+      {
+        "before": "    switch (n) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 1:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 2:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"low\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 3:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case ",
+        "blank": {
+          "options": [
+            "4",
+            "5",
+            "6",
+            "7"
+          ],
+          "answer": "4"
+        },
+        "after": ":"
+      },
+      {
+        "before": "            System.out.println(\"mid\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            ",
+        "blank": {
+          "options": [
+            "// no break",
+            "break;"
+          ],
+          "answer": "// no break"
+        },
+        "after": ""
+      },
+      {
+        "before": "        case 5:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        case 6:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"high\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            break;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        default:",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "            System.out.println(\"other\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    System.out.println(\"end\");",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الطباعة المتتالية تتطلب الدخول إلى المجموعة الوسطى والاستمرار إلى المجموعة التالية. قيمة تظهر بالفعل في حالة أخرى ستؤدي إلى خطأ في الترجمة."
+      },
+      {
+        "type": "code",
+        "text": "int n = 4;\ncase 4:  mid     // no break, continues\ncase 6:  high    // break, stops here"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "معطى برنامج يطبع المخرجات التالية:"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על החומר',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`,
+        check: 'בדוק תשובות',
+        mustAnswer: 'יש לבחור תשובה בכל התיבות'
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة المادة',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`,
+        check: 'تحقق من الإجابات',
+        mustAnswer: 'يجب اختيار إجابة في كل الخانات'
+      }
+    };
+
+    /* ── עזרים ── */
+
+    function escHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function shuffleArr(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /* ── הכנת שאלות: סדר קבוע, ערבוב אפשרויות בלבד ── */
+
+    function prepMultichoice(q) {
+      const idxs = shuffleArr(q.options.map((_, i) => i));
+      return {
+        ...q,
+        options: idxs.map(i => q.options[i]),
+        answer:  idxs.indexOf(q.answer)
+      };
+    }
+
+    function prepGapselect(q) {
+      return {
+        ...q,
+        gaps: q.gaps.map(g => ({ ...g, options: shuffleArr(g.options) }))
+      };
+    }
+
+    function prepCloze(q) {
+      return {
+        ...q,
+        codeLines: q.codeLines.map(line =>
+          line.blank
+            ? { ...line, blank: { ...line.blank, options: shuffleArr(line.blank.options) } }
+            : line
+        )
+      };
+    }
+
+    function prepareQuiz(questions) {
+      return questions.map(q => {
+        if (q.type === 'gapselect') return prepGapselect(q);
+        if (q.type === 'cloze')     return prepCloze(q);
+        // ברירת מחדל: multichoice (גם שאלות ישנות ללא שדה type)
+        if (q.options) return prepMultichoice(q);
+        return q;
+      });
+    }
+
+    /* ── מצב ── */
+
+    const quiz  = { he: [], ar: [] };
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    function startQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+    function restartQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      render(lang);
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    /* ── בניית טקסטים ── */
+
+    function buildText(text) {
+      if (!text) return '';
+      return String(text).split('\n').map(line =>
+        `<span class="q-text-line">${escHtml(line)}</span>`
+      ).join('');
+    }
+
+    function buildExplanation(lines) {
+      return (lines || []).map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${escHtml(l.text)}</span>`
+          : `<span class="exp-line">${escHtml(l.text)}</span>`
+      ).join('');
+    }
+
+    function buildOption(o) {
+      // אפשרות מסוג קוד — תומכת בירידות שורה ורווחים
+      if (typeof o === 'object' && o !== null && o.type === 'code') {
+        return `<span class="opt-code">${escHtml(o.text).replace(/\n/g, '<br>')}</span>`;
+      }
+      const text = typeof o === 'string' ? o : String(o);
+      const clean = text.replace(/\u200f/g, '').trim();
+      // עברית או ערבית — RTL
+      const isRtl = /^[\u0590-\u05FF\u0600-\u06FF\uFB1D-\uFB4F]/.test(clean);
+      if (isRtl) {
+        return `<span class="opt-text-he">${escHtml(text)}</span>`;
+      }
+      // קוד / אנגלית — LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${escHtml(text)}</span>`;
+    }
+
+    /* ── רינדור ראשי ── */
+
+    function render(lang) {
+      const questions = quiz[lang];
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q   = questions[s.current];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      let bodyHTML = '';
+      if      (q.type === 'gapselect') bodyHTML = renderGapselect(q, lang);
+      else if (q.type === 'cloze')     bodyHTML = renderCloze(q, lang);
+      else                             bodyHTML = renderMultichoice(q, lang);
+
+      const outputBlock = q.output
+        ? `<div class="output-block">${escHtml(q.output)}</div>`
+        : '';
+      const text2Block = q.text2
+        ? `<div class="q-text">${buildText(q.text2)}</div>`
+        : '';
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${escHtml(q.topic || '')}</span>
+          </div>
+          <div class="q-text">${buildText(q.text)}</div>
+          ${outputBlock}
+          ${text2Block}
+          ${bodyHTML}
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function showExplanation(lang, correct) {
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (correct) state[lang].score++;
+    }
+
+    /* ── multichoice ── */
+
+    function renderMultichoice(q, lang) {
+      const letters = lang === 'he' ? ['א', 'ב', 'ג', 'ד', 'ה'] : ['أ', 'ب', 'ج', 'د', 'هـ'];
+      const codeBlock = q.code
+        ? `<div class="code-block">${escHtml(q.code)}</div>`
+        : '';
+      const opts = q.options.map((o, i) =>
+        `<button class="opt" onclick="chooseOpt('${lang}',${i})">
+           <span class="opt-letter">${letters[i]}.</span>${buildOption(o)}
+         </button>`
+      ).join('');
+      return `${codeBlock}<div class="options" id="opts-${lang}">${opts}</div>`;
+    }
+
+    function chooseOpt(lang, idx) {
+      const q    = quiz[lang][state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      const correct = (idx === q.answer);
+      opts[idx].classList.add(correct ? 'correct' : 'wrong');
+      if (!correct) opts[q.answer].classList.add('correct');
+      showExplanation(lang, correct);
+    }
+
+    /* ── gapselect ── */
+
+    function renderGapselect(q, lang) {
+      const gapMap = {};
+      q.gaps.forEach(g => { gapMap[g.id] = g; });
+
+      const lines = q.codeLines.map(line => {
+        const replaced = escHtml(line).replace(/\[\[(\d+)\]\]/g, (_, id) => {
+          const gap = gapMap[parseInt(id)];
+          const opts = ['<option value="" selected disabled>?</option>']
+            .concat(gap.options.map(o => `<option value="${escHtml(o)}">${escHtml(o)}</option>`))
+            .join('');
+          return `<select class="gap-select" id="gap-${lang}-${id}">${opts}</select>`;
+        });
+        return `<span class="code-line">${replaced}</span>`;
+      }).join('');
+
+      return `
+        <div class="gap-code-block">${lines}</div>
+        <button class="gap-check-btn" id="gap-check-${lang}" onclick="checkGaps('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkGaps(lang) {
+      const q = quiz[lang][state[lang].current];
+      const unanswered = q.gaps.some(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      q.gaps.forEach(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === gap.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`gap-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+    /* ── cloze ── */
+
+    function renderCloze(q, lang) {
+      const lines = q.codeLines.map((line, li) => {
+        if (!line.blank) {
+          return `<span class="cloze-line">${escHtml(line.before)}${escHtml(line.after)}</span>`;
+        }
+        const id = `cloze-${lang}-${li}`;
+        const opts = ['<option value="" selected disabled>?</option>']
+          .concat(line.blank.options.map(o =>
+            `<option value="${escHtml(o)}">${escHtml(o)}</option>`
+          )).join('');
+        return `<span class="cloze-line">${escHtml(line.before)}<select class="cloze-select" id="${id}">${opts}</select>${escHtml(line.after)}</span>`;
+      }).join('');
+
+      return `
+        <div class="cloze-block">${lines}</div>
+        <button class="gap-check-btn" id="cloze-check-${lang}" onclick="checkCloze('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkCloze(lang) {
+      const q = quiz[lang][state[lang].current];
+      const blanks = q.codeLines
+        .map((line, li) => ({ line, li }))
+        .filter(x => x.line.blank);
+
+      const unanswered = blanks.some(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      blanks.forEach(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === x.line.blank.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`cloze-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+  </script>
+</body>
+
+</html>

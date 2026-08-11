@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║      תבנית v2 — שאלון Java עם 3 סוגי שאלות                     ║
+  ║      multichoice / gapselect / cloze                             ║
+  ║                                                                  ║
+  ║  נתמך ע"י quiz_builder_tool.html — פלייסהולדרים:                ║
+  ║  03, #C0392B/LIGHT/DARK/BORDER,               ║
+  ║  Java - Arithmetic 2.2, , questionsHe, questionsAr          ║
+  ║                                                                  ║
+  ║  מבנה שאלה multichoice:                                          ║
+  ║  { type:"multichoice", topic, text, code|null,                   ║
+  ║    options:[ "טקסט" | {type:"code",text:"..."} ],               ║
+  ║    answer:0, explanation:[{type:"he"|"code",text}] }             ║
+  ║                                                                  ║
+  ║  מבנה שאלה gapselect:                                            ║
+  ║  { type:"gapselect", topic, text, output?, text2?,               ║
+  ║    codeLines:[ "שורת קוד עם [[1]]" ],                           ║
+  ║    gaps:[{id:1,options:[...],answer:"..."}], explanation }       ║
+  ║                                                                  ║
+  ║  מבנה שאלה cloze:                                                ║
+  ║  { type:"cloze", topic, text, output?, text2?,                   ║
+  ║    codeLines:[ {before, blank:{options,answer}|null, after} ],   ║
+  ║    explanation }                                                 ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java - Arithmetic 2.2 — רמה 03</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    :root {
+      --color-main: #C0392B;
+      --color-light: #FCE8E8;
+      --color-dark: #8B1A1A;
+      --color-border: #F5C0C0;
+    }
+
+    /* ── מסך פתיחה ── */
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+    }
+
+    .home-icon {
+      font-size: 48px;
+      margin-bottom: 1.2rem;
+    }
+
+    .home-title-he {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      direction: rtl;
+    }
+
+    .home-title-ar {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+      direction: rtl;
+    }
+
+    .home-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .home-sub .he {
+      display: block;
+      direction: rtl;
+    }
+
+    .home-sub .ar {
+      display: block;
+      direction: rtl;
+    }
+
+    .home-level-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 14px;
+      border-radius: 20px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .lang-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 22px 36px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 160px;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--color-main);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .lang-btn .lang-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .lang-btn .lang-sub {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* ── מסכי שאלון ── */
+    #screen-he,
+    #screen-ar {
+      display: none;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, var(--color-dark), var(--color-main));
+      color: #fff;
+      padding: 18px 24px;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .quiz-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      direction: rtl;
+    }
+
+    .quiz-title .level-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .back-btn {
+      font-size: 12px;
+      color: #fff;
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .progress-bar-bg {
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 4px;
+      background: var(--color-main);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .q-card {
+      background: #fff;
+      border: 1px solid #E2E4F3;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .q-num-badge {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .q-topic {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--color-main);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .q-text {
+      font-size: 15px;
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .q-text-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* בלוק פלט רצוי — LTR תמיד */
+    .output-block {
+      background: #fff;
+      border: 1px dashed var(--color-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 12px;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+      color: var(--color-dark);
+    }
+
+    /* ── אפשרויות multichoice ── */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .opt {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1.5px solid #E2E4F3;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      background: transparent;
+      width: 100%;
+      direction: rtl;
+      text-align: right;
+      font-family: 'Courier New', monospace;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+
+    .opt:hover:not(.disabled) {
+      background: #f8f8f8;
+    }
+
+    .opt.correct {
+      background: #EAF3DE;
+      border-color: #3B6D11;
+      color: #27500A;
+    }
+
+    .opt.wrong {
+      background: #FCEBEB;
+      border-color: #A32D2D;
+      color: #791F1F;
+    }
+
+    .opt.disabled {
+      pointer-events: none;
+    }
+
+    .opt-letter {
+      font-size: 12px;
+      font-weight: 700;
+      min-width: 22px;
+      color: var(--color-main);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      flex-shrink: 0;
+    }
+
+    .opt-text-he {
+      direction: rtl;
+      text-align: right;
+      flex: 1;
+      unicode-bidi: embed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .opt-code {
+      background-color: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      direction: ltr;
+      text-align: left;
+      flex: 1;
+      display: inline-block;
+      text-align: left;
+      direction: ltr;
+    }
+
+    /* ── gapselect ── */
+    .gap-code-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      direction: ltr;
+      text-align: left;
+      line-height: 2.2;
+      overflow-x: auto;
+    }
+
+    .gap-code-block .code-line {
+      display: block;
+      white-space: pre;
+    }
+
+    .gap-select,
+    .cloze-select {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 1px 4px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      background: var(--color-light);
+      color: var(--color-dark);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .gap-select:focus,
+    .cloze-select:focus {
+      outline: none;
+      border-color: var(--color-main);
+    }
+
+    .gap-select.correct-gap,
+    .cloze-select.correct-gap {
+      background: #EAF3DE;
+      border-color: #3B6D11;
+      color: #27500A;
+    }
+
+    .gap-select.wrong-gap,
+    .cloze-select.wrong-gap {
+      background: #FCEBEB;
+      border-color: #A32D2D;
+      color: #791F1F;
+    }
+
+    .gap-select:disabled,
+    .cloze-select:disabled {
+      cursor: not-allowed;
+    }
+
+    .gap-check-btn {
+      margin-top: 0.75rem;
+      padding: 8px 20px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .gap-check-btn:hover {
+      background: var(--color-light);
+    }
+
+    .gap-check-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ── cloze ── */
+    .cloze-block {
+      background: #f8f8f8;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin-bottom: 14px;
+      direction: ltr;
+      text-align: left;
+      line-height: 2.4;
+      overflow-x: auto;
+    }
+
+    .cloze-line {
+      display: block;
+      white-space: pre;
+    }
+
+    /* ── הסבר ── */
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #555;
+      line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .explanation.show {
+      display: block;
+    }
+
+    .exp-line {
+      display: block;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .exp-code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin: 2px 0;
+      white-space: pre-wrap;
+    }
+
+    .next-btn {
+      display: none;
+      margin-top: 1rem;
+      padding: 10px 22px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--color-dark);
+      font-family: inherit;
+    }
+
+    .next-btn:hover {
+      background: var(--color-light);
+    }
+
+    .next-btn.show {
+      display: inline-block;
+    }
+
+    .score-box {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    .score-num {
+      font-size: 56px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .score-label {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .score-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .restart-btn {
+      padding: 10px 28px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+    }
+
+    .restart-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .home-return-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--color-main);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--color-dark);
+    }
+
+    .home-return-btn:hover {
+      background: var(--color-light);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">Java - Arithmetic 2.2</div>
+      <div class="home-title-ar"></div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <div class="home-level-badge">רמה 03 &nbsp;|&nbsp; المستوى 03</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">רמה 03</span>
+          Java - Arithmetic 2.2
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">المستوى 03</span>
+
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+      {
+        "type": "multichoice",
+        "topic": "תכנון ביטוי לחישוב ממוצע",
+        "text": "נתונים שלושה מספרים שלמים. איזה ביטוי יחשב את הממוצע המדויק שלהם?",
+        "code": "int a = 7, b = 8, c = 10;",
+        "options": [
+          {
+            "type": "code",
+            "text": "(a + b + c) / 3.0"
+          },
+          {
+            "type": "code",
+            "text": "(a + b + c) / 3"
+          },
+          {
+            "type": "code",
+            "text": "a / 3.0 + b / 3 + c / 3"
+          },
+          {
+            "type": "code",
+            "text": "a + b + c / 3.0"
+          }
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "יש לסכום תחילה בסוגריים, ולחלק במחלק ממשי. חלוקה של כל מספר בנפרד מאבדת שארית בכל איבר שמחולק בשלם — גם אם איבר אחד מהם מחושב בממשיים."
+          },
+          {
+            "type": "code",
+            "text": "double ok  = (7 + 8 + 10) / 3.0;          // 8.333333333333334\nint    bad = (7 + 8 + 10) / 3;            // 8\ndouble mix = 7 / 3.0 + 8 / 3 + 10 / 3;    // 7.333333333333334"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "נתונים שלושה מספרים שלמים. איזה ביטוי יחשב את הממוצע המדויק שלהם?"
+          }
+        ]
+      },
+      {
+        "type": "gapselect",
+        "topic": "פירוק ערך לשלוש יחידות מידה",
+        "text": "אורך נתון במילימטרים. בכל מטר יש 1000 מילימטרים, ובכל סנטימטר 10 מילימטרים. ברצוננו לקבל את הפלט הבא:",
+        "output": "m = 3\ncm = 47\nmm = 5",
+        "text2": "השלימו את האופרטורים כך שיתקבל בדיוק הפלט המבוקש:",
+        "codeLines": [
+          "public static void main(String [] args) {",
+          "    int total = 3475;",
+          "    int m = total [[1]] 1000;",
+          "    total = total [[2]] 1000;",
+          "    int cm = total [[3]] 10;",
+          "    int mm = total [[4]] 10;",
+          "    System.out.println(\"m = \" + m);",
+          "    System.out.println(\"cm = \" + cm);",
+          "    System.out.println(\"mm = \" + mm);",
+          "}"
+        ],
+        "gaps": [
+          {
+            "id": 1,
+            "options": [
+              "/",
+              "%"
+            ],
+            "answer": "/"
+          },
+          {
+            "id": 2,
+            "options": [
+              "%",
+              "/"
+            ],
+            "answer": "%"
+          },
+          {
+            "id": 3,
+            "options": [
+              "/",
+              "%"
+            ],
+            "answer": "/"
+          },
+          {
+            "id": 4,
+            "options": [
+              "%",
+              "/"
+            ],
+            "answer": "%"
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "בכל שלב מוציאים את היחידה הגדולה בעזרת חילוק, ומשאירים את העודף בעזרת שארית. השורה הרביעית פועלת כבר על העודף 475 ולא על הערך המקורי."
+          },
+          {
+            "type": "code",
+            "text": "int m = 3475 / 1000;      // 3\nint rest = 3475 % 1000;   // 475\nint cm = rest / 10;       // 47\nint mm = rest % 10;       // 5"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "אורך נתון במילימטרים. בכל מטר יש 1000 מילימטרים, ובכל סנטימטר 10 מילימטרים. ברצוננו לקבל את הפלט הבא:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "מעקב אחר שרשרת פעולות",
+        "text": "מה יהיה הפלט בהרצת קטע הקוד הבא?",
+        "code": "int a = 17, b = 4;\na %= b;\nb += a;\na = b * 3;\nb = a / b;\nSystem.out.println(\"a = \" + a + \" b = \" + b);",
+        "options": [
+          "a = 15 b = 3",
+          "a = 15 b = 5",
+          "a = 12 b = 3",
+          "a = 15 b = 2"
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "יש לעדכן את שני המשתנים אחרי כל שורה. שימו לב שבשורה האחרונה b כבר שווה 5, ולא 4."
+          },
+          {
+            "type": "code",
+            "text": "a %= b;       // a = 1,  b = 4\nb += a;       // a = 1,  b = 5\na = b * 3;    // a = 15, b = 5\nb = a / b;    // a = 15, b = 3"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "מה יהיה הפלט בהרצת קטע הקוד הבא?"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "מטרת קטע הקוד",
+        "text": "מהי מטרתו של קטע הקוד הבא?",
+        "code": "int n = 27;\nSystem.out.println(n % 2);",
+        "options": [
+          "לבדוק אם ‏n זוגי — הפלט 0 עבור מספר זוגי ו-1 עבור אי-זוגי",
+          "להדפיס את מחצית הערך של ‏n",
+          "להדפיס את ספרת האחדות של ‏n",
+          "לבדוק אם ‏n מתחלק ב-10 ללא שארית"
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "שארית החלוקה ב-2 יכולה לקבל שני ערכים בלבד, ולכן היא מזהה זוגיות. ספרת האחדות מתקבלת דווקא מהשארית בחלוקה ב-10."
+          },
+          {
+            "type": "code",
+            "text": "System.out.println(27 % 2);     // 1\nSystem.out.println(26 % 2);     // 0\nSystem.out.println(27 % 10);    // 7"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "מהי מטרתו של קטע הקוד הבא?"
+          }
+        ]
+      },
+      {
+        "type": "cloze",
+        "topic": "השפעת הסוגריים על התוצאה",
+        "text": "נתונה תוכנית שהפלט שלה הוא בדיוק:",
+        "output": "first = 12\nsecond = 8",
+        "text2": "השלימו את הביטויים כך שיתקבל בדיוק הפלט המבוקש:",
+        "codeLines": [
+          {
+            "before": "public static void main(String [] args) {",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    int a = 7, b = 10;",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    System.out.println(\"first = \" + ",
+            "blank": {
+              "options": [
+                "(a + b / 2)",
+                "((a + b) / 2)",
+                "((a + b) / 2.0)"
+              ],
+              "answer": "(a + b / 2)"
+            },
+            "after": ");"
+          },
+          {
+            "before": "    System.out.println(\"second = \" + ",
+            "blank": {
+              "options": [
+                "((a + b) / 2)",
+                "(a + b / 2)",
+                "((a + b) / 2.0)"
+              ],
+              "answer": "((a + b) / 2)"
+            },
+            "after": ");"
+          },
+          {
+            "before": "}",
+            "blank": null,
+            "after": ""
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "בלי סוגריים החילוק קודם לחיבור, ולכן מחושב רק חצי מ-b. עם סוגריים מחושב תחילה הסכום 17, והחילוק בשלמים מקצץ אותו ל-8."
+          },
+          {
+            "type": "code",
+            "text": "int    first  = 7 + 10 / 2;        // 12\nint    second = (7 + 10) / 2;      // 8\ndouble exact  = (7 + 10) / 2.0;    // 8.5"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "נתונה תוכנית שהפלט שלה הוא בדיוק:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "איתור תקלה בחישוב אחוזים",
+        "text": "התוכנית הבאה אמורה להדפיס את אחוז הנבחנים שעברו, אך היא מדפיסה 0. באיזה ביטוי יש להחליף את הביטוי שבסוגריים?",
+        "code": "int passed = 18, total = 24;\nSystem.out.println(\"percent = \" + (passed / total * 100));",
+        "options": [
+          {
+            "type": "code",
+            "text": "passed * 100 / total"
+          },
+          {
+            "type": "code",
+            "text": "passed / (total * 100)"
+          },
+          {
+            "type": "code",
+            "text": "passed / total / 100"
+          },
+          {
+            "type": "code",
+            "text": "(passed / total) * 100.0"
+          }
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "החילוק המקורי מתבצע ראשון ומחזיר 0, וכל כפל שיבוא אחריו יישאר 0. הפתרון הוא להקדים את הכפל, כך שהחילוק יפעל על מספר גדול דיו."
+          },
+          {
+            "type": "code",
+            "text": "int wrong = 18 / 24 * 100;    // 0\nint right = 18 * 100 / 24;    // 75"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "התוכנית הבאה אמורה להדפיס את אחוז הנבחנים שעברו, אך היא מדפיסה 0. באיזה ביטוי יש להחליף את הביטוי שבסוגריים?"
+          }
+        ]
+      },
+      {
+        "type": "gapselect",
+        "topic": "תכנון חישוב עודף",
+        "text": "לקוח שילם 200 שקלים עבור קנייה בסך 133 שקלים. יש להחזיר לו עודף בשטרות של 20 שקלים ובמטבעות. ברצוננו לקבל את הפלט הבא:",
+        "output": "notes = 3\ncoins = 7",
+        "text2": "השלימו את האופרטורים כך שיתקבל בדיוק הפלט המבוקש:",
+        "codeLines": [
+          "public static void main(String [] args) {",
+          "    int paid = 200, cost = 133;",
+          "    int change = paid [[1]] cost;",
+          "    System.out.println(\"notes = \" + (change [[2]] 20));",
+          "    System.out.println(\"coins = \" + (change [[3]] 20));",
+          "}"
+        ],
+        "gaps": [
+          {
+            "id": 1,
+            "options": [
+              "-",
+              "+",
+              "*"
+            ],
+            "answer": "-"
+          },
+          {
+            "id": 2,
+            "options": [
+              "/",
+              "%"
+            ],
+            "answer": "/"
+          },
+          {
+            "id": 3,
+            "options": [
+              "%",
+              "/"
+            ],
+            "answer": "%"
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "תחילה מחשבים את העודף עצמו, 67, ורק אחר כך מפרקים אותו: מספר השטרות הוא המנה, וסכום המטבעות הוא השארית."
+          },
+          {
+            "type": "code",
+            "text": "int change = 200 - 133;    // 67\nint notes  = 67 / 20;      // 3\nint coins  = 67 % 20;      // 7"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "לקוח שילם 200 שקלים עבור קנייה בסך 133 שקלים. יש להחזיר לו עודף בשטרות של 20 שקלים ובמטבעות. ברצוננו לקבל את הפלט הבא:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "היפוך ספרות של מספר",
+        "text": "מה יהיה הפלט בהרצת קטע הקוד הבא?",
+        "code": "int n = 38;\nint r = n % 10 * 10 + n / 10;\nSystem.out.println(\"r = \" + r);",
+        "options": [
+          "r = 83",
+          "r = 38",
+          "r = 80",
+          "r = 11"
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "השארית והכפל קודמים לחיבור: ספרת האחדות עולה למקום העשרות, וספרת העשרות יורדת למקום האחדות."
+          },
+          {
+            "type": "code",
+            "text": "int units = 38 % 10;          // 8\nint tens  = 38 / 10;          // 3\nint r     = units * 10 + tens;    // 83"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "מה יהיה הפלט בהרצת קטע הקוד הבא?"
+          }
+        ]
+      },
+      {
+        "type": "cloze",
+        "topic": "הגדלה והקטנה בהשמה",
+        "text": "נתונה תוכנית שהפלט שלה הוא בדיוק:",
+        "output": "a = 9\nb = 10\nc = 8",
+        "text2": "השלימו את הביטויים כך שיתקבל בדיוק הפלט המבוקש:",
+        "codeLines": [
+          {
+            "before": "public static void main(String [] args) {",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    int n = 9;",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    int a = ",
+            "blank": {
+              "options": [
+                "n++",
+                "++n",
+                "--n"
+              ],
+              "answer": "n++"
+            },
+            "after": ";"
+          },
+          {
+            "before": "    int b = ",
+            "blank": {
+              "options": [
+                "n--",
+                "--n",
+                "++n"
+              ],
+              "answer": "n--"
+            },
+            "after": ";"
+          },
+          {
+            "before": "    int c = ",
+            "blank": {
+              "options": [
+                "--n",
+                "n--",
+                "++n"
+              ],
+              "answer": "--n"
+            },
+            "after": ";"
+          },
+          {
+            "before": "    System.out.println(\"a = \" + a);",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    System.out.println(\"b = \" + b);",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    System.out.println(\"c = \" + c);",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "}",
+            "blank": null,
+            "after": ""
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "בכל שורה יש לשאול מה מתבצע ראשון. בשתי השורות הראשונות ההשמה קודמת לשינוי, ולכן נשמר הערך הישן, ובשלישית השינוי קודם ולכן נשמר הערך החדש."
+          },
+          {
+            "type": "code",
+            "text": "int n = 9;\nint a = n++;    // a = 9,  n = 10\nint b = n--;    // b = 10, n = 9\nint c = --n;    // n = 8,  c = 8"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "נתונה תוכנית שהפלט שלה הוא בדיוק:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "הגדלה והקטנה בתוך הדפסה",
+        "text": "מה יהיה הפלט בהרצת קטע הקוד הבא?",
+        "code": "int x = 6, y = 6;\nSystem.out.println(\"p = \" + x++ + \" q = \" + --y);\nSystem.out.println(\"x = \" + x + \" y = \" + y);",
+        "options": [
+          {
+            "type": "code",
+            "text": "p = 6 q = 5\nx = 7 y = 5"
+          },
+          {
+            "type": "code",
+            "text": "p = 7 q = 5\nx = 7 y = 5"
+          },
+          {
+            "type": "code",
+            "text": "p = 6 q = 6\nx = 7 y = 5"
+          },
+          {
+            "type": "code",
+            "text": "p = 7 q = 6\nx = 7 y = 6"
+          }
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "בשורה הראשונה מודפס הערך הישן של x, כי ההגדלה באה אחריו, ומודפס הערך החדש של y, כי ההקטנה באה לפניו. השורה השנייה מראה את המצב הסופי של שניהם."
+          },
+          {
+            "type": "code",
+            "text": "int x = 6, y = 6;\nx++    // prints 6, then x = 7\n--y    // y = 5, then prints 5"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "מה יהיה הפלט בהרצת קטע הקוד הבא?"
+          }
+        ]
+      }
+    ];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+      {
+        "type": "multichoice",
+        "topic": "تصميم تعبير لحساب معدل",
+        "text": "معطى ثلاثة أعداد صحيحة. أي تعبير سيحسب المعدل الدقيق لها؟",
+        "code": "int a = 7, b = 8, c = 10;",
+        "options": [
+          {
+            "type": "code",
+            "text": "(a + b + c) / 3.0"
+          },
+          {
+            "type": "code",
+            "text": "(a + b + c) / 3"
+          },
+          {
+            "type": "code",
+            "text": "a / 3.0 + b / 3 + c / 3"
+          },
+          {
+            "type": "code",
+            "text": "a + b + c / 3.0"
+          }
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "يجب جمع الأعداد أولاً داخل الأقواس، ثم القسمة على عدد حقيقي. القسمة لكل عدد على حدة تفقد الباقي في كل عنصر مقسوم على عدد صحيح — حتى لو كان أحد العناصر محسوباً بأعداد حقيقية."
+          },
+          {
+            "type": "code",
+            "text": "double ok  = (7 + 8 + 10) / 3.0;          // 8.333333333333334\nint    bad = (7 + 8 + 10) / 3;            // 8\ndouble mix = 7 / 3.0 + 8 / 3 + 10 / 3;    // 7.333333333333334"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "معطى ثلاثة أعداد صحيحة. أي تعبير سيحسب المعدل الدقيق لها؟"
+          }
+        ]
+      },
+      {
+        "type": "gapselect",
+        "topic": "تفكيك قيمة إلى ثلاث وحدات قياس",
+        "text": "طول معطى بالمليمترات. في كل متر يوجد 1000 مليمتر، وفي كل سنتيمتر 10 مليمترات. نرغب في الحصول على المخرجات التالية:",
+        "output": "m = 3\ncm = 47\nmm = 5",
+        "text2": "أكملوا العوامل بحيث يتم الحصول على المخرجات المطلوبة بالضبط:",
+        "codeLines": [
+          "public static void main(String [] args) {",
+          "    int total = 3475;",
+          "    int m = total [[1]] 1000;",
+          "    total = total [[2]] 1000;",
+          "    int cm = total [[3]] 10;",
+          "    int mm = total [[4]] 10;",
+          "    System.out.println(\"m = \" + m);",
+          "    System.out.println(\"cm = \" + cm);",
+          "    System.out.println(\"mm = \" + mm);",
+          "}"
+        ],
+        "gaps": [
+          {
+            "id": 1,
+            "options": [
+              "/",
+              "%"
+            ],
+            "answer": "/"
+          },
+          {
+            "id": 2,
+            "options": [
+              "%",
+              "/"
+            ],
+            "answer": "%"
+          },
+          {
+            "id": 3,
+            "options": [
+              "/",
+              "%"
+            ],
+            "answer": "/"
+          },
+          {
+            "id": 4,
+            "options": [
+              "%",
+              "/"
+            ],
+            "answer": "%"
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "في كل مرحلة يتم استخراج الوحدة الكبيرة باستخدام القسمة، وترك الفائض باستخدام الباقي. السطر الرابع يعمل بالفعل على الفائض 475 وليس على القيمة الأصلية."
+          },
+          {
+            "type": "code",
+            "text": "int m = 3475 / 1000;      // 3\nint rest = 3475 % 1000;   // 475\nint cm = rest / 10;       // 47\nint mm = rest % 10;       // 5"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "طول معطى بالمليمترات. في كل متر يوجد 1000 مليمتر، وفي كل سنتيمتر 10 مليمترات. نرغب في الحصول على المخرجات التالية:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "تتبع سلسلة عمليات",
+        "text": "ما هي المخرجات عند تشغيل مقطع الكود التالي؟",
+        "code": "int a = 17, b = 4;\na %= b;\nb += a;\na = b * 3;\nb = a / b;\nSystem.out.println(\"a = \" + a + \" b = \" + b);",
+        "options": [
+          "a = 15 b = 3",
+          "a = 15 b = 5",
+          "a = 12 b = 3",
+          "a = 15 b = 2"
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "يجب تحديث كلا المتغيرين بعد كل سطر. لاحظ أن في السطر الأخير b يساوي بالفعل 5، وليس 4."
+          },
+          {
+            "type": "code",
+            "text": "a %= b;       // a = 1,  b = 4\nb += a;       // a = 1,  b = 5\na = b * 3;    // a = 15, b = 5\nb = a / b;    // a = 15, b = 3"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "ما هي المخرجات عند تشغيل مقطع الكود التالي؟"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "هدف مقطع الكود",
+        "text": "ما هو هدف مقطع الكود التالي؟",
+        "code": "int n = 27;\nSystem.out.println(n % 2);",
+        "options": [
+          "التحقق مما إذا كان n زوجيًا — المخرجات 0 للعدد الزوجي و1 للعدد الفردي",
+          "طباعة نصف قيمة n",
+          "طباعة رقم الآحاد لـ n",
+          "التحقق مما إذا كان n يقسم على 10 بدون باقي"
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "شريحة القسمة على 2 يمكن أن تأخذ قيمتين فقط، ولذلك فهي تحدد الزوجية. رقم الآحاد يتم الحصول عليه من الباقي في القسمة على 10."
+          },
+          {
+            "type": "code",
+            "text": "System.out.println(27 % 2);     // 1\nSystem.out.println(26 % 2);     // 0\nSystem.out.println(27 % 10);    // 7"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "ما هو هدف مقطع الكود التالي؟"
+          }
+        ]
+      },
+      {
+        "type": "cloze",
+        "topic": "تأثير الأقواس على النتيجة",
+        "text": "معطى برنامج الذي المخرجات له هي بالضبط:",
+        "output": "first = 12\nsecond = 8",
+        "text2": "أكملوا التعابير بحيث يتم الحصول على المخرجات المطلوبة بالضبط:",
+        "codeLines": [
+          {
+            "before": "public static void main(String [] args) {",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    int a = 7, b = 10;",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    System.out.println(\"first = \" + ",
+            "blank": {
+              "options": [
+                "(a + b / 2)",
+                "((a + b) / 2)",
+                "((a + b) / 2.0)"
+              ],
+              "answer": "(a + b / 2)"
+            },
+            "after": ");"
+          },
+          {
+            "before": "    System.out.println(\"second = \" + ",
+            "blank": {
+              "options": [
+                "((a + b) / 2)",
+                "(a + b / 2)",
+                "((a + b) / 2.0)"
+              ],
+              "answer": "((a + b) / 2)"
+            },
+            "after": ");"
+          },
+          {
+            "before": "}",
+            "blank": null,
+            "after": ""
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "بدون أقواس، القسمة تسبق الجمع، ولذلك يتم حساب نصف b فقط. مع الأقواس، يتم حساب المجموع 17 أولاً، والقسمة الصحيحة تقطعه إلى 8."
+          },
+          {
+            "type": "code",
+            "text": "int    first  = 7 + 10 / 2;        // 12\nint    second = (7 + 10) / 2;      // 8\ndouble exact  = (7 + 10) / 2.0;    // 8.5"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "معطى برنامج الذي المخرجات له هي بالضبط:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "تحديد خطأ في حساب النسب المئوية",
+        "text": "البرنامج التالي من المفترض أن يطبع نسبة الطلاب الذين اجتازوا، لكنه يطبع 0. في أي تعبير يجب استبدال التعبير الموجود بين الأقواس؟",
+        "code": "int passed = 18, total = 24;\nSystem.out.println(\"percent = \" + (passed / total * 100));",
+        "options": [
+          {
+            "type": "code",
+            "text": "passed * 100 / total"
+          },
+          {
+            "type": "code",
+            "text": "passed / (total * 100)"
+          },
+          {
+            "type": "code",
+            "text": "passed / total / 100"
+          },
+          {
+            "type": "code",
+            "text": "(passed / total) * 100.0"
+          }
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "القسمة الأصلية تتم أولاً وتعيد 0، وأي عملية ضرب تأتي بعدها ستبقى 0. الحل هو تقديم الضرب بحيث تعمل القسمة على عدد كبير بما فيه الكفاية."
+          },
+          {
+            "type": "code",
+            "text": "int wrong = 18 / 24 * 100;    // 0\nint right = 18 * 100 / 24;    // 75"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "البرنامج التالي من المفترض أن يطبع نسبة الطلاب الذين اجتازوا، لكنه يطبع 0. في أي تعبير يجب استبدال التعبير الموجود بين الأقواس؟"
+          }
+        ]
+      },
+      {
+        "type": "gapselect",
+        "topic": "تخطيط حساب الباقي",
+        "text": "دفع العميل 200 شيكل مقابل شراء بقيمة 133 شيكل. يجب إرجاع الباقي له بأوراق نقدية من فئة 20 شيكل وبعملات معدنية. نرغب في الحصول على المخرجات التالية:",
+        "output": "notes = 3\ncoins = 7",
+        "text2": "أكملوا العوامل بحيث يتم الحصول على المخرجات المطلوبة بالضبط:",
+        "codeLines": [
+          "public static void main(String [] args) {",
+          "    int paid = 200, cost = 133;",
+          "    int change = paid [[1]] cost;",
+          "    System.out.println(\"notes = \" + (change [[2]] 20));",
+          "    System.out.println(\"coins = \" + (change [[3]] 20));",
+          "}"
+        ],
+        "gaps": [
+          {
+            "id": 1,
+            "options": [
+              "-",
+              "+",
+              "*"
+            ],
+            "answer": "-"
+          },
+          {
+            "id": 2,
+            "options": [
+              "/",
+              "%"
+            ],
+            "answer": "/"
+          },
+          {
+            "id": 3,
+            "options": [
+              "%",
+              "/"
+            ],
+            "answer": "%"
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "أولاً نحسب الباقي نفسه، 67، ثم نقوم بتفكيكه: عدد الأوراق النقدية هو الحاصل، ومجموع العملات المعدنية هو الباقي."
+          },
+          {
+            "type": "code",
+            "text": "int change = 200 - 133;    // 67\nint notes  = 67 / 20;      // 3\nint coins  = 67 % 20;      // 7"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "دفع العميل 200 شيكل مقابل شراء بقيمة 133 شيكل. يجب إرجاع الباقي له بأوراق نقدية من فئة 20 شيكل وبعملات معدنية. نرغب في الحصول على المخرجات التالية:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "عكس أرقام العدد",
+        "text": "ما هي المخرجات عند تشغيل مقطع الكود التالي؟",
+        "code": "int n = 38;\nint r = n % 10 * 10 + n / 10;\nSystem.out.println(\"r = \" + r);",
+        "options": [
+          "r = 83",
+          "r = 38",
+          "r = 80",
+          "r = 11"
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "الباقي والضرب يسبقان الجمع: رقم الآحاد يصعد إلى مكان العشرات، ورقم العشرات ينزل إلى مكان الآحاد."
+          },
+          {
+            "type": "code",
+            "text": "int units = 38 % 10;          // 8\nint tens  = 38 / 10;          // 3\nint r     = units * 10 + tens;    // 83"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "ما هي المخرجات عند تشغيل مقطع الكود التالي؟"
+          }
+        ]
+      },
+      {
+        "type": "cloze",
+        "topic": "زيادة ونقصان في التعويض",
+        "text": "معطى برنامج الذي مخرجاته هي بالضبط:",
+        "output": "a = 9\nb = 10\nc = 8",
+        "text2": "أكملوا التعابير بحيث يتم الحصول على المخرجات المطلوبة بالضبط:",
+        "codeLines": [
+          {
+            "before": "public static void main(String [] args) {",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    int n = 9;",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    int a = ",
+            "blank": {
+              "options": [
+                "n++",
+                "++n",
+                "--n"
+              ],
+              "answer": "n++"
+            },
+            "after": ";"
+          },
+          {
+            "before": "    int b = ",
+            "blank": {
+              "options": [
+                "n--",
+                "--n",
+                "++n"
+              ],
+              "answer": "n--"
+            },
+            "after": ";"
+          },
+          {
+            "before": "    int c = ",
+            "blank": {
+              "options": [
+                "--n",
+                "n--",
+                "++n"
+              ],
+              "answer": "--n"
+            },
+            "after": ";"
+          },
+          {
+            "before": "    System.out.println(\"a = \" + a);",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    System.out.println(\"b = \" + b);",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "    System.out.println(\"c = \" + c);",
+            "blank": null,
+            "after": ""
+          },
+          {
+            "before": "}",
+            "blank": null,
+            "after": ""
+          }
+        ],
+        "explanation": [
+          {
+            "type": "he",
+            "text": "في كل سطر يجب أن نسأل ما الذي يتم أولاً. في السطرين الأولين التعويض يسبق التغيير، ولذلك يتم حفظ القيمة القديمة، وفي الثالث التغيير يسبق ولذلك يتم حفظ القيمة الجديدة."
+          },
+          {
+            "type": "code",
+            "text": "int n = 9;\nint a = n++;    // a = 9,  n = 10\nint b = n--;    // b = 10, n = 9\nint c = --n;    // n = 8,  c = 8"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "معطى برنامج الذي مخرجاته هي بالضبط:"
+          }
+        ]
+      },
+      {
+        "type": "multichoice",
+        "topic": "زيادة ونقصان داخل الطباعة",
+        "text": "ما هي المخرجات عند تشغيل مقطع الكود التالي؟",
+        "code": "int x = 6, y = 6;\nSystem.out.println(\"p = \" + x++ + \" q = \" + --y);\nSystem.out.println(\"x = \" + x + \" y = \" + y);",
+        "options": [
+          {
+            "type": "code",
+            "text": "p = 6 q = 5\nx = 7 y = 5"
+          },
+          {
+            "type": "code",
+            "text": "p = 7 q = 5\nx = 7 y = 5"
+          },
+          {
+            "type": "code",
+            "text": "p = 6 q = 6\nx = 7 y = 5"
+          },
+          {
+            "type": "code",
+            "text": "p = 7 q = 6\nx = 7 y = 6"
+          }
+        ],
+        "answer": 0,
+        "explanation": [
+          {
+            "type": "he",
+            "text": "في السطر الأول يتم طباعة القيمة القديمة لـ x، لأن الزيادة تأتي بعده، ويتم طباعة القيمة الجديدة لـ y، لأن النقصان يأتي قبله. السطر الثاني يظهر الحالة النهائية لكليهما."
+          },
+          {
+            "type": "code",
+            "text": "int x = 6, y = 6;\nx++    // prints 6, then x = 7\n--y    // y = 5, then prints 5"
+          }
+        ],
+        "textParts": [
+          {
+            "type": "he",
+            "text": "ما هي المخرجات عند تشغيل مقطع الكود التالي؟"
+          }
+        ]
+      }
+    ];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על החומר',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`,
+        check: 'בדוק תשובות',
+        mustAnswer: 'יש לבחור תשובה בכל התיבות'
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة المادة',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`,
+        check: 'تحقق من الإجابات',
+        mustAnswer: 'يجب اختيار إجابة في كل الخانات'
+      }
+    };
+
+    /* ── עזרים ── */
+
+    function escHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function shuffleArr(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /* ── הכנת שאלות: סדר קבוע, ערבוב אפשרויות בלבד ── */
+
+    function prepMultichoice(q) {
+      const idxs = shuffleArr(q.options.map((_, i) => i));
+      return {
+        ...q,
+        options: idxs.map(i => q.options[i]),
+        answer: idxs.indexOf(q.answer)
+      };
+    }
+
+    function prepGapselect(q) {
+      return {
+        ...q,
+        gaps: q.gaps.map(g => ({ ...g, options: shuffleArr(g.options) }))
+      };
+    }
+
+    function prepCloze(q) {
+      return {
+        ...q,
+        codeLines: q.codeLines.map(line =>
+          line.blank
+            ? { ...line, blank: { ...line.blank, options: shuffleArr(line.blank.options) } }
+            : line
+        )
+      };
+    }
+
+    function prepareQuiz(questions) {
+      return questions.map(q => {
+        if (q.type === 'gapselect') return prepGapselect(q);
+        if (q.type === 'cloze') return prepCloze(q);
+        // ברירת מחדל: multichoice (גם שאלות ישנות ללא שדה type)
+        if (q.options) return prepMultichoice(q);
+        return q;
+      });
+    }
+
+    /* ── מצב ── */
+
+    const quiz = { he: [], ar: [] };
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    function startQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+    function restartQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      render(lang);
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    /* ── בניית טקסטים ── */
+
+    function buildText(text) {
+      if (!text) return '';
+      return String(text).split('\n').map(line =>
+        `<span class="q-text-line">${escHtml(line)}</span>`
+      ).join('');
+    }
+
+    function buildExplanation(lines) {
+      return (lines || []).map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${escHtml(l.text)}</span>`
+          : `<span class="exp-line">${escHtml(l.text)}</span>`
+      ).join('');
+    }
+
+    function buildOption(o) {
+      // אפשרות מסוג קוד — תומכת בירידות שורה ורווחים
+      if (typeof o === 'object' && o !== null && o.type === 'code') {
+        return `<span class="opt-code">${escHtml(o.text).replace(/\n/g, '<br>')}</span>`;
+      }
+      const text = typeof o === 'string' ? o : String(o);
+      const clean = text.replace(/\u200f/g, '').trim();
+      // עברית או ערבית — RTL
+      const isRtl = /^[\u0590-\u05FF\u0600-\u06FF\uFB1D-\uFB4F]/.test(clean);
+      if (isRtl) {
+        return `<span class="opt-text-he">${escHtml(text)}</span>`;
+      }
+      // קוד / אנגלית — LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${escHtml(text)}</span>`;
+    }
+
+    /* ── רינדור ראשי ── */
+
+    function render(lang) {
+      const questions = quiz[lang];
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q = questions[s.current];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      let bodyHTML = '';
+      if (q.type === 'gapselect') bodyHTML = renderGapselect(q, lang);
+      else if (q.type === 'cloze') bodyHTML = renderCloze(q, lang);
+      else bodyHTML = renderMultichoice(q, lang);
+
+      const outputBlock = q.output
+        ? `<div class="output-block">${escHtml(q.output)}</div>`
+        : '';
+      const text2Block = q.text2
+        ? `<div class="q-text">${buildText(q.text2)}</div>`
+        : '';
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${escHtml(q.topic || '')}</span>
+          </div>
+          <div class="q-text">${buildText(q.text)}</div>
+          ${outputBlock}
+          ${text2Block}
+          ${bodyHTML}
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function showExplanation(lang, correct) {
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (correct) state[lang].score++;
+    }
+
+    /* ── multichoice ── */
+
+    function renderMultichoice(q, lang) {
+      const letters = lang === 'he' ? ['א', 'ב', 'ג', 'ד', 'ה'] : ['أ', 'ب', 'ج', 'د', 'هـ'];
+      const codeBlock = q.code
+        ? `<div class="code-block">${escHtml(q.code)}</div>`
+        : '';
+      const opts = q.options.map((o, i) =>
+        `<button class="opt" onclick="chooseOpt('${lang}',${i})">
+           <span class="opt-letter">${letters[i]}.</span>${buildOption(o)}
+         </button>`
+      ).join('');
+      return `${codeBlock}<div class="options" id="opts-${lang}">${opts}</div>`;
+    }
+
+    function chooseOpt(lang, idx) {
+      const q = quiz[lang][state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      const correct = (idx === q.answer);
+      opts[idx].classList.add(correct ? 'correct' : 'wrong');
+      if (!correct) opts[q.answer].classList.add('correct');
+      showExplanation(lang, correct);
+    }
+
+    /* ── gapselect ── */
+
+    function renderGapselect(q, lang) {
+      const gapMap = {};
+      q.gaps.forEach(g => { gapMap[g.id] = g; });
+
+      const lines = q.codeLines.map(line => {
+        const replaced = escHtml(line).replace(/\[\[(\d+)\]\]/g, (_, id) => {
+          const gap = gapMap[parseInt(id)];
+          const opts = ['<option value="" selected disabled>?</option>']
+            .concat(gap.options.map(o => `<option value="${escHtml(o)}">${escHtml(o)}</option>`))
+            .join('');
+          return `<select class="gap-select" id="gap-${lang}-${id}">${opts}</select>`;
+        });
+        return `<span class="code-line">${replaced}</span>`;
+      }).join('');
+
+      return `
+        <div class="gap-code-block">${lines}</div>
+        <button class="gap-check-btn" id="gap-check-${lang}" onclick="checkGaps('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkGaps(lang) {
+      const q = quiz[lang][state[lang].current];
+      const unanswered = q.gaps.some(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      q.gaps.forEach(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === gap.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`gap-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+    /* ── cloze ── */
+
+    function renderCloze(q, lang) {
+      const lines = q.codeLines.map((line, li) => {
+        if (!line.blank) {
+          return `<span class="cloze-line">${escHtml(line.before)}${escHtml(line.after)}</span>`;
+        }
+        const id = `cloze-${lang}-${li}`;
+        const opts = ['<option value="" selected disabled>?</option>']
+          .concat(line.blank.options.map(o =>
+            `<option value="${escHtml(o)}">${escHtml(o)}</option>`
+          )).join('');
+        return `<span class="cloze-line">${escHtml(line.before)}<select class="cloze-select" id="${id}">${opts}</select>${escHtml(line.after)}</span>`;
+      }).join('');
+
+      return `
+        <div class="cloze-block">${lines}</div>
+        <button class="gap-check-btn" id="cloze-check-${lang}" onclick="checkCloze('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkCloze(lang) {
+      const q = quiz[lang][state[lang].current];
+      const blanks = q.codeLines
+        .map((line, li) => ({ line, li }))
+        .filter(x => x.line.blank);
+
+      const unanswered = blanks.some(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      blanks.forEach(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === x.line.blank.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`cloze-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+  </script>
+</body>
+
+</html>
