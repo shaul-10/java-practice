@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגילי כתיבה ליחידה 2.6</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>תרגילי כתיבה ליחידה 2.6</h1>
+      <p>Java א – מבוא למדעי המחשב  |  10 שאלות ברמת קושי עולה</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">רוחב</span>
+      <button type="button" data-w="820">צר</button>
+      <button type="button" data-w="980">בינוני</button>
+      <button type="button" data-w="1200">רחב</button>
+      <button type="button" data-w="100%">מלא</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">קוד</span>
+      <button type="button" data-theme="dark">כהה</button>
+      <button type="button" data-theme="light">בהיר</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>תוכן עניינים</h2>
+    <div class="toc-grid">
+<a href="#q1">שאלה 1 – אופרטורים לוגיים – טמפרטורה נוחה</a>
+<a href="#q2">שאלה 2 – אופרטורים לוגיים – משלוח חינם</a>
+<a href="#q3">שאלה 3 – אופרטורים לוגיים – כניסה למתקן</a>
+<a href="#q4">שאלה 4 – אופרטורים לוגיים – התחלקות ב-3 וב-5</a>
+<a href="#q5">שאלה 5 – אופרטורים לוגיים – נקודה בתוך מלבן</a>
+<a href="#q6">שאלה 6 – אופרטורים לוגיים – הנחה בכרטיסים</a>
+<a href="#q7">שאלה 7 – אופרטורים לוגיים – חפיפת פגישות</a>
+<a href="#q8">שאלה 8 – אופרטורים לוגיים – שנה מעוברת</a>
+<a href="#q9">שאלה 9 – אופרטורים לוגיים – בדיקת משולש</a>
+<a href="#q10">שאלה 10 – אופרטורים לוגיים – ספרות המספר</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">רמה 1 – בסיסי</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>שאלה 1 – אופרטורים לוגיים – טמפרטורה נוחה</h3>
+      <span class="q-en">Q1 – logical operators – comfortable temperature</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – אופרטורים לוגיים – טמפרטורה נוחה</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את טמפרטורת החדר, מדפיסה אותה, וקובעת אם היא נוחה. טמפרטורה נוחה היא טמפרטורה שאינה נמוכה מ-18 מעלות ואינה גבוהה מ-24 מעלות.<br>שימו לב שמדובר בשני תנאים שחייבים להתקיים יחד, ולכן יש לנסח אותם כתנאי מורכב אחד בעזרת האופרטור <strong>&amp;&amp;</strong>.<br>לפני כל קליטה על התוכנית להדפיס הודעת הנחיה למשתמש, כפי שמופיע בפלט הנדרש.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 21.5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the room temperature:
+The temperature is: 21.5
+The temperature is comfortable</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 27.3</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the room temperature:
+The temperature is: 27.3
+The temperature is not comfortable</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-0" download="Logic01_ComfortRange.java" style="text-decoration: underline;">Logic01_ComfortRange.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - ComfortRange
+ *
+ * Write a main program that reads the room temperature from the user, prints it,
+ * and decides whether it is comfortable. A comfortable temperature is not below 18
+ * degrees and not above 24 degrees. Use a single compound condition with &amp;&amp;.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 21.5
+ * Expected output (first run):
+ *   Enter the room temperature:
+ *   The temperature is: 21.5
+ *   The temperature is comfortable
+ *
+ * Input (second run): 27.3
+ * Expected output (second run):
+ *   Enter the room temperature:
+ *   The temperature is: 27.3
+ *   The temperature is not comfortable
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic01_ComfortRange</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>שאלה 2 – אופרטורים לוגיים – משלוח חינם</h3>
+      <span class="q-en">Q2 – logical operators – free shipping</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – אופרטורים לוגיים – משלוח חינם</h4>
+
+<p dir="rtl" style="text-align: right;">
+בחנות מקוונת ניתן משלוח חינם ללקוח שסכום הזמנתו הוא 200 שקלים ומעלה, וכן ללקוח שהזמין עשרה פריטים ומעלה. די בכך שאחד משני התנאים מתקיים. אם אף אחד מהם אינו מתקיים, מתווספים לסכום דמי משלוח בסך 25 שקלים.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את סכום ההזמנה ואת מספר הפריטים, ומדפיסה אם המשלוח חינם ומהו הסכום הסופי לתשלום. שימו לב שסכום ההזמנה הוא נתון ממשי ואילו מספר הפריטים הוא נתון שלם, ובחרו את סוג המשתנה המתאים לכל נתון.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 250.0 ואחריו 2</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the order amount:
+Enter the number of items:
+Free shipping
+Total to pay: 250.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 90.0 ואחריו 12</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the order amount:
+Enter the number of items:
+Free shipping
+Total to pay: 90.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 150.0 ואחריו 4</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the order amount:
+Enter the number of items:
+Shipping fee: 25.0
+Total to pay: 175.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-1" download="Logic02_FreeShipping.java" style="text-decoration: underline;">Logic02_FreeShipping.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - FreeShipping
+ *
+ * Write a main program that reads the order amount and the number of items.
+ * Shipping is free if the amount is 200 or more, or if the number of items is 10 or more.
+ * Otherwise a shipping fee of 25 is added to the amount.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 250.0, 2
+ * Expected output (first run):
+ *   Enter the order amount:
+ *   Enter the number of items:
+ *   Free shipping
+ *   Total to pay: 250.0
+ *
+ * Input (second run): 90.0, 12
+ * Expected output (second run):
+ *   Enter the order amount:
+ *   Enter the number of items:
+ *   Free shipping
+ *   Total to pay: 90.0
+ *
+ * Input (third run): 150.0, 4
+ * Expected output (third run):
+ *   Enter the order amount:
+ *   Enter the number of items:
+ *   Shipping fee: 25.0
+ *   Total to pay: 175.0
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic02_FreeShipping</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>שאלה 3 – אופרטורים לוגיים – כניסה למתקן</h3>
+      <span class="q-en">Q3 – logical operators – ride entry</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – אופרטורים לוגיים – כניסה למתקן</h4>
+
+<p dir="rtl" style="text-align: right;">
+הכניסה למתקן בפארק מותרת רק למי שגילו 12 שנים ומעלה וגובהו 140 סנטימטרים ומעלה.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את גילו ואת גובהו של הילד ומדפיסה אם הכניסה מותרת.<br>את הפתרון יש לכתוב בעזרת <strong>תנאי מקונן</strong>: תחילה נבדק הגיל, ורק אם הוא מתאים נבדק הגובה. שימו לב שגם כאשר התנאי החיצוני מתקיים והתנאי הפנימי אינו מתקיים על התוכנית להדפיס הודעה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 14 ואחריו 155</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the age:
+Enter the height in cm:
+Entry is allowed</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 14 ואחריו 132</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the age:
+Enter the height in cm:
+Entry is not allowed</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 9 ואחריו 150</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the age:
+Enter the height in cm:
+Entry is not allowed</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-2" download="Logic03_RideEntry.java" style="text-decoration: underline;">Logic03_RideEntry.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - RideEntry
+ *
+ * Write a main program that reads the age and the height of a child.
+ * Entry to the ride is allowed only for age 12 or more and height 140 cm or more.
+ * Solve it with a nested condition: check the height only if the age is suitable.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 14, 155
+ * Expected output (first run):
+ *   Enter the age:
+ *   Enter the height in cm:
+ *   Entry is allowed
+ *
+ * Input (second run): 14, 132
+ * Expected output (second run):
+ *   Enter the age:
+ *   Enter the height in cm:
+ *   Entry is not allowed
+ *
+ * Input (third run): 9, 150
+ * Expected output (third run):
+ *   Enter the age:
+ *   Enter the height in cm:
+ *   Entry is not allowed
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic03_RideEntry</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">רמה 2 – ביניים</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>שאלה 4 – אופרטורים לוגיים – התחלקות ב-3 וב-5</h3>
+      <span class="q-en">Q4 – logical operators – divisible by 3 and 5</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – אופרטורים לוגיים – התחלקות ב-3 וב-5</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש מספר שלם, מדפיסה אותו, ומדפיסה שתי שורות נוספות: האם המספר מתחלק גם ב-3 וגם ב-5, והאם הוא מתחלק בלפחות אחד מהם.<br>שימו לב שהשורה הראשונה דורשת את האופרטור <strong>&amp;&amp;</strong> והשורה השנייה את האופרטור <strong>||</strong>, כאשר שני התנאים הפשוטים זהים בשתיהן.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 45</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter an integer:
+The number is: 45
+Divisible by both 3 and 5: yes
+Divisible by at least one of them: yes</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 9</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter an integer:
+The number is: 9
+Divisible by both 3 and 5: no
+Divisible by at least one of them: yes</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 22</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter an integer:
+The number is: 22
+Divisible by both 3 and 5: no
+Divisible by at least one of them: no</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-3" download="Logic04_DivisibleCheck.java" style="text-decoration: underline;">Logic04_DivisibleCheck.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - DivisibleCheck
+ *
+ * Write a main program that reads an integer and prints two answers:
+ * whether the number is divisible by both 3 and 5, and whether it is
+ * divisible by at least one of them.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 45
+ * Expected output (first run):
+ *   Enter an integer:
+ *   The number is: 45
+ *   Divisible by both 3 and 5: yes
+ *   Divisible by at least one of them: yes
+ *
+ * Input (second run): 9
+ * Expected output (second run):
+ *   Enter an integer:
+ *   The number is: 9
+ *   Divisible by both 3 and 5: no
+ *   Divisible by at least one of them: yes
+ *
+ * Input (third run): 22
+ * Expected output (third run):
+ *   Enter an integer:
+ *   The number is: 22
+ *   Divisible by both 3 and 5: no
+ *   Divisible by at least one of them: no
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic04_DivisibleCheck</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>שאלה 5 – אופרטורים לוגיים – נקודה בתוך מלבן</h3>
+      <span class="q-en">Q5 – logical operators – point in rectangle</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – אופרטורים לוגיים – נקודה בתוך מלבן</h4>
+
+<p dir="rtl" style="text-align: right;">
+מלבן מונח על מערכת צירים כך שפינתו השמאלית התחתונה נמצאת בראשית הצירים, ואורכי צלעותיו נתונים.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את רוחב המלבן, את גובהו, ואת שיעורי ה-x וה-y של נקודה, ומדפיסה אם הנקודה נמצאת בתוך המלבן או מחוצה לו. נקודה שנמצאת בדיוק על אחת מצלעות המלבן נחשבת כנמצאת בתוכו.<br>יש לכתוב <strong>שני תנאים נפרדים</strong>: הראשון בודק את התנאי המורכב, והשני מפעיל עליו את <strong>אופרטור השלילה !</strong> — על אותו תנאי עצמו, ללא שינוי אף אחת מההשוואות שבתוכו.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 10.0 ואחריו 5.0 ואחריו 3.0 ואחריו 2.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the width of the rectangle:
+Enter the height of the rectangle:
+Enter the x coordinate of the point:
+Enter the y coordinate of the point:
+The point is inside the rectangle</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 10.0 ואחריו 5.0 ואחריו 3.0 ואחריו 7.5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the width of the rectangle:
+Enter the height of the rectangle:
+Enter the x coordinate of the point:
+Enter the y coordinate of the point:
+The point is outside the rectangle</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-4" download="Logic05_PointInRectangle.java" style="text-decoration: underline;">Logic05_PointInRectangle.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - PointInRectangle
+ *
+ * Write a main program that reads the width and the height of a rectangle whose
+ * lower left corner is at the origin, and the x and y coordinates of a point.
+ * Print whether the point is inside the rectangle or outside it.
+ * Write two separate conditions: the second one applies the ! operator to the first.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 10.0, 5.0, 3.0, 2.0
+ * Expected output (first run):
+ *   Enter the width of the rectangle:
+ *   Enter the height of the rectangle:
+ *   Enter the x coordinate of the point:
+ *   Enter the y coordinate of the point:
+ *   The point is inside the rectangle
+ *
+ * Input (second run): 10.0, 5.0, 3.0, 7.5
+ * Expected output (second run):
+ *   Enter the width of the rectangle:
+ *   Enter the height of the rectangle:
+ *   Enter the x coordinate of the point:
+ *   Enter the y coordinate of the point:
+ *   The point is outside the rectangle
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic05_PointInRectangle</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>שאלה 6 – אופרטורים לוגיים – הנחה בכרטיסים</h3>
+      <span class="q-en">Q6 – logical operators – ticket discount</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – אופרטורים לוגיים – הנחה בכרטיסים</h4>
+
+<p dir="rtl" style="text-align: right;">
+מחירו של כרטיס להופעה הוא 45 שקלים. הנחה של 25 אחוזים מסכום הקנייה ניתנת לילד שגילו קטן מ-18 וכן לוותיק שגילו גדול מ-65. לאחר מכן, אם נקנו ארבעה כרטיסים או יותר והסכום שנותר לתשלום גדול מ-150 שקלים, מופחתים ממנו עוד 10 שקלים.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את גיל הקונה ואת מספר הכרטיסים, ומדפיסה את הסכום לפני ההנחות ואת הסכום לתשלום. שימו לב שהגיל ומספר הכרטיסים הם נתונים שלמים ואילו הסכומים ממשיים, ובחרו את סוג המשתנה המתאים לכל נתון.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 14 ואחריו 5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the age:
+Enter the number of tickets:
+Total before discounts: 225.0
+Total to pay: 158.75</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 30 ואחריו 2</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the age:
+Enter the number of tickets:
+Total before discounts: 90.0
+Total to pay: 90.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 70 ואחריו 2</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the age:
+Enter the number of tickets:
+Total before discounts: 90.0
+Total to pay: 67.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-5" download="Logic06_TicketDiscount.java" style="text-decoration: underline;">Logic06_TicketDiscount.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - TicketDiscount
+ *
+ * A concert ticket costs 45. A discount of 25 percent is given to a buyer
+ * younger than 18 or older than 65. After that, if four tickets or more were
+ * bought and the remaining amount is greater than 150, another 10 is subtracted.
+ * Write a main program that reads the age and the number of tickets and prints
+ * the amount before the discounts and the amount to pay.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 14, 5
+ * Expected output (first run):
+ *   Enter the age:
+ *   Enter the number of tickets:
+ *   Total before discounts: 225.0
+ *   Total to pay: 158.75
+ *
+ * Input (second run): 30, 2
+ * Expected output (second run):
+ *   Enter the age:
+ *   Enter the number of tickets:
+ *   Total before discounts: 90.0
+ *   Total to pay: 90.0
+ *
+ * Input (third run): 70, 2
+ * Expected output (third run):
+ *   Enter the age:
+ *   Enter the number of tickets:
+ *   Total before discounts: 90.0
+ *   Total to pay: 67.5
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic06_TicketDiscount</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>שאלה 7 – אופרטורים לוגיים – חפיפת פגישות</h3>
+      <span class="q-en">Q7 – logical operators – meeting overlap</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – אופרטורים לוגיים – חפיפת פגישות</h4>
+
+<p dir="rtl" style="text-align: right;">
+שתי פגישות מתקיימות באותו יום, וכל אחת מהן נתונה על ידי שעת התחלה ושעת סיום שלמות.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את שעות ההתחלה והסיום של הפגישה הראשונה ולאחריהן את אלה של הפגישה השנייה, ומדפיסה אם הפגישות חופפות — כלומר אם קיימת שעה שבה שתיהן מתקיימות יחד.<br>שימו לב: פגישה שמסתיימת בדיוק בשעה שבה מתחילה השנייה אינה חופפת לה. אין לפרט את כל המקרים האפשריים — נסחו תנאי מורכב אחד הבודק את החפיפה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 9 ואחריו 11 ואחריו 10 ואחריו 12</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the start hour of the first meeting:
+Enter the end hour of the first meeting:
+Enter the start hour of the second meeting:
+Enter the end hour of the second meeting:
+The meetings overlap</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 9 ואחריו 11 ואחריו 11 ואחריו 13</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the start hour of the first meeting:
+Enter the end hour of the first meeting:
+Enter the start hour of the second meeting:
+Enter the end hour of the second meeting:
+The meetings do not overlap</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-6" download="Logic07_MeetingOverlap.java" style="text-decoration: underline;">Logic07_MeetingOverlap.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - MeetingOverlap
+ *
+ * Two meetings take place on the same day, each given by a whole start hour
+ * and a whole end hour. Write a main program that reads the start and end hours
+ * of the first meeting and then those of the second, and prints whether they overlap.
+ * A meeting that ends exactly when the other begins does not overlap it.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 9, 11, 10, 12
+ * Expected output (first run):
+ *   Enter the start hour of the first meeting:
+ *   Enter the end hour of the first meeting:
+ *   Enter the start hour of the second meeting:
+ *   Enter the end hour of the second meeting:
+ *   The meetings overlap
+ *
+ * Input (second run): 9, 11, 11, 13
+ * Expected output (second run):
+ *   Enter the start hour of the first meeting:
+ *   Enter the end hour of the first meeting:
+ *   Enter the start hour of the second meeting:
+ *   Enter the end hour of the second meeting:
+ *   The meetings do not overlap
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic07_MeetingOverlap</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">רמה 3 – מתקדם</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>שאלה 8 – אופרטורים לוגיים – שנה מעוברת</h3>
+      <span class="q-en">Q8 – logical operators – leap year</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – אופרטורים לוגיים – שנה מעוברת</h4>
+
+<p dir="rtl" style="text-align: right;">
+בלוח השנה הלועזי שנה היא מעוברת אם היא מתחלקת ב-4 ואינה מתחלקת ב-100, או אם היא מתחלקת ב-400.<br>כתבו תוכנית ראשית הקולטת מהמשתמש שנה ומדפיסה אם היא מעוברת.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 2024</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a year:
+Year 2024 is a leap year</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 1900</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a year:
+Year 1900 is not a leap year</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 2000</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a year:
+Year 2000 is a leap year</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-7" download="Logic08_LeapYear.java" style="text-decoration: underline;">Logic08_LeapYear.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - LeapYear
+ *
+ * A year is a leap year if it is divisible by 4 and not divisible by 100,
+ * or if it is divisible by 400.
+ * Write a main program that reads a year and prints whether it is a leap year.
+ * Use a single compound condition that combines &amp;&amp;, || and !.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 2024
+ * Expected output (first run):
+ *   Enter a year:
+ *   Year 2024 is a leap year
+ *
+ * Input (second run): 1900
+ * Expected output (second run):
+ *   Enter a year:
+ *   Year 1900 is not a leap year
+ *
+ * Input (third run): 2000
+ * Expected output (third run):
+ *   Enter a year:
+ *   Year 2000 is a leap year
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic08_LeapYear</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>שאלה 9 – אופרטורים לוגיים – בדיקת משולש</h3>
+      <span class="q-en">Q9 – logical operators – triangle check</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – אופרטורים לוגיים – בדיקת משולש</h4>
+
+<p dir="rtl" style="text-align: right;">
+משלושה קטעים ניתן לבנות משולש רק אם סכום כל שני קטעים גדול מהקטע השלישי. משולש שווה שוקיים הוא משולש שלפחות שתיים מצלעותיו שוות באורכן.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את אורכי שלושת הקטעים ומדפיסה אם ניתן לבנות מהם משולש. רק אם ניתן לבנות משולש, על התוכנית להדפיס שורה נוספת הקובעת אם הוא שווה שוקיים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 5.0 ואחריו 5.0 ואחריו 8.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first side:
+Enter the second side:
+Enter the third side:
+The sides can form a triangle
+The triangle is isosceles</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 4.0 ואחריו 6.0 ואחריו 7.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first side:
+Enter the second side:
+Enter the third side:
+The sides can form a triangle
+The triangle is not isosceles</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 2.0 ואחריו 3.0 ואחריו 9.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first side:
+Enter the second side:
+Enter the third side:
+The sides cannot form a triangle</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-8" download="Logic09_TriangleCheck.java" style="text-decoration: underline;">Logic09_TriangleCheck.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - TriangleCheck
+ *
+ * Three segments can form a triangle only if the sum of every two of them is
+ * greater than the third one. A triangle is isosceles if at least two of its
+ * sides are equal. Write a main program that reads the three lengths and prints
+ * whether they can form a triangle, and only then whether the triangle is isosceles.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 5.0, 5.0, 8.0
+ * Expected output (first run):
+ *   Enter the first side:
+ *   Enter the second side:
+ *   Enter the third side:
+ *   The sides can form a triangle
+ *   The triangle is isosceles
+ *
+ * Input (second run): 4.0, 6.0, 7.0
+ * Expected output (second run):
+ *   Enter the first side:
+ *   Enter the second side:
+ *   Enter the third side:
+ *   The sides can form a triangle
+ *   The triangle is not isosceles
+ *
+ * Input (third run): 2.0, 3.0, 9.0
+ * Expected output (third run):
+ *   Enter the first side:
+ *   Enter the second side:
+ *   Enter the third side:
+ *   The sides cannot form a triangle
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic09_TriangleCheck</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>שאלה 10 – אופרטורים לוגיים – ספרות המספר</h3>
+      <span class="q-en">Q10 – logical operators – distinct digits</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – אופרטורים לוגיים – ספרות המספר</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המבקשת מהמשתמש מספר שלם בן שלוש ספרות וקולטת אותו.<br>תחילה על התוכנית לבדוק שהמספר שהתקבל הוא אכן בן שלוש ספרות. אם אינו כזה, על התוכנית להדפיס הודעת שגיאה ולא לבצע דבר נוסף.<br>אם המספר תקין, על התוכנית לחלץ ממנו את ספרת המאות, ספרת העשרות וספרת האחדות, להדפיס כל אחת מהן, ולאחר מכן להדפיס שתי שורות נוספות: האם שלוש הספרות שונות זו מזו, והאם כולן זוגיות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 486</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a three digit number:
+Hundreds digit: 4
+Tens digit: 8
+Units digit: 6
+All digits are different: yes
+All digits are even: yes</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 927</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a three digit number:
+Hundreds digit: 9
+Tens digit: 2
+Units digit: 7
+All digits are different: yes
+All digits are even: no</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 353</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a three digit number:
+Hundreds digit: 3
+Tens digit: 5
+Units digit: 3
+All digits are different: no
+All digits are even: no</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הרביעית:</strong> 1250</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הרביעית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a three digit number:
+The number is not a three digit number</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-9" download="Logic10_DistinctDigits.java" style="text-decoration: underline;">Logic10_DistinctDigits.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Logical Operators - DistinctDigits
+ *
+ * Write a main program that asks the user for a three digit integer and reads it.
+ * First check that the number is indeed a three digit number. If it is not,
+ * print an error message and do nothing else.
+ * If the number is valid, extract its hundreds, tens and units digits, print each
+ * of them, and then print whether all three digits are different from each other
+ * and whether all of them are even.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 486
+ * Expected output (first run):
+ *   Enter a three digit number:
+ *   Hundreds digit: 4
+ *   Tens digit: 8
+ *   Units digit: 6
+ *   All digits are different: yes
+ *   All digits are even: yes
+ *
+ * Input (second run): 927
+ * Expected output (second run):
+ *   Enter a three digit number:
+ *   Hundreds digit: 9
+ *   Tens digit: 2
+ *   Units digit: 7
+ *   All digits are different: yes
+ *   All digits are even: no
+ *
+ * Input (third run): 353
+ * Expected output (third run):
+ *   Enter a three digit number:
+ *   Hundreds digit: 3
+ *   Tens digit: 5
+ *   Units digit: 3
+ *   All digits are different: no
+ *   All digits are even: no
+ *
+ * Input (fourth run): 1250
+ * Expected output (fourth run):
+ *   Enter a three digit number:
+ *   The number is not a three digit number
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Logic10_DistinctDigits</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>הקבצים מוטמעים בדף — ההורדה פועלת גם ללא חיבור לאינטרנט</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Logic01_ComfortRange.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIENvbWZvcnRSYW5nZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSByb29tIHRlbXBlcmF0dXJlIGZyb20gdGhlIHVzZXIsIHByaW50cyBpdCwKICogYW5kIGRlY2lkZXMgd2hldGhlciBpdCBpcyBjb21mb3J0YWJsZS4gQSBjb21mb3J0YWJsZSB0ZW1wZXJhdHVyZSBpcyBub3QgYmVsb3cgMTgKICogZGVncmVlcyBhbmQgbm90IGFib3ZlIDI0IGRlZ3JlZXMuIFVzZSBhIHNpbmdsZSBjb21wb3VuZCBjb25kaXRpb24gd2l0aCAmJi4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBJbnB1dCAoZmlyc3QgcnVuKTogMjEuNQogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgdGhlIHJvb20gdGVtcGVyYXR1cmU6CiAqICAgVGhlIHRlbXBlcmF0dXJlIGlzOiAyMS41CiAqICAgVGhlIHRlbXBlcmF0dXJlIGlzIGNvbWZvcnRhYmxlCiAqCiAqIElucHV0IChzZWNvbmQgcnVuKTogMjcuMwogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIHRoZSByb29tIHRlbXBlcmF0dXJlOgogKiAgIFRoZSB0ZW1wZXJhdHVyZSBpczogMjcuMwogKiAgIFRoZSB0ZW1wZXJhdHVyZSBpcyBub3QgY29tZm9ydGFibGUKICoKICovCnB1YmxpYyBjbGFzcyBMb2dpYzAxX0NvbWZvcnRSYW5nZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Logic02_FreeShipping.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIEZyZWVTaGlwcGluZwogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBvcmRlciBhbW91bnQgYW5kIHRoZSBudW1iZXIgb2YgaXRlbXMuCiAqIFNoaXBwaW5nIGlzIGZyZWUgaWYgdGhlIGFtb3VudCBpcyAyMDAgb3IgbW9yZSwgb3IgaWYgdGhlIG51bWJlciBvZiBpdGVtcyBpcyAxMCBvciBtb3JlLgogKiBPdGhlcndpc2UgYSBzaGlwcGluZyBmZWUgb2YgMjUgaXMgYWRkZWQgdG8gdGhlIGFtb3VudC4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBJbnB1dCAoZmlyc3QgcnVuKTogMjUwLjAsIDIKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHRoZSBvcmRlciBhbW91bnQ6CiAqICAgRW50ZXIgdGhlIG51bWJlciBvZiBpdGVtczoKICogICBGcmVlIHNoaXBwaW5nCiAqICAgVG90YWwgdG8gcGF5OiAyNTAuMAogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6IDkwLjAsIDEyCiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgdGhlIG9yZGVyIGFtb3VudDoKICogICBFbnRlciB0aGUgbnVtYmVyIG9mIGl0ZW1zOgogKiAgIEZyZWUgc2hpcHBpbmcKICogICBUb3RhbCB0byBwYXk6IDkwLjAKICoKICogSW5wdXQgKHRoaXJkIHJ1bik6IDE1MC4wLCA0CiAqIEV4cGVjdGVkIG91dHB1dCAodGhpcmQgcnVuKToKICogICBFbnRlciB0aGUgb3JkZXIgYW1vdW50OgogKiAgIEVudGVyIHRoZSBudW1iZXIgb2YgaXRlbXM6CiAqICAgU2hpcHBpbmcgZmVlOiAyNS4wCiAqICAgVG90YWwgdG8gcGF5OiAxNzUuMAogKgogKi8KcHVibGljIGNsYXNzIExvZ2ljMDJfRnJlZVNoaXBwaW5nIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Logic03_RideEntry.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIFJpZGVFbnRyeQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBhZ2UgYW5kIHRoZSBoZWlnaHQgb2YgYSBjaGlsZC4KICogRW50cnkgdG8gdGhlIHJpZGUgaXMgYWxsb3dlZCBvbmx5IGZvciBhZ2UgMTIgb3IgbW9yZSBhbmQgaGVpZ2h0IDE0MCBjbSBvciBtb3JlLgogKiBTb2x2ZSBpdCB3aXRoIGEgbmVzdGVkIGNvbmRpdGlvbjogY2hlY2sgdGhlIGhlaWdodCBvbmx5IGlmIHRoZSBhZ2UgaXMgc3VpdGFibGUuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6IDE0LCAxNTUKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHRoZSBhZ2U6CiAqICAgRW50ZXIgdGhlIGhlaWdodCBpbiBjbToKICogICBFbnRyeSBpcyBhbGxvd2VkCiAqCiAqIElucHV0IChzZWNvbmQgcnVuKTogMTQsIDEzMgogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIHRoZSBhZ2U6CiAqICAgRW50ZXIgdGhlIGhlaWdodCBpbiBjbToKICogICBFbnRyeSBpcyBub3QgYWxsb3dlZAogKgogKiBJbnB1dCAodGhpcmQgcnVuKTogOSwgMTUwCiAqIEV4cGVjdGVkIG91dHB1dCAodGhpcmQgcnVuKToKICogICBFbnRlciB0aGUgYWdlOgogKiAgIEVudGVyIHRoZSBoZWlnaHQgaW4gY206CiAqICAgRW50cnkgaXMgbm90IGFsbG93ZWQKICoKICovCnB1YmxpYyBjbGFzcyBMb2dpYzAzX1JpZGVFbnRyeSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Logic04_DivisibleCheck.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIERpdmlzaWJsZUNoZWNrCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgYW4gaW50ZWdlciBhbmQgcHJpbnRzIHR3byBhbnN3ZXJzOgogKiB3aGV0aGVyIHRoZSBudW1iZXIgaXMgZGl2aXNpYmxlIGJ5IGJvdGggMyBhbmQgNSwgYW5kIHdoZXRoZXIgaXQgaXMKICogZGl2aXNpYmxlIGJ5IGF0IGxlYXN0IG9uZSBvZiB0aGVtLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOiA0NQogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgYW4gaW50ZWdlcjoKICogICBUaGUgbnVtYmVyIGlzOiA0NQogKiAgIERpdmlzaWJsZSBieSBib3RoIDMgYW5kIDU6IHllcwogKiAgIERpdmlzaWJsZSBieSBhdCBsZWFzdCBvbmUgb2YgdGhlbTogeWVzCiAqCiAqIElucHV0IChzZWNvbmQgcnVuKTogOQogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIGFuIGludGVnZXI6CiAqICAgVGhlIG51bWJlciBpczogOQogKiAgIERpdmlzaWJsZSBieSBib3RoIDMgYW5kIDU6IG5vCiAqICAgRGl2aXNpYmxlIGJ5IGF0IGxlYXN0IG9uZSBvZiB0aGVtOiB5ZXMKICoKICogSW5wdXQgKHRoaXJkIHJ1bik6IDIyCiAqIEV4cGVjdGVkIG91dHB1dCAodGhpcmQgcnVuKToKICogICBFbnRlciBhbiBpbnRlZ2VyOgogKiAgIFRoZSBudW1iZXIgaXM6IDIyCiAqICAgRGl2aXNpYmxlIGJ5IGJvdGggMyBhbmQgNTogbm8KICogICBEaXZpc2libGUgYnkgYXQgbGVhc3Qgb25lIG9mIHRoZW06IG5vCiAqCiAqLwpwdWJsaWMgY2xhc3MgTG9naWMwNF9EaXZpc2libGVDaGVjayB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Logic05_PointInRectangle.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIFBvaW50SW5SZWN0YW5nbGUKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyB0aGUgd2lkdGggYW5kIHRoZSBoZWlnaHQgb2YgYSByZWN0YW5nbGUgd2hvc2UKICogbG93ZXIgbGVmdCBjb3JuZXIgaXMgYXQgdGhlIG9yaWdpbiwgYW5kIHRoZSB4IGFuZCB5IGNvb3JkaW5hdGVzIG9mIGEgcG9pbnQuCiAqIFByaW50IHdoZXRoZXIgdGhlIHBvaW50IGlzIGluc2lkZSB0aGUgcmVjdGFuZ2xlIG9yIG91dHNpZGUgaXQuCiAqIFdyaXRlIHR3byBzZXBhcmF0ZSBjb25kaXRpb25zOiB0aGUgc2Vjb25kIG9uZSBhcHBsaWVzIHRoZSAhIG9wZXJhdG9yIHRvIHRoZSBmaXJzdC4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBJbnB1dCAoZmlyc3QgcnVuKTogMTAuMCwgNS4wLCAzLjAsIDIuMAogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgdGhlIHdpZHRoIG9mIHRoZSByZWN0YW5nbGU6CiAqICAgRW50ZXIgdGhlIGhlaWdodCBvZiB0aGUgcmVjdGFuZ2xlOgogKiAgIEVudGVyIHRoZSB4IGNvb3JkaW5hdGUgb2YgdGhlIHBvaW50OgogKiAgIEVudGVyIHRoZSB5IGNvb3JkaW5hdGUgb2YgdGhlIHBvaW50OgogKiAgIFRoZSBwb2ludCBpcyBpbnNpZGUgdGhlIHJlY3RhbmdsZQogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6IDEwLjAsIDUuMCwgMy4wLCA3LjUKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB0aGUgd2lkdGggb2YgdGhlIHJlY3RhbmdsZToKICogICBFbnRlciB0aGUgaGVpZ2h0IG9mIHRoZSByZWN0YW5nbGU6CiAqICAgRW50ZXIgdGhlIHggY29vcmRpbmF0ZSBvZiB0aGUgcG9pbnQ6CiAqICAgRW50ZXIgdGhlIHkgY29vcmRpbmF0ZSBvZiB0aGUgcG9pbnQ6CiAqICAgVGhlIHBvaW50IGlzIG91dHNpZGUgdGhlIHJlY3RhbmdsZQogKgogKi8KcHVibGljIGNsYXNzIExvZ2ljMDVfUG9pbnRJblJlY3RhbmdsZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Logic06_TicketDiscount.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIFRpY2tldERpc2NvdW50CiAqCiAqIEEgY29uY2VydCB0aWNrZXQgY29zdHMgNDUuIEEgZGlzY291bnQgb2YgMjUgcGVyY2VudCBpcyBnaXZlbiB0byBhIGJ1eWVyCiAqIHlvdW5nZXIgdGhhbiAxOCBvciBvbGRlciB0aGFuIDY1LiBBZnRlciB0aGF0LCBpZiBmb3VyIHRpY2tldHMgb3IgbW9yZSB3ZXJlCiAqIGJvdWdodCBhbmQgdGhlIHJlbWFpbmluZyBhbW91bnQgaXMgZ3JlYXRlciB0aGFuIDE1MCwgYW5vdGhlciAxMCBpcyBzdWJ0cmFjdGVkLgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBhZ2UgYW5kIHRoZSBudW1iZXIgb2YgdGlja2V0cyBhbmQgcHJpbnRzCiAqIHRoZSBhbW91bnQgYmVmb3JlIHRoZSBkaXNjb3VudHMgYW5kIHRoZSBhbW91bnQgdG8gcGF5LgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOiAxNCwgNQogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgdGhlIGFnZToKICogICBFbnRlciB0aGUgbnVtYmVyIG9mIHRpY2tldHM6CiAqICAgVG90YWwgYmVmb3JlIGRpc2NvdW50czogMjI1LjAKICogICBUb3RhbCB0byBwYXk6IDE1OC43NQogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6IDMwLCAyCiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgdGhlIGFnZToKICogICBFbnRlciB0aGUgbnVtYmVyIG9mIHRpY2tldHM6CiAqICAgVG90YWwgYmVmb3JlIGRpc2NvdW50czogOTAuMAogKiAgIFRvdGFsIHRvIHBheTogOTAuMAogKgogKiBJbnB1dCAodGhpcmQgcnVuKTogNzAsIDIKICogRXhwZWN0ZWQgb3V0cHV0ICh0aGlyZCBydW4pOgogKiAgIEVudGVyIHRoZSBhZ2U6CiAqICAgRW50ZXIgdGhlIG51bWJlciBvZiB0aWNrZXRzOgogKiAgIFRvdGFsIGJlZm9yZSBkaXNjb3VudHM6IDkwLjAKICogICBUb3RhbCB0byBwYXk6IDY3LjUKICoKICovCnB1YmxpYyBjbGFzcyBMb2dpYzA2X1RpY2tldERpc2NvdW50IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Logic07_MeetingOverlap.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIE1lZXRpbmdPdmVybGFwCiAqCiAqIFR3byBtZWV0aW5ncyB0YWtlIHBsYWNlIG9uIHRoZSBzYW1lIGRheSwgZWFjaCBnaXZlbiBieSBhIHdob2xlIHN0YXJ0IGhvdXIKICogYW5kIGEgd2hvbGUgZW5kIGhvdXIuIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIHN0YXJ0IGFuZCBlbmQgaG91cnMKICogb2YgdGhlIGZpcnN0IG1lZXRpbmcgYW5kIHRoZW4gdGhvc2Ugb2YgdGhlIHNlY29uZCwgYW5kIHByaW50cyB3aGV0aGVyIHRoZXkgb3ZlcmxhcC4KICogQSBtZWV0aW5nIHRoYXQgZW5kcyBleGFjdGx5IHdoZW4gdGhlIG90aGVyIGJlZ2lucyBkb2VzIG5vdCBvdmVybGFwIGl0LgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOiA5LCAxMSwgMTAsIDEyCiAqIEV4cGVjdGVkIG91dHB1dCAoZmlyc3QgcnVuKToKICogICBFbnRlciB0aGUgc3RhcnQgaG91ciBvZiB0aGUgZmlyc3QgbWVldGluZzoKICogICBFbnRlciB0aGUgZW5kIGhvdXIgb2YgdGhlIGZpcnN0IG1lZXRpbmc6CiAqICAgRW50ZXIgdGhlIHN0YXJ0IGhvdXIgb2YgdGhlIHNlY29uZCBtZWV0aW5nOgogKiAgIEVudGVyIHRoZSBlbmQgaG91ciBvZiB0aGUgc2Vjb25kIG1lZXRpbmc6CiAqICAgVGhlIG1lZXRpbmdzIG92ZXJsYXAKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiA5LCAxMSwgMTEsIDEzCiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgdGhlIHN0YXJ0IGhvdXIgb2YgdGhlIGZpcnN0IG1lZXRpbmc6CiAqICAgRW50ZXIgdGhlIGVuZCBob3VyIG9mIHRoZSBmaXJzdCBtZWV0aW5nOgogKiAgIEVudGVyIHRoZSBzdGFydCBob3VyIG9mIHRoZSBzZWNvbmQgbWVldGluZzoKICogICBFbnRlciB0aGUgZW5kIGhvdXIgb2YgdGhlIHNlY29uZCBtZWV0aW5nOgogKiAgIFRoZSBtZWV0aW5ncyBkbyBub3Qgb3ZlcmxhcAogKgogKi8KcHVibGljIGNsYXNzIExvZ2ljMDdfTWVldGluZ092ZXJsYXAgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Logic08_LeapYear.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIExlYXBZZWFyCiAqCiAqIEEgeWVhciBpcyBhIGxlYXAgeWVhciBpZiBpdCBpcyBkaXZpc2libGUgYnkgNCBhbmQgbm90IGRpdmlzaWJsZSBieSAxMDAsCiAqIG9yIGlmIGl0IGlzIGRpdmlzaWJsZSBieSA0MDAuCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgYSB5ZWFyIGFuZCBwcmludHMgd2hldGhlciBpdCBpcyBhIGxlYXAgeWVhci4KICogVXNlIGEgc2luZ2xlIGNvbXBvdW5kIGNvbmRpdGlvbiB0aGF0IGNvbWJpbmVzICYmLCB8fCBhbmQgIS4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBJbnB1dCAoZmlyc3QgcnVuKTogMjAyNAogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgYSB5ZWFyOgogKiAgIFllYXIgMjAyNCBpcyBhIGxlYXAgeWVhcgogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6IDE5MDAKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciBhIHllYXI6CiAqICAgWWVhciAxOTAwIGlzIG5vdCBhIGxlYXAgeWVhcgogKgogKiBJbnB1dCAodGhpcmQgcnVuKTogMjAwMAogKiBFeHBlY3RlZCBvdXRwdXQgKHRoaXJkIHJ1bik6CiAqICAgRW50ZXIgYSB5ZWFyOgogKiAgIFllYXIgMjAwMCBpcyBhIGxlYXAgeWVhcgogKgogKi8KcHVibGljIGNsYXNzIExvZ2ljMDhfTGVhcFllYXIgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Logic09_TriangleCheck.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIFRyaWFuZ2xlQ2hlY2sKICoKICogVGhyZWUgc2VnbWVudHMgY2FuIGZvcm0gYSB0cmlhbmdsZSBvbmx5IGlmIHRoZSBzdW0gb2YgZXZlcnkgdHdvIG9mIHRoZW0gaXMKICogZ3JlYXRlciB0aGFuIHRoZSB0aGlyZCBvbmUuIEEgdHJpYW5nbGUgaXMgaXNvc2NlbGVzIGlmIGF0IGxlYXN0IHR3byBvZiBpdHMKICogc2lkZXMgYXJlIGVxdWFsLiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSB0aHJlZSBsZW5ndGhzIGFuZCBwcmludHMKICogd2hldGhlciB0aGV5IGNhbiBmb3JtIGEgdHJpYW5nbGUsIGFuZCBvbmx5IHRoZW4gd2hldGhlciB0aGUgdHJpYW5nbGUgaXMgaXNvc2NlbGVzLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOiA1LjAsIDUuMCwgOC4wCiAqIEV4cGVjdGVkIG91dHB1dCAoZmlyc3QgcnVuKToKICogICBFbnRlciB0aGUgZmlyc3Qgc2lkZToKICogICBFbnRlciB0aGUgc2Vjb25kIHNpZGU6CiAqICAgRW50ZXIgdGhlIHRoaXJkIHNpZGU6CiAqICAgVGhlIHNpZGVzIGNhbiBmb3JtIGEgdHJpYW5nbGUKICogICBUaGUgdHJpYW5nbGUgaXMgaXNvc2NlbGVzCiAqCiAqIElucHV0IChzZWNvbmQgcnVuKTogNC4wLCA2LjAsIDcuMAogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIHRoZSBmaXJzdCBzaWRlOgogKiAgIEVudGVyIHRoZSBzZWNvbmQgc2lkZToKICogICBFbnRlciB0aGUgdGhpcmQgc2lkZToKICogICBUaGUgc2lkZXMgY2FuIGZvcm0gYSB0cmlhbmdsZQogKiAgIFRoZSB0cmlhbmdsZSBpcyBub3QgaXNvc2NlbGVzCiAqCiAqIElucHV0ICh0aGlyZCBydW4pOiAyLjAsIDMuMCwgOS4wCiAqIEV4cGVjdGVkIG91dHB1dCAodGhpcmQgcnVuKToKICogICBFbnRlciB0aGUgZmlyc3Qgc2lkZToKICogICBFbnRlciB0aGUgc2Vjb25kIHNpZGU6CiAqICAgRW50ZXIgdGhlIHRoaXJkIHNpZGU6CiAqICAgVGhlIHNpZGVzIGNhbm5vdCBmb3JtIGEgdHJpYW5nbGUKICoKICovCnB1YmxpYyBjbGFzcyBMb2dpYzA5X1RyaWFuZ2xlQ2hlY2sgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Logic10_DistinctDigits.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBMb2dpY2FsIE9wZXJhdG9ycyAtIERpc3RpbmN0RGlnaXRzCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgYXNrcyB0aGUgdXNlciBmb3IgYSB0aHJlZSBkaWdpdCBpbnRlZ2VyIGFuZCByZWFkcyBpdC4KICogRmlyc3QgY2hlY2sgdGhhdCB0aGUgbnVtYmVyIGlzIGluZGVlZCBhIHRocmVlIGRpZ2l0IG51bWJlci4gSWYgaXQgaXMgbm90LAogKiBwcmludCBhbiBlcnJvciBtZXNzYWdlIGFuZCBkbyBub3RoaW5nIGVsc2UuCiAqIElmIHRoZSBudW1iZXIgaXMgdmFsaWQsIGV4dHJhY3QgaXRzIGh1bmRyZWRzLCB0ZW5zIGFuZCB1bml0cyBkaWdpdHMsIHByaW50IGVhY2gKICogb2YgdGhlbSwgYW5kIHRoZW4gcHJpbnQgd2hldGhlciBhbGwgdGhyZWUgZGlnaXRzIGFyZSBkaWZmZXJlbnQgZnJvbSBlYWNoIG90aGVyCiAqIGFuZCB3aGV0aGVyIGFsbCBvZiB0aGVtIGFyZSBldmVuLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOiA0ODYKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIGEgdGhyZWUgZGlnaXQgbnVtYmVyOgogKiAgIEh1bmRyZWRzIGRpZ2l0OiA0CiAqICAgVGVucyBkaWdpdDogOAogKiAgIFVuaXRzIGRpZ2l0OiA2CiAqICAgQWxsIGRpZ2l0cyBhcmUgZGlmZmVyZW50OiB5ZXMKICogICBBbGwgZGlnaXRzIGFyZSBldmVuOiB5ZXMKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiA5MjcKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciBhIHRocmVlIGRpZ2l0IG51bWJlcjoKICogICBIdW5kcmVkcyBkaWdpdDogOQogKiAgIFRlbnMgZGlnaXQ6IDIKICogICBVbml0cyBkaWdpdDogNwogKiAgIEFsbCBkaWdpdHMgYXJlIGRpZmZlcmVudDogeWVzCiAqICAgQWxsIGRpZ2l0cyBhcmUgZXZlbjogbm8KICoKICogSW5wdXQgKHRoaXJkIHJ1bik6IDM1MwogKiBFeHBlY3RlZCBvdXRwdXQgKHRoaXJkIHJ1bik6CiAqICAgRW50ZXIgYSB0aHJlZSBkaWdpdCBudW1iZXI6CiAqICAgSHVuZHJlZHMgZGlnaXQ6IDMKICogICBUZW5zIGRpZ2l0OiA1CiAqICAgVW5pdHMgZGlnaXQ6IDMKICogICBBbGwgZGlnaXRzIGFyZSBkaWZmZXJlbnQ6IG5vCiAqICAgQWxsIGRpZ2l0cyBhcmUgZXZlbjogbm8KICoKICogSW5wdXQgKGZvdXJ0aCBydW4pOiAxMjUwCiAqIEV4cGVjdGVkIG91dHB1dCAoZm91cnRoIHJ1bik6CiAqICAgRW50ZXIgYSB0aHJlZSBkaWdpdCBudW1iZXI6CiAqICAgVGhlIG51bWJlciBpcyBub3QgYSB0aHJlZSBkaWdpdCBudW1iZXIKICoKICovCnB1YmxpYyBjbGFzcyBMb2dpYzEwX0Rpc3RpbmN0RGlnaXRzIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

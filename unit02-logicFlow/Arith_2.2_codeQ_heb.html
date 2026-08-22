@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגילי כתיבה ליחידה 2.2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>תרגילי כתיבה ליחידה 2.2</h1>
+      <p>Java א – מבוא למדעי המחשב  |  10 שאלות ברמת קושי עולה</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">רוחב</span>
+      <button type="button" data-w="820">צר</button>
+      <button type="button" data-w="980">בינוני</button>
+      <button type="button" data-w="1200">רחב</button>
+      <button type="button" data-w="100%">מלא</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">קוד</span>
+      <button type="button" data-theme="dark">כהה</button>
+      <button type="button" data-theme="light">בהיר</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>תוכן עניינים</h2>
+    <div class="toc-grid">
+<a href="#q1">שאלה 1 – פעולות אריתמטיות – עדכון ניקוד</a>
+<a href="#q2">שאלה 2 – פעולות אריתמטיות – חלוקת סוכריות</a>
+<a href="#q3">שאלה 3 – פעולות אריתמטיות – מונה חניות</a>
+<a href="#q4">שאלה 4 – פעולות אריתמטיות – תבניות ביצים</a>
+<a href="#q5">שאלה 5 – פעולות אריתמטיות – ממוצע ציונים</a>
+<a href="#q6">שאלה 6 – פעולות אריתמטיות – מיכל מים</a>
+<a href="#q7">שאלה 7 – פעולות אריתמטיות – פירוט למטבעות</a>
+<a href="#q8">שאלה 8 – פעולות אריתמטיות – סכום ספרות</a>
+<a href="#q9">שאלה 9 – פעולות אריתמטיות – מושבים באולם</a>
+<a href="#q10">שאלה 10 – פעולות אריתמטיות – אוטובוסים לטיול</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">רמה 1 – בסיסי</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>שאלה 1 – פעולות אריתמטיות – עדכון ניקוד</h3>
+      <span class="q-en">Q1 – arithmetic – score update</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – פעולות אריתמטיות – עדכון ניקוד</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית העוקבת אחר ניקודו של שחקן במשחק. הניקוד ההתחלתי הוא 120 נקודות. השחקן קיבל בונוס של 45 נקודות, לאחר מכן הניקוד שצבר הוכפל, ולבסוף הוטל עליו קנס של 30 נקודות. יש לשמור את הניקוד במשתנה מתאים ולעדכן אותו בכתיב המקוצר בלבד (<code>+=</code>, <code>*=</code>, <code>-=</code>). הדפיסו את הניקוד לאחר כל שלב.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">After bonus: 165
+After doubling: 330
+After penalty: 300</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-0" download="Arith01_ScoreUpdate.java" style="text-decoration: underline;">Arith01_ScoreUpdate.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Score Update
+ *
+ * Write a main program that tracks a player's score in a game.
+ * The starting score is 120 points. The player receives a bonus of 45 points,
+ * then the score is doubled, and finally a penalty of 30 points is applied.
+ * The score must be stored in a suitable variable and updated using the
+ * shorthand operators only (+=, *=, -=).
+ * Print the score after each step.
+ *
+ * Expected output:
+ *   After bonus: 165
+ *   After doubling: 330
+ *   After penalty: 300
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith01_ScoreUpdate</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>שאלה 2 – פעולות אריתמטיות – חלוקת סוכריות</h3>
+      <span class="q-en">Q2 – arithmetic – candy sharing</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – פעולות אריתמטיות – חלוקת סוכריות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המחלקת 47 סוכריות שווה בשווה בין 6 ילדים. התוכנית מחשבת כמה סוכריות יקבל כל ילד וכמה סוכריות יישארו. יש לשמור כל נתון במשתנה מתאים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Candies per child: 7
+Candies left: 5</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-1" download="Arith02_CandySharing.java" style="text-decoration: underline;">Arith02_CandySharing.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Candy Sharing
+ *
+ * Write a main program that shares 47 candies equally among 6 children.
+ * The program calculates how many candies each child gets and how many
+ * candies are left over.
+ * Each value must be stored in a suitable variable.
+ *
+ * Expected output:
+ *   Candies per child: 7
+ *   Candies left: 5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith02_CandySharing</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>שאלה 3 – פעולות אריתמטיות – מונה חניות</h3>
+      <span class="q-en">Q3 – arithmetic – parking counter</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – פעולות אריתמטיות – מונה חניות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית העוקבת אחר מספר המקומות הפנויים בחניון. בתחילה יש 40 מקומות פנויים. לאחר מכן נכנס רכב אחד, נכנס רכב נוסף, ולבסוף יצא רכב אחד.<br>יש לשמור את מספר המקומות הפנויים במשתנה מתאים ולשנות אותו באמצעות האופרטורים <code>++</code> ו-<code>--</code> בלבד. הדפיסו את מספר המקומות הפנויים לאחר כל שינוי.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Free spots: 39
+Free spots: 38
+Free spots: 39</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-2" download="Arith03_ParkingCounter.java" style="text-decoration: underline;">Arith03_ParkingCounter.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Parking Counter
+ *
+ * Write a main program that tracks the number of free spots in a parking lot.
+ * At the beginning there are 40 free spots. Then one car enters, a second car
+ * enters, and finally one car leaves.
+ * The number of free spots must be stored in a suitable variable and changed
+ * using the ++ and -- operators only.
+ * Print the number of free spots after each change.
+ *
+ * Expected output:
+ *   Free spots: 39
+ *   Free spots: 38
+ *   Free spots: 39
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith03_ParkingCounter</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">רמה 2 – ביניים</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>שאלה 4 – פעולות אריתמטיות – תבניות ביצים</h3>
+      <span class="q-en">Q4 – arithmetic – egg boxes</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – פעולות אריתמטיות – תבניות ביצים</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית האורזת 250 ביצים בתבניות שכל אחת מהן מכילה 12 ביצים. התוכנית מחשבת כמה תבניות מלאות ניתן לארוז וכמה ביצים יישארו מחוץ לתבניות. יש לשמור כל נתון במשתנה מתאים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Full boxes: 20
+Eggs left: 10</pre>
+
+<p dir="rtl" style="text-align: right;">
+לאחר הרצת התוכנית, שנו את הנתונים ל-178 ביצים ולתבניות שמכילות 8 ביצים, והריצו שוב.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Full boxes: 22
+Eggs left: 2</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-3" download="Arith04_EggBoxes.java" style="text-decoration: underline;">Arith04_EggBoxes.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Egg Boxes
+ *
+ * Write a main program that packs 250 eggs into boxes that hold 12 eggs each.
+ * The program calculates how many full boxes can be packed and how many eggs
+ * are left outside the boxes.
+ * Each value must be stored in a suitable variable.
+ *
+ * Expected output:
+ *   Full boxes: 20
+ *   Eggs left: 10
+ *
+ * Then change the data to 178 eggs and boxes that hold 8 eggs each,
+ * and run the program again.
+ *
+ * Expected output:
+ *   Full boxes: 22
+ *   Eggs left: 2
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith04_EggBoxes</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>שאלה 5 – פעולות אריתמטיות – ממוצע ציונים</h3>
+      <span class="q-en">Q5 – arithmetic – test average</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – פעולות אריתמטיות – ממוצע ציונים</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית העוסקת בארבעה ציונים: 88, 91, 79 ו-84. התוכנית מדפיסה את סכום הציונים, את הממוצע המתקבל מחלוקה בין שני מספרים שלמים, ואת הממוצע המדויק. יש לשמור כל נתון במשתנה מתאים.<br>זכרו שבפעולה שמעורב בה ערך ממשי – גם התוצאה ממשית.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Sum: 342
+Integer average: 85
+Exact average: 85.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-4" download="Arith05_TestAverage.java" style="text-decoration: underline;">Arith05_TestAverage.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Test Average
+ *
+ * Write a main program that works with four test scores: 88, 91, 79 and 84.
+ * The program prints the sum of the scores, the average obtained by dividing
+ * two whole numbers, and the exact average.
+ * Each value must be stored in a suitable variable.
+ * Remember that when a real value takes part in an operation,
+ * the result is real as well.
+ *
+ * Expected output:
+ *   Sum: 342
+ *   Integer average: 85
+ *   Exact average: 85.5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith05_TestAverage</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>שאלה 6 – פעולות אריתמטיות – מיכל מים</h3>
+      <span class="q-en">Q6 – arithmetic – water tank</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – פעולות אריתמטיות – מיכל מים</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית העוקבת אחר כמות המים במיכל. במיכל יש בתחילה 500.0 ליטר. לאחר מכן נוספו 125.5 ליטר, נצרכו 80.0 ליטר, ולבסוף הכמות שנותרה חולקה שווה בשווה בין שני מיכלים זהים.<br>יש לשמור את הכמות במשתנה מתאים ולעדכן אותו בכתיב המקוצר בלבד (<code>+=</code>, <code>-=</code>, <code>/=</code>). הדפיסו את הכמות לאחר כל שלב.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">After filling: 625.5
+After use: 545.5
+In each tank: 272.75</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-5" download="Arith06_WaterTank.java" style="text-decoration: underline;">Arith06_WaterTank.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Water Tank
+ *
+ * Write a main program that tracks the amount of water in a tank.
+ * The tank starts with 500.0 liters. Then 125.5 liters are added,
+ * 80.0 liters are used, and finally the remaining water is divided equally
+ * between two identical tanks.
+ * The amount must be stored in a suitable variable and updated using the
+ * shorthand operators only (+=, -=, /=).
+ * Print the amount after each step.
+ *
+ * Expected output:
+ *   After filling: 625.5
+ *   After use: 545.5
+ *   In each tank: 272.75
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith06_WaterTank</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>שאלה 7 – פעולות אריתמטיות – פירוט למטבעות</h3>
+      <span class="q-en">Q7 – arithmetic – coin change</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – פעולות אריתמטיות – פירוט למטבעות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המפרטת סכום של 387 אגורות למספר המזערי של מטבעות, כאשר המטבעות הקיימים הם 100, 50, 10 ו-1 אגורות. התוכנית מדפיסה כמה מטבעות מכל סוג דרושים. יש לשמור כל נתון במשתנה מתאים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Coins of 100: 3
+Coins of 50: 1
+Coins of 10: 3
+Coins of 1: 7</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-6" download="Arith07_CoinChange.java" style="text-decoration: underline;">Arith07_CoinChange.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Coin Change
+ *
+ * Write a main program that breaks an amount of 387 agorot into the smallest
+ * possible number of coins, using coins of 100, 50, 10 and 1 agorot.
+ * The program prints how many coins of each kind are needed.
+ * Each value must be stored in a suitable variable.
+ *
+ * Expected output:
+ *   Coins of 100: 3
+ *   Coins of 50: 1
+ *   Coins of 10: 3
+ *   Coins of 1: 7
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith07_CoinChange</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">רמה 3 – מתקדם</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>שאלה 8 – פעולות אריתמטיות – סכום ספרות</h3>
+      <span class="q-en">Q8 – arithmetic – digit sum</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – פעולות אריתמטיות – סכום ספרות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית העוסקת במספר בן שלוש ספרות 583. התוכנית מוצאת את ספרת המאות, את ספרת העשרות, את ספרת היחידות ואת סכום שלושתן.<br>את המספר יש לשמור במשתנה אחד בלבד, ואת הספרות לחלץ ממנו באמצעות פעולות אריתמטיות בלבד.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hundreds: 5
+Tens: 8
+Units: 3
+Digit sum: 16</pre>
+
+<p dir="rtl" style="text-align: right;">
+לאחר הרצת התוכנית, שנו את המספר ל-906 והריצו שוב.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hundreds: 9
+Tens: 0
+Units: 6
+Digit sum: 15</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-7" download="Arith08_DigitSum.java" style="text-decoration: underline;">Arith08_DigitSum.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Digit Sum
+ *
+ * Write a main program that works with the three digit number 583.
+ * The program finds the hundreds digit, the tens digit and the units digit,
+ * and also the sum of the three digits.
+ * The number must be stored in one variable, and the digits must be found
+ * using arithmetic operations only.
+ *
+ * Expected output:
+ *   Hundreds: 5
+ *   Tens: 8
+ *   Units: 3
+ *   Digit sum: 16
+ *
+ * Then change the number to 906 and run the program again.
+ *
+ * Expected output:
+ *   Hundreds: 9
+ *   Tens: 0
+ *   Units: 6
+ *   Digit sum: 15
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith08_DigitSum</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>שאלה 9 – פעולות אריתמטיות – מושבים באולם</h3>
+      <span class="q-en">Q9 – arithmetic – hall seats</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – פעולות אריתמטיות – מושבים באולם</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית עבור אולם שבו 17 שורות ובכל שורה 24 מושבים. נמכרו 375 כרטיסים, והקהל ממלא את השורות בזו אחר זו החל מהשורה הראשונה. התוכנית מחשבת את מספר המושבים הכולל באולם, כמה שורות מתמלאות לגמרי, כמה מושבים תפוסים בשורה שאחריהן, וכמה מושבים יישארו ריקים. יש לשמור כל נתון במשתנה מתאים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Total seats: 408
+Full rows: 15
+Seats in next row: 15
+Empty seats: 33</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-8" download="Arith09_HallSeats.java" style="text-decoration: underline;">Arith09_HallSeats.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – Hall Seats
+ *
+ * Write a main program for a hall that has 17 rows with 24 seats in each row.
+ * 375 tickets were sold, and the audience fills the rows one after another
+ * from the first row onwards.
+ * The program calculates the total number of seats in the hall, how many rows
+ * are completely full, how many seats are taken in the next row,
+ * and how many seats stay empty.
+ * Each value must be stored in a suitable variable.
+ *
+ * Expected output:
+ *   Total seats: 408
+ *   Full rows: 15
+ *   Seats in next row: 15
+ *   Empty seats: 33
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith09_HallSeats</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>שאלה 10 – פעולות אריתמטיות – אוטובוסים לטיול</h3>
+      <span class="q-en">Q10 – arithmetic – school trip buses</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – פעולות אריתמטיות – אוטובוסים לטיול</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית עבור טיול שכבתי שיוצאים אליו 138 תלמידים ו-12 מלווים. כל אוטובוס מכיל עד 45 נוסעים ועלותו 1200 ש"ח. התוכנית מחשבת את מספר הנוסעים הכולל, את מספר האוטובוסים שיש להזמין, כמה מקומות יישארו פנויים באוטובוס האחרון, את העלות הכוללת ואת חלקו של כל נוסע בעלות זו. יש לשמור כל נתון במשתנה מתאים.<br><strong>שימו לב:</strong> אוטובוס אחרון שאינו מלא הוא עדיין אוטובוס שיש להזמין. תנאים טרם נלמדו, ולכן יש לחשב את מספר האוטובוסים באמצעות ביטוי אריתמטי בלבד.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Passengers: 150
+Buses needed: 4
+Free seats in last bus: 30
+Total cost: 4800
+Cost per passenger: 32</pre>
+
+<p dir="rtl" style="text-align: right;">
+לאחר הרצת התוכנית, שנו את הנתונים ל-92 תלמידים ו-8 מלווים והריצו שוב. קיבולת האוטובוס והמחיר נשארים ללא שינוי.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Passengers: 100
+Buses needed: 3
+Free seats in last bus: 35
+Total cost: 3600
+Cost per passenger: 36</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-9" download="Arith10_SchoolTripBuses.java" style="text-decoration: underline;">Arith10_SchoolTripBuses.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Arithmetic Operations – School Trip Buses
+ *
+ * Write a main program for a school trip with 138 students and 12 teachers.
+ * Every bus carries up to 45 passengers and costs 1200.
+ * The program calculates the total number of passengers, the number of buses
+ * that must be ordered, how many seats stay empty in the last bus,
+ * the total cost, and the share of every passenger in that cost.
+ * Each value must be stored in a suitable variable.
+ *
+ * Note: a last bus that is not full is still a bus that must be ordered.
+ * Conditions have not been learned yet, so the number of buses must be
+ * calculated with an arithmetic expression only.
+ *
+ * Expected output:
+ *   Passengers: 150
+ *   Buses needed: 4
+ *   Free seats in last bus: 30
+ *   Total cost: 4800
+ *   Cost per passenger: 32
+ *
+ * Then change the data to 92 students and 8 teachers, and run the program
+ * again. The bus capacity and the price stay the same.
+ *
+ * Expected output:
+ *   Passengers: 100
+ *   Buses needed: 3
+ *   Free seats in last bus: 35
+ *   Total cost: 3600
+ *   Cost per passenger: 36
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Arith10_SchoolTripBuses</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>הקבצים מוטמעים בדף — ההורדה פועלת גם ללא חיבור לאינטרנט</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Arith01_ScoreUpdate.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIFNjb3JlIFVwZGF0ZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHRyYWNrcyBhIHBsYXllcidzIHNjb3JlIGluIGEgZ2FtZS4KICogVGhlIHN0YXJ0aW5nIHNjb3JlIGlzIDEyMCBwb2ludHMuIFRoZSBwbGF5ZXIgcmVjZWl2ZXMgYSBib251cyBvZiA0NSBwb2ludHMsCiAqIHRoZW4gdGhlIHNjb3JlIGlzIGRvdWJsZWQsIGFuZCBmaW5hbGx5IGEgcGVuYWx0eSBvZiAzMCBwb2ludHMgaXMgYXBwbGllZC4KICogVGhlIHNjb3JlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUgYW5kIHVwZGF0ZWQgdXNpbmcgdGhlCiAqIHNob3J0aGFuZCBvcGVyYXRvcnMgb25seSAoKz0sICo9LCAtPSkuCiAqIFByaW50IHRoZSBzY29yZSBhZnRlciBlYWNoIHN0ZXAuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBBZnRlciBib251czogMTY1CiAqICAgQWZ0ZXIgZG91Ymxpbmc6IDMzMAogKiAgIEFmdGVyIHBlbmFsdHk6IDMwMAogKi8KcHVibGljIGNsYXNzIEFyaXRoMDFfU2NvcmVVcGRhdGUgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Arith02_CandySharing.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIENhbmR5IFNoYXJpbmcKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBzaGFyZXMgNDcgY2FuZGllcyBlcXVhbGx5IGFtb25nIDYgY2hpbGRyZW4uCiAqIFRoZSBwcm9ncmFtIGNhbGN1bGF0ZXMgaG93IG1hbnkgY2FuZGllcyBlYWNoIGNoaWxkIGdldHMgYW5kIGhvdyBtYW55CiAqIGNhbmRpZXMgYXJlIGxlZnQgb3Zlci4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgQ2FuZGllcyBwZXIgY2hpbGQ6IDcKICogICBDYW5kaWVzIGxlZnQ6IDUKICovCnB1YmxpYyBjbGFzcyBBcml0aDAyX0NhbmR5U2hhcmluZyB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Arith03_ParkingCounter.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIFBhcmtpbmcgQ291bnRlcgogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHRyYWNrcyB0aGUgbnVtYmVyIG9mIGZyZWUgc3BvdHMgaW4gYSBwYXJraW5nIGxvdC4KICogQXQgdGhlIGJlZ2lubmluZyB0aGVyZSBhcmUgNDAgZnJlZSBzcG90cy4gVGhlbiBvbmUgY2FyIGVudGVycywgYSBzZWNvbmQgY2FyCiAqIGVudGVycywgYW5kIGZpbmFsbHkgb25lIGNhciBsZWF2ZXMuCiAqIFRoZSBudW1iZXIgb2YgZnJlZSBzcG90cyBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlIGFuZCBjaGFuZ2VkCiAqIHVzaW5nIHRoZSArKyBhbmQgLS0gb3BlcmF0b3JzIG9ubHkuCiAqIFByaW50IHRoZSBudW1iZXIgb2YgZnJlZSBzcG90cyBhZnRlciBlYWNoIGNoYW5nZS4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEZyZWUgc3BvdHM6IDM5CiAqICAgRnJlZSBzcG90czogMzgKICogICBGcmVlIHNwb3RzOiAzOQogKi8KcHVibGljIGNsYXNzIEFyaXRoMDNfUGFya2luZ0NvdW50ZXIgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Arith04_EggBoxes.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIEVnZyBCb3hlcwogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHBhY2tzIDI1MCBlZ2dzIGludG8gYm94ZXMgdGhhdCBob2xkIDEyIGVnZ3MgZWFjaC4KICogVGhlIHByb2dyYW0gY2FsY3VsYXRlcyBob3cgbWFueSBmdWxsIGJveGVzIGNhbiBiZSBwYWNrZWQgYW5kIGhvdyBtYW55IGVnZ3MKICogYXJlIGxlZnQgb3V0c2lkZSB0aGUgYm94ZXMuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEZ1bGwgYm94ZXM6IDIwCiAqICAgRWdncyBsZWZ0OiAxMAogKgogKiBUaGVuIGNoYW5nZSB0aGUgZGF0YSB0byAxNzggZWdncyBhbmQgYm94ZXMgdGhhdCBob2xkIDggZWdncyBlYWNoLAogKiBhbmQgcnVuIHRoZSBwcm9ncmFtIGFnYWluLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRnVsbCBib3hlczogMjIKICogICBFZ2dzIGxlZnQ6IDIKICovCnB1YmxpYyBjbGFzcyBBcml0aDA0X0VnZ0JveGVzIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Arith05_TestAverage.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIFRlc3QgQXZlcmFnZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHdvcmtzIHdpdGggZm91ciB0ZXN0IHNjb3JlczogODgsIDkxLCA3OSBhbmQgODQuCiAqIFRoZSBwcm9ncmFtIHByaW50cyB0aGUgc3VtIG9mIHRoZSBzY29yZXMsIHRoZSBhdmVyYWdlIG9idGFpbmVkIGJ5IGRpdmlkaW5nCiAqIHR3byB3aG9sZSBudW1iZXJzLCBhbmQgdGhlIGV4YWN0IGF2ZXJhZ2UuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICogUmVtZW1iZXIgdGhhdCB3aGVuIGEgcmVhbCB2YWx1ZSB0YWtlcyBwYXJ0IGluIGFuIG9wZXJhdGlvbiwKICogdGhlIHJlc3VsdCBpcyByZWFsIGFzIHdlbGwuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBTdW06IDM0MgogKiAgIEludGVnZXIgYXZlcmFnZTogODUKICogICBFeGFjdCBhdmVyYWdlOiA4NS41CiAqLwpwdWJsaWMgY2xhc3MgQXJpdGgwNV9UZXN0QXZlcmFnZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Arith06_WaterTank.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIFdhdGVyIFRhbmsKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCB0cmFja3MgdGhlIGFtb3VudCBvZiB3YXRlciBpbiBhIHRhbmsuCiAqIFRoZSB0YW5rIHN0YXJ0cyB3aXRoIDUwMC4wIGxpdGVycy4gVGhlbiAxMjUuNSBsaXRlcnMgYXJlIGFkZGVkLAogKiA4MC4wIGxpdGVycyBhcmUgdXNlZCwgYW5kIGZpbmFsbHkgdGhlIHJlbWFpbmluZyB3YXRlciBpcyBkaXZpZGVkIGVxdWFsbHkKICogYmV0d2VlbiB0d28gaWRlbnRpY2FsIHRhbmtzLgogKiBUaGUgYW1vdW50IG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUgYW5kIHVwZGF0ZWQgdXNpbmcgdGhlCiAqIHNob3J0aGFuZCBvcGVyYXRvcnMgb25seSAoKz0sIC09LCAvPSkuCiAqIFByaW50IHRoZSBhbW91bnQgYWZ0ZXIgZWFjaCBzdGVwLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgQWZ0ZXIgZmlsbGluZzogNjI1LjUKICogICBBZnRlciB1c2U6IDU0NS41CiAqICAgSW4gZWFjaCB0YW5rOiAyNzIuNzUKICovCnB1YmxpYyBjbGFzcyBBcml0aDA2X1dhdGVyVGFuayB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Arith07_CoinChange.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIENvaW4gQ2hhbmdlCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgYnJlYWtzIGFuIGFtb3VudCBvZiAzODcgYWdvcm90IGludG8gdGhlIHNtYWxsZXN0CiAqIHBvc3NpYmxlIG51bWJlciBvZiBjb2lucywgdXNpbmcgY29pbnMgb2YgMTAwLCA1MCwgMTAgYW5kIDEgYWdvcm90LgogKiBUaGUgcHJvZ3JhbSBwcmludHMgaG93IG1hbnkgY29pbnMgb2YgZWFjaCBraW5kIGFyZSBuZWVkZWQuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIENvaW5zIG9mIDEwMDogMwogKiAgIENvaW5zIG9mIDUwOiAxCiAqICAgQ29pbnMgb2YgMTA6IDMKICogICBDb2lucyBvZiAxOiA3CiAqLwpwdWJsaWMgY2xhc3MgQXJpdGgwN19Db2luQ2hhbmdlIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Arith08_DigitSum.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIERpZ2l0IFN1bQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHdvcmtzIHdpdGggdGhlIHRocmVlIGRpZ2l0IG51bWJlciA1ODMuCiAqIFRoZSBwcm9ncmFtIGZpbmRzIHRoZSBodW5kcmVkcyBkaWdpdCwgdGhlIHRlbnMgZGlnaXQgYW5kIHRoZSB1bml0cyBkaWdpdCwKICogYW5kIGFsc28gdGhlIHN1bSBvZiB0aGUgdGhyZWUgZGlnaXRzLgogKiBUaGUgbnVtYmVyIG11c3QgYmUgc3RvcmVkIGluIG9uZSB2YXJpYWJsZSwgYW5kIHRoZSBkaWdpdHMgbXVzdCBiZSBmb3VuZAogKiB1c2luZyBhcml0aG1ldGljIG9wZXJhdGlvbnMgb25seS4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEh1bmRyZWRzOiA1CiAqICAgVGVuczogOAogKiAgIFVuaXRzOiAzCiAqICAgRGlnaXQgc3VtOiAxNgogKgogKiBUaGVuIGNoYW5nZSB0aGUgbnVtYmVyIHRvIDkwNiBhbmQgcnVuIHRoZSBwcm9ncmFtIGFnYWluLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgSHVuZHJlZHM6IDkKICogICBUZW5zOiAwCiAqICAgVW5pdHM6IDYKICogICBEaWdpdCBzdW06IDE1CiAqLwpwdWJsaWMgY2xhc3MgQXJpdGgwOF9EaWdpdFN1bSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Arith09_HallSeats.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIEhhbGwgU2VhdHMKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gZm9yIGEgaGFsbCB0aGF0IGhhcyAxNyByb3dzIHdpdGggMjQgc2VhdHMgaW4gZWFjaCByb3cuCiAqIDM3NSB0aWNrZXRzIHdlcmUgc29sZCwgYW5kIHRoZSBhdWRpZW5jZSBmaWxscyB0aGUgcm93cyBvbmUgYWZ0ZXIgYW5vdGhlcgogKiBmcm9tIHRoZSBmaXJzdCByb3cgb253YXJkcy4KICogVGhlIHByb2dyYW0gY2FsY3VsYXRlcyB0aGUgdG90YWwgbnVtYmVyIG9mIHNlYXRzIGluIHRoZSBoYWxsLCBob3cgbWFueSByb3dzCiAqIGFyZSBjb21wbGV0ZWx5IGZ1bGwsIGhvdyBtYW55IHNlYXRzIGFyZSB0YWtlbiBpbiB0aGUgbmV4dCByb3csCiAqIGFuZCBob3cgbWFueSBzZWF0cyBzdGF5IGVtcHR5LgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBUb3RhbCBzZWF0czogNDA4CiAqICAgRnVsbCByb3dzOiAxNQogKiAgIFNlYXRzIGluIG5leHQgcm93OiAxNQogKiAgIEVtcHR5IHNlYXRzOiAzMwogKi8KcHVibGljIGNsYXNzIEFyaXRoMDlfSGFsbFNlYXRzIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Arith10_SchoolTripBuses.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBBcml0aG1ldGljIE9wZXJhdGlvbnMg4oCTIFNjaG9vbCBUcmlwIEJ1c2VzCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIGZvciBhIHNjaG9vbCB0cmlwIHdpdGggMTM4IHN0dWRlbnRzIGFuZCAxMiB0ZWFjaGVycy4KICogRXZlcnkgYnVzIGNhcnJpZXMgdXAgdG8gNDUgcGFzc2VuZ2VycyBhbmQgY29zdHMgMTIwMC4KICogVGhlIHByb2dyYW0gY2FsY3VsYXRlcyB0aGUgdG90YWwgbnVtYmVyIG9mIHBhc3NlbmdlcnMsIHRoZSBudW1iZXIgb2YgYnVzZXMKICogdGhhdCBtdXN0IGJlIG9yZGVyZWQsIGhvdyBtYW55IHNlYXRzIHN0YXkgZW1wdHkgaW4gdGhlIGxhc3QgYnVzLAogKiB0aGUgdG90YWwgY29zdCwgYW5kIHRoZSBzaGFyZSBvZiBldmVyeSBwYXNzZW5nZXIgaW4gdGhhdCBjb3N0LgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIE5vdGU6IGEgbGFzdCBidXMgdGhhdCBpcyBub3QgZnVsbCBpcyBzdGlsbCBhIGJ1cyB0aGF0IG11c3QgYmUgb3JkZXJlZC4KICogQ29uZGl0aW9ucyBoYXZlIG5vdCBiZWVuIGxlYXJuZWQgeWV0LCBzbyB0aGUgbnVtYmVyIG9mIGJ1c2VzIG11c3QgYmUKICogY2FsY3VsYXRlZCB3aXRoIGFuIGFyaXRobWV0aWMgZXhwcmVzc2lvbiBvbmx5LgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgUGFzc2VuZ2VyczogMTUwCiAqICAgQnVzZXMgbmVlZGVkOiA0CiAqICAgRnJlZSBzZWF0cyBpbiBsYXN0IGJ1czogMzAKICogICBUb3RhbCBjb3N0OiA0ODAwCiAqICAgQ29zdCBwZXIgcGFzc2VuZ2VyOiAzMgogKgogKiBUaGVuIGNoYW5nZSB0aGUgZGF0YSB0byA5MiBzdHVkZW50cyBhbmQgOCB0ZWFjaGVycywgYW5kIHJ1biB0aGUgcHJvZ3JhbQogKiBhZ2Fpbi4gVGhlIGJ1cyBjYXBhY2l0eSBhbmQgdGhlIHByaWNlIHN0YXkgdGhlIHNhbWUuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBQYXNzZW5nZXJzOiAxMDAKICogICBCdXNlcyBuZWVkZWQ6IDMKICogICBGcmVlIHNlYXRzIGluIGxhc3QgYnVzOiAzNQogKiAgIFRvdGFsIGNvc3Q6IDM2MDAKICogICBDb3N0IHBlciBwYXNzZW5nZXI6IDM2CiAqLwpwdWJsaWMgY2xhc3MgQXJpdGgxMF9TY2hvb2xUcmlwQnVzZXMgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

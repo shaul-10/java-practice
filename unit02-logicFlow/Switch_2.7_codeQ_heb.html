@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגילי כתיבה ליחידה 2.7</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>תרגילי כתיבה ליחידה 2.7</h1>
+      <p>Java א – מבוא למדעי המחשב  |  10 שאלות ברמת קושי עולה</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">רוחב</span>
+      <button type="button" data-w="820">צר</button>
+      <button type="button" data-w="980">בינוני</button>
+      <button type="button" data-w="1200">רחב</button>
+      <button type="button" data-w="100%">מלא</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">קוד</span>
+      <button type="button" data-theme="dark">כהה</button>
+      <button type="button" data-theme="light">בהיר</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>תוכן עניינים</h2>
+    <div class="toc-grid">
+<a href="#q1">שאלה 1 – בחירה מרובה – מחיר כרטיס לפי סוג נוסע</a>
+<a href="#q2">שאלה 2 – בחירה מרובה – המרת מטבע חוץ לשקלים</a>
+<a href="#q3">שאלה 3 – בחירה מרובה – מספר יום בשבוע ושמו</a>
+<a href="#q4">שאלה 4 – בחירה מרובה – מדד איכות האוויר</a>
+<a href="#q5">שאלה 5 – בחירה מרובה – דמי משלוח לפי משקל</a>
+<a href="#q6">שאלה 6 – בחירה מרובה – מכונת ממכר אוטומטית</a>
+<a href="#q7">שאלה 7 – בחירה מרובה – סיווג לחץ דם</a>
+<a href="#q8">שאלה 8 – בחירה מרובה – חשבון חשמל מדורג</a>
+<a href="#q9">שאלה 9 – בחירה מרובה – אבן, נייר ומספריים</a>
+<a href="#q10">שאלה 10 – בחירה מרובה – מספר הימים בחודש</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">רמה 1 – בסיסי</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>שאלה 1 – בחירה מרובה – מחיר כרטיס לפי סוג נוסע</h3>
+      <span class="q-en">Q1 – multiple choice – ticket price</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – בחירה מרובה – מחיר כרטיס לפי סוג נוסע</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש קוד של סוג נוסע ומספר כרטיסים, ומחשבת את המחיר הכולל לתשלום. מחיר הכרטיס נקבע לפי הקוד: 1 – ילד, 20.0 ש"ח; 2 – סטודנט, 32.5 ש"ח; 3 – מבוגר, 45.0 ש"ח; 4 – אזרח ותיק, 25.0 ש"ח.<br>מכיוון שכל אפשרות היא ערך יחיד וידוע מראש, ממשו את בחירת המחיר בעזרת פקודת <strong>switch</strong>. ניתן להניח שהקוד שנקלט הוא בטווח 1–4.<br>שימו לב לפלט הנדרש ובחרו את סוג המשתנים המתאים לכל נתון. לפני כל קליטה על התוכנית להדפיס הודעת הנחיה למשתמש, כפי שמופיע בפלט הנדרש.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 2, 3</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter passenger type code (1=child, 2=student, 3=adult, 4=senior):
+Enter the number of tickets:
+Price per ticket: 32.5
+Total price: 97.5</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 3, 4</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter passenger type code (1=child, 2=student, 3=adult, 4=senior):
+Enter the number of tickets:
+Price per ticket: 45.0
+Total price: 180.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-0" download="Switch01_TicketPrice.java" style="text-decoration: underline;">Switch01_TicketPrice.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - TicketPrice
+ *
+ * Write a main program that reads a passenger type code and a number of tickets,
+ * and computes the total price to pay.
+ * The ticket price depends on the code: 1 - child, 20.0; 2 - student, 32.5;
+ * 3 - adult, 45.0; 4 - senior, 25.0.
+ * Use a switch statement to choose the price. You may assume the code is between 1 and 4.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 2, 3
+ * Expected output (first run):
+ *   Enter passenger type code (1=child, 2=student, 3=adult, 4=senior):
+ *   Enter the number of tickets:
+ *   Price per ticket: 32.5
+ *   Total price: 97.5
+ *
+ * Input (second run): 3, 4
+ * Expected output (second run):
+ *   Enter passenger type code (1=child, 2=student, 3=adult, 4=senior):
+ *   Enter the number of tickets:
+ *   Price per ticket: 45.0
+ *   Total price: 180.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch01_TicketPrice</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>שאלה 2 – בחירה מרובה – המרת מטבע חוץ לשקלים</h3>
+      <span class="q-en">Q2 – multiple choice – currency exchange</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – בחירה מרובה – המרת מטבע חוץ לשקלים</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש קוד מטבע וסכום כסף במטבע זה, וממירה את הסכום לשקלים. שערי ההמרה הם: 1 – דולר, 3.75 ש"ח; 2 – אירו, 4.25 ש"ח; 3 – לירה שטרלינג, 5.0 ש"ח.<br>ממשו את הבחירה בעזרת פקודת <strong>switch</strong>. אם הקוד שנקלט אינו אחד מהקודים המוכרים, יש להדפיס הודעת שגיאה בעזרת <strong>default</strong> ולא לחשב דבר.<br>לפני כל קליטה על התוכנית להדפיס הודעת הנחיה למשתמש, כפי שמופיע בפלט הנדרש.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 1, 120</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter currency code (1=USD, 2=EUR, 3=GBP):
+Enter the amount in the foreign currency:
+Amount in shekels: 450.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 5, 80</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter currency code (1=USD, 2=EUR, 3=GBP):
+Enter the amount in the foreign currency:
+Invalid currency code</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-1" download="Switch02_CurrencyExchange.java" style="text-decoration: underline;">Switch02_CurrencyExchange.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - CurrencyExchange
+ *
+ * Write a main program that reads a currency code and an amount of money in that
+ * currency, and converts the amount into shekels.
+ * Exchange rates: 1 - USD, 3.75; 2 - EUR, 4.25; 3 - GBP, 5.0.
+ * Use a switch statement. If the code is unknown, print an error message using
+ * the default label and do not compute anything.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 1, 120
+ * Expected output (first run):
+ *   Enter currency code (1=USD, 2=EUR, 3=GBP):
+ *   Enter the amount in the foreign currency:
+ *   Amount in shekels: 450.0
+ *
+ * Input (second run): 5, 80
+ * Expected output (second run):
+ *   Enter currency code (1=USD, 2=EUR, 3=GBP):
+ *   Enter the amount in the foreign currency:
+ *   Invalid currency code
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch02_CurrencyExchange</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>שאלה 3 – בחירה מרובה – מספר יום בשבוע ושמו</h3>
+      <span class="q-en">Q3 – multiple choice – day name</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – בחירה מרובה – מספר יום בשבוע ושמו</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש מספר של יום בשבוע (1 – ראשון עד 7 – שבת), מדפיסה את שם היום באנגלית ומדווחת אם מדובר ביום עבודה או בסוף שבוע. ימי שישי ושבת נחשבים סוף שבוע.<br>ממשו את התוכנית בעזרת פקודת <strong>switch</strong>. אם המספר שנקלט אינו בטווח 1–7, יש להדפיס הודעת שגיאה בעזרת <strong>default</strong>.<br>לפני הקליטה על התוכנית להדפיס הודעת הנחיה למשתמש, כפי שמופיע בפלט הנדרש.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 3</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the day number (1-7):
+Day: Tuesday
+Type: Working day</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 6</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the day number (1-7):
+Day: Friday
+Type: Weekend</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-2" download="Switch03_DayName.java" style="text-decoration: underline;">Switch03_DayName.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - DayName
+ *
+ * Write a main program that reads a day number (1 = Sunday ... 7 = Saturday),
+ * prints the name of the day, and reports whether it is a working day or a weekend.
+ * Friday and Saturday are weekend days.
+ * Use a switch statement. If the number is not between 1 and 7, print an error
+ * message using the default label.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 3
+ * Expected output (first run):
+ *   Enter the day number (1-7):
+ *   Day: Tuesday
+ *   Type: Working day
+ *
+ * Input (second run): 6
+ * Expected output (second run):
+ *   Enter the day number (1-7):
+ *   Day: Friday
+ *   Type: Weekend
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch03_DayName</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">רמה 2 – ביניים</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>שאלה 4 – בחירה מרובה – מדד איכות האוויר</h3>
+      <span class="q-en">Q4 – multiple choice – air quality index</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – בחירה מרובה – מדד איכות האוויר</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את ערך מדד איכות האוויר (AQI), מדפיסה אותו, ומדווחת על דרגת הזיהום ועל ההמלצה הבריאותית המתאימה לפי החלוקה הבאה:<br>0 עד 50 – Good, ההמלצה No restrictions;<br>51 עד 100 – Moderate, ההמלצה Sensitive people should limit long outdoor activity;<br>101 עד 150 – Unhealthy for sensitive groups, ההמלצה Children and elderly should stay indoors;<br>151 עד 200 – Unhealthy, ההמלצה Everyone should limit outdoor activity;<br>מעל 200 – Very unhealthy, ההמלצה Avoid going outside.<br>ערך שלילי אינו חוקי ועליו יש לדווח Invalid AQI value.<br>כאן האפשרויות אינן ערכים בודדים אלא טווחים, ולכן יש לממש את התוכנית בעזרת שרשרת <strong>if / else if / else</strong> ולא בעזרת switch.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 87</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the AQI value:
+AQI: 87
+Level: Moderate
+Recommendation: Sensitive people should limit long outdoor activity</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 164</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the AQI value:
+AQI: 164
+Level: Unhealthy
+Recommendation: Everyone should limit outdoor activity</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-3" download="Switch04_AirQuality.java" style="text-decoration: underline;">Switch04_AirQuality.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - AirQuality
+ *
+ * Write a main program that reads the air quality index (AQI), prints it, and
+ * reports the pollution level and the matching health recommendation:
+ *   0-50    Good        -&gt; No restrictions
+ *   51-100  Moderate    -&gt; Sensitive people should limit long outdoor activity
+ *   101-150 Unhealthy for sensitive groups -&gt; Children and elderly should stay indoors
+ *   151-200 Unhealthy   -&gt; Everyone should limit outdoor activity
+ *   above 200 Very unhealthy -&gt; Avoid going outside
+ * A negative value is not valid and must be reported as Invalid AQI value.
+ * The options are ranges and not single values, so use an if / else if / else chain.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 87
+ * Expected output (first run):
+ *   Enter the AQI value:
+ *   AQI: 87
+ *   Level: Moderate
+ *   Recommendation: Sensitive people should limit long outdoor activity
+ *
+ * Input (second run): 164
+ * Expected output (second run):
+ *   Enter the AQI value:
+ *   AQI: 164
+ *   Level: Unhealthy
+ *   Recommendation: Everyone should limit outdoor activity
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch04_AirQuality</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>שאלה 5 – בחירה מרובה – דמי משלוח לפי משקל</h3>
+      <span class="q-en">Q5 – multiple choice – shipping cost</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – בחירה מרובה – דמי משלוח לפי משקל</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את משקל החבילה בקילוגרמים, מדפיסה אותו, ומחשבת את דמי המשלוח לפי מדרגות המשקל הבאות:<br>עד 1 ק"ג כולל – 15.0 ש"ח;<br>מעל 1 ועד 5 ק"ג כולל – 28.0 ש"ח;<br>מעל 5 ועד 20 ק"ג כולל – 45.0 ש"ח;<br>מעל 20 ק"ג – 45.0 ש"ח ובנוסף 2.5 ש"ח עבור כל קילוגרם מעל 20.<br>המשקל אינו בהכרח מספר שלם, ולכן האפשרויות הן טווחים ויש לממש אותן בעזרת שרשרת <strong>if / else if / else</strong>. שימו לב לפלט הנדרש ובחרו את סוג המשתנים המתאים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 3.5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the package weight in kg:
+Weight: 3.5 kg
+Shipping cost: 28.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 26</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the package weight in kg:
+Weight: 26.0 kg
+Shipping cost: 60.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-4" download="Switch05_ShippingCost.java" style="text-decoration: underline;">Switch05_ShippingCost.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - ShippingCost
+ *
+ * Write a main program that reads the weight of a package in kilograms, prints it,
+ * and computes the shipping cost according to the following weight tiers:
+ *   up to 1 kg           -&gt; 15.0
+ *   above 1 up to 5 kg   -&gt; 28.0
+ *   above 5 up to 20 kg  -&gt; 45.0
+ *   above 20 kg          -&gt; 45.0 plus 2.5 for every kilogram above 20
+ * The weight is not necessarily a whole number, so use an if / else if / else chain.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 3.5
+ * Expected output (first run):
+ *   Enter the package weight in kg:
+ *   Weight: 3.5 kg
+ *   Shipping cost: 28.0
+ *
+ * Input (second run): 26
+ * Expected output (second run):
+ *   Enter the package weight in kg:
+ *   Weight: 26.0 kg
+ *   Shipping cost: 60.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch05_ShippingCost</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>שאלה 6 – בחירה מרובה – מכונת ממכר אוטומטית</h3>
+      <span class="q-en">Q6 – multiple choice – vending machine</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – בחירה מרובה – מכונת ממכר אוטומטית</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדמה מכונת ממכר אוטומטית. התוכנית קולטת מהמשתמש קוד מוצר ואת הסכום שהוכנס למכונה. מחירי המוצרים הם: 1 – מים, 6.0 ש"ח; 2 – מיץ, 8.5 ש"ח; 3 – שוקולד, 5.5 ש"ח; 4 – כריך, 14.0 ש"ח.<br>התוכנית מדפיסה את מחיר המוצר, ולאחר מכן את העודף אם הסכום שהוכנס מספיק, או את הסכום החסר אם אינו מספיק.<br>את קביעת המחיר ממשו בעזרת <strong>switch</strong>, ואת ההחלטה על עודף או חוסר בעזרת תנאי. אם קוד המוצר אינו בטווח 1–4 יש להדפיס Invalid product code בלבד.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 2, 10</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the product code (1-4):
+Enter the amount inserted:
+Product price: 8.5
+Change: 1.5</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 4, 12.5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the product code (1-4):
+Enter the amount inserted:
+Product price: 14.0
+Missing amount: 1.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-5" download="Switch06_VendingMachine.java" style="text-decoration: underline;">Switch06_VendingMachine.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - VendingMachine
+ *
+ * Write a main program that simulates a vending machine. The program reads a product
+ * code and the amount of money inserted into the machine.
+ * Product prices: 1 - water, 6.0; 2 - juice, 8.5; 3 - chocolate, 5.5; 4 - sandwich, 14.0.
+ * The program prints the price of the product, and then either the change, if the
+ * inserted amount is enough, or the missing amount, if it is not.
+ * Use a switch statement to choose the price and a condition to decide between change
+ * and missing amount. If the product code is not between 1 and 4, print only
+ * Invalid product code.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 2, 10
+ * Expected output (first run):
+ *   Enter the product code (1-4):
+ *   Enter the amount inserted:
+ *   Product price: 8.5
+ *   Change: 1.5
+ *
+ * Input (second run): 4, 12.5
+ * Expected output (second run):
+ *   Enter the product code (1-4):
+ *   Enter the amount inserted:
+ *   Product price: 14.0
+ *   Missing amount: 1.5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch06_VendingMachine</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>שאלה 7 – בחירה מרובה – סיווג לחץ דם</h3>
+      <span class="q-en">Q7 – multiple choice – blood pressure</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – בחירה מרובה – סיווג לחץ דם</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש שני ערכי לחץ דם – הערך העליון (סיסטולי) והערך התחתון (דיאסטולי) – מדפיסה אותם ומסווגת את לחץ הדם לפי הכללים הבאים, <strong>לפי סדר הבדיקה הזה בדיוק</strong>:<br>אם הערך העליון 140 ומעלה או הערך התחתון 90 ומעלה – Hypertension stage 2;<br>אחרת, אם הערך העליון 130 ומעלה או הערך התחתון 80 ומעלה – Hypertension stage 1;<br>אחרת, אם הערך העליון 120 ומעלה – Elevated;<br>אחרת – Normal.<br>שימו לב שכל תנאי מורכב משני חלקים, ולכן יש לשלב בשרשרת ה-<strong>else if</strong> גם אופרטורים לוגיים. הפלט מציג את שני הערכים בשורה אחת מופרדים בלוכסן.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 118, 76</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the systolic value:
+Enter the diastolic value:
+Blood pressure: 118/76
+Category: Normal</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 136, 84</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the systolic value:
+Enter the diastolic value:
+Blood pressure: 136/84
+Category: Hypertension stage 1</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-6" download="Switch07_BloodPressure.java" style="text-decoration: underline;">Switch07_BloodPressure.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - BloodPressure
+ *
+ * Write a main program that reads two blood pressure values, the systolic (upper)
+ * value and the diastolic (lower) value, prints them, and classifies the blood
+ * pressure using the following rules, in exactly this order:
+ *   systolic 140 or above, or diastolic 90 or above -&gt; Hypertension stage 2
+ *   otherwise, systolic 130 or above, or diastolic 80 or above -&gt; Hypertension stage 1
+ *   otherwise, systolic 120 or above -&gt; Elevated
+ *   otherwise -&gt; Normal
+ * Each condition has two parts, so combine logical operators inside the else if chain.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 118, 76
+ * Expected output (first run):
+ *   Enter the systolic value:
+ *   Enter the diastolic value:
+ *   Blood pressure: 118/76
+ *   Category: Normal
+ *
+ * Input (second run): 136, 84
+ * Expected output (second run):
+ *   Enter the systolic value:
+ *   Enter the diastolic value:
+ *   Blood pressure: 136/84
+ *   Category: Hypertension stage 1
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch07_BloodPressure</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">רמה 3 – מתקדם</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>שאלה 8 – בחירה מרובה – חשבון חשמל מדורג</h3>
+      <span class="q-en">Q8 – multiple choice – electricity bill</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – בחירה מרובה – חשבון חשמל מדורג</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את צריכת החשמל החודשית בקוט"ש (מספר שלם), מדפיסה אותה ומחשבת את סכום החשבון. התעריף מדורג: כל קוט"ש מבין <strong>100 הראשונים</strong> עולה 0.5 ש"ח, כל קוט"ש מבין <strong>200 שאחריהם</strong> (מ-101 עד 300) עולה 0.75 ש"ח, וכל קוט"ש <strong>מעל 300</strong> עולה 1.25 ש"ח.<br>שימו לב: התעריף הגבוה חל רק על החלק שמעל המדרגה, ולא על כל הצריכה. צרכן שצרך 250 קוט"ש משלם על 100 הראשונים לפי התעריף הזול ועל 150 הנותרים לפי התעריף השני.<br>ממשו את החישוב בעזרת שרשרת <strong>if / else if / else</strong>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 250</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the monthly consumption in kWh:
+Consumption: 250 kWh
+Total bill: 162.5</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 420</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the monthly consumption in kWh:
+Consumption: 420 kWh
+Total bill: 350.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-7" download="Switch08_ElectricityBill.java" style="text-decoration: underline;">Switch08_ElectricityBill.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - ElectricityBill
+ *
+ * Write a main program that reads the monthly electricity consumption in kWh
+ * (a whole number), prints it, and computes the bill.
+ * The tariff is progressive: each of the first 100 kWh costs 0.5, each of the next
+ * 200 kWh (from 101 to 300) costs 0.75, and each kWh above 300 costs 1.25.
+ * The higher tariff applies only to the part above the tier, not to the whole
+ * consumption. A consumer who used 250 kWh pays the cheap rate for the first 100
+ * and the second rate for the remaining 150.
+ * Use an if / else if / else chain.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 250
+ * Expected output (first run):
+ *   Enter the monthly consumption in kWh:
+ *   Consumption: 250 kWh
+ *   Total bill: 162.5
+ *
+ * Input (second run): 420
+ * Expected output (second run):
+ *   Enter the monthly consumption in kWh:
+ *   Consumption: 420 kWh
+ *   Total bill: 350.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch08_ElectricityBill</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>שאלה 9 – בחירה מרובה – אבן, נייר ומספריים</h3>
+      <span class="q-en">Q9 – multiple choice – rock paper scissors</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – בחירה מרובה – אבן, נייר ומספריים</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המנהלת משחק של אבן, נייר ומספריים בין שני שחקנים. התוכנית קולטת את בחירת שחקן 1 ואת בחירת שחקן 2, כאשר 1 מסמן אבן (rock), 2 מסמן נייר (paper) ו-3 מסמן מספריים (scissors).<br>התוכנית מדפיסה את בחירתו של כל שחקן במילים, ולאחר מכן את תוצאת המשחק: Player 1 wins, Player 2 wins או Tie.<br>את הדפסת שם הבחירה של כל שחקן ממשו בעזרת <strong>switch</strong>, ואת קביעת המנצח בעזרת תנאים. תזכורת לכללי המשחק: אבן מנצחת מספריים, מספריים מנצחות נייר ונייר מנצח אבן. ניתן להניח ששתי הבחירות הן בטווח 1–3.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 1, 3</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter player 1 choice (1=rock, 2=paper, 3=scissors):
+Enter player 2 choice (1=rock, 2=paper, 3=scissors):
+Player 1 chose: rock
+Player 2 chose: scissors
+Result: Player 1 wins</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 2, 2</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter player 1 choice (1=rock, 2=paper, 3=scissors):
+Enter player 2 choice (1=rock, 2=paper, 3=scissors):
+Player 1 chose: paper
+Player 2 chose: paper
+Result: Tie</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-8" download="Switch09_HandGame.java" style="text-decoration: underline;">Switch09_HandGame.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - HandGame
+ *
+ * Write a main program that runs a rock paper scissors game between two players.
+ * The program reads the choice of player 1 and the choice of player 2, where
+ * 1 means rock, 2 means paper and 3 means scissors.
+ * The program prints the choice of each player in words, and then the result of the
+ * game: Player 1 wins, Player 2 wins or Tie.
+ * Use a switch statement to print the name of each choice, and conditions to decide
+ * the winner. Rock beats scissors, scissors beat paper, paper beats rock.
+ * You may assume both choices are between 1 and 3.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 1, 3
+ * Expected output (first run):
+ *   Enter player 1 choice (1=rock, 2=paper, 3=scissors):
+ *   Enter player 2 choice (1=rock, 2=paper, 3=scissors):
+ *   Player 1 chose: rock
+ *   Player 2 chose: scissors
+ *   Result: Player 1 wins
+ *
+ * Input (second run): 2, 2
+ * Expected output (second run):
+ *   Enter player 1 choice (1=rock, 2=paper, 3=scissors):
+ *   Enter player 2 choice (1=rock, 2=paper, 3=scissors):
+ *   Player 1 chose: paper
+ *   Player 2 chose: paper
+ *   Result: Tie
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch09_HandGame</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>שאלה 10 – בחירה מרובה – מספר הימים בחודש</h3>
+      <span class="q-en">Q10 – multiple choice – days in month</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – בחירה מרובה – מספר הימים בחודש</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש מספר חודש ומספר שנה, ומדפיסה כמה ימים יש באותו חודש. בחודשים 1, 3, 5, 7, 8, 10, 12 יש 31 ימים; בחודשים 4, 6, 9, 11 יש 30 ימים; ובחודש 2 יש 28 ימים, או 29 ימים אם השנה מעוברת.<br>שנה מעוברת היא שנה המתחלקת ב-4 ואינה מתחלקת ב-100, או שנה המתחלקת ב-400.<br>ממשו את התוכנית בעזרת <strong>switch</strong>, וקבצו יחד את כל החודשים בעלי אותו מספר ימים. בתוך המקרה של חודש 2 בדקו את השנה בעזרת תנאי מתאים. אם מספר החודש אינו בטווח 1–12 יש להדפיס Invalid month number.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 2, 2024</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the month number (1-12):
+Enter the year:
+Days in month: 29</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 11, 2025</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the month number (1-12):
+Enter the year:
+Days in month: 30</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-9" download="Switch10_DaysInMonth.java" style="text-decoration: underline;">Switch10_DaysInMonth.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Multiple Choice (else if &amp; switch) - DaysInMonth
+ *
+ * Write a main program that reads a month number and a year, and prints how many
+ * days there are in that month.
+ * Months 1, 3, 5, 7, 8, 10, 12 have 31 days; months 4, 6, 9, 11 have 30 days;
+ * month 2 has 28 days, or 29 days in a leap year.
+ * A leap year is a year divisible by 4 and not by 100, or a year divisible by 400.
+ * Use a switch statement and group together all the months with the same number of
+ * days. Inside the case of month 2, check the year with a suitable condition.
+ * If the month number is not between 1 and 12, print Invalid month number.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run): 2, 2024
+ * Expected output (first run):
+ *   Enter the month number (1-12):
+ *   Enter the year:
+ *   Days in month: 29
+ *
+ * Input (second run): 11, 2025
+ * Expected output (second run):
+ *   Enter the month number (1-12):
+ *   Enter the year:
+ *   Days in month: 30
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Switch10_DaysInMonth</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>הקבצים מוטמעים בדף — ההורדה פועלת גם ללא חיבור לאינטרנט</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Switch01_TicketPrice.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gVGlja2V0UHJpY2UKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBhIHBhc3NlbmdlciB0eXBlIGNvZGUgYW5kIGEgbnVtYmVyIG9mIHRpY2tldHMsCiAqIGFuZCBjb21wdXRlcyB0aGUgdG90YWwgcHJpY2UgdG8gcGF5LgogKiBUaGUgdGlja2V0IHByaWNlIGRlcGVuZHMgb24gdGhlIGNvZGU6IDEgLSBjaGlsZCwgMjAuMDsgMiAtIHN0dWRlbnQsIDMyLjU7CiAqIDMgLSBhZHVsdCwgNDUuMDsgNCAtIHNlbmlvciwgMjUuMC4KICogVXNlIGEgc3dpdGNoIHN0YXRlbWVudCB0byBjaG9vc2UgdGhlIHByaWNlLiBZb3UgbWF5IGFzc3VtZSB0aGUgY29kZSBpcyBiZXR3ZWVuIDEgYW5kIDQuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6IDIsIDMKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHBhc3NlbmdlciB0eXBlIGNvZGUgKDE9Y2hpbGQsIDI9c3R1ZGVudCwgMz1hZHVsdCwgND1zZW5pb3IpOgogKiAgIEVudGVyIHRoZSBudW1iZXIgb2YgdGlja2V0czoKICogICBQcmljZSBwZXIgdGlja2V0OiAzMi41CiAqICAgVG90YWwgcHJpY2U6IDk3LjUKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiAzLCA0CiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgcGFzc2VuZ2VyIHR5cGUgY29kZSAoMT1jaGlsZCwgMj1zdHVkZW50LCAzPWFkdWx0LCA0PXNlbmlvcik6CiAqICAgRW50ZXIgdGhlIG51bWJlciBvZiB0aWNrZXRzOgogKiAgIFByaWNlIHBlciB0aWNrZXQ6IDQ1LjAKICogICBUb3RhbCBwcmljZTogMTgwLjAKICovCnB1YmxpYyBjbGFzcyBTd2l0Y2gwMV9UaWNrZXRQcmljZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Switch02_CurrencyExchange.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gQ3VycmVuY3lFeGNoYW5nZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGEgY3VycmVuY3kgY29kZSBhbmQgYW4gYW1vdW50IG9mIG1vbmV5IGluIHRoYXQKICogY3VycmVuY3ksIGFuZCBjb252ZXJ0cyB0aGUgYW1vdW50IGludG8gc2hla2Vscy4KICogRXhjaGFuZ2UgcmF0ZXM6IDEgLSBVU0QsIDMuNzU7IDIgLSBFVVIsIDQuMjU7IDMgLSBHQlAsIDUuMC4KICogVXNlIGEgc3dpdGNoIHN0YXRlbWVudC4gSWYgdGhlIGNvZGUgaXMgdW5rbm93biwgcHJpbnQgYW4gZXJyb3IgbWVzc2FnZSB1c2luZwogKiB0aGUgZGVmYXVsdCBsYWJlbCBhbmQgZG8gbm90IGNvbXB1dGUgYW55dGhpbmcuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6IDEsIDEyMAogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgY3VycmVuY3kgY29kZSAoMT1VU0QsIDI9RVVSLCAzPUdCUCk6CiAqICAgRW50ZXIgdGhlIGFtb3VudCBpbiB0aGUgZm9yZWlnbiBjdXJyZW5jeToKICogICBBbW91bnQgaW4gc2hla2VsczogNDUwLjAKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiA1LCA4MAogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIGN1cnJlbmN5IGNvZGUgKDE9VVNELCAyPUVVUiwgMz1HQlApOgogKiAgIEVudGVyIHRoZSBhbW91bnQgaW4gdGhlIGZvcmVpZ24gY3VycmVuY3k6CiAqICAgSW52YWxpZCBjdXJyZW5jeSBjb2RlCiAqLwpwdWJsaWMgY2xhc3MgU3dpdGNoMDJfQ3VycmVuY3lFeGNoYW5nZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Switch03_DayName.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gRGF5TmFtZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGEgZGF5IG51bWJlciAoMSA9IFN1bmRheSAuLi4gNyA9IFNhdHVyZGF5KSwKICogcHJpbnRzIHRoZSBuYW1lIG9mIHRoZSBkYXksIGFuZCByZXBvcnRzIHdoZXRoZXIgaXQgaXMgYSB3b3JraW5nIGRheSBvciBhIHdlZWtlbmQuCiAqIEZyaWRheSBhbmQgU2F0dXJkYXkgYXJlIHdlZWtlbmQgZGF5cy4KICogVXNlIGEgc3dpdGNoIHN0YXRlbWVudC4gSWYgdGhlIG51bWJlciBpcyBub3QgYmV0d2VlbiAxIGFuZCA3LCBwcmludCBhbiBlcnJvcgogKiBtZXNzYWdlIHVzaW5nIHRoZSBkZWZhdWx0IGxhYmVsLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOiAzCiAqIEV4cGVjdGVkIG91dHB1dCAoZmlyc3QgcnVuKToKICogICBFbnRlciB0aGUgZGF5IG51bWJlciAoMS03KToKICogICBEYXk6IFR1ZXNkYXkKICogICBUeXBlOiBXb3JraW5nIGRheQogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6IDYKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB0aGUgZGF5IG51bWJlciAoMS03KToKICogICBEYXk6IEZyaWRheQogKiAgIFR5cGU6IFdlZWtlbmQKICovCnB1YmxpYyBjbGFzcyBTd2l0Y2gwM19EYXlOYW1lIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Switch04_AirQuality.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gQWlyUXVhbGl0eQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBhaXIgcXVhbGl0eSBpbmRleCAoQVFJKSwgcHJpbnRzIGl0LCBhbmQKICogcmVwb3J0cyB0aGUgcG9sbHV0aW9uIGxldmVsIGFuZCB0aGUgbWF0Y2hpbmcgaGVhbHRoIHJlY29tbWVuZGF0aW9uOgogKiAgIDAtNTAgICAgR29vZCAgICAgICAgLT4gTm8gcmVzdHJpY3Rpb25zCiAqICAgNTEtMTAwICBNb2RlcmF0ZSAgICAtPiBTZW5zaXRpdmUgcGVvcGxlIHNob3VsZCBsaW1pdCBsb25nIG91dGRvb3IgYWN0aXZpdHkKICogICAxMDEtMTUwIFVuaGVhbHRoeSBmb3Igc2Vuc2l0aXZlIGdyb3VwcyAtPiBDaGlsZHJlbiBhbmQgZWxkZXJseSBzaG91bGQgc3RheSBpbmRvb3JzCiAqICAgMTUxLTIwMCBVbmhlYWx0aHkgICAtPiBFdmVyeW9uZSBzaG91bGQgbGltaXQgb3V0ZG9vciBhY3Rpdml0eQogKiAgIGFib3ZlIDIwMCBWZXJ5IHVuaGVhbHRoeSAtPiBBdm9pZCBnb2luZyBvdXRzaWRlCiAqIEEgbmVnYXRpdmUgdmFsdWUgaXMgbm90IHZhbGlkIGFuZCBtdXN0IGJlIHJlcG9ydGVkIGFzIEludmFsaWQgQVFJIHZhbHVlLgogKiBUaGUgb3B0aW9ucyBhcmUgcmFuZ2VzIGFuZCBub3Qgc2luZ2xlIHZhbHVlcywgc28gdXNlIGFuIGlmIC8gZWxzZSBpZiAvIGVsc2UgY2hhaW4uCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6IDg3CiAqIEV4cGVjdGVkIG91dHB1dCAoZmlyc3QgcnVuKToKICogICBFbnRlciB0aGUgQVFJIHZhbHVlOgogKiAgIEFRSTogODcKICogICBMZXZlbDogTW9kZXJhdGUKICogICBSZWNvbW1lbmRhdGlvbjogU2Vuc2l0aXZlIHBlb3BsZSBzaG91bGQgbGltaXQgbG9uZyBvdXRkb29yIGFjdGl2aXR5CiAqCiAqIElucHV0IChzZWNvbmQgcnVuKTogMTY0CiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgdGhlIEFRSSB2YWx1ZToKICogICBBUUk6IDE2NAogKiAgIExldmVsOiBVbmhlYWx0aHkKICogICBSZWNvbW1lbmRhdGlvbjogRXZlcnlvbmUgc2hvdWxkIGxpbWl0IG91dGRvb3IgYWN0aXZpdHkKICovCnB1YmxpYyBjbGFzcyBTd2l0Y2gwNF9BaXJRdWFsaXR5IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Switch05_ShippingCost.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gU2hpcHBpbmdDb3N0CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIHdlaWdodCBvZiBhIHBhY2thZ2UgaW4ga2lsb2dyYW1zLCBwcmludHMgaXQsCiAqIGFuZCBjb21wdXRlcyB0aGUgc2hpcHBpbmcgY29zdCBhY2NvcmRpbmcgdG8gdGhlIGZvbGxvd2luZyB3ZWlnaHQgdGllcnM6CiAqICAgdXAgdG8gMSBrZyAgICAgICAgICAgLT4gMTUuMAogKiAgIGFib3ZlIDEgdXAgdG8gNSBrZyAgIC0+IDI4LjAKICogICBhYm92ZSA1IHVwIHRvIDIwIGtnICAtPiA0NS4wCiAqICAgYWJvdmUgMjAga2cgICAgICAgICAgLT4gNDUuMCBwbHVzIDIuNSBmb3IgZXZlcnkga2lsb2dyYW0gYWJvdmUgMjAKICogVGhlIHdlaWdodCBpcyBub3QgbmVjZXNzYXJpbHkgYSB3aG9sZSBudW1iZXIsIHNvIHVzZSBhbiBpZiAvIGVsc2UgaWYgLyBlbHNlIGNoYWluLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOiAzLjUKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHRoZSBwYWNrYWdlIHdlaWdodCBpbiBrZzoKICogICBXZWlnaHQ6IDMuNSBrZwogKiAgIFNoaXBwaW5nIGNvc3Q6IDI4LjAKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiAyNgogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIHRoZSBwYWNrYWdlIHdlaWdodCBpbiBrZzoKICogICBXZWlnaHQ6IDI2LjAga2cKICogICBTaGlwcGluZyBjb3N0OiA2MC4wCiAqLwpwdWJsaWMgY2xhc3MgU3dpdGNoMDVfU2hpcHBpbmdDb3N0IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Switch06_VendingMachine.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gVmVuZGluZ01hY2hpbmUKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBzaW11bGF0ZXMgYSB2ZW5kaW5nIG1hY2hpbmUuIFRoZSBwcm9ncmFtIHJlYWRzIGEgcHJvZHVjdAogKiBjb2RlIGFuZCB0aGUgYW1vdW50IG9mIG1vbmV5IGluc2VydGVkIGludG8gdGhlIG1hY2hpbmUuCiAqIFByb2R1Y3QgcHJpY2VzOiAxIC0gd2F0ZXIsIDYuMDsgMiAtIGp1aWNlLCA4LjU7IDMgLSBjaG9jb2xhdGUsIDUuNTsgNCAtIHNhbmR3aWNoLCAxNC4wLgogKiBUaGUgcHJvZ3JhbSBwcmludHMgdGhlIHByaWNlIG9mIHRoZSBwcm9kdWN0LCBhbmQgdGhlbiBlaXRoZXIgdGhlIGNoYW5nZSwgaWYgdGhlCiAqIGluc2VydGVkIGFtb3VudCBpcyBlbm91Z2gsIG9yIHRoZSBtaXNzaW5nIGFtb3VudCwgaWYgaXQgaXMgbm90LgogKiBVc2UgYSBzd2l0Y2ggc3RhdGVtZW50IHRvIGNob29zZSB0aGUgcHJpY2UgYW5kIGEgY29uZGl0aW9uIHRvIGRlY2lkZSBiZXR3ZWVuIGNoYW5nZQogKiBhbmQgbWlzc2luZyBhbW91bnQuIElmIHRoZSBwcm9kdWN0IGNvZGUgaXMgbm90IGJldHdlZW4gMSBhbmQgNCwgcHJpbnQgb25seQogKiBJbnZhbGlkIHByb2R1Y3QgY29kZS4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBJbnB1dCAoZmlyc3QgcnVuKTogMiwgMTAKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHRoZSBwcm9kdWN0IGNvZGUgKDEtNCk6CiAqICAgRW50ZXIgdGhlIGFtb3VudCBpbnNlcnRlZDoKICogICBQcm9kdWN0IHByaWNlOiA4LjUKICogICBDaGFuZ2U6IDEuNQogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6IDQsIDEyLjUKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB0aGUgcHJvZHVjdCBjb2RlICgxLTQpOgogKiAgIEVudGVyIHRoZSBhbW91bnQgaW5zZXJ0ZWQ6CiAqICAgUHJvZHVjdCBwcmljZTogMTQuMAogKiAgIE1pc3NpbmcgYW1vdW50OiAxLjUKICovCnB1YmxpYyBjbGFzcyBTd2l0Y2gwNl9WZW5kaW5nTWFjaGluZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Switch07_BloodPressure.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gQmxvb2RQcmVzc3VyZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHR3byBibG9vZCBwcmVzc3VyZSB2YWx1ZXMsIHRoZSBzeXN0b2xpYyAodXBwZXIpCiAqIHZhbHVlIGFuZCB0aGUgZGlhc3RvbGljIChsb3dlcikgdmFsdWUsIHByaW50cyB0aGVtLCBhbmQgY2xhc3NpZmllcyB0aGUgYmxvb2QKICogcHJlc3N1cmUgdXNpbmcgdGhlIGZvbGxvd2luZyBydWxlcywgaW4gZXhhY3RseSB0aGlzIG9yZGVyOgogKiAgIHN5c3RvbGljIDE0MCBvciBhYm92ZSwgb3IgZGlhc3RvbGljIDkwIG9yIGFib3ZlIC0+IEh5cGVydGVuc2lvbiBzdGFnZSAyCiAqICAgb3RoZXJ3aXNlLCBzeXN0b2xpYyAxMzAgb3IgYWJvdmUsIG9yIGRpYXN0b2xpYyA4MCBvciBhYm92ZSAtPiBIeXBlcnRlbnNpb24gc3RhZ2UgMQogKiAgIG90aGVyd2lzZSwgc3lzdG9saWMgMTIwIG9yIGFib3ZlIC0+IEVsZXZhdGVkCiAqICAgb3RoZXJ3aXNlIC0+IE5vcm1hbAogKiBFYWNoIGNvbmRpdGlvbiBoYXMgdHdvIHBhcnRzLCBzbyBjb21iaW5lIGxvZ2ljYWwgb3BlcmF0b3JzIGluc2lkZSB0aGUgZWxzZSBpZiBjaGFpbi4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBJbnB1dCAoZmlyc3QgcnVuKTogMTE4LCA3NgogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgdGhlIHN5c3RvbGljIHZhbHVlOgogKiAgIEVudGVyIHRoZSBkaWFzdG9saWMgdmFsdWU6CiAqICAgQmxvb2QgcHJlc3N1cmU6IDExOC83NgogKiAgIENhdGVnb3J5OiBOb3JtYWwKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiAxMzYsIDg0CiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgdGhlIHN5c3RvbGljIHZhbHVlOgogKiAgIEVudGVyIHRoZSBkaWFzdG9saWMgdmFsdWU6CiAqICAgQmxvb2QgcHJlc3N1cmU6IDEzNi84NAogKiAgIENhdGVnb3J5OiBIeXBlcnRlbnNpb24gc3RhZ2UgMQogKi8KcHVibGljIGNsYXNzIFN3aXRjaDA3X0Jsb29kUHJlc3N1cmUgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Switch08_ElectricityBill.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gRWxlY3RyaWNpdHlCaWxsCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIG1vbnRobHkgZWxlY3RyaWNpdHkgY29uc3VtcHRpb24gaW4ga1doCiAqIChhIHdob2xlIG51bWJlciksIHByaW50cyBpdCwgYW5kIGNvbXB1dGVzIHRoZSBiaWxsLgogKiBUaGUgdGFyaWZmIGlzIHByb2dyZXNzaXZlOiBlYWNoIG9mIHRoZSBmaXJzdCAxMDAga1doIGNvc3RzIDAuNSwgZWFjaCBvZiB0aGUgbmV4dAogKiAyMDAga1doIChmcm9tIDEwMSB0byAzMDApIGNvc3RzIDAuNzUsIGFuZCBlYWNoIGtXaCBhYm92ZSAzMDAgY29zdHMgMS4yNS4KICogVGhlIGhpZ2hlciB0YXJpZmYgYXBwbGllcyBvbmx5IHRvIHRoZSBwYXJ0IGFib3ZlIHRoZSB0aWVyLCBub3QgdG8gdGhlIHdob2xlCiAqIGNvbnN1bXB0aW9uLiBBIGNvbnN1bWVyIHdobyB1c2VkIDI1MCBrV2ggcGF5cyB0aGUgY2hlYXAgcmF0ZSBmb3IgdGhlIGZpcnN0IDEwMAogKiBhbmQgdGhlIHNlY29uZCByYXRlIGZvciB0aGUgcmVtYWluaW5nIDE1MC4KICogVXNlIGFuIGlmIC8gZWxzZSBpZiAvIGVsc2UgY2hhaW4uCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6IDI1MAogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgRW50ZXIgdGhlIG1vbnRobHkgY29uc3VtcHRpb24gaW4ga1doOgogKiAgIENvbnN1bXB0aW9uOiAyNTAga1doCiAqICAgVG90YWwgYmlsbDogMTYyLjUKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiA0MjAKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB0aGUgbW9udGhseSBjb25zdW1wdGlvbiBpbiBrV2g6CiAqICAgQ29uc3VtcHRpb246IDQyMCBrV2gKICogICBUb3RhbCBiaWxsOiAzNTAuMAogKi8KcHVibGljIGNsYXNzIFN3aXRjaDA4X0VsZWN0cmljaXR5QmlsbCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Switch09_HandGame.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gSGFuZEdhbWUKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBydW5zIGEgcm9jayBwYXBlciBzY2lzc29ycyBnYW1lIGJldHdlZW4gdHdvIHBsYXllcnMuCiAqIFRoZSBwcm9ncmFtIHJlYWRzIHRoZSBjaG9pY2Ugb2YgcGxheWVyIDEgYW5kIHRoZSBjaG9pY2Ugb2YgcGxheWVyIDIsIHdoZXJlCiAqIDEgbWVhbnMgcm9jaywgMiBtZWFucyBwYXBlciBhbmQgMyBtZWFucyBzY2lzc29ycy4KICogVGhlIHByb2dyYW0gcHJpbnRzIHRoZSBjaG9pY2Ugb2YgZWFjaCBwbGF5ZXIgaW4gd29yZHMsIGFuZCB0aGVuIHRoZSByZXN1bHQgb2YgdGhlCiAqIGdhbWU6IFBsYXllciAxIHdpbnMsIFBsYXllciAyIHdpbnMgb3IgVGllLgogKiBVc2UgYSBzd2l0Y2ggc3RhdGVtZW50IHRvIHByaW50IHRoZSBuYW1lIG9mIGVhY2ggY2hvaWNlLCBhbmQgY29uZGl0aW9ucyB0byBkZWNpZGUKICogdGhlIHdpbm5lci4gUm9jayBiZWF0cyBzY2lzc29ycywgc2Npc3NvcnMgYmVhdCBwYXBlciwgcGFwZXIgYmVhdHMgcm9jay4KICogWW91IG1heSBhc3N1bWUgYm90aCBjaG9pY2VzIGFyZSBiZXR3ZWVuIDEgYW5kIDMuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6IDEsIDMKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHBsYXllciAxIGNob2ljZSAoMT1yb2NrLCAyPXBhcGVyLCAzPXNjaXNzb3JzKToKICogICBFbnRlciBwbGF5ZXIgMiBjaG9pY2UgKDE9cm9jaywgMj1wYXBlciwgMz1zY2lzc29ycyk6CiAqICAgUGxheWVyIDEgY2hvc2U6IHJvY2sKICogICBQbGF5ZXIgMiBjaG9zZTogc2Npc3NvcnMKICogICBSZXN1bHQ6IFBsYXllciAxIHdpbnMKICoKICogSW5wdXQgKHNlY29uZCBydW4pOiAyLCAyCiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgcGxheWVyIDEgY2hvaWNlICgxPXJvY2ssIDI9cGFwZXIsIDM9c2Npc3NvcnMpOgogKiAgIEVudGVyIHBsYXllciAyIGNob2ljZSAoMT1yb2NrLCAyPXBhcGVyLCAzPXNjaXNzb3JzKToKICogICBQbGF5ZXIgMSBjaG9zZTogcGFwZXIKICogICBQbGF5ZXIgMiBjaG9zZTogcGFwZXIKICogICBSZXN1bHQ6IFRpZQogKi8KcHVibGljIGNsYXNzIFN3aXRjaDA5X0hhbmRHYW1lIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Switch10_DaysInMonth.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBNdWx0aXBsZSBDaG9pY2UgKGVsc2UgaWYgJiBzd2l0Y2gpIC0gRGF5c0luTW9udGgKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBhIG1vbnRoIG51bWJlciBhbmQgYSB5ZWFyLCBhbmQgcHJpbnRzIGhvdyBtYW55CiAqIGRheXMgdGhlcmUgYXJlIGluIHRoYXQgbW9udGguCiAqIE1vbnRocyAxLCAzLCA1LCA3LCA4LCAxMCwgMTIgaGF2ZSAzMSBkYXlzOyBtb250aHMgNCwgNiwgOSwgMTEgaGF2ZSAzMCBkYXlzOwogKiBtb250aCAyIGhhcyAyOCBkYXlzLCBvciAyOSBkYXlzIGluIGEgbGVhcCB5ZWFyLgogKiBBIGxlYXAgeWVhciBpcyBhIHllYXIgZGl2aXNpYmxlIGJ5IDQgYW5kIG5vdCBieSAxMDAsIG9yIGEgeWVhciBkaXZpc2libGUgYnkgNDAwLgogKiBVc2UgYSBzd2l0Y2ggc3RhdGVtZW50IGFuZCBncm91cCB0b2dldGhlciBhbGwgdGhlIG1vbnRocyB3aXRoIHRoZSBzYW1lIG51bWJlciBvZgogKiBkYXlzLiBJbnNpZGUgdGhlIGNhc2Ugb2YgbW9udGggMiwgY2hlY2sgdGhlIHllYXIgd2l0aCBhIHN1aXRhYmxlIGNvbmRpdGlvbi4KICogSWYgdGhlIG1vbnRoIG51bWJlciBpcyBub3QgYmV0d2VlbiAxIGFuZCAxMiwgcHJpbnQgSW52YWxpZCBtb250aCBudW1iZXIuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6IDIsIDIwMjQKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHRoZSBtb250aCBudW1iZXIgKDEtMTIpOgogKiAgIEVudGVyIHRoZSB5ZWFyOgogKiAgIERheXMgaW4gbW9udGg6IDI5CiAqCiAqIElucHV0IChzZWNvbmQgcnVuKTogMTEsIDIwMjUKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB0aGUgbW9udGggbnVtYmVyICgxLTEyKToKICogICBFbnRlciB0aGUgeWVhcjoKICogICBEYXlzIGluIG1vbnRoOiAzMAogKi8KcHVibGljIGNsYXNzIFN3aXRjaDEwX0RheXNJbk1vbnRoIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

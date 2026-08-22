@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين كتابة للوحدة 2.4</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 820px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="code-light">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>تمارين كتابة للوحدة 2.4</h1>
+      <p>Java أ – مقدمة في علم الحاسوب  |  10 أسئلة بمستوى صعوبة متصاعد</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">العرض</span>
+      <button type="button" data-w="820">ضيّق</button>
+      <button type="button" data-w="980">متوسط</button>
+      <button type="button" data-w="1200">واسع</button>
+      <button type="button" data-w="100%">كامل</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">الكود</span>
+      <button type="button" data-theme="dark">داكن</button>
+      <button type="button" data-theme="light">فاتح</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>المحتويات</h2>
+    <div class="toc-grid">
+<a href="#q1">سؤال 1 – استقبال البيانات من المستخدم – حساب الكهرباء</a>
+<a href="#q2">سؤال 2 – استقبال البيانات من المستخدم – أبعاد الغرفة</a>
+<a href="#q3">سؤال 3 – استقبال البيانات من المستخدم – معادلة مستقيم</a>
+<a href="#q4">سؤال 4 – استقبال البيانات من المستخدم – السرعة المطلوبة</a>
+<a href="#q5">سؤال 5 – استقبال البيانات من المستخدم – تغليف الكتب</a>
+<a href="#q6">سؤال 6 – استقبال البيانات من المستخدم – ثواني إلى ساعة</a>
+<a href="#q7">سؤال 7 – استقبال البيانات من المستخدم – بكسلات في الشاشة</a>
+<a href="#q8">سؤال 8 – استقبال البيانات من المستخدم – المسافة بين نقطتين</a>
+<a href="#q9">سؤال 9 – استقبال البيانات من المستخدم – سرعة التشغيل</a>
+<a href="#q10">سؤال 10 – استقبال البيانات من المستخدم – تبليط غرفة</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">المستوى 1 – أساسي</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>سؤال 1 – استقبال البيانات من المستخدم – حساب الكهرباء</h3>
+      <span class="q-en">Q1 – user input – electricity bill</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 1 – استقبال البيانات من المستخدم – حساب الكهرباء</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم استهلاك الكهرباء بالكيلو واط ساعة (عدد صحيح) و سعر كيلو واط ساعة واحد (عدد حقيقي)، ويحسب المجموع للدفع. يجب حفظ كل بيان في متغير مناسب.<br>قبل كل استقبال بيانات يجب على البرنامج طباعة رسالة إرشادية للمستخدم، كما يظهر في المخرجات المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات:</strong> 320 وبعده 0.75</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the consumption in kWh:
+Enter the price per kWh:
+Consumption: 320 kWh
+Total payment: 240.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-0" download="Input01_ElectricityBill.java" style="text-decoration: underline;">Input01_ElectricityBill.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Electricity Bill
+ *
+ * Write a main program that reads from the user the electricity consumption
+ * in kWh (an integer) and the price of one kWh (a real number),
+ * and computes the total payment.
+ * Each value must be stored in a suitable variable.
+ * Before every input the program prints a message for the user.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output:
+ *   Enter the consumption in kWh:
+ *   Enter the price per kWh:
+ *   Consumption: 320 kWh
+ *   Total payment: 240.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input01_ElectricityBill</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>سؤال 2 – استقبال البيانات من المستخدم – أبعاد الغرفة</h3>
+      <span class="q-en">Q2 – user input – room space</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 2 – استقبال البيانات من المستخدم – أبعاد الغرفة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم طول، عرض وارتفاع الغرفة بالأمتار، ويحسب مساحة الأرضية، محيط الأرضية وحجم الغرفة. يجب حفظ كل معطى في متغير مناسب.<br>قبل كل استقبال بيانات يجب على البرنامج طباعة رسالة إرشادية للمستخدم، كما يظهر في المخرجات المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات:</strong> 5.5 ثم 4.0 ثم 2.5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the length of the room:
+Enter the width of the room:
+Enter the height of the room:
+Floor area: 22.0
+Floor perimeter: 19.0
+Room volume: 55.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-1" download="Input02_RoomSpace.java" style="text-decoration: underline;">Input02_RoomSpace.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Room Space
+ *
+ * Write a main program that reads from the user the length, the width and the
+ * height of a room in meters, and computes the floor area, the floor perimeter
+ * and the volume of the room.
+ * Each value must be stored in a suitable variable.
+ * Before every input the program prints a message for the user.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output:
+ *   Enter the length of the room:
+ *   Enter the width of the room:
+ *   Enter the height of the room:
+ *   Floor area: 22.0
+ *   Floor perimeter: 19.0
+ *   Room volume: 55.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input02_RoomSpace</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>سؤال 3 – استقبال البيانات من المستخدم – معادلة مستقيم</h3>
+      <span class="q-en">Q3 – user input – line equation</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 3 – استقبال البيانات من المستخدم – معادلة مستقيم</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم عددين صحيحين a و-b، ويعرض معادلة المستقيم من الشكل y = ax + b. بعد ذلك يقوم البرنامج باستقبال عدد صحيح x ويحسب قيمة y له.<br>انتبه إلى المخرجات المطلوبة: المعادلة تتكون من نص ثابت ومصفوفة المتغيرات المربوطة بها.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 3 ثم 4 ثم 5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the value of a:
+Enter the value of b:
+Enter the value of x:
+The equation is: y = 3x + 4
+For x = 5 the value is y = 19</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: 7 ثم 2 ثم -3
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the value of a:
+Enter the value of b:
+Enter the value of x:
+The equation is: y = 7x + 2
+For x = -3 the value is y = -19</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-2" download="Input03_LineEquation.java" style="text-decoration: underline;">Input03_LineEquation.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Line Equation
+ *
+ * Write a main program that reads from the user two integers a and b and
+ * prints the line equation y = ax + b. The program then reads an integer x
+ * and computes the value of y for that x.
+ * Each value must be stored in a suitable variable.
+ * Before every input the program prints a message for the user.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter the value of a:
+ *   Enter the value of b:
+ *   Enter the value of x:
+ *   The equation is: y = 3x + 4
+ *   For x = 5 the value is y = 19
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter the value of a:
+ *   Enter the value of b:
+ *   Enter the value of x:
+ *   The equation is: y = 7x + 2
+ *   For x = -3 the value is y = -19
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input03_LineEquation</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">المستوى 2 – متوسط</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>سؤال 4 – استقبال البيانات من المستخدم – السرعة المطلوبة</h3>
+      <span class="q-en">Q4 – user input – required speed</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 4 – استقبال البيانات من المستخدم – السرعة المطلوبة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم المسافة التي يجب عليه قطعها بالكيلومترات (عدد حقيقي) والزمن المتاح له بالدقائق (عدد صحيح)، ويحسب معدل السرعة المطلوبة بالكيلومتر في الساعة. يجب حفظ كل بيان في متغير مناسب.<br>انتبه: الزمن يُستقبل بالدقائق بينما السرعة لكل ساعة، ولذلك يلزم تحويل وحدات الزمن.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 90.0 وبعده 75</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the distance in km:
+Enter the available time in minutes:
+Distance: 90.0 km
+Time: 75 minutes
+Required average speed: 72.0 km/h</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: 45.5 وبعده 30
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the distance in km:
+Enter the available time in minutes:
+Distance: 45.5 km
+Time: 30 minutes
+Required average speed: 91.0 km/h</pre>
+
+<p dir="rtl" style="text-align: right;">
+حمّل الفئة <strong><a href="#dl-3" download="Input04_RequiredSpeed.java" style="text-decoration: underline;">Input04_RequiredSpeed.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Required Speed
+ *
+ * Write a main program that reads from the user the distance of a trip in km
+ * (a real number) and the available time in minutes (an integer), and computes
+ * the required average speed in km/h.
+ * Each value must be stored in a suitable variable.
+ * Note that the time is given in minutes while the speed is per hour.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter the distance in km:
+ *   Enter the available time in minutes:
+ *   Distance: 90.0 km
+ *   Time: 75 minutes
+ *   Required average speed: 72.0 km/h
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter the distance in km:
+ *   Enter the available time in minutes:
+ *   Distance: 45.5 km
+ *   Time: 30 minutes
+ *   Required average speed: 91.0 km/h
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input04_RequiredSpeed</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>سؤال 5 – استقبال البيانات من المستخدم – تغليف الكتب</h3>
+      <span class="q-en">Q5 – user input – books to boxes</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 5 – استقبال البيانات من المستخدم – تغليف الكتب</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم عدد الكتب التي يجب تغليفها وعدد الكتب التي تدخل في صندوق واحد، ويحسب كم صندوقاً كاملاً يمكن تعبئته وكم كتاباً سيبقى خارج الصناديق. يجب حفظ كل بيان في متغير مناسب.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 173 وبعده 15</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the number of books:
+Enter the capacity of one box:
+Books: 173
+Full boxes: 11
+Books left: 8</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: 96 وبعده 7
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the number of books:
+Enter the capacity of one box:
+Books: 96
+Full boxes: 13
+Books left: 5</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-4" download="Input05_BooksToBoxes.java" style="text-decoration: underline;">Input05_BooksToBoxes.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Books To Boxes
+ *
+ * Write a main program that reads from the user the number of books to pack and
+ * the number of books that fit into one box, and computes how many full boxes
+ * can be packed and how many books are left out of the boxes.
+ * Each value must be stored in a suitable variable.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter the number of books:
+ *   Enter the capacity of one box:
+ *   Books: 173
+ *   Full boxes: 11
+ *   Books left: 8
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter the number of books:
+ *   Enter the capacity of one box:
+ *   Books: 96
+ *   Full boxes: 13
+ *   Books left: 5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input05_BooksToBoxes</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>سؤال 6 – استقبال البيانات من المستخدم – ثواني إلى ساعة</h3>
+      <span class="q-en">Q6 – user input – seconds to time</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 6 – استقبال البيانات من المستخدم – ثواني إلى ساعة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم مدة زمنية بالثواني ويعرضها كساعات كاملة، دقائق كاملة وثواني. يجب حفظ كل بيان في متغير مناسب.<br>تلميح: أولاً، احسب عدد الساعات الكاملة، ثم استمر بالعمل مع الثواني المتبقية.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 7325</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the duration in seconds:
+Total seconds: 7325
+Hours: 2
+Minutes: 2
+Seconds: 5</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: 45296
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the duration in seconds:
+Total seconds: 45296
+Hours: 12
+Minutes: 34
+Seconds: 56</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-5" download="Input06_SecondsToTime.java" style="text-decoration: underline;">Input06_SecondsToTime.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Seconds To Time
+ *
+ * Write a main program that reads from the user a duration in seconds and
+ * presents it as whole hours, whole minutes and seconds.
+ * Each value must be stored in a suitable variable.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter the duration in seconds:
+ *   Total seconds: 7325
+ *   Hours: 2
+ *   Minutes: 2
+ *   Seconds: 5
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter the duration in seconds:
+ *   Total seconds: 45296
+ *   Hours: 12
+ *   Minutes: 34
+ *   Seconds: 56
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input06_SecondsToTime</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>سؤال 7 – استقبال البيانات من المستخدم – بكسلات في الشاشة</h3>
+      <span class="q-en">Q7 – user input – screen pixels</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 7 – استقبال البيانات من المستخدم – بكسلات في الشاشة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم العرض والارتفاع للشاشة بوحدة البكسل (أعداد صحيحة)، ويحسب عدد البكسلات الكلي، وعدد الميجا-بكسل (ملايين البكسلات) كعدد حقيقي، وعدد الميجا-بكسل الصحيح.<br>احفظ عدد البكسلات الكلي في متغير من نوع long بدون أمر تحويل، واحصل على عدد الميجا-بكسل الصحيح بمساعدة التحويل الصريح.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 3840 وبعده 2160</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the screen width in pixels:
+Enter the screen height in pixels:
+Total pixels: 8294400
+Megapixels: 8.2944
+Whole megapixels: 8</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: 1920 وبعده 1080
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the screen width in pixels:
+Enter the screen height in pixels:
+Total pixels: 2073600
+Megapixels: 2.0736
+Whole megapixels: 2</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-6" download="Input07_ScreenPixels.java" style="text-decoration: underline;">Input07_ScreenPixels.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Screen Pixels
+ *
+ * Write a main program that reads from the user the width and the height of a
+ * screen in pixels (integers), and computes the total number of pixels, the
+ * number of megapixels (millions of pixels) as a real number, and the number
+ * of whole megapixels.
+ * The total number of pixels must be stored in a long variable without an
+ * explicit cast, and the whole megapixels must be obtained by an explicit cast.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter the screen width in pixels:
+ *   Enter the screen height in pixels:
+ *   Total pixels: 8294400
+ *   Megapixels: 8.2944
+ *   Whole megapixels: 8
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter the screen width in pixels:
+ *   Enter the screen height in pixels:
+ *   Total pixels: 2073600
+ *   Megapixels: 2.0736
+ *   Whole megapixels: 2
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input07_ScreenPixels</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">المستوى 3 – متقدّم</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>سؤال 8 – استقبال البيانات من المستخدم – المسافة بين نقطتين</h3>
+      <span class="q-en">Q8 – user input – points distance</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 8 – استقبال البيانات من المستخدم – المسافة بين نقطتين</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم الإحداثيات لنقطتين في المستوى: x1, y1, x2, y2، ويحسب المسافة بينهما. يجب حفظ كل بيان في متغير مناسب.<br>صيغة المسافة بين نقطتين هي: d = &radic;((x2 - x1)&sup2; + (y2 - y1)&sup2;)<br>الجذر التربيعي يتم الحصول عليه بواسطة الأمر <code>Math.sqrt(...)</code> ، الذي يستقبل عدد حقيقي ويعيد الجذر التربيعي له.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 2 ثم 3 ثم 6 ثم 6</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter x1 and y1:
+Enter x2 and y2:
+Point A: (2.0, 3.0)
+Point B: (6.0, 6.0)
+Distance: 5.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: -2 ثم 5 ثم 10 ثم 0
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter x1 and y1:
+Enter x2 and y2:
+Point A: (-2.0, 5.0)
+Point B: (10.0, 0.0)
+Distance: 13.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-7" download="Input08_PointsDistance.java" style="text-decoration: underline;">Input08_PointsDistance.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Points Distance
+ *
+ * Write a main program that reads from the user the coordinates of two points
+ * in the plane: x1, y1, x2, y2, and computes the distance between them.
+ * The distance formula is:  d = sqrt((x2 - x1)^2 + (y2 - y1)^2)
+ * The square root is obtained with the command Math.sqrt(...).
+ * Each value must be stored in a suitable variable.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter x1 and y1:
+ *   Enter x2 and y2:
+ *   Point A: (2.0, 3.0)
+ *   Point B: (6.0, 6.0)
+ *   Distance: 5.0
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter x1 and y1:
+ *   Enter x2 and y2:
+ *   Point A: (-2.0, 5.0)
+ *   Point B: (10.0, 0.0)
+ *   Distance: 13.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input08_PointsDistance</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>سؤال 9 – استقبال البيانات من المستخدم – سرعة التشغيل</h3>
+      <span class="q-en">Q9 – user input – running pace</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 9 – استقبال البيانات من المستخدم – سرعة التشغيل</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم المسافة التي ركضها شخص بالكيلومترات ومدة الجري بالدقائق (عددين حقيقيين)، ويحسب سرعته – عدد الدقائق لكل كيلومتر. البرنامج يطبع السرعة كعدد حقيقي، ثم يعرضها كدقائق كاملة وثواني.<br>تلميح: الدقائق الكاملة يتم الحصول عليها بواسطة التحويل الصريح، والثواني تُحسب من الجزء الكسري المتبقي.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 12.0 ثم 66.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the distance in km:
+Enter the running time in minutes:
+Pace: 5.5 minutes per km
+That is 5 minutes and 30 seconds per km</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: 8.0 ثم 50.0
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the distance in km:
+Enter the running time in minutes:
+Pace: 6.25 minutes per km
+That is 6 minutes and 15 seconds per km</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-8" download="Input09_RunningPace.java" style="text-decoration: underline;">Input09_RunningPace.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Running Pace
+ *
+ * Write a main program that reads from the user the distance of a run in km and
+ * the running time in minutes (two real numbers), and computes the pace, that is
+ * the number of minutes per kilometer. The program prints the pace as a real
+ * number and then presents it as whole minutes and seconds.
+ * Each value must be stored in a suitable variable.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter the distance in km:
+ *   Enter the running time in minutes:
+ *   Pace: 5.5 minutes per km
+ *   That is 5 minutes and 30 seconds per km
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter the distance in km:
+ *   Enter the running time in minutes:
+ *   Pace: 6.25 minutes per km
+ *   That is 6 minutes and 15 seconds per km
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input09_RunningPace</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>سؤال 10 – استقبال البيانات من المستخدم – تبليط غرفة</h3>
+      <span class="q-en">Q10 – user input – floor tiles</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 10 – استقبال البيانات من المستخدم – تبليط غرفة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم طول وعرض الغرفة بالأمتار (أعداد حقيقية)، وطول ضلع البلاطة المربعة بالسنتيمترات (عدد صحيح) وسعر بلاطة واحدة (عدد حقيقي). البرنامج يحسب مساحة الغرفة بالمتر المربع، ومساحة بلاطة واحدة بالمتر المربع، وعدد البلاطات المطلوبة لتبليط الغرفة والتكلفة الإجمالية.<br>انتبه: أبعاد الغرفة معطاة بالأمتار بينما ضلع البلاطة بالسنتيمترات، ولذلك يلزم تحويل وحدات الطول. عدد البلاطات هو عدد صحيح، ويجب استقباله بواسطة التحويل الصريح.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong> 5.0 ثم 4.0 ثم 50 ثم 12.5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the length of the room in meters:
+Enter the width of the room in meters:
+Enter the side of one tile in cm:
+Enter the price of one tile:
+Room area: 20.0 square meters
+Tile area: 0.25 square meters
+Tiles needed: 80
+Total cost: 1000.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية: 6.5 ثم 4.0 ثم 25 ثم 3.75
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the length of the room in meters:
+Enter the width of the room in meters:
+Enter the side of one tile in cm:
+Enter the price of one tile:
+Room area: 26.0 square meters
+Tile area: 0.0625 square meters
+Tiles needed: 416
+Total cost: 1560.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-9" download="Input10_FloorTiles.java" style="text-decoration: underline;">Input10_FloorTiles.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: User Input - Floor Tiles
+ *
+ * Write a main program that reads from the user the length and the width of a
+ * room in meters (real numbers), the side of a square tile in cm (an integer)
+ * and the price of one tile (a real number). The program computes the area of
+ * the room in square meters, the area of one tile in square meters, the number
+ * of tiles needed to cover the room and the total cost.
+ * The room is given in meters while the tile side is given in cm.
+ * The number of tiles is an integer and must be obtained by an explicit cast.
+ * The values are read from the user with a Scanner object.
+ *
+ * Expected output of the first run:
+ *   Enter the length of the room in meters:
+ *   Enter the width of the room in meters:
+ *   Enter the side of one tile in cm:
+ *   Enter the price of one tile:
+ *   Room area: 20.0 square meters
+ *   Tile area: 0.25 square meters
+ *   Tiles needed: 80
+ *   Total cost: 1000.0
+ *
+ * Run the program again with different input data.
+ *
+ * Expected output of the second run:
+ *   Enter the length of the room in meters:
+ *   Enter the width of the room in meters:
+ *   Enter the side of one tile in cm:
+ *   Enter the price of one tile:
+ *   Room area: 26.0 square meters
+ *   Tile area: 0.0625 square meters
+ *   Tiles needed: 416
+ *   Total cost: 1560.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Input10_FloorTiles</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>الملفات مضمّنة في الصفحة — التنزيل يعمل أيضًا بدون اتصال بالإنترنت</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Input01_ElectricityBill.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gRWxlY3RyaWNpdHkgQmlsbAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGZyb20gdGhlIHVzZXIgdGhlIGVsZWN0cmljaXR5IGNvbnN1bXB0aW9uCiAqIGluIGtXaCAoYW4gaW50ZWdlcikgYW5kIHRoZSBwcmljZSBvZiBvbmUga1doIChhIHJlYWwgbnVtYmVyKSwKICogYW5kIGNvbXB1dGVzIHRoZSB0b3RhbCBwYXltZW50LgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqIEJlZm9yZSBldmVyeSBpbnB1dCB0aGUgcHJvZ3JhbSBwcmludHMgYSBtZXNzYWdlIGZvciB0aGUgdXNlci4KICogVGhlIHZhbHVlcyBhcmUgcmVhZCBmcm9tIHRoZSB1c2VyIHdpdGggYSBTY2FubmVyIG9iamVjdC4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEVudGVyIHRoZSBjb25zdW1wdGlvbiBpbiBrV2g6CiAqICAgRW50ZXIgdGhlIHByaWNlIHBlciBrV2g6CiAqICAgQ29uc3VtcHRpb246IDMyMCBrV2gKICogICBUb3RhbCBwYXltZW50OiAyNDAuMAogKi8KcHVibGljIGNsYXNzIElucHV0MDFfRWxlY3RyaWNpdHlCaWxsIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Input02_RoomSpace.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gUm9vbSBTcGFjZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGZyb20gdGhlIHVzZXIgdGhlIGxlbmd0aCwgdGhlIHdpZHRoIGFuZCB0aGUKICogaGVpZ2h0IG9mIGEgcm9vbSBpbiBtZXRlcnMsIGFuZCBjb21wdXRlcyB0aGUgZmxvb3IgYXJlYSwgdGhlIGZsb29yIHBlcmltZXRlcgogKiBhbmQgdGhlIHZvbHVtZSBvZiB0aGUgcm9vbS4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKiBCZWZvcmUgZXZlcnkgaW5wdXQgdGhlIHByb2dyYW0gcHJpbnRzIGEgbWVzc2FnZSBmb3IgdGhlIHVzZXIuCiAqIFRoZSB2YWx1ZXMgYXJlIHJlYWQgZnJvbSB0aGUgdXNlciB3aXRoIGEgU2Nhbm5lciBvYmplY3QuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBFbnRlciB0aGUgbGVuZ3RoIG9mIHRoZSByb29tOgogKiAgIEVudGVyIHRoZSB3aWR0aCBvZiB0aGUgcm9vbToKICogICBFbnRlciB0aGUgaGVpZ2h0IG9mIHRoZSByb29tOgogKiAgIEZsb29yIGFyZWE6IDIyLjAKICogICBGbG9vciBwZXJpbWV0ZXI6IDE5LjAKICogICBSb29tIHZvbHVtZTogNTUuMAogKi8KcHVibGljIGNsYXNzIElucHV0MDJfUm9vbVNwYWNlIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Input03_LineEquation.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gTGluZSBFcXVhdGlvbgogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGZyb20gdGhlIHVzZXIgdHdvIGludGVnZXJzIGEgYW5kIGIgYW5kCiAqIHByaW50cyB0aGUgbGluZSBlcXVhdGlvbiB5ID0gYXggKyBiLiBUaGUgcHJvZ3JhbSB0aGVuIHJlYWRzIGFuIGludGVnZXIgeAogKiBhbmQgY29tcHV0ZXMgdGhlIHZhbHVlIG9mIHkgZm9yIHRoYXQgeC4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKiBCZWZvcmUgZXZlcnkgaW5wdXQgdGhlIHByb2dyYW0gcHJpbnRzIGEgbWVzc2FnZSBmb3IgdGhlIHVzZXIuCiAqIFRoZSB2YWx1ZXMgYXJlIHJlYWQgZnJvbSB0aGUgdXNlciB3aXRoIGEgU2Nhbm5lciBvYmplY3QuCiAqCiAqIEV4cGVjdGVkIG91dHB1dCBvZiB0aGUgZmlyc3QgcnVuOgogKiAgIEVudGVyIHRoZSB2YWx1ZSBvZiBhOgogKiAgIEVudGVyIHRoZSB2YWx1ZSBvZiBiOgogKiAgIEVudGVyIHRoZSB2YWx1ZSBvZiB4OgogKiAgIFRoZSBlcXVhdGlvbiBpczogeSA9IDN4ICsgNAogKiAgIEZvciB4ID0gNSB0aGUgdmFsdWUgaXMgeSA9IDE5CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIGRpZmZlcmVudCBpbnB1dCBkYXRhLgogKgogKiBFeHBlY3RlZCBvdXRwdXQgb2YgdGhlIHNlY29uZCBydW46CiAqICAgRW50ZXIgdGhlIHZhbHVlIG9mIGE6CiAqICAgRW50ZXIgdGhlIHZhbHVlIG9mIGI6CiAqICAgRW50ZXIgdGhlIHZhbHVlIG9mIHg6CiAqICAgVGhlIGVxdWF0aW9uIGlzOiB5ID0gN3ggKyAyCiAqICAgRm9yIHggPSAtMyB0aGUgdmFsdWUgaXMgeSA9IC0xOQogKi8KcHVibGljIGNsYXNzIElucHV0MDNfTGluZUVxdWF0aW9uIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Input04_RequiredSpeed.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gUmVxdWlyZWQgU3BlZWQKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBmcm9tIHRoZSB1c2VyIHRoZSBkaXN0YW5jZSBvZiBhIHRyaXAgaW4ga20KICogKGEgcmVhbCBudW1iZXIpIGFuZCB0aGUgYXZhaWxhYmxlIHRpbWUgaW4gbWludXRlcyAoYW4gaW50ZWdlciksIGFuZCBjb21wdXRlcwogKiB0aGUgcmVxdWlyZWQgYXZlcmFnZSBzcGVlZCBpbiBrbS9oLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqIE5vdGUgdGhhdCB0aGUgdGltZSBpcyBnaXZlbiBpbiBtaW51dGVzIHdoaWxlIHRoZSBzcGVlZCBpcyBwZXIgaG91ci4KICogVGhlIHZhbHVlcyBhcmUgcmVhZCBmcm9tIHRoZSB1c2VyIHdpdGggYSBTY2FubmVyIG9iamVjdC4KICoKICogRXhwZWN0ZWQgb3V0cHV0IG9mIHRoZSBmaXJzdCBydW46CiAqICAgRW50ZXIgdGhlIGRpc3RhbmNlIGluIGttOgogKiAgIEVudGVyIHRoZSBhdmFpbGFibGUgdGltZSBpbiBtaW51dGVzOgogKiAgIERpc3RhbmNlOiA5MC4wIGttCiAqICAgVGltZTogNzUgbWludXRlcwogKiAgIFJlcXVpcmVkIGF2ZXJhZ2Ugc3BlZWQ6IDcyLjAga20vaAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCBkaWZmZXJlbnQgaW5wdXQgZGF0YS4KICoKICogRXhwZWN0ZWQgb3V0cHV0IG9mIHRoZSBzZWNvbmQgcnVuOgogKiAgIEVudGVyIHRoZSBkaXN0YW5jZSBpbiBrbToKICogICBFbnRlciB0aGUgYXZhaWxhYmxlIHRpbWUgaW4gbWludXRlczoKICogICBEaXN0YW5jZTogNDUuNSBrbQogKiAgIFRpbWU6IDMwIG1pbnV0ZXMKICogICBSZXF1aXJlZCBhdmVyYWdlIHNwZWVkOiA5MS4wIGttL2gKICovCnB1YmxpYyBjbGFzcyBJbnB1dDA0X1JlcXVpcmVkU3BlZWQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Input05_BooksToBoxes.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gQm9va3MgVG8gQm94ZXMKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBmcm9tIHRoZSB1c2VyIHRoZSBudW1iZXIgb2YgYm9va3MgdG8gcGFjayBhbmQKICogdGhlIG51bWJlciBvZiBib29rcyB0aGF0IGZpdCBpbnRvIG9uZSBib3gsIGFuZCBjb21wdXRlcyBob3cgbWFueSBmdWxsIGJveGVzCiAqIGNhbiBiZSBwYWNrZWQgYW5kIGhvdyBtYW55IGJvb2tzIGFyZSBsZWZ0IG91dCBvZiB0aGUgYm94ZXMuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICogVGhlIHZhbHVlcyBhcmUgcmVhZCBmcm9tIHRoZSB1c2VyIHdpdGggYSBTY2FubmVyIG9iamVjdC4KICoKICogRXhwZWN0ZWQgb3V0cHV0IG9mIHRoZSBmaXJzdCBydW46CiAqICAgRW50ZXIgdGhlIG51bWJlciBvZiBib29rczoKICogICBFbnRlciB0aGUgY2FwYWNpdHkgb2Ygb25lIGJveDoKICogICBCb29rczogMTczCiAqICAgRnVsbCBib3hlczogMTEKICogICBCb29rcyBsZWZ0OiA4CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIGRpZmZlcmVudCBpbnB1dCBkYXRhLgogKgogKiBFeHBlY3RlZCBvdXRwdXQgb2YgdGhlIHNlY29uZCBydW46CiAqICAgRW50ZXIgdGhlIG51bWJlciBvZiBib29rczoKICogICBFbnRlciB0aGUgY2FwYWNpdHkgb2Ygb25lIGJveDoKICogICBCb29rczogOTYKICogICBGdWxsIGJveGVzOiAxMwogKiAgIEJvb2tzIGxlZnQ6IDUKICovCnB1YmxpYyBjbGFzcyBJbnB1dDA1X0Jvb2tzVG9Cb3hlcyB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Input06_SecondsToTime.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gU2Vjb25kcyBUbyBUaW1lCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgZnJvbSB0aGUgdXNlciBhIGR1cmF0aW9uIGluIHNlY29uZHMgYW5kCiAqIHByZXNlbnRzIGl0IGFzIHdob2xlIGhvdXJzLCB3aG9sZSBtaW51dGVzIGFuZCBzZWNvbmRzLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqIFRoZSB2YWx1ZXMgYXJlIHJlYWQgZnJvbSB0aGUgdXNlciB3aXRoIGEgU2Nhbm5lciBvYmplY3QuCiAqCiAqIEV4cGVjdGVkIG91dHB1dCBvZiB0aGUgZmlyc3QgcnVuOgogKiAgIEVudGVyIHRoZSBkdXJhdGlvbiBpbiBzZWNvbmRzOgogKiAgIFRvdGFsIHNlY29uZHM6IDczMjUKICogICBIb3VyczogMgogKiAgIE1pbnV0ZXM6IDIKICogICBTZWNvbmRzOiA1CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIGRpZmZlcmVudCBpbnB1dCBkYXRhLgogKgogKiBFeHBlY3RlZCBvdXRwdXQgb2YgdGhlIHNlY29uZCBydW46CiAqICAgRW50ZXIgdGhlIGR1cmF0aW9uIGluIHNlY29uZHM6CiAqICAgVG90YWwgc2Vjb25kczogNDUyOTYKICogICBIb3VyczogMTIKICogICBNaW51dGVzOiAzNAogKiAgIFNlY29uZHM6IDU2CiAqLwpwdWJsaWMgY2xhc3MgSW5wdXQwNl9TZWNvbmRzVG9UaW1lIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Input07_ScreenPixels.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gU2NyZWVuIFBpeGVscwogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGZyb20gdGhlIHVzZXIgdGhlIHdpZHRoIGFuZCB0aGUgaGVpZ2h0IG9mIGEKICogc2NyZWVuIGluIHBpeGVscyAoaW50ZWdlcnMpLCBhbmQgY29tcHV0ZXMgdGhlIHRvdGFsIG51bWJlciBvZiBwaXhlbHMsIHRoZQogKiBudW1iZXIgb2YgbWVnYXBpeGVscyAobWlsbGlvbnMgb2YgcGl4ZWxzKSBhcyBhIHJlYWwgbnVtYmVyLCBhbmQgdGhlIG51bWJlcgogKiBvZiB3aG9sZSBtZWdhcGl4ZWxzLgogKiBUaGUgdG90YWwgbnVtYmVyIG9mIHBpeGVscyBtdXN0IGJlIHN0b3JlZCBpbiBhIGxvbmcgdmFyaWFibGUgd2l0aG91dCBhbgogKiBleHBsaWNpdCBjYXN0LCBhbmQgdGhlIHdob2xlIG1lZ2FwaXhlbHMgbXVzdCBiZSBvYnRhaW5lZCBieSBhbiBleHBsaWNpdCBjYXN0LgogKiBUaGUgdmFsdWVzIGFyZSByZWFkIGZyb20gdGhlIHVzZXIgd2l0aCBhIFNjYW5uZXIgb2JqZWN0LgogKgogKiBFeHBlY3RlZCBvdXRwdXQgb2YgdGhlIGZpcnN0IHJ1bjoKICogICBFbnRlciB0aGUgc2NyZWVuIHdpZHRoIGluIHBpeGVsczoKICogICBFbnRlciB0aGUgc2NyZWVuIGhlaWdodCBpbiBwaXhlbHM6CiAqICAgVG90YWwgcGl4ZWxzOiA4Mjk0NDAwCiAqICAgTWVnYXBpeGVsczogOC4yOTQ0CiAqICAgV2hvbGUgbWVnYXBpeGVsczogOAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCBkaWZmZXJlbnQgaW5wdXQgZGF0YS4KICoKICogRXhwZWN0ZWQgb3V0cHV0IG9mIHRoZSBzZWNvbmQgcnVuOgogKiAgIEVudGVyIHRoZSBzY3JlZW4gd2lkdGggaW4gcGl4ZWxzOgogKiAgIEVudGVyIHRoZSBzY3JlZW4gaGVpZ2h0IGluIHBpeGVsczoKICogICBUb3RhbCBwaXhlbHM6IDIwNzM2MDAKICogICBNZWdhcGl4ZWxzOiAyLjA3MzYKICogICBXaG9sZSBtZWdhcGl4ZWxzOiAyCiAqLwpwdWJsaWMgY2xhc3MgSW5wdXQwN19TY3JlZW5QaXhlbHMgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Input08_PointsDistance.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gUG9pbnRzIERpc3RhbmNlCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgZnJvbSB0aGUgdXNlciB0aGUgY29vcmRpbmF0ZXMgb2YgdHdvIHBvaW50cwogKiBpbiB0aGUgcGxhbmU6IHgxLCB5MSwgeDIsIHkyLCBhbmQgY29tcHV0ZXMgdGhlIGRpc3RhbmNlIGJldHdlZW4gdGhlbS4KICogVGhlIGRpc3RhbmNlIGZvcm11bGEgaXM6ICBkID0gc3FydCgoeDIgLSB4MSleMiArICh5MiAtIHkxKV4yKQogKiBUaGUgc3F1YXJlIHJvb3QgaXMgb2J0YWluZWQgd2l0aCB0aGUgY29tbWFuZCBNYXRoLnNxcnQoLi4uKS4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKiBUaGUgdmFsdWVzIGFyZSByZWFkIGZyb20gdGhlIHVzZXIgd2l0aCBhIFNjYW5uZXIgb2JqZWN0LgogKgogKiBFeHBlY3RlZCBvdXRwdXQgb2YgdGhlIGZpcnN0IHJ1bjoKICogICBFbnRlciB4MSBhbmQgeTE6CiAqICAgRW50ZXIgeDIgYW5kIHkyOgogKiAgIFBvaW50IEE6ICgyLjAsIDMuMCkKICogICBQb2ludCBCOiAoNi4wLCA2LjApCiAqICAgRGlzdGFuY2U6IDUuMAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCBkaWZmZXJlbnQgaW5wdXQgZGF0YS4KICoKICogRXhwZWN0ZWQgb3V0cHV0IG9mIHRoZSBzZWNvbmQgcnVuOgogKiAgIEVudGVyIHgxIGFuZCB5MToKICogICBFbnRlciB4MiBhbmQgeTI6CiAqICAgUG9pbnQgQTogKC0yLjAsIDUuMCkKICogICBQb2ludCBCOiAoMTAuMCwgMC4wKQogKiAgIERpc3RhbmNlOiAxMy4wCiAqLwpwdWJsaWMgY2xhc3MgSW5wdXQwOF9Qb2ludHNEaXN0YW5jZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Input09_RunningPace.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gUnVubmluZyBQYWNlCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgZnJvbSB0aGUgdXNlciB0aGUgZGlzdGFuY2Ugb2YgYSBydW4gaW4ga20gYW5kCiAqIHRoZSBydW5uaW5nIHRpbWUgaW4gbWludXRlcyAodHdvIHJlYWwgbnVtYmVycyksIGFuZCBjb21wdXRlcyB0aGUgcGFjZSwgdGhhdCBpcwogKiB0aGUgbnVtYmVyIG9mIG1pbnV0ZXMgcGVyIGtpbG9tZXRlci4gVGhlIHByb2dyYW0gcHJpbnRzIHRoZSBwYWNlIGFzIGEgcmVhbAogKiBudW1iZXIgYW5kIHRoZW4gcHJlc2VudHMgaXQgYXMgd2hvbGUgbWludXRlcyBhbmQgc2Vjb25kcy4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKiBUaGUgdmFsdWVzIGFyZSByZWFkIGZyb20gdGhlIHVzZXIgd2l0aCBhIFNjYW5uZXIgb2JqZWN0LgogKgogKiBFeHBlY3RlZCBvdXRwdXQgb2YgdGhlIGZpcnN0IHJ1bjoKICogICBFbnRlciB0aGUgZGlzdGFuY2UgaW4ga206CiAqICAgRW50ZXIgdGhlIHJ1bm5pbmcgdGltZSBpbiBtaW51dGVzOgogKiAgIFBhY2U6IDUuNSBtaW51dGVzIHBlciBrbQogKiAgIFRoYXQgaXMgNSBtaW51dGVzIGFuZCAzMCBzZWNvbmRzIHBlciBrbQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCBkaWZmZXJlbnQgaW5wdXQgZGF0YS4KICoKICogRXhwZWN0ZWQgb3V0cHV0IG9mIHRoZSBzZWNvbmQgcnVuOgogKiAgIEVudGVyIHRoZSBkaXN0YW5jZSBpbiBrbToKICogICBFbnRlciB0aGUgcnVubmluZyB0aW1lIGluIG1pbnV0ZXM6CiAqICAgUGFjZTogNi4yNSBtaW51dGVzIHBlciBrbQogKiAgIFRoYXQgaXMgNiBtaW51dGVzIGFuZCAxNSBzZWNvbmRzIHBlciBrbQogKi8KcHVibGljIGNsYXNzIElucHV0MDlfUnVubmluZ1BhY2UgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Input10_FloorTiles.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBVc2VyIElucHV0IC0gRmxvb3IgVGlsZXMKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBmcm9tIHRoZSB1c2VyIHRoZSBsZW5ndGggYW5kIHRoZSB3aWR0aCBvZiBhCiAqIHJvb20gaW4gbWV0ZXJzIChyZWFsIG51bWJlcnMpLCB0aGUgc2lkZSBvZiBhIHNxdWFyZSB0aWxlIGluIGNtIChhbiBpbnRlZ2VyKQogKiBhbmQgdGhlIHByaWNlIG9mIG9uZSB0aWxlIChhIHJlYWwgbnVtYmVyKS4gVGhlIHByb2dyYW0gY29tcHV0ZXMgdGhlIGFyZWEgb2YKICogdGhlIHJvb20gaW4gc3F1YXJlIG1ldGVycywgdGhlIGFyZWEgb2Ygb25lIHRpbGUgaW4gc3F1YXJlIG1ldGVycywgdGhlIG51bWJlcgogKiBvZiB0aWxlcyBuZWVkZWQgdG8gY292ZXIgdGhlIHJvb20gYW5kIHRoZSB0b3RhbCBjb3N0LgogKiBUaGUgcm9vbSBpcyBnaXZlbiBpbiBtZXRlcnMgd2hpbGUgdGhlIHRpbGUgc2lkZSBpcyBnaXZlbiBpbiBjbS4KICogVGhlIG51bWJlciBvZiB0aWxlcyBpcyBhbiBpbnRlZ2VyIGFuZCBtdXN0IGJlIG9idGFpbmVkIGJ5IGFuIGV4cGxpY2l0IGNhc3QuCiAqIFRoZSB2YWx1ZXMgYXJlIHJlYWQgZnJvbSB0aGUgdXNlciB3aXRoIGEgU2Nhbm5lciBvYmplY3QuCiAqCiAqIEV4cGVjdGVkIG91dHB1dCBvZiB0aGUgZmlyc3QgcnVuOgogKiAgIEVudGVyIHRoZSBsZW5ndGggb2YgdGhlIHJvb20gaW4gbWV0ZXJzOgogKiAgIEVudGVyIHRoZSB3aWR0aCBvZiB0aGUgcm9vbSBpbiBtZXRlcnM6CiAqICAgRW50ZXIgdGhlIHNpZGUgb2Ygb25lIHRpbGUgaW4gY206CiAqICAgRW50ZXIgdGhlIHByaWNlIG9mIG9uZSB0aWxlOgogKiAgIFJvb20gYXJlYTogMjAuMCBzcXVhcmUgbWV0ZXJzCiAqICAgVGlsZSBhcmVhOiAwLjI1IHNxdWFyZSBtZXRlcnMKICogICBUaWxlcyBuZWVkZWQ6IDgwCiAqICAgVG90YWwgY29zdDogMTAwMC4wCiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIGRpZmZlcmVudCBpbnB1dCBkYXRhLgogKgogKiBFeHBlY3RlZCBvdXRwdXQgb2YgdGhlIHNlY29uZCBydW46CiAqICAgRW50ZXIgdGhlIGxlbmd0aCBvZiB0aGUgcm9vbSBpbiBtZXRlcnM6CiAqICAgRW50ZXIgdGhlIHdpZHRoIG9mIHRoZSByb29tIGluIG1ldGVyczoKICogICBFbnRlciB0aGUgc2lkZSBvZiBvbmUgdGlsZSBpbiBjbToKICogICBFbnRlciB0aGUgcHJpY2Ugb2Ygb25lIHRpbGU6CiAqICAgUm9vbSBhcmVhOiAyNi4wIHNxdWFyZSBtZXRlcnMKICogICBUaWxlIGFyZWE6IDAuMDYyNSBzcXVhcmUgbWV0ZXJzCiAqICAgVGlsZXMgbmVlZGVkOiA0MTYKICogICBUb3RhbCBjb3N0OiAxNTYwLjAKICovCnB1YmxpYyBjbGFzcyBJbnB1dDEwX0Zsb29yVGlsZXMgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '820';
+  var DEFAULT_LIGHT = true;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

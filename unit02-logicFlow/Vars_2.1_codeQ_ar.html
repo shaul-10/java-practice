@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين كتابة للوحدة 2.1</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 820px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="code-light">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>تمارين كتابة للوحدة 2.1</h1>
+      <p>Java أ – مقدمة في علم الحاسوب  |  10 أسئلة بمستوى صعوبة متصاعد</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">العرض</span>
+      <button type="button" data-w="820">ضيّق</button>
+      <button type="button" data-w="980">متوسط</button>
+      <button type="button" data-w="1200">واسع</button>
+      <button type="button" data-w="100%">كامل</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">الكود</span>
+      <button type="button" data-theme="dark">داكن</button>
+      <button type="button" data-theme="light">فاتح</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>المحتويات</h2>
+    <div class="toc-grid">
+<a href="#q1">سؤال 1 – متغيرات – تكلفة البطاقات</a>
+<a href="#q2">سؤال 2 – متغيرات – حجم صندوق</a>
+<a href="#q3">سؤال 3 – متغيرات – محيط ومساحة دائرة</a>
+<a href="#q4">سؤال 4 – متغيرات – معدل الهطول</a>
+<a href="#q5">سؤال 5 – متغيرات – تحويل درجة الحرارة</a>
+<a href="#q6">سؤال 6 – متغيرات – مؤشر كتلة الجسم</a>
+<a href="#q7">سؤال 7 – متغيرات – حساب شراء</a>
+<a href="#q8">سؤال 8 – متغيرات – تكلفة الوقود للرحلة</a>
+<a href="#q9">سؤال 9 – متغيرات – طلاء غرفة</a>
+<a href="#q10">سؤال 10 – متغيرات – تقسيم التوفير</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">المستوى 1 – أساسي</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>سؤال 1 – متغيرات – تكلفة البطاقات</h3>
+      <span class="q-en">Q1 – variables – tickets cost</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 1 – متغيرات – تكلفة البطاقات</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب التكلفة الإجمالية لشراء بطاقات لمسرحية، حيث أن سعر البطاقة الواحدة هو 45 شيكل وتم شراء 7 بطاقات. يجب حفظ كل معطى في متغير مناسب.
+<br>انتبه إلى المخرجات المطلوبة واختر نوع المتغيرات المناسب.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Total cost: 315</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-0" download="Vars01_TicketsCost.java" style="text-decoration: underline;">Vars01_TicketsCost.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Tickets Cost
+ *
+ * Write a main program that calculates the total cost of buying
+ * theater tickets, where a single ticket costs 45 and 7 tickets were bought.
+ * Each value must be stored in a suitable variable.
+ * Look carefully at the required output and choose the right variable types.
+ *
+ * Expected output:
+ *   Total cost: 315
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars01_TicketsCost</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>سؤال 2 – متغيرات – حجم صندوق</h3>
+      <span class="q-en">Q2 – variables – box volume</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 2 – متغيرات – حجم صندوق</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب حجم صندوق أبعاده هي: طول 7.5 سم، عرض 4.2 سم وارتفاع 3 سم. يجب حفظ كل بُعد في متغير مناسب.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">The volume of the box is 94.5</pre>
+
+<p dir="rtl" style="text-align: right;">بعد تشغيل البرنامج، غيّر أبعاد الصندوق إلى طول 6 سم، عرض 4.5 سم وارتفاع 2.5 سم، وشغّل مرة أخرى.</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">The volume of the box is 67.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-1" download="Vars02_BoxVolume.java" style="text-decoration: underline;">Vars02_BoxVolume.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Box Volume
+ *
+ * Write a main program that calculates the volume of a box
+ * whose dimensions are: length 7.5, width 4.2, height 3.
+ * Each dimension must be stored in a suitable variable.
+ *
+ * Expected output:
+ *   The volume of the box is 94.5
+ *
+ * Then change the dimensions to: length 6, width 4.5, height 2.5
+ * and run the program again.
+ *
+ * Expected output:
+ *   The volume of the box is 67.5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars02_BoxVolume</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>سؤال 3 – متغيرات – محيط ومساحة دائرة</h3>
+      <span class="q-en">Q3 – variables – circle data</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 3 – متغيرات – محيط ومساحة دائرة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب المحيط والمساحة لدائرة نصف قطرها 4.5 سم. احفظ قيمة π في متغير مناسب واختر التقريب 3.14.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Circumference: 28.26
+Area: 63.585</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-2" download="Vars03_CircleData.java" style="text-decoration: underline;">Vars03_CircleData.java</a></strong> إلى بيئة العمل، اكتب البرنامج وقم بتشغيله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Circle Data
+ *
+ * Write a main program that calculates the circumference and the area
+ * of a circle whose radius is 4.5.
+ * Store the value of pi in a suitable variable, using the approximation 3.14.
+ *
+ * Expected output:
+ *   Circumference: 28.26
+ *   Area: 63.585
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars03_CircleData</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">المستوى 2 – متوسط</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>سؤال 4 – متغيرات – معدل الهطول</h3>
+      <span class="q-en">Q4 – variables – rain average</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 4 – متغيرات – معدل الهطول</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب مجموع الهطول والمعدل له في أربعة أشهر شتاء، حيث كميات الهطول بالمليمتر هي: 12.5، 7.5، 20.0 و-6.0. يجب حفظ كل قياس في متغير مناسب.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Total rainfall: 46.0
+Average rainfall: 11.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-3" download="Vars04_RainAverage.java" style="text-decoration: underline;">Vars04_RainAverage.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Rain Average
+ *
+ * Write a main program that calculates the total rainfall and its average
+ * over four winter months, where the amounts in mm are:
+ * 12.5, 7.5, 20.0 and 6.0.
+ * Each measurement must be stored in a suitable variable.
+ *
+ * Expected output:
+ *   Total rainfall: 46.0
+ *   Average rainfall: 11.5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars04_RainAverage</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>سؤال 5 – متغيرات – تحويل درجة الحرارة</h3>
+      <span class="q-en">Q5 – variables – celsius to fahrenheit</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 5 – متغيرات – تحويل درجة الحرارة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يقوم بتحويل درجة الحرارة من مقياس سلسيوس إلى مقياس فهرنهايت. درجة الحرارة المعطاة هي 36.5 درجة سلسيوس. معادلة التحويل هي: F = 1.8 &times; C + 32
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">36.5 C = 97.7 F</pre>
+
+<p dir="rtl" style="text-align: right;">بعد تشغيل البرنامج، غيّر درجة الحرارة إلى ‎-12.5 درجة سلسيوس وشغّل مرة أخرى.</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-12.5 C = 9.5 F</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-4" download="Vars05_CelsiusToFahrenheit.java" style="text-decoration: underline;">Vars05_CelsiusToFahrenheit.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Celsius To Fahrenheit
+ *
+ * Write a main program that converts a temperature from Celsius to Fahrenheit.
+ * The given temperature is 36.5 degrees Celsius.
+ * The conversion formula is:  F = 1.8 * C + 32
+ *
+ * Expected output:
+ *   36.5 C = 97.7 F
+ *
+ * Then change the temperature to -12.5 degrees Celsius
+ * and run the program again.
+ *
+ * Expected output:
+ *   -12.5 C = 9.5 F
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars05_CelsiusToFahrenheit</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>سؤال 6 – متغيرات – مؤشر كتلة الجسم</h3>
+      <span class="q-en">Q6 – variables – body mass index</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 6 – متغيرات – مؤشر كتلة الجسم</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب مؤشر كتلة الجسم (BMI) لشخص وزنه 81 كغم وطوله 1.8 متر. يتم حساب المؤشر عن طريق قسمة الوزن على مربع الطول.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">BMI: 25.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-5" download="Vars06_BodyMassIndex.java" style="text-decoration: underline;">Vars06_BodyMassIndex.java</a></strong> إلى بيئة العمل، اكتب البرنامج وقم بتشغيله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Body Mass Index
+ *
+ * Write a main program that calculates the Body Mass Index (BMI)
+ * of a person weighing 81 kg whose height is 1.8 meters.
+ * The index is the weight divided by the square of the height.
+ *
+ * Expected output:
+ *   BMI: 25.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars06_BodyMassIndex</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>سؤال 7 – متغيرات – حساب شراء</h3>
+      <span class="q-en">Q7 – variables – shopping cart</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 7 – متغيرات – حساب شراء</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب حساب شراء لثلاثة منتجات: 3 دفاتر بسعر 12.5 شيكل للوحدة، 2 أقلام بسعر 4.25 شيكل للوحدة و-5 ملفات بسعر 3.0 شيكل للوحدة. احسب المجموع الفرعي، ضريبة القيمة المضافة بنسبة 18%، والمجموع للدفع.
+<br>انتبه: الأسعار تشمل أغورات، ولكن لا يوجد نصف دفتر &ndash; اختر لكل معطى نوع المتغير المناسب له.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Subtotal: 61.0
+VAT: 10.98
+Total: 71.98</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-6" download="Vars07_ShoppingCart.java" style="text-decoration: underline;">Vars07_ShoppingCart.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Shopping Cart
+ *
+ * Write a main program that calculates a shopping bill of three products:
+ * 3 notebooks at 12.5 each, 2 pens at 4.25 each and 5 folders at 3.0 each.
+ * Calculate the subtotal, the VAT at a rate of 18%, and the total to pay.
+ * Note: prices include fractions, but there is no half a notebook -
+ * choose the suitable variable type for each value.
+ *
+ * Expected output:
+ *   Subtotal: 61.0
+ *   VAT: 10.98
+ *   Total: 71.98
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars07_ShoppingCart</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">المستوى 3 – متقدّم</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>سؤال 8 – متغيرات – تكلفة الوقود للرحلة</h3>
+      <span class="q-en">Q8 – variables – trip fuel cost</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 8 – متغيرات – تكلفة الوقود للرحلة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب كمية الوقود وتكلفته لرحلة بطول 480 كم، عندما يكون استهلاك الوقود للمركبة هو 7.5 لتر لكل 100 كم وسعر لتر الوقود هو 7.2 شيكل.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Liters needed: 36.0
+Fuel cost: 259.2</pre>
+
+<p dir="rtl" style="text-align: right;">بعد تشغيل البرنامج، غيّر البيانات لرحلة بطول 250 كم في مركبة استهلاكها 6.0 لتر لكل 100 كم، وشغّل مرة أخرى.</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Liters needed: 15.0
+Fuel cost: 108.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-7" download="Vars08_TripFuelCost.java" style="text-decoration: underline;">Vars08_TripFuelCost.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Trip Fuel Cost
+ *
+ * Write a main program that calculates the amount of fuel and its cost
+ * for a trip of 480 km, where the car consumes 7.5 liters per 100 km
+ * and the price of one liter is 7.2.
+ *
+ * Expected output:
+ *   Liters needed: 36.0
+ *   Fuel cost: 259.2
+ *
+ * Then change the data to a trip of 250 km with a car that consumes
+ * 6.0 liters per 100 km, and run the program again.
+ *
+ * Expected output:
+ *   Liters needed: 15.0
+ *   Fuel cost: 108.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars08_TripFuelCost</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>سؤال 9 – متغيرات – طلاء غرفة</h3>
+      <span class="q-en">Q9 – variables – painting walls</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 9 – متغيرات – طلاء غرفة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب كمية الطلاء المطلوبة لطلاء أربعة جدران غرفة طولها 5 أمتار، عرضها 4 أمتار وارتفاعها 2.5 متر. في الغرفة باب مساحته 1.8 م&sup2; ونافذة مساحتها 2.2 م&sup2;، لا يتم طلاؤهما. لتر واحد من الطلاء يغطي 10 م&sup2;.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Area to paint: 41.0
+Liters of paint: 4.1</pre>
+
+<p dir="rtl" style="text-align: right;">
+قم بتنزيل الفئة <strong><a href="#dl-8" download="Vars09_PaintingWalls.java" style="text-decoration: underline;">Vars09_PaintingWalls.java</a></strong> إلى بيئة العمل، اكتب البرنامج وقم بتشغيله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Painting Walls
+ *
+ * Write a main program that calculates the amount of paint needed
+ * for the four walls of a room 5 meters long, 4 meters wide and 2.5 meters high.
+ * The room has a door of 1.8 square meters and a window of 2.2 square meters,
+ * which are not painted. One liter of paint covers 10 square meters.
+ *
+ * Expected output:
+ *   Area to paint: 41.0
+ *   Liters of paint: 4.1
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars09_PaintingWalls</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>سؤال 10 – متغيرات – تقسيم التوفير</h3>
+      <span class="q-en">Q10 – variables – savings split</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 10 – متغيرات – تقسيم التوفير</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب مجموع التوفير لثلاثة شركاء وحصة كل واحد منهم. في الصندوق كان في البداية 1600 شيكل، وخلال 8 أشهر تم إيداع 250 شيكل في كل شهر. المجموع المتراكم يُقسم بالتساوي بين الشركاء الثلاثة.
+<br>انتبه إلى المخرجات المطلوبة واختر نوع المتغيرات المناسب لكل معطى.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Total savings: 3600
+Each partner gets: 1200.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-9" download="Vars10_SavingsSplit.java" style="text-decoration: underline;">Vars10_SavingsSplit.java</a></strong> إلى بيئة العمل، اكتب البرنامج وقم بتشغيله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Variables – Savings Split
+ *
+ * Write a main program that calculates the savings of three partners
+ * and the share of each one of them.
+ * The fund started with 1600, and for 8 months 250 was deposited each month.
+ * The accumulated amount is split equally between the three partners.
+ * Look carefully at the required output and choose the right variable types.
+ *
+ * Expected output:
+ *   Total savings: 3600
+ *   Each partner gets: 1200.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Vars10_SavingsSplit</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>الملفات مضمّنة في الصفحة — التنزيل يعمل أيضًا بدون اتصال بالإنترنت</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Vars01_TicketsCost.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIFRpY2tldHMgQ29zdAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGN1bGF0ZXMgdGhlIHRvdGFsIGNvc3Qgb2YgYnV5aW5nCiAqIHRoZWF0ZXIgdGlja2V0cywgd2hlcmUgYSBzaW5nbGUgdGlja2V0IGNvc3RzIDQ1IGFuZCA3IHRpY2tldHMgd2VyZSBib3VnaHQuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICogTG9vayBjYXJlZnVsbHkgYXQgdGhlIHJlcXVpcmVkIG91dHB1dCBhbmQgY2hvb3NlIHRoZSByaWdodCB2YXJpYWJsZSB0eXBlcy4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFRvdGFsIGNvc3Q6IDMxNQogKi8KcHVibGljIGNsYXNzIFZhcnMwMV9UaWNrZXRzQ29zdCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Vars02_BoxVolume.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIEJveCBWb2x1bWUKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBjYWxjdWxhdGVzIHRoZSB2b2x1bWUgb2YgYSBib3gKICogd2hvc2UgZGltZW5zaW9ucyBhcmU6IGxlbmd0aCA3LjUsIHdpZHRoIDQuMiwgaGVpZ2h0IDMuCiAqIEVhY2ggZGltZW5zaW9uIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBUaGUgdm9sdW1lIG9mIHRoZSBib3ggaXMgOTQuNQogKgogKiBUaGVuIGNoYW5nZSB0aGUgZGltZW5zaW9ucyB0bzogbGVuZ3RoIDYsIHdpZHRoIDQuNSwgaGVpZ2h0IDIuNQogKiBhbmQgcnVuIHRoZSBwcm9ncmFtIGFnYWluLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgVGhlIHZvbHVtZSBvZiB0aGUgYm94IGlzIDY3LjUKICovCnB1YmxpYyBjbGFzcyBWYXJzMDJfQm94Vm9sdW1lIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Vars03_CircleData.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIENpcmNsZSBEYXRhCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgY2FsY3VsYXRlcyB0aGUgY2lyY3VtZmVyZW5jZSBhbmQgdGhlIGFyZWEKICogb2YgYSBjaXJjbGUgd2hvc2UgcmFkaXVzIGlzIDQuNS4KICogU3RvcmUgdGhlIHZhbHVlIG9mIHBpIGluIGEgc3VpdGFibGUgdmFyaWFibGUsIHVzaW5nIHRoZSBhcHByb3hpbWF0aW9uIDMuMTQuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBDaXJjdW1mZXJlbmNlOiAyOC4yNgogKiAgIEFyZWE6IDYzLjU4NQogKi8KcHVibGljIGNsYXNzIFZhcnMwM19DaXJjbGVEYXRhIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Vars04_RainAverage.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIFJhaW4gQXZlcmFnZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGN1bGF0ZXMgdGhlIHRvdGFsIHJhaW5mYWxsIGFuZCBpdHMgYXZlcmFnZQogKiBvdmVyIGZvdXIgd2ludGVyIG1vbnRocywgd2hlcmUgdGhlIGFtb3VudHMgaW4gbW0gYXJlOgogKiAxMi41LCA3LjUsIDIwLjAgYW5kIDYuMC4KICogRWFjaCBtZWFzdXJlbWVudCBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgVG90YWwgcmFpbmZhbGw6IDQ2LjAKICogICBBdmVyYWdlIHJhaW5mYWxsOiAxMS41CiAqLwpwdWJsaWMgY2xhc3MgVmFyczA0X1JhaW5BdmVyYWdlIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Vars05_CelsiusToFahrenheit.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIENlbHNpdXMgVG8gRmFocmVuaGVpdAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNvbnZlcnRzIGEgdGVtcGVyYXR1cmUgZnJvbSBDZWxzaXVzIHRvIEZhaHJlbmhlaXQuCiAqIFRoZSBnaXZlbiB0ZW1wZXJhdHVyZSBpcyAzNi41IGRlZ3JlZXMgQ2Vsc2l1cy4KICogVGhlIGNvbnZlcnNpb24gZm9ybXVsYSBpczogIEYgPSAxLjggKiBDICsgMzIKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIDM2LjUgQyA9IDk3LjcgRgogKgogKiBUaGVuIGNoYW5nZSB0aGUgdGVtcGVyYXR1cmUgdG8gLTEyLjUgZGVncmVlcyBDZWxzaXVzCiAqIGFuZCBydW4gdGhlIHByb2dyYW0gYWdhaW4uCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICAtMTIuNSBDID0gOS41IEYKICovCnB1YmxpYyBjbGFzcyBWYXJzMDVfQ2Vsc2l1c1RvRmFocmVuaGVpdCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Vars06_BodyMassIndex.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIEJvZHkgTWFzcyBJbmRleAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGN1bGF0ZXMgdGhlIEJvZHkgTWFzcyBJbmRleCAoQk1JKQogKiBvZiBhIHBlcnNvbiB3ZWlnaGluZyA4MSBrZyB3aG9zZSBoZWlnaHQgaXMgMS44IG1ldGVycy4KICogVGhlIGluZGV4IGlzIHRoZSB3ZWlnaHQgZGl2aWRlZCBieSB0aGUgc3F1YXJlIG9mIHRoZSBoZWlnaHQuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBCTUk6IDI1LjAKICovCnB1YmxpYyBjbGFzcyBWYXJzMDZfQm9keU1hc3NJbmRleCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Vars07_ShoppingCart.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIFNob3BwaW5nIENhcnQKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBjYWxjdWxhdGVzIGEgc2hvcHBpbmcgYmlsbCBvZiB0aHJlZSBwcm9kdWN0czoKICogMyBub3RlYm9va3MgYXQgMTIuNSBlYWNoLCAyIHBlbnMgYXQgNC4yNSBlYWNoIGFuZCA1IGZvbGRlcnMgYXQgMy4wIGVhY2guCiAqIENhbGN1bGF0ZSB0aGUgc3VidG90YWwsIHRoZSBWQVQgYXQgYSByYXRlIG9mIDE4JSwgYW5kIHRoZSB0b3RhbCB0byBwYXkuCiAqIE5vdGU6IHByaWNlcyBpbmNsdWRlIGZyYWN0aW9ucywgYnV0IHRoZXJlIGlzIG5vIGhhbGYgYSBub3RlYm9vayAtCiAqIGNob29zZSB0aGUgc3VpdGFibGUgdmFyaWFibGUgdHlwZSBmb3IgZWFjaCB2YWx1ZS4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFN1YnRvdGFsOiA2MS4wCiAqICAgVkFUOiAxMC45OAogKiAgIFRvdGFsOiA3MS45OAogKi8KcHVibGljIGNsYXNzIFZhcnMwN19TaG9wcGluZ0NhcnQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Vars08_TripFuelCost.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIFRyaXAgRnVlbCBDb3N0CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgY2FsY3VsYXRlcyB0aGUgYW1vdW50IG9mIGZ1ZWwgYW5kIGl0cyBjb3N0CiAqIGZvciBhIHRyaXAgb2YgNDgwIGttLCB3aGVyZSB0aGUgY2FyIGNvbnN1bWVzIDcuNSBsaXRlcnMgcGVyIDEwMCBrbQogKiBhbmQgdGhlIHByaWNlIG9mIG9uZSBsaXRlciBpcyA3LjIuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBMaXRlcnMgbmVlZGVkOiAzNi4wCiAqICAgRnVlbCBjb3N0OiAyNTkuMgogKgogKiBUaGVuIGNoYW5nZSB0aGUgZGF0YSB0byBhIHRyaXAgb2YgMjUwIGttIHdpdGggYSBjYXIgdGhhdCBjb25zdW1lcwogKiA2LjAgbGl0ZXJzIHBlciAxMDAga20sIGFuZCBydW4gdGhlIHByb2dyYW0gYWdhaW4uCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBMaXRlcnMgbmVlZGVkOiAxNS4wCiAqICAgRnVlbCBjb3N0OiAxMDguMAogKi8KcHVibGljIGNsYXNzIFZhcnMwOF9UcmlwRnVlbENvc3QgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Vars09_PaintingWalls.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIFBhaW50aW5nIFdhbGxzCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgY2FsY3VsYXRlcyB0aGUgYW1vdW50IG9mIHBhaW50IG5lZWRlZAogKiBmb3IgdGhlIGZvdXIgd2FsbHMgb2YgYSByb29tIDUgbWV0ZXJzIGxvbmcsIDQgbWV0ZXJzIHdpZGUgYW5kIDIuNSBtZXRlcnMgaGlnaC4KICogVGhlIHJvb20gaGFzIGEgZG9vciBvZiAxLjggc3F1YXJlIG1ldGVycyBhbmQgYSB3aW5kb3cgb2YgMi4yIHNxdWFyZSBtZXRlcnMsCiAqIHdoaWNoIGFyZSBub3QgcGFpbnRlZC4gT25lIGxpdGVyIG9mIHBhaW50IGNvdmVycyAxMCBzcXVhcmUgbWV0ZXJzLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgQXJlYSB0byBwYWludDogNDEuMAogKiAgIExpdGVycyBvZiBwYWludDogNC4xCiAqLwpwdWJsaWMgY2xhc3MgVmFyczA5X1BhaW50aW5nV2FsbHMgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Vars10_SavingsSplit.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBWYXJpYWJsZXMg4oCTIFNhdmluZ3MgU3BsaXQKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBjYWxjdWxhdGVzIHRoZSBzYXZpbmdzIG9mIHRocmVlIHBhcnRuZXJzCiAqIGFuZCB0aGUgc2hhcmUgb2YgZWFjaCBvbmUgb2YgdGhlbS4KICogVGhlIGZ1bmQgc3RhcnRlZCB3aXRoIDE2MDAsIGFuZCBmb3IgOCBtb250aHMgMjUwIHdhcyBkZXBvc2l0ZWQgZWFjaCBtb250aC4KICogVGhlIGFjY3VtdWxhdGVkIGFtb3VudCBpcyBzcGxpdCBlcXVhbGx5IGJldHdlZW4gdGhlIHRocmVlIHBhcnRuZXJzLgogKiBMb29rIGNhcmVmdWxseSBhdCB0aGUgcmVxdWlyZWQgb3V0cHV0IGFuZCBjaG9vc2UgdGhlIHJpZ2h0IHZhcmlhYmxlIHR5cGVzLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgVG90YWwgc2F2aW5nczogMzYwMAogKiAgIEVhY2ggcGFydG5lciBnZXRzOiAxMjAwLjAKICovCnB1YmxpYyBjbGFzcyBWYXJzMTBfU2F2aW5nc1NwbGl0IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '820';
+  var DEFAULT_LIGHT = true;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

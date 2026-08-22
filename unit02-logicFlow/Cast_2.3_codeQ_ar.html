@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين كتابة للوحدة 2.3</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 820px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="code-light">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>تمارين كتابة للوحدة 2.3</h1>
+      <p>Java أ – مقدمة في علم الحاسوب  |  10 أسئلة بمستوى صعوبة متصاعد</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">العرض</span>
+      <button type="button" data-w="820">ضيّق</button>
+      <button type="button" data-w="980">متوسط</button>
+      <button type="button" data-w="1200">واسع</button>
+      <button type="button" data-w="100%">كامل</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">الكود</span>
+      <button type="button" data-theme="dark">داكن</button>
+      <button type="button" data-theme="light">فاتح</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>المحتويات</h2>
+    <div class="toc-grid">
+<a href="#q1">سؤال 1 – عمليات تحويل – من دقائق إلى ساعات</a>
+<a href="#q2">سؤال 2 – عمليات تحويل – خزان الوقود</a>
+<a href="#q3">سؤال 3 – عمليات التحويل – نسبة النجاح</a>
+<a href="#q4">سؤال 4 – عمليات التحويل – التحويل التلقائي</a>
+<a href="#q5">سؤال 5 – عمليات تحويل – ارتفاع الطائرة بدون طيار</a>
+<a href="#q6">سؤال 6 – عمليات تحويل – تقسيم الحساب</a>
+<a href="#q7">سؤال 7 – عمليات التحويل – استثناء من النطاق</a>
+<a href="#q8">سؤال 8 – عمليات التحويل – موقع التحويل</a>
+<a href="#q9">سؤال 9 – عمليات تحويل – سعر لكل عنصر</a>
+<a href="#q10">سؤال 10 – عمليات التحويل – وحدات الوزن</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">المستوى 1 – أساسي</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>سؤال 1 – عمليات تحويل – من دقائق إلى ساعات</h3>
+      <span class="q-en">Q1 – casting – minutes to hours</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 1 – عمليات تحويل – من دقائق إلى ساعات</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يقوم بتحويل مدة زمنية معطاة بالدقائق إلى مدة زمنية بالساعات. المدة الزمنية هي 195 دقيقة ويجب حفظها في متغير مناسب. البرنامج يطبع عدد الساعات الكاملة، الدقائق المتبقية، ومدة الزمن الدقيقة بالساعات كعدد حقيقي.<br>انتبه: لكي تستقبل النتيجة الدقيقة لا يجب تغيير نوع المتغير للدقائق، بل يجب استخدام عملية تحويل.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Total minutes: 195
+Whole hours: 3
+Remaining minutes: 15
+Exact hours: 3.25</pre>
+
+<p dir="rtl" style="text-align: right;">
+بعد تشغيل البرنامج، غيّر مدة الزمن إلى 150 دقيقة وشغّل مرة أخرى.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Total minutes: 150
+Whole hours: 2
+Remaining minutes: 30
+Exact hours: 2.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-0" download="Cast01_MinutesToHours.java" style="text-decoration: underline;">Cast01_MinutesToHours.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Minutes To Hours
+ *
+ * Write a main program that converts a duration given in minutes into hours.
+ * The duration is 195 minutes and must be stored in a suitable variable.
+ * The program prints the number of whole hours, the remaining minutes,
+ * and the exact duration in hours as a real number.
+ *
+ * Expected output:
+ *   Total minutes: 195
+ *   Whole hours: 3
+ *   Remaining minutes: 15
+ *   Exact hours: 3.25
+ *
+ * Then change the duration to 150 minutes and run the program again.
+ *
+ * Expected output:
+ *   Total minutes: 150
+ *   Whole hours: 2
+ *   Remaining minutes: 30
+ *   Exact hours: 2.5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast01_MinutesToHours</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>سؤال 2 – عمليات تحويل – خزان الوقود</h3>
+      <span class="q-en">Q2 – casting – fuel tank</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 2 – عمليات تحويل – خزان الوقود</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يبلغ عن كمية الوقود في الخزان. الكمية هي 63.75 لتر ويجب حفظها في متغير مناسب. البرنامج يقوم بطباعة الكمية، عدد اللترات الصحيحة، والجزء الكسري من الكمية.<br>انتبه: الجزء الصحيح يتم الحصول عليه بواسطة عملية تحويل، والجزء الكسري بواسطة عملية طرح.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Fuel in tank: 63.75
+Whole liters: 63
+Fractional part: 0.75</pre>
+
+<p dir="rtl" style="text-align: right;">
+بعد تشغيل البرنامج، غيّر كمية الوقود إلى 48.5 لتر وشغّل مرة أخرى.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Fuel in tank: 48.5
+Whole liters: 48
+Fractional part: 0.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-1" download="Cast02_FuelTank.java" style="text-decoration: underline;">Cast02_FuelTank.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Fuel Tank
+ *
+ * Write a main program that reports the amount of fuel in a tank.
+ * The amount is 63.75 liters and must be stored in a suitable variable.
+ * The program prints the amount, the number of whole liters,
+ * and the fractional part of the amount.
+ *
+ * Expected output:
+ *   Fuel in tank: 63.75
+ *   Whole liters: 63
+ *   Fractional part: 0.75
+ *
+ * Then change the amount to 48.5 liters and run the program again.
+ *
+ * Expected output:
+ *   Fuel in tank: 48.5
+ *   Whole liters: 48
+ *   Fractional part: 0.5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast02_FuelTank</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>سؤال 3 – عمليات التحويل – نسبة النجاح</h3>
+      <span class="q-en">Q3 – casting – success percent</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 3 – عمليات التحويل – نسبة النجاح</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب نسبة الطلاب الذين اجتازوا الامتحان. من بين 40 طالباً اجتاز 18، ويجب حفظ كل معطى في متغير عدد صحيح. البرنامج يحسب النسبة مرتين ويطبع النتيجتين: مرة واحدة بدون استخدام التحويل، ومرة ثانية بمساعدة التحويل الصريح. يجب حفظ كلتا النتيجتين في متغيرات أعداد حقيقية.<br>انتبه إلى المخرجات المطلوبة واشرح لنفسك لماذا الحساب الأول يعطي 0.0.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Passed: 18 out of 40
+Percent without casting: 0.0
+Percent with casting: 45.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-2" download="Cast03_SuccessPercent.java" style="text-decoration: underline;">Cast03_SuccessPercent.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Success Percent
+ *
+ * Write a main program that calculates the percentage of students who passed
+ * an exam. Out of 40 students, 18 passed. Both values must be stored in
+ * suitable variables.
+ * The program prints the percentage twice: once calculated without any casting,
+ * and once calculated with an explicit cast.
+ * Both results must be stored in real variables.
+ *
+ * Expected output:
+ *   Passed: 18 out of 40
+ *   Percent without casting: 0.0
+ *   Percent with casting: 45.0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast03_SuccessPercent</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">المستوى 2 – متوسط</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>سؤال 4 – عمليات التحويل – التحويل التلقائي</h3>
+      <span class="q-en">Q4 – casting – automatic conversion</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 4 – عمليات التحويل – التحويل التلقائي</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يوضح التحويل التلقائي على طول تسلسل نوع البيانات. احفظ القيمة 25 في متغير من نوع <code>byte</code> ، وانقلها خطوة بخطوة إلى متغير <code>short</code> ، إلى متغير <code>int</code> ، إلى متغير <code>long</code> ، إلى متغير <code>float</code> وإلى متغير <code>double</code>. في هذه الخطوات لا تستخدم أمر تحويل. اطبع القيمة المحفوظة في كل متغير. بعد ذلك احفظ القيمة 25.9 في متغير <code>double</code> وانقلها إلى متغير <code>int</code> — هنا مطلوب التحويل الصريح.<br>انتبه للاختلاف بين المخرجات للمتغيرات الصحيحة والمخرجات للمتغيرات الأعداد الحقيقية.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">byte value: 25
+short value: 25
+int value: 25
+long value: 25
+float value: 25.0
+double value: 25.0
+Real value: 25.9
+After explicit casting to int: 25</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-3" download="Cast04_AutoConversion.java" style="text-decoration: underline;">Cast04_AutoConversion.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Automatic Conversion
+ *
+ * Write a main program that demonstrates automatic conversion along the type
+ * hierarchy. Store the value 25 in a byte variable, and then copy it, step by
+ * step, into a short variable, an int variable, a long variable, a float
+ * variable and a double variable. No cast operator is allowed in these steps.
+ * Print the value held by each variable.
+ * Then store the value 25.9 in a double variable and copy it into an int
+ * variable. This step does require an explicit cast.
+ *
+ * Expected output:
+ *   byte value: 25
+ *   short value: 25
+ *   int value: 25
+ *   long value: 25
+ *   float value: 25.0
+ *   double value: 25.0
+ *   Real value: 25.9
+ *   After explicit casting to int: 25
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast04_AutoConversion</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>سؤال 5 – عمليات تحويل – ارتفاع الطائرة بدون طيار</h3>
+      <span class="q-en">Q5 – casting – drone altitude</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 5 – عمليات تحويل – ارتفاع الطائرة بدون طيار</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يبلغ عن تغييري ارتفاع تم قياسهما بواسطة طائرة بدون طيار. التغيير الأول هو ‎7.8‎ أمتار والتغيير الثاني هو ‎3.2-‎ أمتار. يجب حفظ كل معطى في متغير مناسب. البرنامج يطبع كل قيمة وبجانبها نتيجة تحويلها إلى عدد صحيح.<br>انتبه إلى المخرجات المطلوبة في السطر الأخير: ماذا تفعل عملية التحويل لقيمة سالبة، وهل تقوم بالتقريب؟
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">First change: 7.8
+Casting to int: 7
+Second change: -3.2
+Casting to int: -3</pre>
+
+<p dir="rtl" style="text-align: right;">
+قم بتنزيل الفئة <strong><a href="#dl-4" download="Cast05_DroneAltitude.java" style="text-decoration: underline;">Cast05_DroneAltitude.java</a></strong> إلى بيئة العمل، اكتب البرنامج وقم بتشغيله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Drone Altitude
+ *
+ * Write a main program that reports two altitude changes measured by a drone.
+ * The first change is 7.8 meters and the second change is -3.2 meters.
+ * Each value must be stored in a suitable variable.
+ * The program prints each value and the result of casting it to an int.
+ *
+ * Expected output:
+ *   First change: 7.8
+ *   Casting to int: 7
+ *   Second change: -3.2
+ *   Casting to int: -3
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast05_DroneAltitude</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>سؤال 6 – عمليات تحويل – تقسيم الحساب</h3>
+      <span class="q-en">Q6 – casting – bill split</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 6 – عمليات تحويل – تقسيم الحساب</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يقسم حساب بقيمة 253 شيكل بين 8 زبائن. يجب حفظ كل معطى في متغير مناسب. البرنامج يطبع الجزء الدقيق لكل زبون، الجزء بعد قطع الكسر، والجزء المقرب إلى أقرب شيكل. يجب استقبال القيمة المقربة بواسطة إضافة 0.5 قبل التحويل.<br>انتبهوا: السطران الأخيران مختلفان عن بعضهما البعض، واشرحوا لأنفسكم لماذا.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Total bill: 253
+Diners: 8
+Exact share: 31.625
+Truncated share: 31
+Rounded share: 32</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-5" download="Cast06_BillSplit.java" style="text-decoration: underline;">Cast06_BillSplit.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Bill Split
+ *
+ * Write a main program that splits a restaurant bill of 253 shekels between
+ * 8 diners. Both values must be stored in suitable variables.
+ * The program prints the exact share of each diner, the share after cutting
+ * the fractional part, and the share rounded to the nearest whole shekel.
+ * The rounded value must be obtained by adding 0.5 before the cast.
+ *
+ * Expected output:
+ *   Total bill: 253
+ *   Diners: 8
+ *   Exact share: 31.625
+ *   Truncated share: 31
+ *   Rounded share: 32
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast06_BillSplit</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>سؤال 7 – عمليات التحويل – استثناء من النطاق</h3>
+      <span class="q-en">Q7 – casting – range overflow</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 7 – عمليات التحويل – استثناء من النطاق</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يوضح لماذا يلزم التحويل الصريح عند النزول في تسلسل الأنواع. احفظ القيم 300، 200 و-70000 في ثلاثة متغيرات من نوع <code>int</code>. حوّل الأولين إلى <code>byte</code> والثالث إلى <code>short</code> ، واطبع النتائج.<br>انتبه إلى المخرجات المطلوبة: جميع القيم الثلاث تتجاوز نطاق النوع الذي يتم تحويلها إليه، ولذلك تضيع المعلومات الأصلية.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Value 300 as byte: 44
+Value 200 as byte: -56
+Value 70000 as short: 4464</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-6" download="Cast07_RangeOverflow.java" style="text-decoration: underline;">Cast07_RangeOverflow.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Range Overflow
+ *
+ * Write a main program that shows why an explicit cast is required when
+ * moving down the type hierarchy.
+ * Store the values 300, 200 and 70000 in three int variables.
+ * Cast the first two to byte and the third to short, and print the results.
+ *
+ * Expected output:
+ *   Value 300 as byte: 44
+ *   Value 200 as byte: -56
+ *   Value 70000 as short: 4464
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast07_RangeOverflow</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">المستوى 3 – متقدّم</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>سؤال 8 – عمليات التحويل – موقع التحويل</h3>
+      <span class="q-en">Q8 – casting – cast order</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 8 – عمليات التحويل – موقع التحويل</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يوضح كيف أن موقع أمر التحويل يغير نتيجة القسمة. احفظ القيمتين 45 و-6 في متغيرين من نوع <code>int</code>. اطبع أربع نتائج: قسمة الأعداد الصحيحة كما هي، قسمة نتيجتها محولة إلى <code>double</code> ، قسمة حيث يتم تحويل العنصر الأول، وقسمة حيث يتم تحويل العنصر الثاني.<br>انتبه إلى المخرجات المطلوبة: السطر الثاني يختلف عن الثالث رغم أن كليهما يظهر فيه تحويل إلى <code>double</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Integer division: 7
+Casting the result: 7.0
+Casting the first operand: 7.5
+Casting the second operand: 7.5</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-7" download="Cast08_CastOrder.java" style="text-decoration: underline;">Cast08_CastOrder.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Cast Order
+ *
+ * Write a main program that shows how the position of the cast operator
+ * changes the result of a division.
+ * Store the values 45 and 6 in two int variables.
+ * Print four results: the plain integer division, the division whose result
+ * is cast to double, the division in which the first operand is cast, and the
+ * division in which the second operand is cast.
+ *
+ * Expected output:
+ *   Integer division: 7
+ *   Casting the result: 7.0
+ *   Casting the first operand: 7.5
+ *   Casting the second operand: 7.5
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast08_CastOrder</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>سؤال 9 – عمليات تحويل – سعر لكل عنصر</h3>
+      <span class="q-en">Q9 – casting – price per item</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 9 – عمليات تحويل – سعر لكل عنصر</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحسب معدل سعر العنصر. من أجل 7 عناصر تم دفع 100.0 شيكل، ويجب حفظ كل معطى في متغير مناسب. البرنامج يطبع معدل السعر الدقيق، السعر بعد قطع إلى منزلتين يمين النقطة العشرية، والسعر بعد التقريب إلى منزلتين يمين النقطة العشرية.<br>تلميح: حرك النقطة العشرية منزلتين إلى اليمين، قم بتحويل إلى عدد صحيح، ثم حرك النقطة العشرية مرة أخرى إلى اليسار.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Exact price per item: 14.285714285714286
+Truncated to two digits: 14.28
+Rounded to two digits: 14.29</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-8" download="Cast09_PricePerItem.java" style="text-decoration: underline;">Cast09_PricePerItem.java</a></strong> إلى بيئة العمل، اكتب البرنامج وقم بتشغيله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Price Per Item
+ *
+ * Write a main program that calculates the average price of an item.
+ * A total of 100.0 shekels was paid for 7 items, and both values must be
+ * stored in suitable variables.
+ * The program prints the exact average price, the price after cutting it to
+ * two digits after the decimal point, and the price rounded to two digits
+ * after the decimal point.
+ *
+ * Expected output:
+ *   Exact price per item: 14.285714285714286
+ *   Truncated to two digits: 14.28
+ *   Rounded to two digits: 14.29
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast09_PricePerItem</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>سؤال 10 – عمليات التحويل – وحدات الوزن</h3>
+      <span class="q-en">Q10 – casting – weight units</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 10 – عمليات التحويل – وحدات الوزن</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يعرض الوزن بثلاث وحدات مختلفة. الوزن هو 3450 غرام ويجب حفظه في متغير مناسب. البرنامج يقوم بطباعة الوزن بالجرامات، الوزن بالكيلوغرامات كعدد حقيقي، عدد الكيلوغرامات الصحيحة، الجرامات المتبقية، والوزن بالميليغرامات المحفوظ في متغير من نوع <code>long</code> بدون أمر تحويل.<br>انتبه: في سطر واحد مطلوب التحويل الصريح، وفي سطر آخر يتم التحويل بشكل تلقائي.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Weight in grams: 3450
+Weight in kilograms: 3.45
+Whole kilograms: 3
+Remaining grams: 450
+Weight in milligrams: 3450000</pre>
+
+<p dir="rtl" style="text-align: right;">
+بعد تشغيل البرنامج، غيّر الوزن إلى 780 غرام وشغّل مرة أخرى.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Weight in grams: 780
+Weight in kilograms: 0.78
+Whole kilograms: 0
+Remaining grams: 780
+Weight in milligrams: 780000</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-9" download="Cast10_WeightUnits.java" style="text-decoration: underline;">Cast10_WeightUnits.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Casting – Weight Units
+ *
+ * Write a main program that presents a weight in three different units.
+ * The weight is 3450 grams and must be stored in a suitable variable.
+ * The program prints the weight in grams, the weight in kilograms as a real
+ * number, the number of whole kilograms, the remaining grams, and the weight
+ * in milligrams stored in a long variable without any cast operator.
+ *
+ * Expected output:
+ *   Weight in grams: 3450
+ *   Weight in kilograms: 3.45
+ *   Whole kilograms: 3
+ *   Remaining grams: 450
+ *   Weight in milligrams: 3450000
+ *
+ * Then change the weight to 780 grams and run the program again.
+ *
+ * Expected output:
+ *   Weight in grams: 780
+ *   Weight in kilograms: 0.78
+ *   Whole kilograms: 0
+ *   Remaining grams: 780
+ *   Weight in milligrams: 780000
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Cast10_WeightUnits</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>الملفات مضمّنة في الصفحة — التنزيل يعمل أيضًا بدون اتصال بالإنترنت</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Cast01_MinutesToHours.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBNaW51dGVzIFRvIEhvdXJzCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgY29udmVydHMgYSBkdXJhdGlvbiBnaXZlbiBpbiBtaW51dGVzIGludG8gaG91cnMuCiAqIFRoZSBkdXJhdGlvbiBpcyAxOTUgbWludXRlcyBhbmQgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICogVGhlIHByb2dyYW0gcHJpbnRzIHRoZSBudW1iZXIgb2Ygd2hvbGUgaG91cnMsIHRoZSByZW1haW5pbmcgbWludXRlcywKICogYW5kIHRoZSBleGFjdCBkdXJhdGlvbiBpbiBob3VycyBhcyBhIHJlYWwgbnVtYmVyLgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgVG90YWwgbWludXRlczogMTk1CiAqICAgV2hvbGUgaG91cnM6IDMKICogICBSZW1haW5pbmcgbWludXRlczogMTUKICogICBFeGFjdCBob3VyczogMy4yNQogKgogKiBUaGVuIGNoYW5nZSB0aGUgZHVyYXRpb24gdG8gMTUwIG1pbnV0ZXMgYW5kIHJ1biB0aGUgcHJvZ3JhbSBhZ2Fpbi4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFRvdGFsIG1pbnV0ZXM6IDE1MAogKiAgIFdob2xlIGhvdXJzOiAyCiAqICAgUmVtYWluaW5nIG1pbnV0ZXM6IDMwCiAqICAgRXhhY3QgaG91cnM6IDIuNQogKi8KcHVibGljIGNsYXNzIENhc3QwMV9NaW51dGVzVG9Ib3VycyB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Cast02_FuelTank.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBGdWVsIFRhbmsKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZXBvcnRzIHRoZSBhbW91bnQgb2YgZnVlbCBpbiBhIHRhbmsuCiAqIFRoZSBhbW91bnQgaXMgNjMuNzUgbGl0ZXJzIGFuZCBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKiBUaGUgcHJvZ3JhbSBwcmludHMgdGhlIGFtb3VudCwgdGhlIG51bWJlciBvZiB3aG9sZSBsaXRlcnMsCiAqIGFuZCB0aGUgZnJhY3Rpb25hbCBwYXJ0IG9mIHRoZSBhbW91bnQuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBGdWVsIGluIHRhbms6IDYzLjc1CiAqICAgV2hvbGUgbGl0ZXJzOiA2MwogKiAgIEZyYWN0aW9uYWwgcGFydDogMC43NQogKgogKiBUaGVuIGNoYW5nZSB0aGUgYW1vdW50IHRvIDQ4LjUgbGl0ZXJzIGFuZCBydW4gdGhlIHByb2dyYW0gYWdhaW4uCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBGdWVsIGluIHRhbms6IDQ4LjUKICogICBXaG9sZSBsaXRlcnM6IDQ4CiAqICAgRnJhY3Rpb25hbCBwYXJ0OiAwLjUKICovCnB1YmxpYyBjbGFzcyBDYXN0MDJfRnVlbFRhbmsgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Cast03_SuccessPercent.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBTdWNjZXNzIFBlcmNlbnQKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBjYWxjdWxhdGVzIHRoZSBwZXJjZW50YWdlIG9mIHN0dWRlbnRzIHdobyBwYXNzZWQKICogYW4gZXhhbS4gT3V0IG9mIDQwIHN0dWRlbnRzLCAxOCBwYXNzZWQuIEJvdGggdmFsdWVzIG11c3QgYmUgc3RvcmVkIGluCiAqIHN1aXRhYmxlIHZhcmlhYmxlcy4KICogVGhlIHByb2dyYW0gcHJpbnRzIHRoZSBwZXJjZW50YWdlIHR3aWNlOiBvbmNlIGNhbGN1bGF0ZWQgd2l0aG91dCBhbnkgY2FzdGluZywKICogYW5kIG9uY2UgY2FsY3VsYXRlZCB3aXRoIGFuIGV4cGxpY2l0IGNhc3QuCiAqIEJvdGggcmVzdWx0cyBtdXN0IGJlIHN0b3JlZCBpbiByZWFsIHZhcmlhYmxlcy4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFBhc3NlZDogMTggb3V0IG9mIDQwCiAqICAgUGVyY2VudCB3aXRob3V0IGNhc3Rpbmc6IDAuMAogKiAgIFBlcmNlbnQgd2l0aCBjYXN0aW5nOiA0NS4wCiAqLwpwdWJsaWMgY2xhc3MgQ2FzdDAzX1N1Y2Nlc3NQZXJjZW50IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Cast04_AutoConversion.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBBdXRvbWF0aWMgQ29udmVyc2lvbgogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGRlbW9uc3RyYXRlcyBhdXRvbWF0aWMgY29udmVyc2lvbiBhbG9uZyB0aGUgdHlwZQogKiBoaWVyYXJjaHkuIFN0b3JlIHRoZSB2YWx1ZSAyNSBpbiBhIGJ5dGUgdmFyaWFibGUsIGFuZCB0aGVuIGNvcHkgaXQsIHN0ZXAgYnkKICogc3RlcCwgaW50byBhIHNob3J0IHZhcmlhYmxlLCBhbiBpbnQgdmFyaWFibGUsIGEgbG9uZyB2YXJpYWJsZSwgYSBmbG9hdAogKiB2YXJpYWJsZSBhbmQgYSBkb3VibGUgdmFyaWFibGUuIE5vIGNhc3Qgb3BlcmF0b3IgaXMgYWxsb3dlZCBpbiB0aGVzZSBzdGVwcy4KICogUHJpbnQgdGhlIHZhbHVlIGhlbGQgYnkgZWFjaCB2YXJpYWJsZS4KICogVGhlbiBzdG9yZSB0aGUgdmFsdWUgMjUuOSBpbiBhIGRvdWJsZSB2YXJpYWJsZSBhbmQgY29weSBpdCBpbnRvIGFuIGludAogKiB2YXJpYWJsZS4gVGhpcyBzdGVwIGRvZXMgcmVxdWlyZSBhbiBleHBsaWNpdCBjYXN0LgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgYnl0ZSB2YWx1ZTogMjUKICogICBzaG9ydCB2YWx1ZTogMjUKICogICBpbnQgdmFsdWU6IDI1CiAqICAgbG9uZyB2YWx1ZTogMjUKICogICBmbG9hdCB2YWx1ZTogMjUuMAogKiAgIGRvdWJsZSB2YWx1ZTogMjUuMAogKiAgIFJlYWwgdmFsdWU6IDI1LjkKICogICBBZnRlciBleHBsaWNpdCBjYXN0aW5nIHRvIGludDogMjUKICovCnB1YmxpYyBjbGFzcyBDYXN0MDRfQXV0b0NvbnZlcnNpb24gewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Cast05_DroneAltitude.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBEcm9uZSBBbHRpdHVkZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlcG9ydHMgdHdvIGFsdGl0dWRlIGNoYW5nZXMgbWVhc3VyZWQgYnkgYSBkcm9uZS4KICogVGhlIGZpcnN0IGNoYW5nZSBpcyA3LjggbWV0ZXJzIGFuZCB0aGUgc2Vjb25kIGNoYW5nZSBpcyAtMy4yIG1ldGVycy4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKiBUaGUgcHJvZ3JhbSBwcmludHMgZWFjaCB2YWx1ZSBhbmQgdGhlIHJlc3VsdCBvZiBjYXN0aW5nIGl0IHRvIGFuIGludC4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEZpcnN0IGNoYW5nZTogNy44CiAqICAgQ2FzdGluZyB0byBpbnQ6IDcKICogICBTZWNvbmQgY2hhbmdlOiAtMy4yCiAqICAgQ2FzdGluZyB0byBpbnQ6IC0zCiAqLwpwdWJsaWMgY2xhc3MgQ2FzdDA1X0Ryb25lQWx0aXR1ZGUgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Cast06_BillSplit.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBCaWxsIFNwbGl0CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgc3BsaXRzIGEgcmVzdGF1cmFudCBiaWxsIG9mIDI1MyBzaGVrZWxzIGJldHdlZW4KICogOCBkaW5lcnMuIEJvdGggdmFsdWVzIG11c3QgYmUgc3RvcmVkIGluIHN1aXRhYmxlIHZhcmlhYmxlcy4KICogVGhlIHByb2dyYW0gcHJpbnRzIHRoZSBleGFjdCBzaGFyZSBvZiBlYWNoIGRpbmVyLCB0aGUgc2hhcmUgYWZ0ZXIgY3V0dGluZwogKiB0aGUgZnJhY3Rpb25hbCBwYXJ0LCBhbmQgdGhlIHNoYXJlIHJvdW5kZWQgdG8gdGhlIG5lYXJlc3Qgd2hvbGUgc2hla2VsLgogKiBUaGUgcm91bmRlZCB2YWx1ZSBtdXN0IGJlIG9idGFpbmVkIGJ5IGFkZGluZyAwLjUgYmVmb3JlIHRoZSBjYXN0LgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgVG90YWwgYmlsbDogMjUzCiAqICAgRGluZXJzOiA4CiAqICAgRXhhY3Qgc2hhcmU6IDMxLjYyNQogKiAgIFRydW5jYXRlZCBzaGFyZTogMzEKICogICBSb3VuZGVkIHNoYXJlOiAzMgogKi8KcHVibGljIGNsYXNzIENhc3QwNl9CaWxsU3BsaXQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Cast07_RangeOverflow.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBSYW5nZSBPdmVyZmxvdwogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHNob3dzIHdoeSBhbiBleHBsaWNpdCBjYXN0IGlzIHJlcXVpcmVkIHdoZW4KICogbW92aW5nIGRvd24gdGhlIHR5cGUgaGllcmFyY2h5LgogKiBTdG9yZSB0aGUgdmFsdWVzIDMwMCwgMjAwIGFuZCA3MDAwMCBpbiB0aHJlZSBpbnQgdmFyaWFibGVzLgogKiBDYXN0IHRoZSBmaXJzdCB0d28gdG8gYnl0ZSBhbmQgdGhlIHRoaXJkIHRvIHNob3J0LCBhbmQgcHJpbnQgdGhlIHJlc3VsdHMuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBWYWx1ZSAzMDAgYXMgYnl0ZTogNDQKICogICBWYWx1ZSAyMDAgYXMgYnl0ZTogLTU2CiAqICAgVmFsdWUgNzAwMDAgYXMgc2hvcnQ6IDQ0NjQKICovCnB1YmxpYyBjbGFzcyBDYXN0MDdfUmFuZ2VPdmVyZmxvdyB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Cast08_CastOrder.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBDYXN0IE9yZGVyCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgc2hvd3MgaG93IHRoZSBwb3NpdGlvbiBvZiB0aGUgY2FzdCBvcGVyYXRvcgogKiBjaGFuZ2VzIHRoZSByZXN1bHQgb2YgYSBkaXZpc2lvbi4KICogU3RvcmUgdGhlIHZhbHVlcyA0NSBhbmQgNiBpbiB0d28gaW50IHZhcmlhYmxlcy4KICogUHJpbnQgZm91ciByZXN1bHRzOiB0aGUgcGxhaW4gaW50ZWdlciBkaXZpc2lvbiwgdGhlIGRpdmlzaW9uIHdob3NlIHJlc3VsdAogKiBpcyBjYXN0IHRvIGRvdWJsZSwgdGhlIGRpdmlzaW9uIGluIHdoaWNoIHRoZSBmaXJzdCBvcGVyYW5kIGlzIGNhc3QsIGFuZCB0aGUKICogZGl2aXNpb24gaW4gd2hpY2ggdGhlIHNlY29uZCBvcGVyYW5kIGlzIGNhc3QuCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBJbnRlZ2VyIGRpdmlzaW9uOiA3CiAqICAgQ2FzdGluZyB0aGUgcmVzdWx0OiA3LjAKICogICBDYXN0aW5nIHRoZSBmaXJzdCBvcGVyYW5kOiA3LjUKICogICBDYXN0aW5nIHRoZSBzZWNvbmQgb3BlcmFuZDogNy41CiAqLwpwdWJsaWMgY2xhc3MgQ2FzdDA4X0Nhc3RPcmRlciB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Cast09_PricePerItem.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBQcmljZSBQZXIgSXRlbQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGN1bGF0ZXMgdGhlIGF2ZXJhZ2UgcHJpY2Ugb2YgYW4gaXRlbS4KICogQSB0b3RhbCBvZiAxMDAuMCBzaGVrZWxzIHdhcyBwYWlkIGZvciA3IGl0ZW1zLCBhbmQgYm90aCB2YWx1ZXMgbXVzdCBiZQogKiBzdG9yZWQgaW4gc3VpdGFibGUgdmFyaWFibGVzLgogKiBUaGUgcHJvZ3JhbSBwcmludHMgdGhlIGV4YWN0IGF2ZXJhZ2UgcHJpY2UsIHRoZSBwcmljZSBhZnRlciBjdXR0aW5nIGl0IHRvCiAqIHR3byBkaWdpdHMgYWZ0ZXIgdGhlIGRlY2ltYWwgcG9pbnQsIGFuZCB0aGUgcHJpY2Ugcm91bmRlZCB0byB0d28gZGlnaXRzCiAqIGFmdGVyIHRoZSBkZWNpbWFsIHBvaW50LgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRXhhY3QgcHJpY2UgcGVyIGl0ZW06IDE0LjI4NTcxNDI4NTcxNDI4NgogKiAgIFRydW5jYXRlZCB0byB0d28gZGlnaXRzOiAxNC4yOAogKiAgIFJvdW5kZWQgdG8gdHdvIGRpZ2l0czogMTQuMjkKICovCnB1YmxpYyBjbGFzcyBDYXN0MDlfUHJpY2VQZXJJdGVtIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Cast10_WeightUnits.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDYXN0aW5nIOKAkyBXZWlnaHQgVW5pdHMKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBwcmVzZW50cyBhIHdlaWdodCBpbiB0aHJlZSBkaWZmZXJlbnQgdW5pdHMuCiAqIFRoZSB3ZWlnaHQgaXMgMzQ1MCBncmFtcyBhbmQgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICogVGhlIHByb2dyYW0gcHJpbnRzIHRoZSB3ZWlnaHQgaW4gZ3JhbXMsIHRoZSB3ZWlnaHQgaW4ga2lsb2dyYW1zIGFzIGEgcmVhbAogKiBudW1iZXIsIHRoZSBudW1iZXIgb2Ygd2hvbGUga2lsb2dyYW1zLCB0aGUgcmVtYWluaW5nIGdyYW1zLCBhbmQgdGhlIHdlaWdodAogKiBpbiBtaWxsaWdyYW1zIHN0b3JlZCBpbiBhIGxvbmcgdmFyaWFibGUgd2l0aG91dCBhbnkgY2FzdCBvcGVyYXRvci4KICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFdlaWdodCBpbiBncmFtczogMzQ1MAogKiAgIFdlaWdodCBpbiBraWxvZ3JhbXM6IDMuNDUKICogICBXaG9sZSBraWxvZ3JhbXM6IDMKICogICBSZW1haW5pbmcgZ3JhbXM6IDQ1MAogKiAgIFdlaWdodCBpbiBtaWxsaWdyYW1zOiAzNDUwMDAwCiAqCiAqIFRoZW4gY2hhbmdlIHRoZSB3ZWlnaHQgdG8gNzgwIGdyYW1zIGFuZCBydW4gdGhlIHByb2dyYW0gYWdhaW4uCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBXZWlnaHQgaW4gZ3JhbXM6IDc4MAogKiAgIFdlaWdodCBpbiBraWxvZ3JhbXM6IDAuNzgKICogICBXaG9sZSBraWxvZ3JhbXM6IDAKICogICBSZW1haW5pbmcgZ3JhbXM6IDc4MAogKiAgIFdlaWdodCBpbiBtaWxsaWdyYW1zOiA3ODAwMDAKICovCnB1YmxpYyBjbGFzcyBDYXN0MTBfV2VpZ2h0VW5pdHMgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '820';
+  var DEFAULT_LIGHT = true;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

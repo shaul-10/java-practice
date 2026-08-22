@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين كتابة للوحدة 2.8</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 820px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="code-light">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>تمارين كتابة للوحدة 2.8</h1>
+      <p>Java أ – مقدمة في علم الحاسوب  |  10 أسئلة بمستوى صعوبة متصاعد</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">العرض</span>
+      <button type="button" data-w="820">ضيّق</button>
+      <button type="button" data-w="980">متوسط</button>
+      <button type="button" data-w="1200">واسع</button>
+      <button type="button" data-w="100%">كامل</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">الكود</span>
+      <button type="button" data-theme="dark">داكن</button>
+      <button type="button" data-theme="light">فاتح</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>المحتويات</h2>
+    <div class="toc-grid">
+<a href="#q1">سؤال 1 – رموز ونصوص – ربط نصوص – عنوان بريد إلكتروني مدرسي</a>
+<a href="#q2">سؤال 2 – رموز ونصوص – الرمز + – جمع أم ربط؟</a>
+<a href="#q3">سؤال 3 – رموز ونصوص – نص ورمز – بطاقة مساق</a>
+<a href="#q4">سؤال 4 – رموز ونصوص – بطاقة عضو نادي – عدد وبعده أسطر نصية</a>
+<a href="#q5">سؤال 5 – رموز ونصوص – مراجعة كتاب – عدد وبعده سطر كامل</a>
+<a href="#q6">سؤال 6 – رموز ونصوص – مقارنة نصوص – تهنئة بلغة مختارة</a>
+<a href="#q7">سؤال 7 – رموز ونصوص – كود قسيمة – محادثة تستمر حسب الإجابة</a>
+<a href="#q8">سؤال 8 – رموز ونصوص – مفتاح الإجابات – مقارنة رموز</a>
+<a href="#q9">سؤال 9 – رموز ونصوص – تسجيل في الموقع – اسم مستخدم وتحقق من كلمة المرور</a>
+<a href="#q10">سؤال 10 – رموز ونصوص – بطاقة توجه للدعم – محادثة متفرعة</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">المستوى 1 – أساسي</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>سؤال 1 – رموز ونصوص – ربط نصوص – عنوان بريد إلكتروني مدرسي</h3>
+      <span class="q-en">Q1 - strings - email address</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 1 – رموز ونصوص – ربط نصوص – عنوان بريد إلكتروني مدرسي</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم الاسم الأول واسم العائلة، ويبني منهما عنوان بريد إلكتروني مدرسي واسم مستخدم للدخول إلى النظام.<br>عنوان البريد الإلكتروني يتكون من الاسم الأول، نقطة عشرية، اسم العائلة واللاحقة school.org بعد الرمز @.<br>اسم المستخدم يتكون من الاسم الأول واسم العائلة بدون فاصل بينهما.<br>كل اسم هو كلمة واحدة، لذلك يكفي أمر next لاستقباله. عناوين البريد الإلكتروني للمدرسة تكتب بحروف صغيرة فقط، لذلك اطلب من المستخدم إدخال اسمه بحروف صغيرة.<br>قبل كل استقبال يجب على البرنامج طباعة رسالة إرشادية، كما يظهر في المخرجات المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">dana
+levi</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter your first name (lowercase letters):
+Enter your last name (lowercase letters):
+Welcome dana levi
+Your school email address is: dana.levi@school.org
+Your login name is: danalevi</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">noa
+katz</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter your first name (lowercase letters):
+Enter your last name (lowercase letters):
+Welcome noa katz
+Your school email address is: noa.katz@school.org
+Your login name is: noakatz</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-0" download="Strings01_EmailAddress.java" style="text-decoration: underline;">Strings01_EmailAddress.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - EmailAddress
+ *
+ * Write a main program that reads a first name and a last name from the user,
+ * and builds a school email address and a login name.
+ * The email address is: the first name, a dot, the last name, then the sign @
+ * followed by school.org
+ * The login name is the first name followed by the last name with no separator.
+ * Each name is a single word, so next() is enough for reading it.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run):
+ *   dana
+ *   levi
+ * Expected output (first run):
+ *   Enter your first name (lowercase letters):
+ *   Enter your last name (lowercase letters):
+ *   Welcome dana levi
+ *   Your school email address is: dana.levi@school.org
+ *   Your login name is: danalevi
+ *
+ * Input (second run):
+ *   noa
+ *   katz
+ * Expected output (second run):
+ *   Enter your first name (lowercase letters):
+ *   Enter your last name (lowercase letters):
+ *   Welcome noa katz
+ *   Your school email address is: noa.katz@school.org
+ *   Your login name is: noakatz
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings01_EmailAddress</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>سؤال 2 – رموز ونصوص – الرمز + – جمع أم ربط؟</h3>
+      <span class="q-en">Q2 - strings - join or add</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 2 – رموز ونصوص – الرمز + – جمع أم ربط؟</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم عددين صحيحين، ويطبع أربع أسطر: العددين ملتصقين ببعضهما، مجموعهما، ونتيجتيهما مع نص يسبق كل واحدة منهما.<br>كل واحد من الأسطر الأربعة يُطبع بأمر println واحد فقط — لا يجوز استخدام متغيرات مساعدة إضافية.<br>تأمل جيداً في المخرجات المطلوبة: السطران الأولان مختلفان عن بعضهما رغم استخدام نفس المتغيرين، وكذلك السطران الأخيران.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">5
+3</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first number:
+Enter the second number:
+Joined: 53
+Sum: 8
+Text plus joined: Result 53
+Text plus sum: Result 8</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">12
+40</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first number:
+Enter the second number:
+Joined: 1240
+Sum: 52
+Text plus joined: Result 1240
+Text plus sum: Result 52</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-1" download="Strings02_JoinOrAdd.java" style="text-decoration: underline;">Strings02_JoinOrAdd.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - JoinOrAdd
+ *
+ * Write a main program that reads two integers from the user and prints four lines:
+ * the two numbers joined together, their sum, and the same two results again
+ * preceded by a text.
+ * Each of the four lines must be printed by a single println command,
+ * without extra helper variables.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run):
+ *   5
+ *   3
+ * Expected output (first run):
+ *   Enter the first number:
+ *   Enter the second number:
+ *   Joined: 53
+ *   Sum: 8
+ *   Text plus joined: Result 53
+ *   Text plus sum: Result 8
+ *
+ * Input (second run):
+ *   12
+ *   40
+ * Expected output (second run):
+ *   Enter the first number:
+ *   Enter the second number:
+ *   Joined: 1240
+ *   Sum: 52
+ *   Text plus joined: Result 1240
+ *   Text plus sum: Result 52
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings02_JoinOrAdd</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>سؤال 3 – رموز ونصوص – نص ورمز – بطاقة مساق</h3>
+      <span class="q-en">Q3 - strings - course card</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 3 – رموز ونصوص – نص ورمز – بطاقة مساق</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يقوم بطباعة بطاقة مساق. في هذا السؤال <strong>لا يوجد إدخال من المستخدم</strong> — جميع البيانات يتم تحديدها في الكود نفسه:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">course name:  Introduction to Computer Science
+group letter: B
+weekly hours: 4
+credit points: 3.5</pre><p dir="rtl" style="text-align: right;">يجب حفظ كل بيان في متغير مناسب. انتبهوا أن حرف المجموعة هو <strong>رمز واحد</strong> وليس نص، ولذلك يتم حفظه في متغير من نوع char وقيمته تكتب بين علامتي اقتباس مفردتين. اسم المساق هو سلسلة رموز ولذلك يتم حفظه في متغير من نوع String.<br>السطر الأخير من المخرجات يتكون من دمج جميع البيانات في جملة واحدة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Course: Introduction to Computer Science
+Group: B
+Weekly hours: 4
+Credit points: 3.5
+Summary: Introduction to Computer Science - group B - 3.5 points</pre>
+
+<p dir="rtl" style="text-align: right;">بعد تشغيل البرنامج، غيّر في الكود بيانات المساق إلى القيم التالية وشغّل مرة أخرى:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">course name:  Digital Systems
+group letter: D
+weekly hours: 6
+credit points: 5.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Course: Digital Systems
+Group: D
+Weekly hours: 6
+Credit points: 5.0
+Summary: Digital Systems - group D - 5.0 points</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-2" download="Strings03_CourseCard.java" style="text-decoration: underline;">Strings03_CourseCard.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - CourseCard
+ *
+ * Write a main program that prints a course card.
+ * There is no user input in this exercise. The data is fixed in the code:
+ *   course name:   Introduction to Computer Science
+ *   group letter:  B
+ *   weekly hours:  4
+ *   credit points: 3.5
+ * Each value must be stored in a suitable variable. Note that the group letter is a
+ * single character and must be stored in a char variable.
+ *
+ * Expected output (first run):
+ *   Course: Introduction to Computer Science
+ *   Group: B
+ *   Weekly hours: 4
+ *   Credit points: 3.5
+ *   Summary: Introduction to Computer Science - group B - 3.5 points
+ *
+ * Expected output (second run):
+ *   Course: Digital Systems
+ *   Group: D
+ *   Weekly hours: 6
+ *   Credit points: 5.0
+ *   Summary: Digital Systems - group D - 5.0 points
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings03_CourseCard</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">المستوى 2 – متوسط</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>سؤال 4 – رموز ونصوص – بطاقة عضو نادي – عدد وبعده أسطر نصية</h3>
+      <span class="q-en">Q4 - strings - scanner lab</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 4 – رموز ونصوص – بطاقة عضو نادي – عدد وبعده أسطر نصية</h4>
+
+<p dir="rtl" style="text-align: right;">نادي رياضي يطلب برنامج يقوم بتسجيل عضو جديد. اكتب البرنامج الرئيسي الذي يستقبل من المستخدم سنة ميلاد مكونة من أربع منازل، بعدها اسمه الكامل وبعدها المدينة والدولة التي يسكن فيهما، ويطبع بطاقة العضو.<br>الاسم الكامل يتكون من اسم شخصي واسم عائلة، والمدينة والدولة مفصولتان بفاصلة — كلاهما يحتويان على مسافات ولذلك كل واحد منهما يُستقبل كسطر كامل.<br>في الطباعة، ضع كل نص بين أقواس مربعة، كما يظهر في المخرجات المطلوبة. هكذا يمكنك أيضًا رؤية نص فارغ.</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">1998
+Dana Levi
+Haifa, Israel</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the year of birth (4 digits):
+Enter the full name:
+Enter the city and the country:
+Year: 1998
+Name: [Dana Levi]
+Place: [Haifa, Israel]</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>هل تم الحصول على المخرجات التالية بالضبط؟</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the year of birth (4 digits):
+Enter the full name:
+Enter the city and the country:
+Year: 1998
+Name: []
+Place: [Dana Levi]</pre>
+
+<p dir="rtl" style="text-align: right;">إذا نعم، حاول أن يخمن ماذا استقبل النص الأول وماذا استقبل النص الثاني، وأين السطر الثالث من المدخلات. لتصحيح ذلك فكر أين في البرنامج من المناسب إضافة أمر nextLine إضافي.</p>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-3" download="Strings04_ScannerLab.java" style="text-decoration: underline;">Strings04_ScannerLab.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - ScannerLab
+ *
+ * Write a main program for a sport club that registers a new member.
+ * The program reads a year of birth (four digits), then the full name of the member
+ * and then the city and the country where he lives, and prints the member card.
+ * The full name contains a first name and a last name, and the city and the country
+ * are separated by a comma - both contain spaces, so each of them must be read as a
+ * whole line. Surround every string with square brackets when printing it, as shown
+ * in the expected output, so that an empty string is also visible.
+ *
+ * Input:
+ *   1998
+ *   Dana Levi
+ *   Haifa, Israel
+ *
+ * Expected output:
+ *   Enter the year of birth (4 digits):
+ *   Enter the full name:
+ *   Enter the city and the country:
+ *   Year: 1998
+ *   Name: [Dana Levi]
+ *   Place: [Haifa, Israel]
+ *
+ * Did you get this output instead?
+ *   Enter the year of birth (4 digits):
+ *   Enter the full name:
+ *   Enter the city and the country:
+ *   Year: 1998
+ *   Name: []
+ *   Place: [Dana Levi]
+ *
+ * If so, try to guess what the first string got and what the second string got,
+ * and where the third input line is. To fix it, think where in the program an extra
+ * nextLine command should be added.
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings04_ScannerLab</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>سؤال 5 – رموز ونصوص – مراجعة كتاب – عدد وبعده سطر كامل</h3>
+      <span class="q-en">Q5 - strings - book review</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 5 – رموز ونصوص – مراجعة كتاب – عدد وبعده سطر كامل</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم تقييم لكتاب، عدد صحيح بين 1 و-5، وبعده اسم الكتاب. اسم الكتاب قد يحتوي على عدة كلمات ومسافات، ولذلك يجب استقباله كسطر كامل.<br>البرنامج يطبع تفاصيل المراجعة والرأي اللفظي حسب التقييم:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">5 -> Excellent
+4 -> Very good
+3 -> Good
+1 or 2 -> Weak</pre><p dir="rtl" style="text-align: right;">انتبه لترتيب المدخلات في البرنامج. إذا كانت النتيجة مفاجئة بالنسبة لك، عد إلى سؤال 4.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">4
+The Hobbit</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter your rating for the book (1-5):
+Enter the book title:
+Book: The Hobbit
+Rating: 4 out of 5
+Verdict: Very good
+The Hobbit received 4 stars from our reader</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">2
+Old Fishing Stories</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter your rating for the book (1-5):
+Enter the book title:
+Book: Old Fishing Stories
+Rating: 2 out of 5
+Verdict: Weak
+Old Fishing Stories received 2 stars from our reader</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-4" download="Strings05_BookReview.java" style="text-decoration: underline;">Strings05_BookReview.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - BookReview
+ *
+ * Write a main program that reads a rating for a book (an integer between 1 and 5)
+ * and then the title of the book. The title may contain several words and spaces,
+ * so it must be read as a whole line.
+ * The program prints the review details and a verdict according to the rating:
+ *   5      -&gt; Excellent
+ *   4      -&gt; Very good
+ *   3      -&gt; Good
+ *   1 or 2 -&gt; Weak
+ * Pay attention to the order of the reading commands.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run):
+ *   4
+ *   The Hobbit
+ * Expected output (first run):
+ *   Enter your rating for the book (1-5):
+ *   Enter the book title:
+ *   Book: The Hobbit
+ *   Rating: 4 out of 5
+ *   Verdict: Very good
+ *   The Hobbit received 4 stars from our reader
+ *
+ * Input (second run):
+ *   2
+ *   Old Fishing Stories
+ * Expected output (second run):
+ *   Enter your rating for the book (1-5):
+ *   Enter the book title:
+ *   Book: Old Fishing Stories
+ *   Rating: 2 out of 5
+ *   Verdict: Weak
+ *   Old Fishing Stories received 2 stars from our reader
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings05_BookReview</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>سؤال 6 – رموز ونصوص – مقارنة نصوص – تهنئة بلغة مختارة</h3>
+      <span class="q-en">Q6 - strings - language greeting</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 6 – رموز ونصوص – مقارنة نصوص – تهنئة بلغة مختارة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل من المستخدم رمز لغة وبعده اسمه، ويطبع تهنئة باللغة المختارة. الكلمة NAME في الأمثلة أدناه تشير إلى الاسم الذي تم استقباله:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">en -> Hello NAME, nice to meet you!
+fr -> Bonjour NAME, enchante!
+es -> Hola NAME, mucho gusto!</pre><p dir="rtl" style="text-align: right;">إذا كان الرمز الذي تم استقباله ليس واحداً من هذه الثلاثة، على البرنامج أن يطبع رسالة بأن الرمز غير معروف ويذكر فيها الرمز الذي تم إدخاله.<br>النص هو كائن، ولذلك لا يجوز مقارنة نصوص بواسطة الرمز == بل بواسطة العملية equals. نفذ الاختيار بين الخيارات بواسطة if و-else if.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">fr
+Marie</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a language code (en, fr, es):
+Enter your name:
+Bonjour Marie, enchante!</pre>
+
+<p dir="rtl" style="text-align: right;">شغل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">de
+Hans</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a language code (en, fr, es):
+Enter your name:
+Unknown language code: de</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-5" download="Strings06_LanguageGreeting.java" style="text-decoration: underline;">Strings06_LanguageGreeting.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - LanguageGreeting
+ *
+ * Write a main program that reads a language code and then a name from the user,
+ * and prints a greeting in the chosen language. NAME below is the name that was read:
+ *   en -&gt; Hello NAME, nice to meet you!
+ *   fr -&gt; Bonjour NAME, enchante!
+ *   es -&gt; Hola NAME, mucho gusto!
+ * If the code is not one of these three, print a message that the code is unknown,
+ * including the code that was typed.
+ * Strings must be compared with equals and not with ==.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run):
+ *   fr
+ *   Marie
+ * Expected output (first run):
+ *   Enter a language code (en, fr, es):
+ *   Enter your name:
+ *   Bonjour Marie, enchante!
+ *
+ * Input (second run):
+ *   de
+ *   Hans
+ * Expected output (second run):
+ *   Enter a language code (en, fr, es):
+ *   Enter your name:
+ *   Unknown language code: de
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings06_LanguageGreeting</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>سؤال 7 – رموز ونصوص – كود قسيمة – محادثة تستمر حسب الإجابة</h3>
+      <span class="q-en">Q7 - strings - coupon code</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 7 – رموز ونصوص – كود قسيمة – محادثة تستمر حسب الإجابة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي لصندوق متجر. البرنامج يستقبل مجموع الشراء، وبعد ذلك يسأل الزبون إذا كان لديه كود قسيمة. الإجابة تُستقبل كنص، yes أو no.<br><strong>فقط إذا</strong> الإجابة هي yes سيطلب البرنامج كود القسيمة ويستقبله. التخفيض يُحدد حسب الكود:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">SAVE10 -> 10 percent off
+SAVE25 -> 25 percent off
+any other code -> not valid</pre><p dir="rtl" style="text-align: right;">كود غير صالح يؤدي إلى رسالة مناسبة وتخفيض بقيمة صفر. في النهاية يطبع البرنامج مقدار التخفيض والمبلغ للدفع.<br>انتبهوا أنه عندما تكون الإجابة no، طلب كود القسيمة لا يُطبع إطلاقاً.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">250
+yes
+SAVE10</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the purchase amount:
+Do you have a coupon code? (yes/no):
+Enter the coupon code:
+Discount: 25.0
+Amount to pay: 225.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">250
+no</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the purchase amount:
+Do you have a coupon code? (yes/no):
+Discount: 0.0
+Amount to pay: 250.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-6" download="Strings07_CouponCode.java" style="text-decoration: underline;">Strings07_CouponCode.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - CouponCode
+ *
+ * Write a main program for a shop cash register.
+ * The program reads the purchase amount and then asks the customer whether he has a
+ * coupon code. The answer is read as a string, yes or no.
+ * Only if the answer is yes, the program asks for the coupon code and reads it:
+ *   SAVE10         -&gt; 10 percent off the purchase amount
+ *   SAVE25         -&gt; 25 percent off the purchase amount
+ *   any other code -&gt; not valid, print a message and the discount is zero
+ * Finally the program prints the discount and the amount to pay.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run):
+ *   250
+ *   yes
+ *   SAVE10
+ * Expected output (first run):
+ *   Enter the purchase amount:
+ *   Do you have a coupon code? (yes/no):
+ *   Enter the coupon code:
+ *   Discount: 25.0
+ *   Amount to pay: 225.0
+ *
+ * Input (second run):
+ *   250
+ *   no
+ * Expected output (second run):
+ *   Enter the purchase amount:
+ *   Do you have a coupon code? (yes/no):
+ *   Discount: 0.0
+ *   Amount to pay: 250.0
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings07_CouponCode</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">المستوى 3 – متقدّم</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>سؤال 8 – رموز ونصوص – مفتاح الإجابات – مقارنة رموز</h3>
+      <span class="q-en">Q8 - strings - answer key</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 8 – رموز ونصوص – مفتاح الإجابات – مقارنة رموز</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يفحص اختبار أمريكي مكون من أربع أسئلة. في هذا السؤال <strong>لا يوجد إدخال من المستخدم</strong> — مفتاح الإجابات وإجابات الطالب يتم تحديدهم في الكود نفسه:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">answer key:      B  A  D  C
+student answers: B  A  D  A</pre><p dir="rtl" style="text-align: right;">كل إجابة هي <strong>رمز واحد</strong> ولذلك يتم حفظها في متغير من نوع char — ثمانية متغيرات بالمجموع، أربعة للمفتاح وأربعة لإجابات الطالب.<br>البرنامج يحسب عدد الإجابات الصحيحة، يحسب العلامة بالنسبة المئوية ويطبع مستوى الإنجاز:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">100 -> Excellent
+ 75 -> Good
+ 50 -> Pass
+less -> Fail</pre><p dir="rtl" style="text-align: right;">انتبه للمخرجات المطلوبة واختر نوع المتغير المناسب للعلامة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Answer key: B A D C
+Student answers: B A D A
+Correct answers: 3 out of 4
+Score: 75.0
+Level: Good</pre>
+
+<p dir="rtl" style="text-align: right;">بعد تشغيل البرنامج، غيّر في الكود إجابات الطالب إلى القيم التالية وشغّل مرة أخرى. مفتاح الإجابات لا يتغير:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">answer key:      B  A  D  C
+student answers: C  B  D  C</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Answer key: B A D C
+Student answers: C B D C
+Correct answers: 2 out of 4
+Score: 50.0
+Level: Pass</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-7" download="Strings08_AnswerKey.java" style="text-decoration: underline;">Strings08_AnswerKey.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - AnswerKey
+ *
+ * Write a main program that checks a multiple choice test of four questions.
+ * There is no user input in this exercise. The values are fixed in the code:
+ *   answer key:      B  A  D  C
+ *   student answers: B  A  D  A
+ * Every answer is a single character and must be stored in a char variable -
+ * eight variables in total, four for the key and four for the student answers.
+ * The program counts the correct answers, computes the score in percent and prints
+ * the level:
+ *   100  -&gt; Excellent
+ *    75  -&gt; Good
+ *    50  -&gt; Pass
+ *   less -&gt; Fail
+ * Look at the expected output and choose a suitable type for the score.
+ *
+ * Expected output (first run):
+ *   Answer key: B A D C
+ *   Student answers: B A D A
+ *   Correct answers: 3 out of 4
+ *   Score: 75.0
+ *   Level: Good
+ *
+ * Expected output (second run):
+ *   Answer key: B A D C
+ *   Student answers: C B D C
+ *   Correct answers: 2 out of 4
+ *   Score: 50.0
+ *   Level: Pass
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings08_AnswerKey</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>سؤال 9 – رموز ونصوص – تسجيل في الموقع – اسم مستخدم وتحقق من كلمة المرور</h3>
+      <span class="q-en">Q9 - strings - registration</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 9 – رموز ونصوص – تسجيل في الموقع – اسم مستخدم وتحقق من كلمة المرور</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يحاكي التسجيل في الموقع. في بداية البرنامج، قم بتعيين اسم المستخدم المحجوز javafan في متغير من نوع String .<br>البرنامج يطلب من المستخدم اسم مستخدم. إذا كان الاسم المدخل محجوزًا، البرنامج يبلغ بذلك ويطلب اسمًا إضافيًا — مرة واحدة فقط. إذا كان الاسم الثاني أيضًا محجوزًا، التسجيل يفشل وينتهي البرنامج فورًا، دون طلب كلمة مرور على الإطلاق.<br>إذا كان اسم المستخدم متاحًا، البرنامج يطلب كلمة مرور وبعدها يطلب إدخال كلمة المرور مرة أخرى. إذا كان الإدخالان متطابقين، تم إكمال التسجيل، وإلا البرنامج يبلغ أن كلمتي المرور غير متطابقتين وفشل التسجيل.<br>جميع المقارنات بين النصوص تتم بواسطة العملية equals . استخدم متغير منطقي لحفظ حالة اسم المستخدم، وبعامل النفي ! عند فحصه.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">dana2026
+abc123
+abc123</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a username:
+Enter a password:
+Repeat the password:
+Registration completed for user: dana2026</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">javafan
+javafan99
+pass1
+pass2</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a username:
+This username is already taken, please choose another one
+Enter a username:
+Enter a password:
+Repeat the password:
+Passwords do not match. Registration failed</pre>
+
+<p dir="rtl" style="text-align: right;">
+قم بتنزيل الفئة <strong><a href="#dl-8" download="Strings09_Registration.java" style="text-decoration: underline;">Strings09_Registration.java</a></strong> إلى بيئة العمل، اكتب البرنامج وقم بتشغيله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - Registration
+ *
+ * Write a main program that simulates a registration to a website.
+ * At the top of the program store the taken user name javafan in a String variable.
+ * The program asks the user for a user name. If the name is already taken, the program
+ * says so and asks for another name - only once. If the second name is taken as well,
+ * the registration fails and the program ends immediately, without asking for a password.
+ * If the user name is free, the program asks for a password and then asks to repeat it.
+ * If both are equal the registration is completed, otherwise the program prints that
+ * the passwords do not match and the registration failed.
+ * All string comparisons must use equals.
+ * Use a boolean variable to keep the state of the user name.
+ *
+ * Input (first run):
+ *   dana2026
+ *   abc123
+ *   abc123
+ * Expected output (first run):
+ *   Enter a username:
+ *   Enter a password:
+ *   Repeat the password:
+ *   Registration completed for user: dana2026
+ *
+ * Input (second run):
+ *   javafan
+ *   javafan99
+ *   pass1
+ *   pass2
+ * Expected output (second run):
+ *   Enter a username:
+ *   This username is already taken, please choose another one
+ *   Enter a username:
+ *   Enter a password:
+ *   Repeat the password:
+ *   Passwords do not match. Registration failed
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings09_Registration</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>سؤال 10 – رموز ونصوص – بطاقة توجه للدعم – محادثة متفرعة</h3>
+      <span class="q-en">Q10 - strings - support ticket</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 10 – رموز ونصوص – بطاقة توجه للدعم – محادثة متفرعة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يفتح بطاقة توجه لمركز الدعم. هذا هو تسلسل المحادثة:<br>1. استقبال الاسم الكامل للعميل — الاسم الأول واسم العائلة، ولذلك يُستقبل كسطر كامل.<br>2. استقبال فئة التوجه، tech أو billing.<br>3. <strong>فقط في توجه من نوع tech</strong> يُستقبل أيضاً رمز الجهاز.<br>4. استقبال درجة الاستعجال كعدد صحيح، حسب الجدول التالي:</p><pre style="text-align: left; direction: ltr; background:#fbfbfb; padding:6px 10px; border-radius:4px; border:1px solid #e4e4e4; margin:6px 0;">1 -> low
+2 -> medium
+3 -> high</pre><p dir="rtl" style="text-align: right;">ترجم العدد إلى كلمة باستخدام أمر switch.<br>5. استقبال وصف قصير للعطل — جملة كاملة تشمل مسافات، تُستقبل كسطر كامل.<br>في النهاية يقوم البرنامج بطباعة بطاقة التوجه. سطر الجهاز يظهر في البطاقة فقط في توجه من نوع tech.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">Dana Levi
+tech
+XZ-450
+3
+The screen goes black after five minutes</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the customer full name:
+Enter the request category (tech/billing):
+Enter the device code:
+Enter the urgency level (1=low, 2=medium, 3=high):
+Enter a short description of the problem:
+--- Support Ticket ---
+Customer: Dana Levi
+Category: tech
+Device: XZ-450
+Urgency: high
+Description: The screen goes black after five minutes</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية:</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#fdf6e3; padding:8px; border-radius:4px; border:1px solid #eadfc0;">Yossi Bar
+billing
+1
+I was charged twice for June</pre>
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the customer full name:
+Enter the request category (tech/billing):
+Enter the urgency level (1=low, 2=medium, 3=high):
+Enter a short description of the problem:
+--- Support Ticket ---
+Customer: Yossi Bar
+Category: billing
+Urgency: low
+Description: I was charged twice for June</pre>
+
+<p dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-9" download="Strings10_SupportTicket.java" style="text-decoration: underline;">Strings10_SupportTicket.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Characters and Strings - SupportTicket
+ *
+ * Write a main program that opens a support ticket.
+ * The flow of the conversation:
+ * 1. Read the full name of the customer - first name and last name, as a whole line.
+ * 2. Read the request category, tech or billing.
+ * 3. Only for a tech request, read also the device code.
+ * 4. Read the urgency level as an integer:
+ *      1 -&gt; low
+ *      2 -&gt; medium
+ *      3 -&gt; high
+ *    Use a switch statement to translate the number into a word.
+ * 5. Read a short description of the problem - a whole sentence with spaces,
+ *    read as a whole line.
+ * Finally the program prints the support ticket. The device line appears only for a
+ * tech request.
+ * Each value must be stored in a suitable variable.
+ *
+ * Input (first run):
+ *   Dana Levi
+ *   tech
+ *   XZ-450
+ *   3
+ *   The screen goes black after five minutes
+ * Expected output (first run):
+ *   Enter the customer full name:
+ *   Enter the request category (tech/billing):
+ *   Enter the device code:
+ *   Enter the urgency level (1=low, 2=medium, 3=high):
+ *   Enter a short description of the problem:
+ *   --- Support Ticket ---
+ *   Customer: Dana Levi
+ *   Category: tech
+ *   Device: XZ-450
+ *   Urgency: high
+ *   Description: The screen goes black after five minutes
+ *
+ * Input (second run):
+ *   Yossi Bar
+ *   billing
+ *   1
+ *   I was charged twice for June
+ * Expected output (second run):
+ *   Enter the customer full name:
+ *   Enter the request category (tech/billing):
+ *   Enter the urgency level (1=low, 2=medium, 3=high):
+ *   Enter a short description of the problem:
+ *   --- Support Ticket ---
+ *   Customer: Yossi Bar
+ *   Category: billing
+ *   Urgency: low
+ *   Description: I was charged twice for June
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Strings10_SupportTicket</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>الملفات مضمّنة في الصفحة — التنزيل يعمل أيضًا بدون اتصال بالإنترنت</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Strings01_EmailAddress.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gRW1haWxBZGRyZXNzCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgYSBmaXJzdCBuYW1lIGFuZCBhIGxhc3QgbmFtZSBmcm9tIHRoZSB1c2VyLAogKiBhbmQgYnVpbGRzIGEgc2Nob29sIGVtYWlsIGFkZHJlc3MgYW5kIGEgbG9naW4gbmFtZS4KICogVGhlIGVtYWlsIGFkZHJlc3MgaXM6IHRoZSBmaXJzdCBuYW1lLCBhIGRvdCwgdGhlIGxhc3QgbmFtZSwgdGhlbiB0aGUgc2lnbiBACiAqIGZvbGxvd2VkIGJ5IHNjaG9vbC5vcmcKICogVGhlIGxvZ2luIG5hbWUgaXMgdGhlIGZpcnN0IG5hbWUgZm9sbG93ZWQgYnkgdGhlIGxhc3QgbmFtZSB3aXRoIG5vIHNlcGFyYXRvci4KICogRWFjaCBuYW1lIGlzIGEgc2luZ2xlIHdvcmQsIHNvIG5leHQoKSBpcyBlbm91Z2ggZm9yIHJlYWRpbmcgaXQuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6CiAqICAgZGFuYQogKiAgIGxldmkKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHlvdXIgZmlyc3QgbmFtZSAobG93ZXJjYXNlIGxldHRlcnMpOgogKiAgIEVudGVyIHlvdXIgbGFzdCBuYW1lIChsb3dlcmNhc2UgbGV0dGVycyk6CiAqICAgV2VsY29tZSBkYW5hIGxldmkKICogICBZb3VyIHNjaG9vbCBlbWFpbCBhZGRyZXNzIGlzOiBkYW5hLmxldmlAc2Nob29sLm9yZwogKiAgIFlvdXIgbG9naW4gbmFtZSBpczogZGFuYWxldmkKICoKICogSW5wdXQgKHNlY29uZCBydW4pOgogKiAgIG5vYQogKiAgIGthdHoKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB5b3VyIGZpcnN0IG5hbWUgKGxvd2VyY2FzZSBsZXR0ZXJzKToKICogICBFbnRlciB5b3VyIGxhc3QgbmFtZSAobG93ZXJjYXNlIGxldHRlcnMpOgogKiAgIFdlbGNvbWUgbm9hIGthdHoKICogICBZb3VyIHNjaG9vbCBlbWFpbCBhZGRyZXNzIGlzOiBub2Eua2F0ekBzY2hvb2wub3JnCiAqICAgWW91ciBsb2dpbiBuYW1lIGlzOiBub2FrYXR6CiAqCiAqLwpwdWJsaWMgY2xhc3MgU3RyaW5nczAxX0VtYWlsQWRkcmVzcyB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Strings02_JoinOrAdd.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gSm9pbk9yQWRkCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdHdvIGludGVnZXJzIGZyb20gdGhlIHVzZXIgYW5kIHByaW50cyBmb3VyIGxpbmVzOgogKiB0aGUgdHdvIG51bWJlcnMgam9pbmVkIHRvZ2V0aGVyLCB0aGVpciBzdW0sIGFuZCB0aGUgc2FtZSB0d28gcmVzdWx0cyBhZ2FpbgogKiBwcmVjZWRlZCBieSBhIHRleHQuCiAqIEVhY2ggb2YgdGhlIGZvdXIgbGluZXMgbXVzdCBiZSBwcmludGVkIGJ5IGEgc2luZ2xlIHByaW50bG4gY29tbWFuZCwKICogd2l0aG91dCBleHRyYSBoZWxwZXIgdmFyaWFibGVzLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOgogKiAgIDUKICogICAzCiAqIEV4cGVjdGVkIG91dHB1dCAoZmlyc3QgcnVuKToKICogICBFbnRlciB0aGUgZmlyc3QgbnVtYmVyOgogKiAgIEVudGVyIHRoZSBzZWNvbmQgbnVtYmVyOgogKiAgIEpvaW5lZDogNTMKICogICBTdW06IDgKICogICBUZXh0IHBsdXMgam9pbmVkOiBSZXN1bHQgNTMKICogICBUZXh0IHBsdXMgc3VtOiBSZXN1bHQgOAogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6CiAqICAgMTIKICogICA0MAogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIHRoZSBmaXJzdCBudW1iZXI6CiAqICAgRW50ZXIgdGhlIHNlY29uZCBudW1iZXI6CiAqICAgSm9pbmVkOiAxMjQwCiAqICAgU3VtOiA1MgogKiAgIFRleHQgcGx1cyBqb2luZWQ6IFJlc3VsdCAxMjQwCiAqICAgVGV4dCBwbHVzIHN1bTogUmVzdWx0IDUyCiAqCiAqLwpwdWJsaWMgY2xhc3MgU3RyaW5nczAyX0pvaW5PckFkZCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Strings03_CourseCard.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gQ291cnNlQ2FyZAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHByaW50cyBhIGNvdXJzZSBjYXJkLgogKiBUaGVyZSBpcyBubyB1c2VyIGlucHV0IGluIHRoaXMgZXhlcmNpc2UuIFRoZSBkYXRhIGlzIGZpeGVkIGluIHRoZSBjb2RlOgogKiAgIGNvdXJzZSBuYW1lOiAgIEludHJvZHVjdGlvbiB0byBDb21wdXRlciBTY2llbmNlCiAqICAgZ3JvdXAgbGV0dGVyOiAgQgogKiAgIHdlZWtseSBob3VyczogIDQKICogICBjcmVkaXQgcG9pbnRzOiAzLjUKICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLiBOb3RlIHRoYXQgdGhlIGdyb3VwIGxldHRlciBpcyBhCiAqIHNpbmdsZSBjaGFyYWN0ZXIgYW5kIG11c3QgYmUgc3RvcmVkIGluIGEgY2hhciB2YXJpYWJsZS4KICoKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIENvdXJzZTogSW50cm9kdWN0aW9uIHRvIENvbXB1dGVyIFNjaWVuY2UKICogICBHcm91cDogQgogKiAgIFdlZWtseSBob3VyczogNAogKiAgIENyZWRpdCBwb2ludHM6IDMuNQogKiAgIFN1bW1hcnk6IEludHJvZHVjdGlvbiB0byBDb21wdXRlciBTY2llbmNlIC0gZ3JvdXAgQiAtIDMuNSBwb2ludHMKICoKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBDb3Vyc2U6IERpZ2l0YWwgU3lzdGVtcwogKiAgIEdyb3VwOiBECiAqICAgV2Vla2x5IGhvdXJzOiA2CiAqICAgQ3JlZGl0IHBvaW50czogNS4wCiAqICAgU3VtbWFyeTogRGlnaXRhbCBTeXN0ZW1zIC0gZ3JvdXAgRCAtIDUuMCBwb2ludHMKICoKICovCnB1YmxpYyBjbGFzcyBTdHJpbmdzMDNfQ291cnNlQ2FyZCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Strings04_ScannerLab.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gU2Nhbm5lckxhYgogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSBmb3IgYSBzcG9ydCBjbHViIHRoYXQgcmVnaXN0ZXJzIGEgbmV3IG1lbWJlci4KICogVGhlIHByb2dyYW0gcmVhZHMgYSB5ZWFyIG9mIGJpcnRoIChmb3VyIGRpZ2l0cyksIHRoZW4gdGhlIGZ1bGwgbmFtZSBvZiB0aGUgbWVtYmVyCiAqIGFuZCB0aGVuIHRoZSBjaXR5IGFuZCB0aGUgY291bnRyeSB3aGVyZSBoZSBsaXZlcywgYW5kIHByaW50cyB0aGUgbWVtYmVyIGNhcmQuCiAqIFRoZSBmdWxsIG5hbWUgY29udGFpbnMgYSBmaXJzdCBuYW1lIGFuZCBhIGxhc3QgbmFtZSwgYW5kIHRoZSBjaXR5IGFuZCB0aGUgY291bnRyeQogKiBhcmUgc2VwYXJhdGVkIGJ5IGEgY29tbWEgLSBib3RoIGNvbnRhaW4gc3BhY2VzLCBzbyBlYWNoIG9mIHRoZW0gbXVzdCBiZSByZWFkIGFzIGEKICogd2hvbGUgbGluZS4gU3Vycm91bmQgZXZlcnkgc3RyaW5nIHdpdGggc3F1YXJlIGJyYWNrZXRzIHdoZW4gcHJpbnRpbmcgaXQsIGFzIHNob3duCiAqIGluIHRoZSBleHBlY3RlZCBvdXRwdXQsIHNvIHRoYXQgYW4gZW1wdHkgc3RyaW5nIGlzIGFsc28gdmlzaWJsZS4KICoKICogSW5wdXQ6CiAqICAgMTk5OAogKiAgIERhbmEgTGV2aQogKiAgIEhhaWZhLCBJc3JhZWwKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEVudGVyIHRoZSB5ZWFyIG9mIGJpcnRoICg0IGRpZ2l0cyk6CiAqICAgRW50ZXIgdGhlIGZ1bGwgbmFtZToKICogICBFbnRlciB0aGUgY2l0eSBhbmQgdGhlIGNvdW50cnk6CiAqICAgWWVhcjogMTk5OAogKiAgIE5hbWU6IFtEYW5hIExldmldCiAqICAgUGxhY2U6IFtIYWlmYSwgSXNyYWVsXQogKgogKiBEaWQgeW91IGdldCB0aGlzIG91dHB1dCBpbnN0ZWFkPwogKiAgIEVudGVyIHRoZSB5ZWFyIG9mIGJpcnRoICg0IGRpZ2l0cyk6CiAqICAgRW50ZXIgdGhlIGZ1bGwgbmFtZToKICogICBFbnRlciB0aGUgY2l0eSBhbmQgdGhlIGNvdW50cnk6CiAqICAgWWVhcjogMTk5OAogKiAgIE5hbWU6IFtdCiAqICAgUGxhY2U6IFtEYW5hIExldmldCiAqCiAqIElmIHNvLCB0cnkgdG8gZ3Vlc3Mgd2hhdCB0aGUgZmlyc3Qgc3RyaW5nIGdvdCBhbmQgd2hhdCB0aGUgc2Vjb25kIHN0cmluZyBnb3QsCiAqIGFuZCB3aGVyZSB0aGUgdGhpcmQgaW5wdXQgbGluZSBpcy4gVG8gZml4IGl0LCB0aGluayB3aGVyZSBpbiB0aGUgcHJvZ3JhbSBhbiBleHRyYQogKiBuZXh0TGluZSBjb21tYW5kIHNob3VsZCBiZSBhZGRlZC4KICoKICovCnB1YmxpYyBjbGFzcyBTdHJpbmdzMDRfU2Nhbm5lckxhYiB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Strings05_BookReview.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gQm9va1JldmlldwogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGEgcmF0aW5nIGZvciBhIGJvb2sgKGFuIGludGVnZXIgYmV0d2VlbiAxIGFuZCA1KQogKiBhbmQgdGhlbiB0aGUgdGl0bGUgb2YgdGhlIGJvb2suIFRoZSB0aXRsZSBtYXkgY29udGFpbiBzZXZlcmFsIHdvcmRzIGFuZCBzcGFjZXMsCiAqIHNvIGl0IG11c3QgYmUgcmVhZCBhcyBhIHdob2xlIGxpbmUuCiAqIFRoZSBwcm9ncmFtIHByaW50cyB0aGUgcmV2aWV3IGRldGFpbHMgYW5kIGEgdmVyZGljdCBhY2NvcmRpbmcgdG8gdGhlIHJhdGluZzoKICogICA1ICAgICAgLT4gRXhjZWxsZW50CiAqICAgNCAgICAgIC0+IFZlcnkgZ29vZAogKiAgIDMgICAgICAtPiBHb29kCiAqICAgMSBvciAyIC0+IFdlYWsKICogUGF5IGF0dGVudGlvbiB0byB0aGUgb3JkZXIgb2YgdGhlIHJlYWRpbmcgY29tbWFuZHMuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6CiAqICAgNAogKiAgIFRoZSBIb2JiaXQKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHlvdXIgcmF0aW5nIGZvciB0aGUgYm9vayAoMS01KToKICogICBFbnRlciB0aGUgYm9vayB0aXRsZToKICogICBCb29rOiBUaGUgSG9iYml0CiAqICAgUmF0aW5nOiA0IG91dCBvZiA1CiAqICAgVmVyZGljdDogVmVyeSBnb29kCiAqICAgVGhlIEhvYmJpdCByZWNlaXZlZCA0IHN0YXJzIGZyb20gb3VyIHJlYWRlcgogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6CiAqICAgMgogKiAgIE9sZCBGaXNoaW5nIFN0b3JpZXMKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB5b3VyIHJhdGluZyBmb3IgdGhlIGJvb2sgKDEtNSk6CiAqICAgRW50ZXIgdGhlIGJvb2sgdGl0bGU6CiAqICAgQm9vazogT2xkIEZpc2hpbmcgU3RvcmllcwogKiAgIFJhdGluZzogMiBvdXQgb2YgNQogKiAgIFZlcmRpY3Q6IFdlYWsKICogICBPbGQgRmlzaGluZyBTdG9yaWVzIHJlY2VpdmVkIDIgc3RhcnMgZnJvbSBvdXIgcmVhZGVyCiAqCiAqLwpwdWJsaWMgY2xhc3MgU3RyaW5nczA1X0Jvb2tSZXZpZXcgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Strings06_LanguageGreeting.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gTGFuZ3VhZ2VHcmVldGluZwogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGEgbGFuZ3VhZ2UgY29kZSBhbmQgdGhlbiBhIG5hbWUgZnJvbSB0aGUgdXNlciwKICogYW5kIHByaW50cyBhIGdyZWV0aW5nIGluIHRoZSBjaG9zZW4gbGFuZ3VhZ2UuIE5BTUUgYmVsb3cgaXMgdGhlIG5hbWUgdGhhdCB3YXMgcmVhZDoKICogICBlbiAtPiBIZWxsbyBOQU1FLCBuaWNlIHRvIG1lZXQgeW91IQogKiAgIGZyIC0+IEJvbmpvdXIgTkFNRSwgZW5jaGFudGUhCiAqICAgZXMgLT4gSG9sYSBOQU1FLCBtdWNobyBndXN0byEKICogSWYgdGhlIGNvZGUgaXMgbm90IG9uZSBvZiB0aGVzZSB0aHJlZSwgcHJpbnQgYSBtZXNzYWdlIHRoYXQgdGhlIGNvZGUgaXMgdW5rbm93biwKICogaW5jbHVkaW5nIHRoZSBjb2RlIHRoYXQgd2FzIHR5cGVkLgogKiBTdHJpbmdzIG11c3QgYmUgY29tcGFyZWQgd2l0aCBlcXVhbHMgYW5kIG5vdCB3aXRoID09LgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIElucHV0IChmaXJzdCBydW4pOgogKiAgIGZyCiAqICAgTWFyaWUKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIGEgbGFuZ3VhZ2UgY29kZSAoZW4sIGZyLCBlcyk6CiAqICAgRW50ZXIgeW91ciBuYW1lOgogKiAgIEJvbmpvdXIgTWFyaWUsIGVuY2hhbnRlIQogKgogKiBJbnB1dCAoc2Vjb25kIHJ1bik6CiAqICAgZGUKICogICBIYW5zCiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgYSBsYW5ndWFnZSBjb2RlIChlbiwgZnIsIGVzKToKICogICBFbnRlciB5b3VyIG5hbWU6CiAqICAgVW5rbm93biBsYW5ndWFnZSBjb2RlOiBkZQogKgogKi8KcHVibGljIGNsYXNzIFN0cmluZ3MwNl9MYW5ndWFnZUdyZWV0aW5nIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"Strings07_CouponCode.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gQ291cG9uQ29kZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSBmb3IgYSBzaG9wIGNhc2ggcmVnaXN0ZXIuCiAqIFRoZSBwcm9ncmFtIHJlYWRzIHRoZSBwdXJjaGFzZSBhbW91bnQgYW5kIHRoZW4gYXNrcyB0aGUgY3VzdG9tZXIgd2hldGhlciBoZSBoYXMgYQogKiBjb3Vwb24gY29kZS4gVGhlIGFuc3dlciBpcyByZWFkIGFzIGEgc3RyaW5nLCB5ZXMgb3Igbm8uCiAqIE9ubHkgaWYgdGhlIGFuc3dlciBpcyB5ZXMsIHRoZSBwcm9ncmFtIGFza3MgZm9yIHRoZSBjb3Vwb24gY29kZSBhbmQgcmVhZHMgaXQ6CiAqICAgU0FWRTEwICAgICAgICAgLT4gMTAgcGVyY2VudCBvZmYgdGhlIHB1cmNoYXNlIGFtb3VudAogKiAgIFNBVkUyNSAgICAgICAgIC0+IDI1IHBlcmNlbnQgb2ZmIHRoZSBwdXJjaGFzZSBhbW91bnQKICogICBhbnkgb3RoZXIgY29kZSAtPiBub3QgdmFsaWQsIHByaW50IGEgbWVzc2FnZSBhbmQgdGhlIGRpc2NvdW50IGlzIHplcm8KICogRmluYWxseSB0aGUgcHJvZ3JhbSBwcmludHMgdGhlIGRpc2NvdW50IGFuZCB0aGUgYW1vdW50IHRvIHBheS4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBJbnB1dCAoZmlyc3QgcnVuKToKICogICAyNTAKICogICB5ZXMKICogICBTQVZFMTAKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIHRoZSBwdXJjaGFzZSBhbW91bnQ6CiAqICAgRG8geW91IGhhdmUgYSBjb3Vwb24gY29kZT8gKHllcy9ubyk6CiAqICAgRW50ZXIgdGhlIGNvdXBvbiBjb2RlOgogKiAgIERpc2NvdW50OiAyNS4wCiAqICAgQW1vdW50IHRvIHBheTogMjI1LjAKICoKICogSW5wdXQgKHNlY29uZCBydW4pOgogKiAgIDI1MAogKiAgIG5vCiAqIEV4cGVjdGVkIG91dHB1dCAoc2Vjb25kIHJ1bik6CiAqICAgRW50ZXIgdGhlIHB1cmNoYXNlIGFtb3VudDoKICogICBEbyB5b3UgaGF2ZSBhIGNvdXBvbiBjb2RlPyAoeWVzL25vKToKICogICBEaXNjb3VudDogMC4wCiAqICAgQW1vdW50IHRvIHBheTogMjUwLjAKICoKICovCnB1YmxpYyBjbGFzcyBTdHJpbmdzMDdfQ291cG9uQ29kZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"Strings08_AnswerKey.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gQW5zd2VyS2V5CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgY2hlY2tzIGEgbXVsdGlwbGUgY2hvaWNlIHRlc3Qgb2YgZm91ciBxdWVzdGlvbnMuCiAqIFRoZXJlIGlzIG5vIHVzZXIgaW5wdXQgaW4gdGhpcyBleGVyY2lzZS4gVGhlIHZhbHVlcyBhcmUgZml4ZWQgaW4gdGhlIGNvZGU6CiAqICAgYW5zd2VyIGtleTogICAgICBCICBBICBEICBDCiAqICAgc3R1ZGVudCBhbnN3ZXJzOiBCICBBICBEICBBCiAqIEV2ZXJ5IGFuc3dlciBpcyBhIHNpbmdsZSBjaGFyYWN0ZXIgYW5kIG11c3QgYmUgc3RvcmVkIGluIGEgY2hhciB2YXJpYWJsZSAtCiAqIGVpZ2h0IHZhcmlhYmxlcyBpbiB0b3RhbCwgZm91ciBmb3IgdGhlIGtleSBhbmQgZm91ciBmb3IgdGhlIHN0dWRlbnQgYW5zd2Vycy4KICogVGhlIHByb2dyYW0gY291bnRzIHRoZSBjb3JyZWN0IGFuc3dlcnMsIGNvbXB1dGVzIHRoZSBzY29yZSBpbiBwZXJjZW50IGFuZCBwcmludHMKICogdGhlIGxldmVsOgogKiAgIDEwMCAgLT4gRXhjZWxsZW50CiAqICAgIDc1ICAtPiBHb29kCiAqICAgIDUwICAtPiBQYXNzCiAqICAgbGVzcyAtPiBGYWlsCiAqIExvb2sgYXQgdGhlIGV4cGVjdGVkIG91dHB1dCBhbmQgY2hvb3NlIGEgc3VpdGFibGUgdHlwZSBmb3IgdGhlIHNjb3JlLgogKgogKiBFeHBlY3RlZCBvdXRwdXQgKGZpcnN0IHJ1bik6CiAqICAgQW5zd2VyIGtleTogQiBBIEQgQwogKiAgIFN0dWRlbnQgYW5zd2VyczogQiBBIEQgQQogKiAgIENvcnJlY3QgYW5zd2VyczogMyBvdXQgb2YgNAogKiAgIFNjb3JlOiA3NS4wCiAqICAgTGV2ZWw6IEdvb2QKICoKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBBbnN3ZXIga2V5OiBCIEEgRCBDCiAqICAgU3R1ZGVudCBhbnN3ZXJzOiBDIEIgRCBDCiAqICAgQ29ycmVjdCBhbnN3ZXJzOiAyIG91dCBvZiA0CiAqICAgU2NvcmU6IDUwLjAKICogICBMZXZlbDogUGFzcwogKgogKi8KcHVibGljIGNsYXNzIFN0cmluZ3MwOF9BbnN3ZXJLZXkgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Strings09_Registration.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gUmVnaXN0cmF0aW9uCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgc2ltdWxhdGVzIGEgcmVnaXN0cmF0aW9uIHRvIGEgd2Vic2l0ZS4KICogQXQgdGhlIHRvcCBvZiB0aGUgcHJvZ3JhbSBzdG9yZSB0aGUgdGFrZW4gdXNlciBuYW1lIGphdmFmYW4gaW4gYSBTdHJpbmcgdmFyaWFibGUuCiAqIFRoZSBwcm9ncmFtIGFza3MgdGhlIHVzZXIgZm9yIGEgdXNlciBuYW1lLiBJZiB0aGUgbmFtZSBpcyBhbHJlYWR5IHRha2VuLCB0aGUgcHJvZ3JhbQogKiBzYXlzIHNvIGFuZCBhc2tzIGZvciBhbm90aGVyIG5hbWUgLSBvbmx5IG9uY2UuIElmIHRoZSBzZWNvbmQgbmFtZSBpcyB0YWtlbiBhcyB3ZWxsLAogKiB0aGUgcmVnaXN0cmF0aW9uIGZhaWxzIGFuZCB0aGUgcHJvZ3JhbSBlbmRzIGltbWVkaWF0ZWx5LCB3aXRob3V0IGFza2luZyBmb3IgYSBwYXNzd29yZC4KICogSWYgdGhlIHVzZXIgbmFtZSBpcyBmcmVlLCB0aGUgcHJvZ3JhbSBhc2tzIGZvciBhIHBhc3N3b3JkIGFuZCB0aGVuIGFza3MgdG8gcmVwZWF0IGl0LgogKiBJZiBib3RoIGFyZSBlcXVhbCB0aGUgcmVnaXN0cmF0aW9uIGlzIGNvbXBsZXRlZCwgb3RoZXJ3aXNlIHRoZSBwcm9ncmFtIHByaW50cyB0aGF0CiAqIHRoZSBwYXNzd29yZHMgZG8gbm90IG1hdGNoIGFuZCB0aGUgcmVnaXN0cmF0aW9uIGZhaWxlZC4KICogQWxsIHN0cmluZyBjb21wYXJpc29ucyBtdXN0IHVzZSBlcXVhbHMuCiAqIFVzZSBhIGJvb2xlYW4gdmFyaWFibGUgdG8ga2VlcCB0aGUgc3RhdGUgb2YgdGhlIHVzZXIgbmFtZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6CiAqICAgZGFuYTIwMjYKICogICBhYmMxMjMKICogICBhYmMxMjMKICogRXhwZWN0ZWQgb3V0cHV0IChmaXJzdCBydW4pOgogKiAgIEVudGVyIGEgdXNlcm5hbWU6CiAqICAgRW50ZXIgYSBwYXNzd29yZDoKICogICBSZXBlYXQgdGhlIHBhc3N3b3JkOgogKiAgIFJlZ2lzdHJhdGlvbiBjb21wbGV0ZWQgZm9yIHVzZXI6IGRhbmEyMDI2CiAqCiAqIElucHV0IChzZWNvbmQgcnVuKToKICogICBqYXZhZmFuCiAqICAgamF2YWZhbjk5CiAqICAgcGFzczEKICogICBwYXNzMgogKiBFeHBlY3RlZCBvdXRwdXQgKHNlY29uZCBydW4pOgogKiAgIEVudGVyIGEgdXNlcm5hbWU6CiAqICAgVGhpcyB1c2VybmFtZSBpcyBhbHJlYWR5IHRha2VuLCBwbGVhc2UgY2hvb3NlIGFub3RoZXIgb25lCiAqICAgRW50ZXIgYSB1c2VybmFtZToKICogICBFbnRlciBhIHBhc3N3b3JkOgogKiAgIFJlcGVhdCB0aGUgcGFzc3dvcmQ6CiAqICAgUGFzc3dvcmRzIGRvIG5vdCBtYXRjaC4gUmVnaXN0cmF0aW9uIGZhaWxlZAogKgogKi8KcHVibGljIGNsYXNzIFN0cmluZ3MwOV9SZWdpc3RyYXRpb24gewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"Strings10_SupportTicket.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDaGFyYWN0ZXJzIGFuZCBTdHJpbmdzIC0gU3VwcG9ydFRpY2tldAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IG9wZW5zIGEgc3VwcG9ydCB0aWNrZXQuCiAqIFRoZSBmbG93IG9mIHRoZSBjb252ZXJzYXRpb246CiAqIDEuIFJlYWQgdGhlIGZ1bGwgbmFtZSBvZiB0aGUgY3VzdG9tZXIgLSBmaXJzdCBuYW1lIGFuZCBsYXN0IG5hbWUsIGFzIGEgd2hvbGUgbGluZS4KICogMi4gUmVhZCB0aGUgcmVxdWVzdCBjYXRlZ29yeSwgdGVjaCBvciBiaWxsaW5nLgogKiAzLiBPbmx5IGZvciBhIHRlY2ggcmVxdWVzdCwgcmVhZCBhbHNvIHRoZSBkZXZpY2UgY29kZS4KICogNC4gUmVhZCB0aGUgdXJnZW5jeSBsZXZlbCBhcyBhbiBpbnRlZ2VyOgogKiAgICAgIDEgLT4gbG93CiAqICAgICAgMiAtPiBtZWRpdW0KICogICAgICAzIC0+IGhpZ2gKICogICAgVXNlIGEgc3dpdGNoIHN0YXRlbWVudCB0byB0cmFuc2xhdGUgdGhlIG51bWJlciBpbnRvIGEgd29yZC4KICogNS4gUmVhZCBhIHNob3J0IGRlc2NyaXB0aW9uIG9mIHRoZSBwcm9ibGVtIC0gYSB3aG9sZSBzZW50ZW5jZSB3aXRoIHNwYWNlcywKICogICAgcmVhZCBhcyBhIHdob2xlIGxpbmUuCiAqIEZpbmFsbHkgdGhlIHByb2dyYW0gcHJpbnRzIHRoZSBzdXBwb3J0IHRpY2tldC4gVGhlIGRldmljZSBsaW5lIGFwcGVhcnMgb25seSBmb3IgYQogKiB0ZWNoIHJlcXVlc3QuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogSW5wdXQgKGZpcnN0IHJ1bik6CiAqICAgRGFuYSBMZXZpCiAqICAgdGVjaAogKiAgIFhaLTQ1MAogKiAgIDMKICogICBUaGUgc2NyZWVuIGdvZXMgYmxhY2sgYWZ0ZXIgZml2ZSBtaW51dGVzCiAqIEV4cGVjdGVkIG91dHB1dCAoZmlyc3QgcnVuKToKICogICBFbnRlciB0aGUgY3VzdG9tZXIgZnVsbCBuYW1lOgogKiAgIEVudGVyIHRoZSByZXF1ZXN0IGNhdGVnb3J5ICh0ZWNoL2JpbGxpbmcpOgogKiAgIEVudGVyIHRoZSBkZXZpY2UgY29kZToKICogICBFbnRlciB0aGUgdXJnZW5jeSBsZXZlbCAoMT1sb3csIDI9bWVkaXVtLCAzPWhpZ2gpOgogKiAgIEVudGVyIGEgc2hvcnQgZGVzY3JpcHRpb24gb2YgdGhlIHByb2JsZW06CiAqICAgLS0tIFN1cHBvcnQgVGlja2V0IC0tLQogKiAgIEN1c3RvbWVyOiBEYW5hIExldmkKICogICBDYXRlZ29yeTogdGVjaAogKiAgIERldmljZTogWFotNDUwCiAqICAgVXJnZW5jeTogaGlnaAogKiAgIERlc2NyaXB0aW9uOiBUaGUgc2NyZWVuIGdvZXMgYmxhY2sgYWZ0ZXIgZml2ZSBtaW51dGVzCiAqCiAqIElucHV0IChzZWNvbmQgcnVuKToKICogICBZb3NzaSBCYXIKICogICBiaWxsaW5nCiAqICAgMQogKiAgIEkgd2FzIGNoYXJnZWQgdHdpY2UgZm9yIEp1bmUKICogRXhwZWN0ZWQgb3V0cHV0IChzZWNvbmQgcnVuKToKICogICBFbnRlciB0aGUgY3VzdG9tZXIgZnVsbCBuYW1lOgogKiAgIEVudGVyIHRoZSByZXF1ZXN0IGNhdGVnb3J5ICh0ZWNoL2JpbGxpbmcpOgogKiAgIEVudGVyIHRoZSB1cmdlbmN5IGxldmVsICgxPWxvdywgMj1tZWRpdW0sIDM9aGlnaCk6CiAqICAgRW50ZXIgYSBzaG9ydCBkZXNjcmlwdGlvbiBvZiB0aGUgcHJvYmxlbToKICogICAtLS0gU3VwcG9ydCBUaWNrZXQgLS0tCiAqICAgQ3VzdG9tZXI6IFlvc3NpIEJhcgogKiAgIENhdGVnb3J5OiBiaWxsaW5nCiAqICAgVXJnZW5jeTogbG93CiAqICAgRGVzY3JpcHRpb246IEkgd2FzIGNoYXJnZWQgdHdpY2UgZm9yIEp1bmUKICoKICovCnB1YmxpYyBjbGFzcyBTdHJpbmdzMTBfU3VwcG9ydFRpY2tldCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '820';
+  var DEFAULT_LIGHT = true;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

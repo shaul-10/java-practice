@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגילי כתיבה ליחידה 2.5</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>תרגילי כתיבה ליחידה 2.5</h1>
+      <p>Java א – מבוא למדעי המחשב  |  13 שאלות ברמת קושי עולה</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">רוחב</span>
+      <button type="button" data-w="820">צר</button>
+      <button type="button" data-w="980">בינוני</button>
+      <button type="button" data-w="1200">רחב</button>
+      <button type="button" data-w="100%">מלא</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">קוד</span>
+      <button type="button" data-theme="dark">כהה</button>
+      <button type="button" data-theme="light">בהיר</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>תוכן עניינים</h2>
+    <div class="toc-grid">
+<a href="#q1">שאלה 1 – תנאים – צורת המלבן</a>
+<a href="#q2">שאלה 2 – תנאים – בדיקת תקציב</a>
+<a href="#q3">שאלה 3 – תנאים – חלוקה לקבוצות</a>
+<a href="#q4">שאלה 4 – תנאים – מספר סימטרי</a>
+<a href="#q5">שאלה 5 – תנאים – קנס מהירות</a>
+<a href="#q6">שאלה 6 – תנאים – משוואה לינארית</a>
+<a href="#q7">שאלה 7 – תנאים – עיגול לשלם הקרוב</a>
+<a href="#q8">שאלה 8 – תנאים – משך משמרת</a>
+<a href="#q9">שאלה 9 – תנאים – הנחות מצטברות</a>
+<a href="#q10">שאלה 10 – תנאים – חיתוך שני ישרים</a>
+<a href="#q11">שאלה 11 – תנאים – מערכת שתי משוואות בשני נעלמים</a>
+<a href="#q12">שאלה 12 – תנאים – משוואה ריבועית</a>
+<a href="#q13">שאלה 13 – תנאים – הערך האמצעי</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">רמה 1 – בסיסי</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>שאלה 1 – תנאים – צורת המלבן</h3>
+      <span class="q-en">Q1 – conditions – rectangle shape</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – תנאים – צורת המלבן</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את האורך ואת הרוחב של מלבן, מחשבת את שטחו ואת היקפו, וקובעת אם המלבן הוא ריבוע.<br>לפני כל קליטה על התוכנית להדפיס הודעת הנחיה למשתמש, כפי שמופיע בפלט הנדרש.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 5.0 ואחריו 5.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the length of the rectangle:
+Enter the width of the rectangle:
+Area: 25.0
+Perimeter: 20.0
+The rectangle is a square</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 6.5 ואחריו 4.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the length of the rectangle:
+Enter the width of the rectangle:
+Area: 26.0
+Perimeter: 21.0
+The rectangle is not a square</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-0" download="If01_RectangleShape.java" style="text-decoration: underline;">If01_RectangleShape.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - rectangle shape
+ *
+ * Write a main program that reads the length and the width of a rectangle, computes its area and
+ * perimeter, and determines whether the rectangle is a square.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 5.0, 5.0
+ *   Expected output:
+ *     Enter the length of the rectangle:
+ *     Enter the width of the rectangle:
+ *     Area: 25.0
+ *     Perimeter: 20.0
+ *     The rectangle is a square
+ *
+ * Run 2:
+ *   Input: 6.5, 4.0
+ *   Expected output:
+ *     Enter the length of the rectangle:
+ *     Enter the width of the rectangle:
+ *     Area: 26.0
+ *     Perimeter: 21.0
+ *     The rectangle is not a square
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If01_RectangleShape</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>שאלה 2 – תנאים – בדיקת תקציב</h3>
+      <span class="q-en">Q2 – conditions – budget check</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – תנאים – בדיקת תקציב</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את מחירו של פריט אחד, את הכמות הנרכשת ואת התקציב העומד לרשות הקונה. התוכנית מחשבת את העלות הכוללת ומודיעה אם התקציב מספיק, ובכמה. שימו לב שהכמות היא נתון שלם ואילו המחיר והתקציב הם נתונים ממשיים, ובחרו את סוג המשתנה המתאים לכל נתון.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 12.5 ואחריו 8 ואחריו 150.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the price of one item:
+Enter the quantity:
+Enter the budget:
+Total cost: 100.0
+The budget is sufficient. Remaining: 50.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 12.5 ואחריו 20 ואחריו 150.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the price of one item:
+Enter the quantity:
+Enter the budget:
+Total cost: 250.0
+The budget is not sufficient. Missing: 100.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-1" download="If02_BudgetCheck.java" style="text-decoration: underline;">If02_BudgetCheck.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - budget check
+ *
+ * Write a main program that reads the price of one item, the quantity and the available budget,
+ * computes the total cost and reports whether the budget is sufficient.
+ * Each value must be stored in a suitable variable.
+ * The quantity is a whole number, the price and the budget are real numbers.
+ *
+ * Run 1:
+ *   Input: 12.5, 8, 150.0
+ *   Expected output:
+ *     Enter the price of one item:
+ *     Enter the quantity:
+ *     Enter the budget:
+ *     Total cost: 100.0
+ *     The budget is sufficient. Remaining: 50.0
+ *
+ * Run 2:
+ *   Input: 12.5, 20, 150.0
+ *   Expected output:
+ *     Enter the price of one item:
+ *     Enter the quantity:
+ *     Enter the budget:
+ *     Total cost: 250.0
+ *     The budget is not sufficient. Missing: 100.0
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If02_BudgetCheck</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>שאלה 3 – תנאים – חלוקה לקבוצות</h3>
+      <span class="q-en">Q3 – conditions – equal groups</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – תנאים – חלוקה לקבוצות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את מספר המשתתפים בסדנה ואת מספר הקבוצות שיש להקים. התוכנית מחשבת כמה משתתפים ישובצו בכל קבוצה וכמה משתתפים נותרים ללא שיבוץ, וקובעת אם החלוקה שווה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 24 ואחריו 4</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the number of participants:
+Enter the number of groups:
+Participants in each group: 6
+Participants left over: 0
+The division is equal</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 25 ואחריו 4</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the number of participants:
+Enter the number of groups:
+Participants in each group: 6
+Participants left over: 1
+The division is not equal</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-2" download="If03_EqualGroups.java" style="text-decoration: underline;">If03_EqualGroups.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - equal groups
+ *
+ * Write a main program that reads the number of participants and the number of groups, computes how many
+ * participants each group gets and how many are left over, and determines whether
+ * the division is equal.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 24, 4
+ *   Expected output:
+ *     Enter the number of participants:
+ *     Enter the number of groups:
+ *     Participants in each group: 6
+ *     Participants left over: 0
+ *     The division is equal
+ *
+ * Run 2:
+ *   Input: 25, 4
+ *   Expected output:
+ *     Enter the number of participants:
+ *     Enter the number of groups:
+ *     Participants in each group: 6
+ *     Participants left over: 1
+ *     The division is not equal
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If03_EqualGroups</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>שאלה 4 – תנאים – מספר סימטרי</h3>
+      <span class="q-en">Q4 – conditions – symmetric number</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – תנאים – מספר סימטרי</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש מספר שלם בן שלוש ספרות, מחלצת ממנו את הספרה הראשונה ואת הספרה האחרונה, ומדפיסה אם המספר סימטרי — כלומר, אם שתי הספרות הללו זהות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 383</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a three digit number:
+First digit: 3
+Last digit: 3
+The number is symmetric</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 471</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a three digit number:
+First digit: 4
+Last digit: 1
+The number is not symmetric</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-3" download="If04_SymmetricNumber.java" style="text-decoration: underline;">If04_SymmetricNumber.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - symmetric number
+ *
+ * Write a main program that reads a three digit whole number, extracts its first and last digits and
+ * prints whether the number is symmetric.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 383
+ *   Expected output:
+ *     Enter a three digit number:
+ *     First digit: 3
+ *     Last digit: 3
+ *     The number is symmetric
+ *
+ * Run 2:
+ *   Input: 471
+ *   Expected output:
+ *     Enter a three digit number:
+ *     First digit: 4
+ *     Last digit: 1
+ *     The number is not symmetric
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If04_SymmetricNumber</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">רמה 2 – ביניים</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>שאלה 5 – תנאים – קנס מהירות</h3>
+      <span class="q-en">Q5 – conditions – speed fine</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – תנאים – קנס מהירות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את מהירות הנסיעה של רכב ואת מגבלת המהירות בכביש, שניהם מספרים שלמים. אם המהירות עולה על המגבלה, התוכנית מדפיסה את גודל החריגה ואת גובה הקנס, שהוא עשרה שקלים על כל קמ"ש חריגה. אחרת התוכנית מדפיסה שאין קנס.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 105 ואחריו 90</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the speed of the car:
+Enter the speed limit:
+Excess speed: 15
+Fine: 150</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 88 ואחריו 90</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the speed of the car:
+Enter the speed limit:
+No fine</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-4" download="If05_SpeedFine.java" style="text-decoration: underline;">If05_SpeedFine.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - speed fine
+ *
+ * Write a main program that reads the speed of a car and the speed limit. If the speed is above the limit
+ * the program prints the excess speed and the fine, ten units per excess unit.
+ * Otherwise it prints that there is no fine.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 105, 90
+ *   Expected output:
+ *     Enter the speed of the car:
+ *     Enter the speed limit:
+ *     Excess speed: 15
+ *     Fine: 150
+ *
+ * Run 2:
+ *   Input: 88, 90
+ *   Expected output:
+ *     Enter the speed of the car:
+ *     Enter the speed limit:
+ *     No fine
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If05_SpeedFine</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>שאלה 6 – תנאים – משוואה לינארית</h3>
+      <span class="q-en">Q6 – conditions – linear equation</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – תנאים – משוואה לינארית</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש שני מספרים ממשיים a ו-b, מציגה את המשוואה מהצורה ax + b = 0 ומדפיסה את הערך של x הפותר אותה. שימו לב שלא לכל זוג נתונים קיים פתרון יחיד; במקרה כזה על התוכנית להדפיס הודעה מתאימה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 4.0 ואחריו 8.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the value of a:
+Enter the value of b:
+The equation is: 4.0x + 8.0 = 0
+x = -2.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 0.0 ואחריו 5.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the value of a:
+Enter the value of b:
+The equation is: 0.0x + 5.0 = 0
+The equation has no single solution</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-5" download="If06_LinearEquation.java" style="text-decoration: underline;">If06_LinearEquation.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - linear equation
+ *
+ * Write a main program that reads two real numbers a and b, displays the equation ax + b = 0 and prints
+ * the value of x that solves it. Not every pair of values has a single solution.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 4.0, 8.0
+ *   Expected output:
+ *     Enter the value of a:
+ *     Enter the value of b:
+ *     The equation is: 4.0x + 8.0 = 0
+ *     x = -2.0
+ *
+ * Run 2:
+ *   Input: 0.0, 5.0
+ *   Expected output:
+ *     Enter the value of a:
+ *     Enter the value of b:
+ *     The equation is: 0.0x + 5.0 = 0
+ *     The equation has no single solution
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If06_LinearEquation</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>שאלה 7 – תנאים – עיגול לשלם הקרוב</h3>
+      <span class="q-en">Q7 – conditions – rounding</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – תנאים – עיגול לשלם הקרוב</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש מספר ממשי חיובי ומדפיסה את המספר השלם הקרוב אליו ביותר. מספר שחלקו השברי הוא חצי או יותר מתעגל כלפי מעלה, ואחרת כלפי מטה.<br>אין להשתמש בפעולות עיגול מוכנות — יש להגיע לתוצאה בכוחות עצמכם.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 7.62</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive real number:
+The number is: 7.62
+Rounded value: 8</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 12.4</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive real number:
+The number is: 12.4
+Rounded value: 12</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-6" download="If07_RoundToInt.java" style="text-decoration: underline;">If07_RoundToInt.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - rounding
+ *
+ * Write a main program that reads a positive real number and prints the closest whole number. A number
+ * whose fractional part is one half or more is rounded up, otherwise down.
+ * Do not use any built in rounding operation.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 7.62
+ *   Expected output:
+ *     Enter a positive real number:
+ *     The number is: 7.62
+ *     Rounded value: 8
+ *
+ * Run 2:
+ *   Input: 12.4
+ *   Expected output:
+ *     Enter a positive real number:
+ *     The number is: 12.4
+ *     Rounded value: 12
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If07_RoundToInt</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>שאלה 8 – תנאים – משך משמרת</h3>
+      <span class="q-en">Q8 – conditions – shift duration</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – תנאים – משך משמרת</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש את שעת ההתחלה של משמרת ואת שעת הסיום שלה, כל אחת כשעה שלמה ולאחריה דקות. התוכנית מחשבת את משך המשמרת בדקות ומציגה אותו גם בשעות ובדקות.<br>שימו לב: משמרת יכולה להתחיל ביום אחד ולהסתיים למחרת. משך משמרת אינו עולה על עשרים וארבע שעות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 8 ואחריו 30 ואחריו 16 ואחריו 45</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the start hour:
+Enter the start minute:
+Enter the end hour:
+Enter the end minute:
+Duration in minutes: 495
+Duration: 8 hours and 15 minutes</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 23 ואחריו 0 ואחריו 7 ואחריו 30</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the start hour:
+Enter the start minute:
+Enter the end hour:
+Enter the end minute:
+Duration in minutes: 510
+Duration: 8 hours and 30 minutes</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-7" download="If08_ShiftDuration.java" style="text-decoration: underline;">If08_ShiftDuration.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - shift duration
+ *
+ * Write a main program that reads the start hour and minute of a shift and its end hour and minute,
+ * computes the length of the shift in minutes and also shows it in hours and
+ * minutes. A shift may start on one day and end on the next one, and never
+ * lasts more than twenty four hours.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 8, 30, 16, 45
+ *   Expected output:
+ *     Enter the start hour:
+ *     Enter the start minute:
+ *     Enter the end hour:
+ *     Enter the end minute:
+ *     Duration in minutes: 495
+ *     Duration: 8 hours and 15 minutes
+ *
+ * Run 2:
+ *   Input: 23, 0, 7, 30
+ *   Expected output:
+ *     Enter the start hour:
+ *     Enter the start minute:
+ *     Enter the end hour:
+ *     Enter the end minute:
+ *     Duration in minutes: 510
+ *     Duration: 8 hours and 30 minutes
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If08_ShiftDuration</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>שאלה 9 – תנאים – הנחות מצטברות</h3>
+      <span class="q-en">Q9 – conditions – quantity discount</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – תנאים – הנחות מצטברות</h4>
+
+<p dir="rtl" style="text-align: right;">
+בחנות נהוגות שתי הנחות הניתנות זו אחר זו. תחילה, על רכישה של עשרה פריטים או יותר ניתנת הנחה של עשרה אחוזים מסכום הקנייה. לאחר מכן, אם הסכום שנותר לתשלום גבוה מ-500 שקלים, מופחתים ממנו עוד 20 שקלים.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את הכמות הנרכשת ואת מחירו של פריט אחד, ומדפיסה את הסכום לפני ההנחות ואת הסכום לתשלום. שימו לב שהכמות היא נתון שלם ואילו המחיר הוא נתון ממשי.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 12 ואחריו 50.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the quantity:
+Enter the price of one item:
+Total before discounts: 600.0
+Total to pay: 520.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 5 ואחריו 30.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the quantity:
+Enter the price of one item:
+Total before discounts: 150.0
+Total to pay: 150.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-8" download="If09_QuantityDiscount.java" style="text-decoration: underline;">If09_QuantityDiscount.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - quantity discount
+ *
+ * Write a main program that reads the purchased quantity and the price of one item and prints the total
+ * before discounts and the total to pay. Two discounts are applied one after the
+ * other: ten percent off for ten items or more, and then twenty units off when
+ * the remaining total is above five hundred.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 12, 50.0
+ *   Expected output:
+ *     Enter the quantity:
+ *     Enter the price of one item:
+ *     Total before discounts: 600.0
+ *     Total to pay: 520.0
+ *
+ * Run 2:
+ *   Input: 5, 30.0
+ *   Expected output:
+ *     Enter the quantity:
+ *     Enter the price of one item:
+ *     Total before discounts: 150.0
+ *     Total to pay: 150.0
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If09_QuantityDiscount</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">רמה 3 – מתקדם</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>שאלה 10 – תנאים – חיתוך שני ישרים</h3>
+      <span class="q-en">Q10 – conditions – lines intersection</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – תנאים – חיתוך שני ישרים</h4>
+
+<p dir="rtl" style="text-align: right;">
+שני ישרים נתונים על ידי המשוואות y = a₁x + b₁ ו-y = a₂x + b₂.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את ארבעת המקדמים לפי הסדר a₁, b₁, a₂, b₂, ומדפיסה את שיעורי נקודת החיתוך של הישרים. שימו לב שלא לכל זוג ישרים יש נקודת חיתוך; במקרה כזה על התוכנית להדפיס הודעה מתאימה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 2.0 ואחריו 1.0 ואחריו 1.0- ואחריו 7.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the slope of the first line:
+Enter the intercept of the first line:
+Enter the slope of the second line:
+Enter the intercept of the second line:
+Intersection point: x = 2.0 y = 5.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 3.0 ואחריו 2.0 ואחריו 3.0 ואחריו 8.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the slope of the first line:
+Enter the intercept of the first line:
+Enter the slope of the second line:
+Enter the intercept of the second line:
+The lines are parallel and have no intersection point</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-9" download="If10_LinesIntersection.java" style="text-decoration: underline;">If10_LinesIntersection.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - lines intersection
+ *
+ * Write a main program that reads the four coefficients of two lines y = a1x + b1 and y = a2x + b2 and
+ * prints the coordinates of their intersection point. Not every pair of lines
+ * has an intersection point.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 2.0, 1.0, -1.0, 7.0
+ *   Expected output:
+ *     Enter the slope of the first line:
+ *     Enter the intercept of the first line:
+ *     Enter the slope of the second line:
+ *     Enter the intercept of the second line:
+ *     Intersection point: x = 2.0 y = 5.0
+ *
+ * Run 2:
+ *   Input: 3.0, 2.0, 3.0, 8.0
+ *   Expected output:
+ *     Enter the slope of the first line:
+ *     Enter the intercept of the first line:
+ *     Enter the slope of the second line:
+ *     Enter the intercept of the second line:
+ *     The lines are parallel and have no intersection point
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If10_LinesIntersection</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q11">
+  <div class="card-header">
+    <div class="q-badge">11</div>
+    <div class="card-titles">
+      <h3>שאלה 11 – תנאים – מערכת שתי משוואות בשני נעלמים</h3>
+      <span class="q-en">Q11 – conditions – system of two equations</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 11 – תנאים – מערכת שתי משוואות בשני נעלמים</h4>
+
+<p dir="rtl" style="text-align: right;">
+נתונה מערכת של שתי משוואות בשני נעלמים:<br>a₁x + b₁y = c₁<br>a₂x + b₂y = c₂<br>הדטרמיננטה של המערכת היא D = a₁·b₂ − a₂·b₁. כאשר היא שונה מאפס, פתרון המערכת הוא x = (c₁·b₂ − c₂·b₁) / D ו-y = (a₁·c₂ − a₂·c₁) / D.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את שלושת המקדמים של המשוואה הראשונה ולאחריהם את שלושת המקדמים של המשוואה השנייה, מדפיסה את הדטרמיננטה ואת הפתרון. שימו לב שלא לכל מערכת קיים פתרון יחיד; במקרה כזה על התוכנית להדפיס הודעה מתאימה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 2.0 3.0 8.0 ואחריהם 1.0 1.0- 1.0-</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a1, b1, c1 of the first equation:
+Enter a2, b2, c2 of the second equation:
+Determinant: -5.0
+x = 1.0
+y = 2.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 2.0 3.0 8.0 ואחריהם 4.0 6.0 5.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a1, b1, c1 of the first equation:
+Enter a2, b2, c2 of the second equation:
+Determinant: 0.0
+The system has no single solution</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-10" download="If11_LinearSystem.java" style="text-decoration: underline;">If11_LinearSystem.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - system of two equations
+ *
+ * Write a main program that reads the three coefficients of each of two equations a1x + b1y = c1 and
+ * a2x + b2y = c2, prints the determinant D = a1*b2 - a2*b1 and the solution
+ * x = (c1*b2 - c2*b1) / D and y = (a1*c2 - a2*c1) / D.
+ * Not every system has a single solution.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 2.0, 3.0, 8.0, 1.0, -1.0, -1.0
+ *   Expected output:
+ *     Enter a1, b1, c1 of the first equation:
+ *     Enter a2, b2, c2 of the second equation:
+ *     Determinant: -5.0
+ *     x = 1.0
+ *     y = 2.0
+ *
+ * Run 2:
+ *   Input: 2.0, 3.0, 8.0, 4.0, 6.0, 5.0
+ *   Expected output:
+ *     Enter a1, b1, c1 of the first equation:
+ *     Enter a2, b2, c2 of the second equation:
+ *     Determinant: 0.0
+ *     The system has no single solution
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If11_LinearSystem</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q12">
+  <div class="card-header">
+    <div class="q-badge">12</div>
+    <div class="card-titles">
+      <h3>שאלה 12 – תנאים – משוואה ריבועית</h3>
+      <span class="q-en">Q12 – conditions – quadratic equation</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 12 – תנאים – משוואה ריבועית</h4>
+
+<p dir="rtl" style="text-align: right;">
+נתונה משוואה ריבועית מהצורה ax² + bx + c = 0. הדיסקרימיננטה שלה היא Δ = b² − 4ac, וכאשר היא אינה שלילית שורשי המשוואה הם (b− + √Δ) / 2a ו-(b− − √Δ) / 2a.<br>כתבו תוכנית ראשית הקולטת מהמשתמש את שלושת המקדמים a, b ו-c, מדפיסה את הדיסקרימיננטה ואת שורשי המשוואה. שימו לב שלא לכל משוואה יש פתרון ממשי; במקרה כזה על התוכנית להדפיס הודעה מתאימה.<br>להוצאת שורש ריבועי השתמשו בפעולה <strong>Math.sqrt(x)</strong>, המחזירה את השורש הריבועי של הערך x.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 1.0 ואחריו 5.0- ואחריו 6.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the value of a:
+Enter the value of b:
+Enter the value of c:
+Discriminant: 1.0
+x1 = 3.0
+x2 = 2.0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 2.0 ואחריו 3.0 ואחריו 5.0</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the value of a:
+Enter the value of b:
+Enter the value of c:
+Discriminant: -31.0
+The equation has no real solutions</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-11" download="If12_Quadratic.java" style="text-decoration: underline;">If12_Quadratic.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - quadratic equation
+ *
+ * Write a main program that reads the coefficients a, b and c of the equation ax^2 + bx + c = 0, prints
+ * the discriminant b*b - 4*a*c and the roots of the equation. Not every equation
+ * has a real solution. Use Math.sqrt(x) to compute a square root.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 1.0, -5.0, 6.0
+ *   Expected output:
+ *     Enter the value of a:
+ *     Enter the value of b:
+ *     Enter the value of c:
+ *     Discriminant: 1.0
+ *     x1 = 3.0
+ *     x2 = 2.0
+ *
+ * Run 2:
+ *   Input: 2.0, 3.0, 5.0
+ *   Expected output:
+ *     Enter the value of a:
+ *     Enter the value of b:
+ *     Enter the value of c:
+ *     Discriminant: -31.0
+ *     The equation has no real solutions
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If12_Quadratic</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q13">
+  <div class="card-header">
+    <div class="q-badge">13</div>
+    <div class="card-titles">
+      <h3>שאלה 13 – תנאים – הערך האמצעי</h3>
+      <span class="q-en">Q13 – conditions – middle value</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 13 – תנאים – הערך האמצעי</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מהמשתמש שלושה מספרים שלמים שונים זה מזה ומדפיסה את הערך האמצעי מביניהם — המספר שאינו הגדול ביותר ואינו הקטן ביותר.<br>את הפתרון יש לכתוב באמצעות <strong>if</strong> ו-<strong>else</strong> בלבד, ללא שימוש בכל מנגנון שטרם נלמד.<br>שימו לב לשלוש הריצות: הערך האמצעי עשוי להימצא בכל אחד משלושת המקומות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה הראשונה:</strong> 7 ואחריו 2 ואחריו 5</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first number:
+Enter the second number:
+Enter the third number:
+The middle value is: 5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השנייה:</strong> 4 ואחריו 9 ואחריו 1</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first number:
+Enter the second number:
+Enter the third number:
+The middle value is: 4</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט בריצה השלישית:</strong> 3 ואחריו 8 ואחריו 6</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<p class="download-p" dir="rtl"re style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter the first number:
+Enter the second number:
+Enter the third number:
+The middle value is: 6</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="#dl-12" download="If13_MiddleValue.java" style="text-decoration: underline;">If13_MiddleValue.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise: Conditions (if / else) - middle value
+ *
+ * Write a main program that reads three different whole numbers and prints the middle value among them,
+ * the one that is neither the largest nor the smallest.
+ * Use only if and else. Do not use any mechanism that was not studied yet.
+ * Each value must be stored in a suitable variable.
+ *
+ * Run 1:
+ *   Input: 7, 2, 5
+ *   Expected output:
+ *     Enter the first number:
+ *     Enter the second number:
+ *     Enter the third number:
+ *     The middle value is: 5
+ *
+ * Run 2:
+ *   Input: 4, 9, 1
+ *   Expected output:
+ *     Enter the first number:
+ *     Enter the second number:
+ *     Enter the third number:
+ *     The middle value is: 4
+ *
+ * Run 3:
+ *   Input: 3, 8, 6
+ *   Expected output:
+ *     Enter the first number:
+ *     Enter the second number:
+ *     Enter the third number:
+ *     The middle value is: 6
+ *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">If13_MiddleValue</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>הקבצים מוטמעים בדף — ההורדה פועלת גם ללא חיבור לאינטרנט</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"If01_RectangleShape.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gcmVjdGFuZ2xlIHNoYXBlCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIGxlbmd0aCBhbmQgdGhlIHdpZHRoIG9mIGEgcmVjdGFuZ2xlLCBjb21wdXRlcyBpdHMgYXJlYSBhbmQKICogcGVyaW1ldGVyLCBhbmQgZGV0ZXJtaW5lcyB3aGV0aGVyIHRoZSByZWN0YW5nbGUgaXMgYSBzcXVhcmUuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogUnVuIDE6CiAqICAgSW5wdXQ6IDUuMCwgNS4wCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgdGhlIGxlbmd0aCBvZiB0aGUgcmVjdGFuZ2xlOgogKiAgICAgRW50ZXIgdGhlIHdpZHRoIG9mIHRoZSByZWN0YW5nbGU6CiAqICAgICBBcmVhOiAyNS4wCiAqICAgICBQZXJpbWV0ZXI6IDIwLjAKICogICAgIFRoZSByZWN0YW5nbGUgaXMgYSBzcXVhcmUKICoKICogUnVuIDI6CiAqICAgSW5wdXQ6IDYuNSwgNC4wCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgdGhlIGxlbmd0aCBvZiB0aGUgcmVjdGFuZ2xlOgogKiAgICAgRW50ZXIgdGhlIHdpZHRoIG9mIHRoZSByZWN0YW5nbGU6CiAqICAgICBBcmVhOiAyNi4wCiAqICAgICBQZXJpbWV0ZXI6IDIxLjAKICogICAgIFRoZSByZWN0YW5nbGUgaXMgbm90IGEgc3F1YXJlCiAqCiAqLwpwdWJsaWMgY2xhc3MgSWYwMV9SZWN0YW5nbGVTaGFwZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"If02_BudgetCheck.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gYnVkZ2V0IGNoZWNrCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIHByaWNlIG9mIG9uZSBpdGVtLCB0aGUgcXVhbnRpdHkgYW5kIHRoZSBhdmFpbGFibGUgYnVkZ2V0LAogKiBjb21wdXRlcyB0aGUgdG90YWwgY29zdCBhbmQgcmVwb3J0cyB3aGV0aGVyIHRoZSBidWRnZXQgaXMgc3VmZmljaWVudC4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKiBUaGUgcXVhbnRpdHkgaXMgYSB3aG9sZSBudW1iZXIsIHRoZSBwcmljZSBhbmQgdGhlIGJ1ZGdldCBhcmUgcmVhbCBudW1iZXJzLgogKgogKiBSdW4gMToKICogICBJbnB1dDogMTIuNSwgOCwgMTUwLjAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgcHJpY2Ugb2Ygb25lIGl0ZW06CiAqICAgICBFbnRlciB0aGUgcXVhbnRpdHk6CiAqICAgICBFbnRlciB0aGUgYnVkZ2V0OgogKiAgICAgVG90YWwgY29zdDogMTAwLjAKICogICAgIFRoZSBidWRnZXQgaXMgc3VmZmljaWVudC4gUmVtYWluaW5nOiA1MC4wCiAqCiAqIFJ1biAyOgogKiAgIElucHV0OiAxMi41LCAyMCwgMTUwLjAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgcHJpY2Ugb2Ygb25lIGl0ZW06CiAqICAgICBFbnRlciB0aGUgcXVhbnRpdHk6CiAqICAgICBFbnRlciB0aGUgYnVkZ2V0OgogKiAgICAgVG90YWwgY29zdDogMjUwLjAKICogICAgIFRoZSBidWRnZXQgaXMgbm90IHN1ZmZpY2llbnQuIE1pc3Npbmc6IDEwMC4wCiAqCiAqLwpwdWJsaWMgY2xhc3MgSWYwMl9CdWRnZXRDaGVjayB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"If03_EqualGroups.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gZXF1YWwgZ3JvdXBzCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIG51bWJlciBvZiBwYXJ0aWNpcGFudHMgYW5kIHRoZSBudW1iZXIgb2YgZ3JvdXBzLCBjb21wdXRlcyBob3cgbWFueQogKiBwYXJ0aWNpcGFudHMgZWFjaCBncm91cCBnZXRzIGFuZCBob3cgbWFueSBhcmUgbGVmdCBvdmVyLCBhbmQgZGV0ZXJtaW5lcyB3aGV0aGVyCiAqIHRoZSBkaXZpc2lvbiBpcyBlcXVhbC4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBSdW4gMToKICogICBJbnB1dDogMjQsIDQKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgbnVtYmVyIG9mIHBhcnRpY2lwYW50czoKICogICAgIEVudGVyIHRoZSBudW1iZXIgb2YgZ3JvdXBzOgogKiAgICAgUGFydGljaXBhbnRzIGluIGVhY2ggZ3JvdXA6IDYKICogICAgIFBhcnRpY2lwYW50cyBsZWZ0IG92ZXI6IDAKICogICAgIFRoZSBkaXZpc2lvbiBpcyBlcXVhbAogKgogKiBSdW4gMjoKICogICBJbnB1dDogMjUsIDQKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgbnVtYmVyIG9mIHBhcnRpY2lwYW50czoKICogICAgIEVudGVyIHRoZSBudW1iZXIgb2YgZ3JvdXBzOgogKiAgICAgUGFydGljaXBhbnRzIGluIGVhY2ggZ3JvdXA6IDYKICogICAgIFBhcnRpY2lwYW50cyBsZWZ0IG92ZXI6IDEKICogICAgIFRoZSBkaXZpc2lvbiBpcyBub3QgZXF1YWwKICoKICovCnB1YmxpYyBjbGFzcyBJZjAzX0VxdWFsR3JvdXBzIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"If04_SymmetricNumber.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gc3ltbWV0cmljIG51bWJlcgogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGEgdGhyZWUgZGlnaXQgd2hvbGUgbnVtYmVyLCBleHRyYWN0cyBpdHMgZmlyc3QgYW5kIGxhc3QgZGlnaXRzIGFuZAogKiBwcmludHMgd2hldGhlciB0aGUgbnVtYmVyIGlzIHN5bW1ldHJpYy4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBSdW4gMToKICogICBJbnB1dDogMzgzCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgYSB0aHJlZSBkaWdpdCBudW1iZXI6CiAqICAgICBGaXJzdCBkaWdpdDogMwogKiAgICAgTGFzdCBkaWdpdDogMwogKiAgICAgVGhlIG51bWJlciBpcyBzeW1tZXRyaWMKICoKICogUnVuIDI6CiAqICAgSW5wdXQ6IDQ3MQogKiAgIEV4cGVjdGVkIG91dHB1dDoKICogICAgIEVudGVyIGEgdGhyZWUgZGlnaXQgbnVtYmVyOgogKiAgICAgRmlyc3QgZGlnaXQ6IDQKICogICAgIExhc3QgZGlnaXQ6IDEKICogICAgIFRoZSBudW1iZXIgaXMgbm90IHN5bW1ldHJpYwogKgogKi8KcHVibGljIGNsYXNzIElmMDRfU3ltbWV0cmljTnVtYmVyIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"If05_SpeedFine.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gc3BlZWQgZmluZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBzcGVlZCBvZiBhIGNhciBhbmQgdGhlIHNwZWVkIGxpbWl0LiBJZiB0aGUgc3BlZWQgaXMgYWJvdmUgdGhlIGxpbWl0CiAqIHRoZSBwcm9ncmFtIHByaW50cyB0aGUgZXhjZXNzIHNwZWVkIGFuZCB0aGUgZmluZSwgdGVuIHVuaXRzIHBlciBleGNlc3MgdW5pdC4KICogT3RoZXJ3aXNlIGl0IHByaW50cyB0aGF0IHRoZXJlIGlzIG5vIGZpbmUuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogUnVuIDE6CiAqICAgSW5wdXQ6IDEwNSwgOTAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgc3BlZWQgb2YgdGhlIGNhcjoKICogICAgIEVudGVyIHRoZSBzcGVlZCBsaW1pdDoKICogICAgIEV4Y2VzcyBzcGVlZDogMTUKICogICAgIEZpbmU6IDE1MAogKgogKiBSdW4gMjoKICogICBJbnB1dDogODgsIDkwCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgdGhlIHNwZWVkIG9mIHRoZSBjYXI6CiAqICAgICBFbnRlciB0aGUgc3BlZWQgbGltaXQ6CiAqICAgICBObyBmaW5lCiAqCiAqLwpwdWJsaWMgY2xhc3MgSWYwNV9TcGVlZEZpbmUgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"If06_LinearEquation.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gbGluZWFyIGVxdWF0aW9uCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdHdvIHJlYWwgbnVtYmVycyBhIGFuZCBiLCBkaXNwbGF5cyB0aGUgZXF1YXRpb24gYXggKyBiID0gMCBhbmQgcHJpbnRzCiAqIHRoZSB2YWx1ZSBvZiB4IHRoYXQgc29sdmVzIGl0LiBOb3QgZXZlcnkgcGFpciBvZiB2YWx1ZXMgaGFzIGEgc2luZ2xlIHNvbHV0aW9uLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIFJ1biAxOgogKiAgIElucHV0OiA0LjAsIDguMAogKiAgIEV4cGVjdGVkIG91dHB1dDoKICogICAgIEVudGVyIHRoZSB2YWx1ZSBvZiBhOgogKiAgICAgRW50ZXIgdGhlIHZhbHVlIG9mIGI6CiAqICAgICBUaGUgZXF1YXRpb24gaXM6IDQuMHggKyA4LjAgPSAwCiAqICAgICB4ID0gLTIuMAogKgogKiBSdW4gMjoKICogICBJbnB1dDogMC4wLCA1LjAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgdmFsdWUgb2YgYToKICogICAgIEVudGVyIHRoZSB2YWx1ZSBvZiBiOgogKiAgICAgVGhlIGVxdWF0aW9uIGlzOiAwLjB4ICsgNS4wID0gMAogKiAgICAgVGhlIGVxdWF0aW9uIGhhcyBubyBzaW5nbGUgc29sdXRpb24KICoKICovCnB1YmxpYyBjbGFzcyBJZjA2X0xpbmVhckVxdWF0aW9uIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"If07_RoundToInt.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gcm91bmRpbmcKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBhIHBvc2l0aXZlIHJlYWwgbnVtYmVyIGFuZCBwcmludHMgdGhlIGNsb3Nlc3Qgd2hvbGUgbnVtYmVyLiBBIG51bWJlcgogKiB3aG9zZSBmcmFjdGlvbmFsIHBhcnQgaXMgb25lIGhhbGYgb3IgbW9yZSBpcyByb3VuZGVkIHVwLCBvdGhlcndpc2UgZG93bi4KICogRG8gbm90IHVzZSBhbnkgYnVpbHQgaW4gcm91bmRpbmcgb3BlcmF0aW9uLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIFJ1biAxOgogKiAgIElucHV0OiA3LjYyCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgYSBwb3NpdGl2ZSByZWFsIG51bWJlcjoKICogICAgIFRoZSBudW1iZXIgaXM6IDcuNjIKICogICAgIFJvdW5kZWQgdmFsdWU6IDgKICoKICogUnVuIDI6CiAqICAgSW5wdXQ6IDEyLjQKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciBhIHBvc2l0aXZlIHJlYWwgbnVtYmVyOgogKiAgICAgVGhlIG51bWJlciBpczogMTIuNAogKiAgICAgUm91bmRlZCB2YWx1ZTogMTIKICoKICovCnB1YmxpYyBjbGFzcyBJZjA3X1JvdW5kVG9JbnQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"If08_ShiftDuration.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gc2hpZnQgZHVyYXRpb24KICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyB0aGUgc3RhcnQgaG91ciBhbmQgbWludXRlIG9mIGEgc2hpZnQgYW5kIGl0cyBlbmQgaG91ciBhbmQgbWludXRlLAogKiBjb21wdXRlcyB0aGUgbGVuZ3RoIG9mIHRoZSBzaGlmdCBpbiBtaW51dGVzIGFuZCBhbHNvIHNob3dzIGl0IGluIGhvdXJzIGFuZAogKiBtaW51dGVzLiBBIHNoaWZ0IG1heSBzdGFydCBvbiBvbmUgZGF5IGFuZCBlbmQgb24gdGhlIG5leHQgb25lLCBhbmQgbmV2ZXIKICogbGFzdHMgbW9yZSB0aGFuIHR3ZW50eSBmb3VyIGhvdXJzLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIFJ1biAxOgogKiAgIElucHV0OiA4LCAzMCwgMTYsIDQ1CiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgdGhlIHN0YXJ0IGhvdXI6CiAqICAgICBFbnRlciB0aGUgc3RhcnQgbWludXRlOgogKiAgICAgRW50ZXIgdGhlIGVuZCBob3VyOgogKiAgICAgRW50ZXIgdGhlIGVuZCBtaW51dGU6CiAqICAgICBEdXJhdGlvbiBpbiBtaW51dGVzOiA0OTUKICogICAgIER1cmF0aW9uOiA4IGhvdXJzIGFuZCAxNSBtaW51dGVzCiAqCiAqIFJ1biAyOgogKiAgIElucHV0OiAyMywgMCwgNywgMzAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgc3RhcnQgaG91cjoKICogICAgIEVudGVyIHRoZSBzdGFydCBtaW51dGU6CiAqICAgICBFbnRlciB0aGUgZW5kIGhvdXI6CiAqICAgICBFbnRlciB0aGUgZW5kIG1pbnV0ZToKICogICAgIER1cmF0aW9uIGluIG1pbnV0ZXM6IDUxMAogKiAgICAgRHVyYXRpb246IDggaG91cnMgYW5kIDMwIG1pbnV0ZXMKICoKICovCnB1YmxpYyBjbGFzcyBJZjA4X1NoaWZ0RHVyYXRpb24gewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"If09_QuantityDiscount.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gcXVhbnRpdHkgZGlzY291bnQKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyB0aGUgcHVyY2hhc2VkIHF1YW50aXR5IGFuZCB0aGUgcHJpY2Ugb2Ygb25lIGl0ZW0gYW5kIHByaW50cyB0aGUgdG90YWwKICogYmVmb3JlIGRpc2NvdW50cyBhbmQgdGhlIHRvdGFsIHRvIHBheS4gVHdvIGRpc2NvdW50cyBhcmUgYXBwbGllZCBvbmUgYWZ0ZXIgdGhlCiAqIG90aGVyOiB0ZW4gcGVyY2VudCBvZmYgZm9yIHRlbiBpdGVtcyBvciBtb3JlLCBhbmQgdGhlbiB0d2VudHkgdW5pdHMgb2ZmIHdoZW4KICogdGhlIHJlbWFpbmluZyB0b3RhbCBpcyBhYm92ZSBmaXZlIGh1bmRyZWQuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogUnVuIDE6CiAqICAgSW5wdXQ6IDEyLCA1MC4wCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgdGhlIHF1YW50aXR5OgogKiAgICAgRW50ZXIgdGhlIHByaWNlIG9mIG9uZSBpdGVtOgogKiAgICAgVG90YWwgYmVmb3JlIGRpc2NvdW50czogNjAwLjAKICogICAgIFRvdGFsIHRvIHBheTogNTIwLjAKICoKICogUnVuIDI6CiAqICAgSW5wdXQ6IDUsIDMwLjAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgcXVhbnRpdHk6CiAqICAgICBFbnRlciB0aGUgcHJpY2Ugb2Ygb25lIGl0ZW06CiAqICAgICBUb3RhbCBiZWZvcmUgZGlzY291bnRzOiAxNTAuMAogKiAgICAgVG90YWwgdG8gcGF5OiAxNTAuMAogKgogKi8KcHVibGljIGNsYXNzIElmMDlfUXVhbnRpdHlEaXNjb3VudCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"If10_LinesIntersection.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gbGluZXMgaW50ZXJzZWN0aW9uCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIGZvdXIgY29lZmZpY2llbnRzIG9mIHR3byBsaW5lcyB5ID0gYTF4ICsgYjEgYW5kIHkgPSBhMnggKyBiMiBhbmQKICogcHJpbnRzIHRoZSBjb29yZGluYXRlcyBvZiB0aGVpciBpbnRlcnNlY3Rpb24gcG9pbnQuIE5vdCBldmVyeSBwYWlyIG9mIGxpbmVzCiAqIGhhcyBhbiBpbnRlcnNlY3Rpb24gcG9pbnQuCiAqIEVhY2ggdmFsdWUgbXVzdCBiZSBzdG9yZWQgaW4gYSBzdWl0YWJsZSB2YXJpYWJsZS4KICoKICogUnVuIDE6CiAqICAgSW5wdXQ6IDIuMCwgMS4wLCAtMS4wLCA3LjAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgc2xvcGUgb2YgdGhlIGZpcnN0IGxpbmU6CiAqICAgICBFbnRlciB0aGUgaW50ZXJjZXB0IG9mIHRoZSBmaXJzdCBsaW5lOgogKiAgICAgRW50ZXIgdGhlIHNsb3BlIG9mIHRoZSBzZWNvbmQgbGluZToKICogICAgIEVudGVyIHRoZSBpbnRlcmNlcHQgb2YgdGhlIHNlY29uZCBsaW5lOgogKiAgICAgSW50ZXJzZWN0aW9uIHBvaW50OiB4ID0gMi4wIHkgPSA1LjAKICoKICogUnVuIDI6CiAqICAgSW5wdXQ6IDMuMCwgMi4wLCAzLjAsIDguMAogKiAgIEV4cGVjdGVkIG91dHB1dDoKICogICAgIEVudGVyIHRoZSBzbG9wZSBvZiB0aGUgZmlyc3QgbGluZToKICogICAgIEVudGVyIHRoZSBpbnRlcmNlcHQgb2YgdGhlIGZpcnN0IGxpbmU6CiAqICAgICBFbnRlciB0aGUgc2xvcGUgb2YgdGhlIHNlY29uZCBsaW5lOgogKiAgICAgRW50ZXIgdGhlIGludGVyY2VwdCBvZiB0aGUgc2Vjb25kIGxpbmU6CiAqICAgICBUaGUgbGluZXMgYXJlIHBhcmFsbGVsIGFuZCBoYXZlIG5vIGludGVyc2VjdGlvbiBwb2ludAogKgogKi8KcHVibGljIGNsYXNzIElmMTBfTGluZXNJbnRlcnNlY3Rpb24gewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"If11_LinearSystem.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gc3lzdGVtIG9mIHR3byBlcXVhdGlvbnMKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyB0aGUgdGhyZWUgY29lZmZpY2llbnRzIG9mIGVhY2ggb2YgdHdvIGVxdWF0aW9ucyBhMXggKyBiMXkgPSBjMSBhbmQKICogYTJ4ICsgYjJ5ID0gYzIsIHByaW50cyB0aGUgZGV0ZXJtaW5hbnQgRCA9IGExKmIyIC0gYTIqYjEgYW5kIHRoZSBzb2x1dGlvbgogKiB4ID0gKGMxKmIyIC0gYzIqYjEpIC8gRCBhbmQgeSA9IChhMSpjMiAtIGEyKmMxKSAvIEQuCiAqIE5vdCBldmVyeSBzeXN0ZW0gaGFzIGEgc2luZ2xlIHNvbHV0aW9uLgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIFJ1biAxOgogKiAgIElucHV0OiAyLjAsIDMuMCwgOC4wLCAxLjAsIC0xLjAsIC0xLjAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciBhMSwgYjEsIGMxIG9mIHRoZSBmaXJzdCBlcXVhdGlvbjoKICogICAgIEVudGVyIGEyLCBiMiwgYzIgb2YgdGhlIHNlY29uZCBlcXVhdGlvbjoKICogICAgIERldGVybWluYW50OiAtNS4wCiAqICAgICB4ID0gMS4wCiAqICAgICB5ID0gMi4wCiAqCiAqIFJ1biAyOgogKiAgIElucHV0OiAyLjAsIDMuMCwgOC4wLCA0LjAsIDYuMCwgNS4wCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgYTEsIGIxLCBjMSBvZiB0aGUgZmlyc3QgZXF1YXRpb246CiAqICAgICBFbnRlciBhMiwgYjIsIGMyIG9mIHRoZSBzZWNvbmQgZXF1YXRpb246CiAqICAgICBEZXRlcm1pbmFudDogMC4wCiAqICAgICBUaGUgc3lzdGVtIGhhcyBubyBzaW5nbGUgc29sdXRpb24KICoKICovCnB1YmxpYyBjbGFzcyBJZjExX0xpbmVhclN5c3RlbSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"If12_Quadratic.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gcXVhZHJhdGljIGVxdWF0aW9uCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIGNvZWZmaWNpZW50cyBhLCBiIGFuZCBjIG9mIHRoZSBlcXVhdGlvbiBheF4yICsgYnggKyBjID0gMCwgcHJpbnRzCiAqIHRoZSBkaXNjcmltaW5hbnQgYipiIC0gNCphKmMgYW5kIHRoZSByb290cyBvZiB0aGUgZXF1YXRpb24uIE5vdCBldmVyeSBlcXVhdGlvbgogKiBoYXMgYSByZWFsIHNvbHV0aW9uLiBVc2UgTWF0aC5zcXJ0KHgpIHRvIGNvbXB1dGUgYSBzcXVhcmUgcm9vdC4KICogRWFjaCB2YWx1ZSBtdXN0IGJlIHN0b3JlZCBpbiBhIHN1aXRhYmxlIHZhcmlhYmxlLgogKgogKiBSdW4gMToKICogICBJbnB1dDogMS4wLCAtNS4wLCA2LjAKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgdmFsdWUgb2YgYToKICogICAgIEVudGVyIHRoZSB2YWx1ZSBvZiBiOgogKiAgICAgRW50ZXIgdGhlIHZhbHVlIG9mIGM6CiAqICAgICBEaXNjcmltaW5hbnQ6IDEuMAogKiAgICAgeDEgPSAzLjAKICogICAgIHgyID0gMi4wCiAqCiAqIFJ1biAyOgogKiAgIElucHV0OiAyLjAsIDMuMCwgNS4wCiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgdGhlIHZhbHVlIG9mIGE6CiAqICAgICBFbnRlciB0aGUgdmFsdWUgb2YgYjoKICogICAgIEVudGVyIHRoZSB2YWx1ZSBvZiBjOgogKiAgICAgRGlzY3JpbWluYW50OiAtMzEuMAogKiAgICAgVGhlIGVxdWF0aW9uIGhhcyBubyByZWFsIHNvbHV0aW9ucwogKgogKi8KcHVibGljIGNsYXNzIElmMTJfUXVhZHJhdGljIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"If13_MiddleValue.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBDb25kaXRpb25zIChpZiAvIGVsc2UpIC0gbWlkZGxlIHZhbHVlCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhyZWUgZGlmZmVyZW50IHdob2xlIG51bWJlcnMgYW5kIHByaW50cyB0aGUgbWlkZGxlIHZhbHVlIGFtb25nIHRoZW0sCiAqIHRoZSBvbmUgdGhhdCBpcyBuZWl0aGVyIHRoZSBsYXJnZXN0IG5vciB0aGUgc21hbGxlc3QuCiAqIFVzZSBvbmx5IGlmIGFuZCBlbHNlLiBEbyBub3QgdXNlIGFueSBtZWNoYW5pc20gdGhhdCB3YXMgbm90IHN0dWRpZWQgeWV0LgogKiBFYWNoIHZhbHVlIG11c3QgYmUgc3RvcmVkIGluIGEgc3VpdGFibGUgdmFyaWFibGUuCiAqCiAqIFJ1biAxOgogKiAgIElucHV0OiA3LCAyLCA1CiAqICAgRXhwZWN0ZWQgb3V0cHV0OgogKiAgICAgRW50ZXIgdGhlIGZpcnN0IG51bWJlcjoKICogICAgIEVudGVyIHRoZSBzZWNvbmQgbnVtYmVyOgogKiAgICAgRW50ZXIgdGhlIHRoaXJkIG51bWJlcjoKICogICAgIFRoZSBtaWRkbGUgdmFsdWUgaXM6IDUKICoKICogUnVuIDI6CiAqICAgSW5wdXQ6IDQsIDksIDEKICogICBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgICBFbnRlciB0aGUgZmlyc3QgbnVtYmVyOgogKiAgICAgRW50ZXIgdGhlIHNlY29uZCBudW1iZXI6CiAqICAgICBFbnRlciB0aGUgdGhpcmQgbnVtYmVyOgogKiAgICAgVGhlIG1pZGRsZSB2YWx1ZSBpczogNAogKgogKiBSdW4gMzoKICogICBJbnB1dDogMywgOCwgNgogKiAgIEV4cGVjdGVkIG91dHB1dDoKICogICAgIEVudGVyIHRoZSBmaXJzdCBudW1iZXI6CiAqICAgICBFbnRlciB0aGUgc2Vjb25kIG51bWJlcjoKICogICAgIEVudGVyIHRoZSB0aGlyZCBudW1iZXI6CiAqICAgICBUaGUgbWlkZGxlIHZhbHVlIGlzOiA2CiAqCiAqLwpwdWJsaWMgY2xhc3MgSWYxM19NaWRkbGVWYWx1ZSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>
