@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين كتابة للوحدة 1.3</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>تمارين كتابة للوحدة 1.3</h1>
+      <p>Java أ – مقدمة في علم الحاسوب  |  6 أسئلة بمستوى صعوبة متصاعد</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">العرض</span>
+      <button type="button" data-w="820">ضيّق</button>
+      <button type="button" data-w="980">متوسط</button>
+      <button type="button" data-w="1200">واسع</button>
+      <button type="button" data-w="100%">كامل</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">الكود</span>
+      <button type="button" data-theme="dark">داكن</button>
+      <button type="button" data-theme="light">فاتح</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>المحتويات</h2>
+    <div class="toc-grid">
+<a href="#q1">سؤال 1 – تصحيح – تشغيل البرنامج</a>
+<a href="#q2">سؤال 2 – تصحيح – البرنامج الرئيسي مفقود</a>
+<a href="#q3">سؤال 3 – تصحيح – مسار ملف</a>
+<a href="#q4">سؤال 4 – تصحيح – علامات الاقتباس المزدوجة والمفردة</a>
+<a href="#q5">سؤال 5 – تصحيح – تعليقات في الشيفرة</a>
+<a href="#q6">سؤال 6 – تصحيح – نزول سطر</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">المستوى 1 – أساسي</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>سؤال 1 – تصحيح – تشغيل البرنامج</h3>
+      <span class="q-en">Q1 – debugging – runner</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 1 – تصحيح – تشغيل البرنامج</h4>
+
+<p dir="rtl" style="text-align: right;">
+البرنامج الموجود في الملف كُتب لطباعة المخرجات المطلوبة، لكنه فشل: يوجد فيه <strong>بعض أخطاء الترجمة</strong> وأيضاً <strong>خطأ منطقي</strong>. صححوا أولاً أخطاء الترجمة حتى يتم ترجمة البرنامج، شغلوه، وإذا لم تكن المخرجات الناتجة هي المخرجات المطلوبة — صححوا أيضاً الأخطاء المنطقية، حتى تحصلوا على النتيجة المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Java is running
+All good</pre>
+
+<p dir="rtl" style="text-align: right;"><em>تلميح: افحصوا الكلمات المحجوزة في تعريف الدالة الرئيسية وحروفها الكبيرة/الصغيرة — وأيضاً هل يجب أن تلتصق السطران ببعضهما البعض.</em></p>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الملف <strong><a href="#dl-0" download="Fix01_Runner.java" style="text-decoration: underline;">Fix01_Runner.java</a></strong> إلى بيئة العمل، حددوا وصححوا الأخطاء، وشغلوا البرنامج.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise 1: Debugging - Runner
+ *
+ * Fix the program so that it compiles, runs,
+ * and prints the output shown below.
+ *
+ *      Required output:
+ *
+ *      Java is running
+ *      All good
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Fix01_Runner</span>
+{
+    <span class="j-kw">public</span> Static <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args)
+    {
+        system.out.print(<span class="j-str">&quot;Java is running&quot;</span>);
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;All good&quot;</span>);
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>سؤال 2 – تصحيح – البرنامج الرئيسي مفقود</h3>
+      <span class="q-en">Q2 – debugging – missing main</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 2 – تصحيح – البرنامج الرئيسي مفقود</h4>
+
+<p dir="rtl" style="text-align: right;">
+البرنامج في الملف كُتب من أجل طباعة المخرجات المطلوبة، لكنه فشل: يوجد فيه <strong>بعض أخطاء الترجمة</strong> وأيضاً <strong>خطأ منطقي</strong>. صححوا أولاً أخطاء الترجمة حتى يتم ترجمة البرنامج، شغلوه، وإذا لم تكن المخرجات الناتجة هي المخرجات المطلوبة — صححوا أيضاً الأخطاء المنطقية، حتى تحصلوا على النتيجة المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Welcome
+to BlueJ</pre>
+
+<p dir="rtl" style="text-align: right;"><em>تلميح: أين توجد أوامر الطباعة؟ البرنامج يجب أن يحتوي على دالة رئيسية main التي بداخلها توجد الأوامر.</em></p>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الملف <strong><a href="#dl-1" download="Fix02_NoMain.java" style="text-decoration: underline;">Fix02_NoMain.java</a></strong> إلى بيئة العمل، حددوا وصححوا الأخطاء، وشغّلوا البرنامج.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise 2: Debugging - Missing Main
+ *
+ * Fix the program so that it compiles, runs,
+ * and prints the output shown below.
+ *
+ *      Required output:
+ *
+ *      Welcome
+ *      to BlueJ
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Fix02_NoMain</span>
+{
+    <span class="j-type">System</span>.out.println(<span class="j-str">&quot;Welcome&quot;</span>);
+    <span class="j-type">System</span> out.println(<span class="j-str">&quot;to BlueJ&quot;</span>);
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">المستوى 2 – متوسط</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>سؤال 3 – تصحيح – مسار ملف</h3>
+      <span class="q-en">Q3 – debugging – path</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 3 – تصحيح – مسار ملف</h4>
+
+<p dir="rtl" style="text-align: right;">
+البرنامج الموجود في الملف كُتب من أجل طباعة المخرجات المطلوبة، لكنه فشل: يوجد فيه <strong>بعض أخطاء الترجمة</strong> وأيضاً <strong>خطأ منطقي</strong>. صححوا أولاً أخطاء الترجمة حتى يتم تجميع البرنامج، شغلوه، وإذا لم تكن المخرجات الناتجة هي المخرجات المطلوبة — صححوا أيضاً الأخطاء المنطقية، حتى تحصلوا على النتيجة المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Drive:
+C:\Users\Dana</pre>
+
+<p dir="rtl" style="text-align: right;"><em>تلميح: الشرطة المائلة للأمام / ليست الشرطة المائلة للخلف \. لطباعة \ في جافا يجب كتابتها مرتين.</em></p>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الملف <strong><a href="#dl-2" download="Fix03_Path.java" style="text-decoration: underline;">Fix03_Path.java</a></strong> إلى بيئة العمل، حددوا وصححوا الأخطاء، وشغّلوا البرنامج.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise 3: Debugging - Path
+ *
+ * Fix the program so that it compiles and prints
+ * the file path exactly as shown below.
+ *
+ *      Required output:
+ *
+ *      Drive:
+ *      C:\Users\Dana
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Fix03_Path</span>
+{
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args)
+    {
+        <span class="j-type">System</span>.out.Println(<span class="j-str">&quot;Drive:&quot;</span>)
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;C:/Users/Dana&quot;</span>);
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>سؤال 4 – تصحيح – علامات الاقتباس المزدوجة والمفردة</h3>
+      <span class="q-en">Q4 – debugging – quotes</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 4 – تصحيح – علامات الاقتباس المزدوجة والمفردة</h4>
+
+<p dir="rtl" style="text-align: right;">
+البرنامج الموجود في الملف كُتب من أجل طباعة المخرجات المطلوبة، لكنه فشل: يوجد فيه <strong>بعض أخطاء الترجمة</strong> وأيضاً <strong>خطأ منطقي</strong>. صحح أولاً أخطاء الترجمة حتى يتم تجميع البرنامج، شغّله، وإذا لم تكن المخرجات الناتجة هي المخرجات المطلوبة — صحح أيضاً الأخطاء المنطقية، حتى تحصل على النتيجة المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">He said: "Java"
+It's easy</pre>
+
+<p dir="rtl" style="text-align: right;"><em>تلميح: علامات الاقتباس داخل نص تحتاج إلى معالجة خاصة، ونص يُحاط بعلامات اقتباس مزدوجة " وليس بعلامة اقتباس مفردة '.</em></p>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+نزّل الملف <strong><a href="#dl-3" download="Fix04_Quote.java" style="text-decoration: underline;">Fix04_Quote.java</a></strong> إلى بيئة العمل، حدد وصحح الأخطاء، وشغّل البرنامج.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise 4: Debugging - Quotes
+ *
+ * Fix the program so that it compiles and prints
+ * the two lines exactly as shown below.
+ *
+ *      Required output:
+ *
+ *      He said: &quot;Java&quot;
+ *      It's easy
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Fix04_Quote</span>
+{
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args)
+    {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;He said: &quot;</span>Java<span class="j-str">&quot;&quot;</span>);
+        <span class="j-type">System</span>.out.println('It's easy');
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">المستوى 3 – متقدّم</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>سؤال 5 – تصحيح – تعليقات في الشيفرة</h3>
+      <span class="q-en">Q5 – debugging – comment</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 5 – تصحيح – تعليقات في الشيفرة</h4>
+
+<p dir="rtl" style="text-align: right;">
+البرنامج في الملف كُتب لطباعة المخرجات المطلوبة، لكنه فشل: فيه <strong>بعض أخطاء الترجمة</strong> وأيضًا <strong>خطأ منطقي</strong>. صححوا أولاً أخطاء الترجمة حتى يتم ترجمة البرنامج، شغلوه، وإذا لم تكن المخرجات هي المخرجات المطلوبة — صححوا أيضًا الأخطاء المنطقية، حتى تحصلوا على النتيجة المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Step 1
+Step 2
+Step 3</pre>
+
+<p dir="rtl" style="text-align: right;"><em>تلميح: التعليق الذي يبدأ بـ /* يجب أن يُغلق بـ */. انتبهوا لأي أسطر تم ابتلاعها بالخطأ داخل التعليق.</em></p>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الملف <strong><a href="#dl-4" download="Fix05_Comment.java" style="text-decoration: underline;">Fix05_Comment.java</a></strong> إلى بيئة العمل، اعثروا وصححوا الأخطاء، وشغّلوا البرنامج.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise 5: Debugging - Comment
+ *
+ * Fix the program so that it compiles and prints
+ * the three steps shown below.
+ *
+ *      Required output:
+ *
+ *      Step 1
+ *      Step 2
+ *      Step 3
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Fix05_Comment</span>
+{
+    <span class="j-cm">// this program prints three steps</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args)
+    {
+        /* print the steps
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;Step 1&quot;</span>);
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;Step 2&quot;</span>)
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;Step 3&quot;</span>);
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>سؤال 6 – تصحيح – نزول سطر</h3>
+      <span class="q-en">Q6 – debugging – newline</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 6 – تصحيح – نزول سطر</h4>
+
+<p dir="rtl" style="text-align: right;">
+البرنامج الموجود في الملف كُتب من أجل طباعة المخرجات المطلوبة، لكنه فشل: يوجد فيه <strong>بعض أخطاء الترجمة</strong> وأيضًا <strong>خطأ منطقي</strong>. صححوا أولاً أخطاء الترجمة حتى يتم تجميع البرنامج، شغلوه، وإذا لم تكن المخرجات الناتجة هي المخرجات المطلوبة — صححوا أيضًا الأخطاء المنطقية، حتى تحصلوا على النتيجة المطلوبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Name: Dana
+City: Haifa</pre>
+
+<p dir="rtl" style="text-align: right;"><em>تلميح: ما الذي يفصل بين السطرين في المخرجات؟ افحصوا الحرف الخاص — هل الشرطة المائلة تتجه في الاتجاه الصحيح؟</em></p>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الملف <strong><a href="#dl-5" download="Fix06_Newline.java" style="text-decoration: underline;">Fix06_Newline.java</a></strong> إلى بيئة العمل، حددوا وصححوا الأخطاء، وشغلوا البرنامج.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise 6: Debugging - Newline
+ *
+ * Fix the program so that it compiles and prints
+ * the output on two lines, as shown below.
+ *
+ *      Required output:
+ *
+ *      Name: Dana
+ *      City: Haifa
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Fix06_Newline</span>
+{
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span>[] args)
+    {
+        system.out.println(<span class="j-str">&quot;Name: Dana/nCity: Haifa&quot;</span>)
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>الملفات مضمّنة في الصفحة — التنزيل يعمل أيضًا بدون اتصال بالإنترنت</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Fix01_Runner.java","b":"LyoqCiAqIEV4ZXJjaXNlIDE6IERlYnVnZ2luZyAtIFJ1bm5lcgogKgogKiBGaXggdGhlIHByb2dyYW0gc28gdGhhdCBpdCBjb21waWxlcywgcnVucywKICogYW5kIHByaW50cyB0aGUgb3V0cHV0IHNob3duIGJlbG93LgogKgogKiAgICAgIFJlcXVpcmVkIG91dHB1dDoKICoKICogICAgICBKYXZhIGlzIHJ1bm5pbmcKICogICAgICBBbGwgZ29vZAogKi8KcHVibGljIGNsYXNzIEZpeDAxX1J1bm5lcgp7CiAgICBwdWJsaWMgU3RhdGljIHZvaWQgbWFpbihTdHJpbmdbXSBhcmdzKQogICAgewogICAgICAgIHN5c3RlbS5vdXQucHJpbnQoIkphdmEgaXMgcnVubmluZyIpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiQWxsIGdvb2QiKTsKICAgIH0KfQo="},{"n":"Fix02_NoMain.java","b":"LyoqCiAqIEV4ZXJjaXNlIDI6IERlYnVnZ2luZyAtIE1pc3NpbmcgTWFpbgogKgogKiBGaXggdGhlIHByb2dyYW0gc28gdGhhdCBpdCBjb21waWxlcywgcnVucywKICogYW5kIHByaW50cyB0aGUgb3V0cHV0IHNob3duIGJlbG93LgogKgogKiAgICAgIFJlcXVpcmVkIG91dHB1dDoKICoKICogICAgICBXZWxjb21lCiAqICAgICAgdG8gQmx1ZUoKICovCnB1YmxpYyBjbGFzcyBGaXgwMl9Ob01haW4KewogICAgU3lzdGVtLm91dC5wcmludGxuKCJXZWxjb21lIik7CiAgICBTeXN0ZW0gb3V0LnByaW50bG4oInRvIEJsdWVKIik7Cn0K"},{"n":"Fix03_Path.java","b":"LyoqCiAqIEV4ZXJjaXNlIDM6IERlYnVnZ2luZyAtIFBhdGgKICoKICogRml4IHRoZSBwcm9ncmFtIHNvIHRoYXQgaXQgY29tcGlsZXMgYW5kIHByaW50cwogKiB0aGUgZmlsZSBwYXRoIGV4YWN0bHkgYXMgc2hvd24gYmVsb3cuCiAqCiAqICAgICAgUmVxdWlyZWQgb3V0cHV0OgogKgogKiAgICAgIERyaXZlOgogKiAgICAgIEM6XFVzZXJzXERhbmEKICovCnB1YmxpYyBjbGFzcyBGaXgwM19QYXRoCnsKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpCiAgICB7CiAgICAgICAgU3lzdGVtLm91dC5QcmludGxuKCJEcml2ZToiKQogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiQzovVXNlcnMvRGFuYSIpOwogICAgfQp9Cg=="},{"n":"Fix04_Quote.java","b":"LyoqCiAqIEV4ZXJjaXNlIDQ6IERlYnVnZ2luZyAtIFF1b3RlcwogKgogKiBGaXggdGhlIHByb2dyYW0gc28gdGhhdCBpdCBjb21waWxlcyBhbmQgcHJpbnRzCiAqIHRoZSB0d28gbGluZXMgZXhhY3RseSBhcyBzaG93biBiZWxvdy4KICoKICogICAgICBSZXF1aXJlZCBvdXRwdXQ6CiAqCiAqICAgICAgSGUgc2FpZDogIkphdmEiCiAqICAgICAgSXQncyBlYXN5CiAqLwpwdWJsaWMgY2xhc3MgRml4MDRfUXVvdGUKewogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykKICAgIHsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIkhlIHNhaWQ6ICJKYXZhIiIpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbignSXQncyBlYXN5Jyk7CiAgICB9Cn0K"},{"n":"Fix05_Comment.java","b":"LyoqCiAqIEV4ZXJjaXNlIDU6IERlYnVnZ2luZyAtIENvbW1lbnQKICoKICogRml4IHRoZSBwcm9ncmFtIHNvIHRoYXQgaXQgY29tcGlsZXMgYW5kIHByaW50cwogKiB0aGUgdGhyZWUgc3RlcHMgc2hvd24gYmVsb3cuCiAqCiAqICAgICAgUmVxdWlyZWQgb3V0cHV0OgogKgogKiAgICAgIFN0ZXAgMQogKiAgICAgIFN0ZXAgMgogKiAgICAgIFN0ZXAgMwogKi8KcHVibGljIGNsYXNzIEZpeDA1X0NvbW1lbnQKewogICAgLy8gdGhpcyBwcm9ncmFtIHByaW50cyB0aHJlZSBzdGVwcwogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykKICAgIHsKICAgICAgICAvKiBwcmludCB0aGUgc3RlcHMKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIlN0ZXAgMSIpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiU3RlcCAyIikKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIlN0ZXAgMyIpOwogICAgfQp9Cg=="},{"n":"Fix06_Newline.java","b":"LyoqCiAqIEV4ZXJjaXNlIDY6IERlYnVnZ2luZyAtIE5ld2xpbmUKICoKICogRml4IHRoZSBwcm9ncmFtIHNvIHRoYXQgaXQgY29tcGlsZXMgYW5kIHByaW50cwogKiB0aGUgb3V0cHV0IG9uIHR3byBsaW5lcywgYXMgc2hvd24gYmVsb3cuCiAqCiAqICAgICAgUmVxdWlyZWQgb3V0cHV0OgogKgogKiAgICAgIE5hbWU6IERhbmEKICogICAgICBDaXR5OiBIYWlmYQogKi8KcHVibGljIGNsYXNzIEZpeDA2X05ld2xpbmUKewogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nW10gYXJncykKICAgIHsKICAgICAgICBzeXN0ZW0ub3V0LnByaW50bG4oIk5hbWU6IERhbmEvbkNpdHk6IEhhaWZhIikKICAgIH0KfQo="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגילי כתיבה ליחידה 1.2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .card-foot .code-details { flex: 1 1 auto; min-width: 0; }
+  .to-top {
+    flex: 0 0 auto;
+    margin-inline-start: auto;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>תרגילי כתיבה ליחידה 1.2</h1>
+      <p>Java א – מבוא למדעי המחשב  |  10 שאלות ברמת קושי עולה</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">רוחב</span>
+      <button type="button" data-w="820">צר</button>
+      <button type="button" data-w="980">בינוני</button>
+      <button type="button" data-w="1200">רחב</button>
+      <button type="button" data-w="100%">מלא</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">קוד</span>
+      <button type="button" data-theme="dark">כהה</button>
+      <button type="button" data-theme="light">בהיר</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>תוכן עניינים</h2>
+    <div class="toc-grid">
+<a href="#q1">שאלה 1 – הדפסה – ריבוע כוכביות</a>
+<a href="#q2">שאלה 2 – הדפסה – משולש כוכביות</a>
+<a href="#q3">שאלה 3 – הדפסה – שלוש שורות בפקודה אחת</a>
+<a href="#q4">שאלה 4 – הדפסה – מלבן חלול</a>
+<a href="#q5">שאלה 5 – הדפסה – מדרגות</a>
+<a href="#q6">שאלה 6 – הדפסה – טבלה ריקה</a>
+<a href="#q7">שאלה 7 – הדפסה – פירמידה</a>
+<a href="#q8">שאלה 8 – הדפסה – לוח הכפל</a>
+<a href="#q9">שאלה 9 – הדפסה – מעוין (יהלום) של כוכביות</a>
+<a href="#q10">שאלה 10 – הדפסה – טבלה ממוסגרת עם ערכים</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">רמה 1 – בסיסי</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>שאלה 1 – הדפסה – ריבוע כוכביות</h3>
+      <span class="q-en">Q1 – printing – star square</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – הדפסה – ריבוע כוכביות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה ריבוע של כוכביות, בדיוק כפי שמופיע בפלט הנדרש.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">* * * * *
+* * * * *
+* * * * *
+* * * * *
+* * * * *</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-0" download="Print01_StarSquare.java" style="text-decoration: underline;">Print01_StarSquare.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 1: First Program - Star Square
+ *
+ * Write a main program that prints a square of stars,
+ * exactly as shown below.
+ *
+ *      Expected output:
+ *
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print01_StarSquare</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>שאלה 2 – הדפסה – משולש כוכביות</h3>
+      <span class="q-en">Q2 – printing – star triangle</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – הדפסה – משולש כוכביות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה משולש של כוכביות, בדיוק כפי שמופיע בפלט הנדרש.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">*
+* *
+* * *
+* * * *
+* * * * *</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-1" download="Print02_StarTriangle.java" style="text-decoration: underline;">Print02_StarTriangle.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 2: First Program - Star Triangle
+ *
+ * Write a main program that prints a triangle of stars,
+ * exactly as shown below.
+ *
+ *      Expected output:
+ *
+ *      *
+ *      * *
+ *      * * *
+ *      * * * *
+ *      * * * * *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print02_StarTriangle</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>שאלה 3 – הדפסה – שלוש שורות בפקודה אחת</h3>
+      <span class="q-en">Q3 – printing – three lines one command</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – הדפסה – שלוש שורות בפקודה אחת</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה את הפלט הנדרש באמצעות <strong>פקודת הדפסה אחת בלבד</strong>. הערכים מיושרים בעזרת התו <strong>\t</strong> שאחרי הנקודתיים.<br>כל שלוש השורות מודפסות בפקודת הדפסה אחת, והיישור נוצר בתו \t.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Name:	Dana
+Class:	10A
+Grade:	95</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-2" download="Print03_ThreeLinesOneCommand.java" style="text-decoration: underline;">Print03_ThreeLinesOneCommand.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 3: First Program - Three Lines One Command
+ *
+ * Write a main program that prints the output below
+ * using ONE print command only.
+ * The values are aligned with a tab after the colon.
+ *
+ *      Expected output:
+ *
+ *      Name:	Dana
+ *      Class:	10A
+ *      Grade:	95
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print03_ThreeLinesOneCommand</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">רמה 2 – ביניים</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>שאלה 4 – הדפסה – מלבן חלול</h3>
+      <span class="q-en">Q4 – printing – hollow rectangle</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – הדפסה – מלבן חלול</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה מלבן חלול ברוחב 6 ובגובה 4: מסגרת של כוכביות ופנים ריק.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">* * * * * *
+*         *
+*         *
+* * * * * *</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-3" download="Print04_HollowRectangle.java" style="text-decoration: underline;">Print04_HollowRectangle.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 4: First Program - Hollow Rectangle
+ *
+ * Write a main program that prints a hollow rectangle,
+ * 6 wide and 4 high.
+ *
+ *      Expected output:
+ *
+ *      * * * * * *
+ *      *         *
+ *      *         *
+ *      * * * * * *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print04_HollowRectangle</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>שאלה 5 – הדפסה – מדרגות</h3>
+      <span class="q-en">Q5 – printing – staircase</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – הדפסה – מדרגות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה מדרגות יורדות, כאשר כל שורה מוזחת בטאב אחד יותר מקודמתה. השתמשו בתו המיוחד <strong>\t</strong>.<br>ההזחה נוצרת בתו \t בלבד ולא ברווחים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Level 1
+	Level 2
+		Level 3
+			Level 4</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-4" download="Print05_Staircase.java" style="text-decoration: underline;">Print05_Staircase.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 5: First Program - Staircase
+ *
+ * Write a main program that prints a staircase.
+ * Each line is indented by one more tab than the previous one.
+ *
+ *      Expected output:
+ *
+ *      Level 1
+ *      	Level 2
+ *      		Level 3
+ *      			Level 4
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print05_Staircase</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>שאלה 6 – הדפסה – טבלה ריקה</h3>
+      <span class="q-en">Q6 – printing – empty table</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – הדפסה – טבלה ריקה</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה טבלה ריקה בת 3 שורות ו-4 עמודות, הבנויה מהתווים <strong>+</strong> , <strong>-</strong> ו-<strong>|</strong>.<br>רוחב כל תא קבוע ונוצר מרווחים, לא מטאב.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">+----+----+----+----+
+|    |    |    |    |
++----+----+----+----+
+|    |    |    |    |
++----+----+----+----+
+|    |    |    |    |
++----+----+----+----+</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-5" download="Print06_EmptyTable.java" style="text-decoration: underline;">Print06_EmptyTable.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 6: First Program - Empty Table
+ *
+ * Write a main program that prints an empty table
+ * of 3 rows and 4 columns.
+ *
+ *      Expected output:
+ *
+ *      +----+----+----+----+
+ *      |    |    |    |    |
+ *      +----+----+----+----+
+ *      |    |    |    |    |
+ *      +----+----+----+----+
+ *      |    |    |    |    |
+ *      +----+----+----+----+
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print06_EmptyTable</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>שאלה 7 – הדפסה – פירמידה</h3>
+      <span class="q-en">Q7 – printing – pyramid</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – הדפסה – פירמידה</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה פירמידה של כוכביות בגובה 5, בדיוק כפי שמופיע בפלט הנדרש.<br>שימו לב למספר הרווחים בתחילת כל שורה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">    *
+   * *
+  * * *
+ * * * *
+* * * * *</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-6" download="Print07_Pyramid.java" style="text-decoration: underline;">Print07_Pyramid.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 7: First Program - Pyramid
+ *
+ * Write a main program that prints a pyramid of stars
+ * with 5 levels.
+ *
+ *      Expected output:
+ *
+ *          *
+ *         * *
+ *        * * *
+ *       * * * *
+ *      * * * * *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print07_Pyramid</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">רמה 3 – מתקדם</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>שאלה 8 – הדפסה – לוח הכפל</h3>
+      <span class="q-en">Q8 – printing – multiplication table</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – הדפסה – לוח הכפל</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה את לוח הכפל של המספרים 1 עד 4 כפול 1 עד 5. העמודות מופרדות בתו <strong>\t</strong>.<br>את ערכי המכפלות אין להקליד כמספרים מוכנים — יש להדפיס אותם כחישוב אריתמטי בתוך פקודת ההדפסה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">X	1	2	3	4	5
+1	1	2	3	4	5
+2	2	4	6	8	10
+3	3	6	9	12	15
+4	4	8	12	16	20</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-7" download="Print08_MultiplicationTable.java" style="text-decoration: underline;">Print08_MultiplicationTable.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 8: First Program - Multiplication Table
+ *
+ * Write a main program that prints the multiplication table
+ * of 1 to 4 by 1 to 5. Columns are separated by a tab.
+ * The products must be printed as arithmetic expressions,
+ * not as ready made numbers.
+ *
+ *      Expected output:
+ *
+ *      X	1	2	3	4	5
+ *      1	1	2	3	4	5
+ *      2	2	4	6	8	10
+ *      3	3	6	9	12	15
+ *      4	4	8	12	16	20
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print08_MultiplicationTable</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>שאלה 9 – הדפסה – מעוין (יהלום) של כוכביות</h3>
+      <span class="q-en">Q9 – printing – diamond</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – הדפסה – מעוין (יהלום) של כוכביות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית המדפיסה מעוין (יהלום) של כוכביות, בדיוק כפי שמופיע בפלט הנדרש.<br>שימו לב למספר הרווחים בתחילת כל שורה — הם יוצרים את הצורה הסימטרית.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">    *
+   * *
+  * * *
+ * * * *
+* * * * *
+ * * * *
+  * * *
+   * *
+    *</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-8" download="Print09_Diamond.java" style="text-decoration: underline;">Print09_Diamond.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 9: First Program - Diamond
+ *
+ * Write a main program that prints a diamond of stars,
+ * exactly as shown below.
+ *
+ *      Expected output:
+ *
+ *          *
+ *         * *
+ *        * * *
+ *       * * * *
+ *      * * * * *
+ *       * * * *
+ *        * * *
+ *         * *
+ *          *
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print09_Diamond</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>שאלה 10 – הדפסה – טבלה ממוסגרת עם ערכים</h3>
+      <span class="q-en">Q10 – printing – framed table</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – הדפסה – טבלה ממוסגרת עם ערכים</h4>
+
+<p dir="rtl" style="text-align: right;">
+בחנות נמכרים שלושה מוצרים: עט במחיר 5, ספר במחיר 15 ותיק במחיר 60. כתבו תוכנית ראשית המדפיסה טבלה ממוסגרת ובה הכמות שנרכשה מכל מוצר והמחיר הכולל שלו.<br>את ערכי עמודת <strong>Total</strong> יש להדפיס כחישוב אריתמטי בתוך פקודת ההדפסה ולא כמספר מוכן.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">+-------+-----+-------+
+| Item  | Qty | Total |
++-------+-----+-------+
+| Pen   |   4 |    20 |
+| Book  |   3 |    45 |
+| Bag   |   2 |   120 |
++-------+-----+-------+</pre>
+
+<div class="download-p" dir="rtl" style="text-align: right;">
+הורידו את הקובץ <strong><a href="#dl-9" download="Print10_FramedTable.java" style="text-decoration: underline;">Print10_FramedTable.java</a></strong> לסביבת העבודה. הקובץ מכיל את הגדרת המחלקה — כתבו בתוכה את השיטה הראשית <strong>main</strong> ואת פקודות ההדפסה כדי לקבל את הפלט הנדרש, והריצו את התוכנית.
+</div>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>הצגת שלד הקוד</summary>
+        <pre class="java-src">/**
+ * Exercise 10: First Program - Framed Table
+ *
+ * A shop sells three products: a pen for 5, a book for 15 and a bag for 60.
+ * Write a main program that prints a framed table with the quantity
+ * bought of each product and its total price.
+ * The values in the Total column must be printed as arithmetic
+ * expressions, not as ready made numbers.
+ *
+ *      Expected output:
+ *
+ *      +-------+-----+-------+
+ *      | Item  | Qty | Total |
+ *      +-------+-----+-------+
+ *      | Pen   |   4 |    20 |
+ *      | Book  |   3 |    45 |
+ *      | Bag   |   2 |   120 |
+ *      +-------+-----+-------+
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">Print10_FramedTable</span>
+{
+    <span class="j-cm">// TODO: write the main method here, and inside it the print commands</span>
+    
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ חזרה לתוכן העניינים</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>הקבצים מוטמעים בדף — ההורדה פועלת גם ללא חיבור לאינטרנט</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"Print01_StarSquare.java","b":"LyoqCiAqIEV4ZXJjaXNlIDE6IEZpcnN0IFByb2dyYW0gLSBTdGFyIFNxdWFyZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHByaW50cyBhIHNxdWFyZSBvZiBzdGFycywKICogZXhhY3RseSBhcyBzaG93biBiZWxvdy4KICoKICogICAgICBFeHBlY3RlZCBvdXRwdXQ6CiAqCiAqICAgICAgKiAqICogKiAqCiAqICAgICAgKiAqICogKiAqCiAqICAgICAgKiAqICogKiAqCiAqICAgICAgKiAqICogKiAqCiAqICAgICAgKiAqICogKiAqCiAqLwpwdWJsaWMgY2xhc3MgUHJpbnQwMV9TdGFyU3F1YXJlCnsKICAgIC8vIFRPRE86IHdyaXRlIHRoZSBtYWluIG1ldGhvZCBoZXJlLCBhbmQgaW5zaWRlIGl0IHRoZSBwcmludCBjb21tYW5kcwogICAgCn0K"},{"n":"Print02_StarTriangle.java","b":"LyoqCiAqIEV4ZXJjaXNlIDI6IEZpcnN0IFByb2dyYW0gLSBTdGFyIFRyaWFuZ2xlCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcHJpbnRzIGEgdHJpYW5nbGUgb2Ygc3RhcnMsCiAqIGV4YWN0bHkgYXMgc2hvd24gYmVsb3cuCiAqCiAqICAgICAgRXhwZWN0ZWQgb3V0cHV0OgogKgogKiAgICAgICoKICogICAgICAqICoKICogICAgICAqICogKgogKiAgICAgICogKiAqICoKICogICAgICAqICogKiAqICoKICovCnB1YmxpYyBjbGFzcyBQcmludDAyX1N0YXJUcmlhbmdsZQp7CiAgICAvLyBUT0RPOiB3cml0ZSB0aGUgbWFpbiBtZXRob2QgaGVyZSwgYW5kIGluc2lkZSBpdCB0aGUgcHJpbnQgY29tbWFuZHMKICAgIAp9Cg=="},{"n":"Print03_ThreeLinesOneCommand.java","b":"LyoqCiAqIEV4ZXJjaXNlIDM6IEZpcnN0IFByb2dyYW0gLSBUaHJlZSBMaW5lcyBPbmUgQ29tbWFuZAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHByaW50cyB0aGUgb3V0cHV0IGJlbG93CiAqIHVzaW5nIE9ORSBwcmludCBjb21tYW5kIG9ubHkuCiAqIFRoZSB2YWx1ZXMgYXJlIGFsaWduZWQgd2l0aCBhIHRhYiBhZnRlciB0aGUgY29sb24uCiAqCiAqICAgICAgRXhwZWN0ZWQgb3V0cHV0OgogKgogKiAgICAgIE5hbWU6CURhbmEKICogICAgICBDbGFzczoJMTBBCiAqICAgICAgR3JhZGU6CTk1CiAqLwpwdWJsaWMgY2xhc3MgUHJpbnQwM19UaHJlZUxpbmVzT25lQ29tbWFuZAp7CiAgICAvLyBUT0RPOiB3cml0ZSB0aGUgbWFpbiBtZXRob2QgaGVyZSwgYW5kIGluc2lkZSBpdCB0aGUgcHJpbnQgY29tbWFuZHMKICAgIAp9Cg=="},{"n":"Print04_HollowRectangle.java","b":"LyoqCiAqIEV4ZXJjaXNlIDQ6IEZpcnN0IFByb2dyYW0gLSBIb2xsb3cgUmVjdGFuZ2xlCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcHJpbnRzIGEgaG9sbG93IHJlY3RhbmdsZSwKICogNiB3aWRlIGFuZCA0IGhpZ2guCiAqCiAqICAgICAgRXhwZWN0ZWQgb3V0cHV0OgogKgogKiAgICAgICogKiAqICogKiAqCiAqICAgICAgKiAgICAgICAgICoKICogICAgICAqICAgICAgICAgKgogKiAgICAgICogKiAqICogKiAqCiAqLwpwdWJsaWMgY2xhc3MgUHJpbnQwNF9Ib2xsb3dSZWN0YW5nbGUKewogICAgLy8gVE9ETzogd3JpdGUgdGhlIG1haW4gbWV0aG9kIGhlcmUsIGFuZCBpbnNpZGUgaXQgdGhlIHByaW50IGNvbW1hbmRzCiAgICAKfQo="},{"n":"Print05_Staircase.java","b":"LyoqCiAqIEV4ZXJjaXNlIDU6IEZpcnN0IFByb2dyYW0gLSBTdGFpcmNhc2UKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBwcmludHMgYSBzdGFpcmNhc2UuCiAqIEVhY2ggbGluZSBpcyBpbmRlbnRlZCBieSBvbmUgbW9yZSB0YWIgdGhhbiB0aGUgcHJldmlvdXMgb25lLgogKgogKiAgICAgIEV4cGVjdGVkIG91dHB1dDoKICoKICogICAgICBMZXZlbCAxCiAqICAgICAgCUxldmVsIDIKICogICAgICAJCUxldmVsIDMKICogICAgICAJCQlMZXZlbCA0CiAqLwpwdWJsaWMgY2xhc3MgUHJpbnQwNV9TdGFpcmNhc2UKewogICAgLy8gVE9ETzogd3JpdGUgdGhlIG1haW4gbWV0aG9kIGhlcmUsIGFuZCBpbnNpZGUgaXQgdGhlIHByaW50IGNvbW1hbmRzCiAgICAKfQo="},{"n":"Print06_EmptyTable.java","b":"LyoqCiAqIEV4ZXJjaXNlIDY6IEZpcnN0IFByb2dyYW0gLSBFbXB0eSBUYWJsZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHByaW50cyBhbiBlbXB0eSB0YWJsZQogKiBvZiAzIHJvd3MgYW5kIDQgY29sdW1ucy4KICoKICogICAgICBFeHBlY3RlZCBvdXRwdXQ6CiAqCiAqICAgICAgKy0tLS0rLS0tLSstLS0tKy0tLS0rCiAqICAgICAgfCAgICB8ICAgIHwgICAgfCAgICB8CiAqICAgICAgKy0tLS0rLS0tLSstLS0tKy0tLS0rCiAqICAgICAgfCAgICB8ICAgIHwgICAgfCAgICB8CiAqICAgICAgKy0tLS0rLS0tLSstLS0tKy0tLS0rCiAqICAgICAgfCAgICB8ICAgIHwgICAgfCAgICB8CiAqICAgICAgKy0tLS0rLS0tLSstLS0tKy0tLS0rCiAqLwpwdWJsaWMgY2xhc3MgUHJpbnQwNl9FbXB0eVRhYmxlCnsKICAgIC8vIFRPRE86IHdyaXRlIHRoZSBtYWluIG1ldGhvZCBoZXJlLCBhbmQgaW5zaWRlIGl0IHRoZSBwcmludCBjb21tYW5kcwogICAgCn0K"},{"n":"Print07_Pyramid.java","b":"LyoqCiAqIEV4ZXJjaXNlIDc6IEZpcnN0IFByb2dyYW0gLSBQeXJhbWlkCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcHJpbnRzIGEgcHlyYW1pZCBvZiBzdGFycwogKiB3aXRoIDUgbGV2ZWxzLgogKgogKiAgICAgIEV4cGVjdGVkIG91dHB1dDoKICoKICogICAgICAgICAgKgogKiAgICAgICAgICogKgogKiAgICAgICAgKiAqICoKICogICAgICAgKiAqICogKgogKiAgICAgICogKiAqICogKgogKi8KcHVibGljIGNsYXNzIFByaW50MDdfUHlyYW1pZAp7CiAgICAvLyBUT0RPOiB3cml0ZSB0aGUgbWFpbiBtZXRob2QgaGVyZSwgYW5kIGluc2lkZSBpdCB0aGUgcHJpbnQgY29tbWFuZHMKICAgIAp9Cg=="},{"n":"Print08_MultiplicationTable.java","b":"LyoqCiAqIEV4ZXJjaXNlIDg6IEZpcnN0IFByb2dyYW0gLSBNdWx0aXBsaWNhdGlvbiBUYWJsZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHByaW50cyB0aGUgbXVsdGlwbGljYXRpb24gdGFibGUKICogb2YgMSB0byA0IGJ5IDEgdG8gNS4gQ29sdW1ucyBhcmUgc2VwYXJhdGVkIGJ5IGEgdGFiLgogKiBUaGUgcHJvZHVjdHMgbXVzdCBiZSBwcmludGVkIGFzIGFyaXRobWV0aWMgZXhwcmVzc2lvbnMsCiAqIG5vdCBhcyByZWFkeSBtYWRlIG51bWJlcnMuCiAqCiAqICAgICAgRXhwZWN0ZWQgb3V0cHV0OgogKgogKiAgICAgIFgJMQkyCTMJNAk1CiAqICAgICAgMQkxCTIJMwk0CTUKICogICAgICAyCTIJNAk2CTgJMTAKICogICAgICAzCTMJNgk5CTEyCTE1CiAqICAgICAgNAk0CTgJMTIJMTYJMjAKICovCnB1YmxpYyBjbGFzcyBQcmludDA4X011bHRpcGxpY2F0aW9uVGFibGUKewogICAgLy8gVE9ETzogd3JpdGUgdGhlIG1haW4gbWV0aG9kIGhlcmUsIGFuZCBpbnNpZGUgaXQgdGhlIHByaW50IGNvbW1hbmRzCiAgICAKfQo="},{"n":"Print09_Diamond.java","b":"LyoqCiAqIEV4ZXJjaXNlIDk6IEZpcnN0IFByb2dyYW0gLSBEaWFtb25kCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcHJpbnRzIGEgZGlhbW9uZCBvZiBzdGFycywKICogZXhhY3RseSBhcyBzaG93biBiZWxvdy4KICoKICogICAgICBFeHBlY3RlZCBvdXRwdXQ6CiAqCiAqICAgICAgICAgICoKICogICAgICAgICAqICoKICogICAgICAgICogKiAqCiAqICAgICAgICogKiAqICoKICogICAgICAqICogKiAqICoKICogICAgICAgKiAqICogKgogKiAgICAgICAgKiAqICoKICogICAgICAgICAqICoKICogICAgICAgICAgKgogKi8KcHVibGljIGNsYXNzIFByaW50MDlfRGlhbW9uZAp7CiAgICAvLyBUT0RPOiB3cml0ZSB0aGUgbWFpbiBtZXRob2QgaGVyZSwgYW5kIGluc2lkZSBpdCB0aGUgcHJpbnQgY29tbWFuZHMKICAgIAp9Cg=="},{"n":"Print10_FramedTable.java","b":"LyoqCiAqIEV4ZXJjaXNlIDEwOiBGaXJzdCBQcm9ncmFtIC0gRnJhbWVkIFRhYmxlCiAqCiAqIEEgc2hvcCBzZWxscyB0aHJlZSBwcm9kdWN0czogYSBwZW4gZm9yIDUsIGEgYm9vayBmb3IgMTUgYW5kIGEgYmFnIGZvciA2MC4KICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCBwcmludHMgYSBmcmFtZWQgdGFibGUgd2l0aCB0aGUgcXVhbnRpdHkKICogYm91Z2h0IG9mIGVhY2ggcHJvZHVjdCBhbmQgaXRzIHRvdGFsIHByaWNlLgogKiBUaGUgdmFsdWVzIGluIHRoZSBUb3RhbCBjb2x1bW4gbXVzdCBiZSBwcmludGVkIGFzIGFyaXRobWV0aWMKICogZXhwcmVzc2lvbnMsIG5vdCBhcyByZWFkeSBtYWRlIG51bWJlcnMuCiAqCiAqICAgICAgRXhwZWN0ZWQgb3V0cHV0OgogKgogKiAgICAgICstLS0tLS0tKy0tLS0tKy0tLS0tLS0rCiAqICAgICAgfCBJdGVtICB8IFF0eSB8IFRvdGFsIHwKICogICAgICArLS0tLS0tLSstLS0tLSstLS0tLS0tKwogKiAgICAgIHwgUGVuICAgfCAgIDQgfCAgICAyMCB8CiAqICAgICAgfCBCb29rICB8ICAgMyB8ICAgIDQ1IHwKICogICAgICB8IEJhZyAgIHwgICAyIHwgICAxMjAgfAogKiAgICAgICstLS0tLS0tKy0tLS0tKy0tLS0tLS0rCiAqLwpwdWJsaWMgY2xhc3MgUHJpbnQxMF9GcmFtZWRUYWJsZQp7CiAgICAvLyBUT0RPOiB3cml0ZSB0aGUgbWFpbiBtZXRob2QgaGVyZSwgYW5kIGluc2lkZSBpdCB0aGUgcHJpbnQgY29tbWFuZHMKICAgIAp9Cg=="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>
