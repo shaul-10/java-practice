@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║      תבנית v2 — שאלון Java עם 3 סוגי שאלות                     ║
+  ║      multichoice / gapselect / cloze                             ║
+  ║                                                                  ║
+  ║  נתמך ע"י quiz_builder_tool.html — פלייסהולדרים:                ║
+  ║  03, #C0392B/LIGHT/DARK/BORDER,               ║
+  ║  Practice unit 3.3, , questionsHe, questionsAr          ║
+  ║                                                                  ║
+  ║  מבנה שאלה multichoice:                                          ║
+  ║  { type:"multichoice", topic, text, code|null,                   ║
+  ║    options:[ "טקסט" | {type:"code",text:"..."} ],               ║
+  ║    answer:0, explanation:[{type:"he"|"code",text}] }             ║
+  ║                                                                  ║
+  ║  מבנה שאלה gapselect:                                            ║
+  ║  { type:"gapselect", topic, text, output?, text2?,               ║
+  ║    codeLines:[ "שורת קוד עם [[1]]" ],                           ║
+  ║    gaps:[{id:1,options:[...],answer:"..."}], explanation }       ║
+  ║                                                                  ║
+  ║  מבנה שאלה cloze:                                                ║
+  ║  { type:"cloze", topic, text, output?, text2?,                   ║
+  ║    codeLines:[ {before, blank:{options,answer}|null, after} ],   ║
+  ║    explanation }                                                 ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice unit 3.3 — רמה 03</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    :root {
+      --color-main:   #C0392B;
+      --color-light:  #FCE8E8;
+      --color-dark:   #8B1A1A;
+      --color-border: #F5C0C0;
+    }
+
+    /* ── מסך פתיחה ── */
+    #screen-home {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 80vh; text-align: center;
+    }
+    .home-icon { font-size: 48px; margin-bottom: 1.2rem; }
+    .home-title-he { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; direction: rtl; }
+    .home-title-ar { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 0.5rem; direction: rtl; }
+    .home-sub { font-size: 13px; color: #888; margin-bottom: 1rem; line-height: 1.8; }
+    .home-sub .he { display: block; direction: rtl; }
+    .home-sub .ar { display: block; direction: rtl; }
+    .home-level-badge {
+      display: inline-block; font-size: 12px; font-weight: 600;
+      padding: 3px 14px; border-radius: 20px;
+      background: var(--color-light); color: var(--color-dark);
+      border: 1px solid var(--color-border);
+      margin-top: 0.6rem; margin-bottom: 2.5rem;
+    }
+    .lang-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .lang-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 22px 36px; border: 2px solid #ddd; border-radius: 14px;
+      background: #fff; cursor: pointer; font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s; min-width: 160px;
+    }
+    .lang-btn:hover { border-color: var(--color-main); box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    .lang-btn .lang-name { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .lang-btn .lang-sub  { font-size: 11px; color: #aaa; }
+
+    /* ── מסכי שאלון ── */
+    #screen-he, #screen-ar { display: none; }
+    .quiz-header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(135deg, var(--color-dark), var(--color-main)); color: #fff;
+      padding: 18px 24px; border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .quiz-title { font-size: 18px; font-weight: 700; color: #fff; direction: rtl; }
+    .quiz-title .level-tag {
+      font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px;
+      background: rgba(255,255,255,0.2); color: #fff;
+      margin-right: 8px; vertical-align: middle;
+    }
+    .back-btn {
+      font-size: 12px; color: #fff; background: none;
+      border: 1px solid rgba(255,255,255,0.4); border-radius: 6px;
+      padding: 4px 12px; cursor: pointer; font-family: inherit; white-space: nowrap;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.15); }
+
+    .progress-bar-bg { height: 4px; background: #ddd; border-radius: 2px; margin-bottom: 1.5rem; }
+    .progress-bar-fill { height: 4px; background: var(--color-main); border-radius: 2px; transition: width 0.4s; }
+
+    .q-card {
+      background: #fff; border: 1px solid #E2E4F3;
+      border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    .q-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .q-num-badge { font-size: 12px; color: #888; }
+    .q-topic { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--color-main); color: #fff; font-weight: 500; }
+
+    .q-text { font-size: 15px; margin-bottom: 12px; line-height: 1.8; }
+    .q-text-line { display: block; direction: rtl; text-align: right; }
+
+    .code-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; white-space: pre; overflow-x: auto;
+      line-height: 1.7; direction: ltr; text-align: left;
+    }
+
+    /* בלוק פלט רצוי — LTR תמיד */
+    .output-block {
+      background: #fff; border: 1px dashed var(--color-border); border-radius: 8px;
+      padding: 10px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 12px; white-space: pre; overflow-x: auto;
+      line-height: 1.7; direction: ltr; text-align: left;
+      color: var(--color-dark);
+    }
+
+    /* ── אפשרויות multichoice ── */
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .opt {
+      display: flex; flex-direction: row; align-items: center; gap: 10px;
+      padding: 10px 14px; border: 1.5px solid #E2E4F3; border-radius: 9px;
+      cursor: pointer; font-size: 14px; background: transparent;
+      width: 100%; direction: rtl; text-align: right;
+      font-family: 'Courier New', monospace; color: #1a1a1a; transition: background 0.15s;
+    }
+    .opt:hover:not(.disabled) { background: #f8f8f8; }
+    .opt.correct { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .opt.wrong   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .opt.disabled { pointer-events: none; }
+    .opt-letter { font-size: 12px; font-weight: 700; min-width: 22px; color: var(--color-main); font-family: 'Segoe UI', Arial, sans-serif; flex-shrink: 0; }
+    .opt-text-he {
+      direction: rtl; text-align: right; flex: 1;
+      unicode-bidi: embed; font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .opt-code {
+      background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px;
+      font-family: 'Courier New', monospace; font-size: 13px;
+      white-space: pre-wrap; word-break: break-word;
+      direction: ltr; text-align: left; flex: 1;
+      display: inline-block; text-align: left; direction: ltr;
+    }
+
+    /* ── gapselect ── */
+    .gap-code-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; direction: ltr; text-align: left;
+      line-height: 2.2; overflow-x: auto;
+    }
+    .gap-code-block .code-line { display: block; white-space: pre; }
+    .gap-select, .cloze-select {
+      font-family: 'Courier New', monospace; font-size: 13px;
+      padding: 1px 4px; border: 1px solid var(--color-border);
+      border-radius: 4px; background: var(--color-light);
+      color: var(--color-dark); cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .gap-select:focus, .cloze-select:focus { outline: none; border-color: var(--color-main); }
+    .gap-select.correct-gap, .cloze-select.correct-gap { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .gap-select.wrong-gap,   .cloze-select.wrong-gap   { background: #FCEBEB; border-color: #A32D2D; color: #791F1F; }
+    .gap-select:disabled, .cloze-select:disabled { cursor: not-allowed; }
+
+    .gap-check-btn {
+      margin-top: 0.75rem; padding: 8px 20px;
+      border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 13px;
+      color: var(--color-dark); font-family: inherit;
+    }
+    .gap-check-btn:hover { background: var(--color-light); }
+    .gap-check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── cloze ── */
+    .cloze-block {
+      background: #f8f8f8; border: 1px solid #e5e5e5; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 13px;
+      margin-bottom: 14px; direction: ltr; text-align: left;
+      line-height: 2.4; overflow-x: auto;
+    }
+    .cloze-line { display: block; white-space: pre; }
+
+    /* ── הסבר ── */
+    .explanation {
+      display: none; margin-top: 12px; padding: 10px 14px;
+      font-size: 13px; color: #555; line-height: 2;
+      border-right: 3px solid var(--color-main);
+      background: #f8f8f8; direction: rtl; text-align: right;
+    }
+    .explanation.show { display: block; }
+    .exp-line { display: block; direction: rtl; text-align: right; }
+    .exp-code {
+      display: block; direction: ltr; text-align: left;
+      font-family: 'Courier New', monospace; font-size: 12px;
+      background: #fff; padding: 3px 8px; border-radius: 4px; margin: 2px 0;
+      white-space: pre-wrap;
+    }
+
+    .next-btn {
+      display: none; margin-top: 1rem; padding: 10px 22px;
+      border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px;
+      color: var(--color-dark); font-family: inherit;
+    }
+    .next-btn:hover { background: var(--color-light); }
+    .next-btn.show  { display: inline-block; }
+
+    .score-box { text-align: center; padding: 3rem 1rem; }
+    .score-num { font-size: 56px; font-weight: 500; color: #1a1a1a; }
+    .score-label { font-size: 16px; color: #666; margin-top: 8px; }
+    .score-actions { display: flex; gap: 12px; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+    .restart-btn {
+      padding: 10px 28px; border: 1px solid #ccc; border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px; font-family: inherit; color: #1a1a1a;
+    }
+    .restart-btn:hover { background: #f5f5f5; }
+    .home-return-btn {
+      padding: 10px 28px; border: 1px solid var(--color-main); border-radius: 8px;
+      background: transparent; cursor: pointer; font-size: 14px; font-family: inherit; color: var(--color-dark);
+    }
+    .home-return-btn:hover { background: var(--color-light); }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- מסך פתיחה -->
+    <div id="screen-home">
+      <div class="home-icon">💻</div>
+      <div class="home-title-he">Practice unit 3.3</div>
+      <div class="home-title-ar"></div>
+      <div class="home-sub">
+        <span class="he">10 שאלות אמריקאיות עם הסברים מפורטים</span>
+        <span class="ar">١٠ أسئلة اختيار من متعدد مع شرح مفصّل</span>
+      </div>
+      <div class="home-level-badge">רמה 03 &nbsp;|&nbsp; المستوى 03</div>
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="startQuiz('he')">
+          <span class="lang-name">עברית</span>
+          <span class="lang-sub">Hebrew</span>
+        </button>
+        <button class="lang-btn" onclick="startQuiz('ar')">
+          <span class="lang-name">العربية</span>
+          <span class="lang-sub">Arabic</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- מסך עברית -->
+    <div id="screen-he" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">רמה 03</span>
+          Practice unit 3.3
+        </h1>
+        <button class="back-btn" onclick="goHome()">חזור לתפריט</button>
+      </div>
+      <div id="app-he"></div>
+    </div>
+
+    <!-- מסך ערבית -->
+    <div id="screen-ar" dir="rtl">
+      <div class="quiz-header">
+        <h1 class="quiz-title">
+          <span class="level-tag">المستوى 03</span>
+          
+        </h1>
+        <button class="back-btn" onclick="goHome()">العودة للقائمة</button>
+      </div>
+      <div id="app-ar"></div>
+    </div>
+
+  </div>
+
+  <script>
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות העברית
+    ══════════════════════════════════════════════════════════════ */
+    const questionsHe = [
+  {
+    "type": "multichoice",
+    "topic": "שיטת ‏Math על ערך מוגרל",
+    "text": "מה הערך הקטן ביותר ומה הערך הגדול ביותר שיכולים להתקבל במשתנה ‏x?",
+    "code": "public static void main(String [] args) {\n    Random rnd = new Random();\n    int x = Math.max(rnd.nextInt(10), 5);\n    System.out.println(x);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "min = 5\nmax = 9"
+      },
+      {
+        "type": "code",
+        "text": "min = 0\nmax = 9"
+      },
+      {
+        "type": "code",
+        "text": "min = 5\nmax = 10"
+      },
+      {
+        "type": "code",
+        "text": "min = 0\nmax = 5"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ההגרלה נותנת 0 עד 9, ו-‏max מחליפה כל ערך קטן מ-5 ב-5. לכן הערך הקטן ביותר הוא 5, והגדול ביותר נשאר 9."
+      },
+      {
+        "type": "code",
+        "text": "rnd.nextInt(10)          // 0 ... 9\nMath.max(2, 5)           // 5\nMath.max(9, 5)           // 9"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה הערך הקטן ביותר ומה הערך הגדול ביותר שיכולים להתקבל במשתנה ‏x?"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "אות אקראית",
+    "text": "השלימו את התוכנית כך שתגריל ותדפיס אות גדולה אקראית בין ‏A ל-‏Z. כל האותיות צריכות להיות אפשריות:",
+    "codeLines": [
+      "import java.util.Random;",
+      "public class Letter {",
+      "    public static void main(String [] args) {",
+      "        Random rnd = new Random();",
+      "        char c = ([[1]]) ([[2]] + rnd.nextInt([[3]]));",
+      "        System.out.println(\"letter = \" + c);",
+      "    }",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "char",
+          "int",
+          "String",
+          "double"
+        ],
+        "answer": "char"
+      },
+      {
+        "id": 2,
+        "options": [
+          "'A'",
+          "\"A\"",
+          "'a'",
+          "'Z'"
+        ],
+        "answer": "'A'"
+      },
+      {
+        "id": 3,
+        "options": [
+          "'Z' - 'A' + 1",
+          "'Z' - 'A'",
+          "'Z' - 'A' + 2",
+          "'Z' + 'A'"
+        ],
+        "answer": "'Z' - 'A' + 1"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "ההפרש בין ‏Z ל-‏A הוא 25, ולכן כדי לכלול גם את ‏Z מוסיפים 1. חיבור תו ומספר נותן מספר, ולכן ממירים בחזרה ל-‏char."
+      },
+      {
+        "type": "code",
+        "text": "'Z' - 'A' + 1          // 90 - 65 + 1 = 26\nrnd.nextInt(26)        // 0 ... 25\n(char) ('A' + 25)      // 'Z'\n(char) ('A' + 26)      // '['"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "השלימו את התוכנית כך שתגריל ותדפיס אות גדולה אקראית בין ‏A ל-‏Z. כל האותיות צריכות להיות אפשריות:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "הגרלה אחת לשני ערכים",
+    "text": "איזה מהפלטים הבאים אינו יכול להתקבל בהרצת התוכנית?",
+    "code": "public static void main(String [] args) {\n    Random rnd = new Random();\n    int n = rnd.nextInt(20);\n    int a = n / 5 + 1;\n    int b = n % 5 + 1;\n    System.out.println(\"a = \" + a);\n    System.out.println(\"b = \" + b);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a = 5\nb = 1"
+      },
+      {
+        "type": "code",
+        "text": "a = 1\nb = 5"
+      },
+      {
+        "type": "code",
+        "text": "a = 4\nb = 5"
+      },
+      {
+        "type": "code",
+        "text": "a = 2\nb = 3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "המספר המוגרל הוא 0 עד 19. החילוק ב-5 נותן 0 עד 3, ולכן ‏a הוא 1 עד 4. השארית נותנת 0 עד 4, ולכן ‏b הוא 1 עד 5."
+      },
+      {
+        "type": "code",
+        "text": "n = 0     // a = 1, b = 1\nn = 19    // a = 4, b = 5\n// a = 5 needs n = 20 or more"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "איזה מהפלטים הבאים אינו יכול להתקבל בהרצת התוכנית?"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "טווח סימטרי ומרחק",
+    "text": "התוכנית מגרילה מספר שלם ‏x בין מינוס 5 ל-5, כולל שני הערכים, ומדפיסה אותו ואת המרחק שלו מ-0. כל הערכים צריכים להיות אפשריים. השלימו את התוכנית:",
+    "codeLines": [
+      {
+        "before": "import java.util.Random;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "public class Distance {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        Random rnd = new Random();",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        int x = rnd.nextInt(",
+        "blank": {
+          "options": [
+            "11) - 5;",
+            "11);",
+            "11) + 5;",
+            "10) - 5;",
+            "6) - 5;"
+          ],
+          "answer": "11) - 5;"
+        },
+        "after": ""
+      },
+      {
+        "before": "        int d = Math.",
+        "blank": {
+          "options": [
+            "abs(x);",
+            "max(x, 0);",
+            "min(x, 0);",
+            "sqrt(x);"
+          ],
+          "answer": "abs(x);"
+        },
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(\"x = \" + x);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(\"distance = \" + d);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "בטווח יש 11 ערכים שלמים. מגרילים 0 עד 10, וההפחתה של 5 מזיזה את הטווח כך שיתחיל במינוס 5. המרחק מ-0 הוא הערך המוחלט, ו-‏sqrt מחזירה ‏double שאינו נכנס ל-‏int."
+      },
+      {
+        "type": "code",
+        "text": "rnd.nextInt(11)        // 0 ... 10\nrnd.nextInt(11) - 5    // -5 ... 5\nMath.abs(-3)           // 3\nMath.max(-3, 0)        // 0"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "התוכנית מגרילה מספר שלם ‏x בין מינוס 5 ל-5, כולל שני הערכים, ומדפיסה אותו ואת המרחק שלו מ-0. כל הערכים צריכים להיות אפשריים. השלימו את התוכנית:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "קריאת ‏API: ‏endsWith",
+    "text": "לפניכם קטע מתיעוד ה-‏API של השיטה ‏endsWith במחלקה ‏String, ומתחתיו תוכנית שמשתמשת בה. מה יהיה פלט התוכנית?",
+    "code": "public boolean endsWith(String suffix)\nTests if this string ends with the specified suffix.\n\npublic static String tag(String w) {\n    if (w.endsWith(\"ing\")) {\n        return \"verb\";\n    }\n    if (w.length() > 5) {\n        return \"long\";\n    }\n    return \"short\";\n}\n\npublic static void main(String [] args) {\n    System.out.println(\"a = \" + tag(\"reading\"));\n    System.out.println(\"b = \" + tag(\"pumpkin\"));\n    System.out.println(\"c = \" + tag(\"ring\"));\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a = verb\nb = long\nc = verb"
+      },
+      {
+        "type": "code",
+        "text": "a = verb\nb = long\nc = short"
+      },
+      {
+        "type": "code",
+        "text": "a = verb\nb = short\nc = verb"
+      },
+      {
+        "type": "code",
+        "text": "a = long\nb = long\nc = verb"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "פקודת ‏return מסיימת את השיטה, ולכן התנאי הראשון שמתקיים קובע. המילה ‏ring קצרה, אבל היא מסתיימת ב-‏ing."
+      },
+      {
+        "type": "code",
+        "text": "tag(\"reading\")    // ends with ing  -> verb\ntag(\"pumpkin\")    // length 7 > 5  -> long\ntag(\"ring\")       // ends with ing  -> verb"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "לפניכם קטע מתיעוד ה-‏API של השיטה ‏endsWith במחלקה ‏String, ומתחתיו תוכנית שמשתמשת בה. מה יהיה פלט התוכנית?"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "מעקב: אורך אי-זוגי",
+    "text": "מה יהיה פלט התוכנית הבאה?",
+    "code": "public static void main(String [] args) {\n    String s = \"chocolate\";\n    int n = s.length();\n    String a = s.substring(n / 2);\n    String b = s.substring(0, n / 2);\n    s = a.replace('o', '0') + b.charAt(0);\n    System.out.println(\"s = \" + s);\n    System.out.println(\"len = \" + s.length());\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "s = 0latec\nlen = 6"
+      },
+      {
+        "type": "code",
+        "text": "s = latec\nlen = 5"
+      },
+      {
+        "type": "code",
+        "text": "s = 0latechoc\nlen = 9"
+      },
+      {
+        "type": "code",
+        "text": "s = 0late\nlen = 5"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "חילוק שלמים של 9 ב-2 נותן 4, ולכן החצי השני ארוך יותר ומתחיל בתו ‏o. אליו מצטרף רק התו הראשון של החצי הראשון."
+      },
+      {
+        "type": "code",
+        "text": "n / 2                     // 9 / 2 = 4\na = s.substring(4)        // olate\nb = s.substring(0, 4)     // choc\na.replace('o', '0')       // 0late\n... + b.charAt(0)         // 0latec"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "מה יהיה פלט התוכנית הבאה?"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "שיטה שמחזירה את התו האמצעי",
+    "text": "להלן הפלט של התוכנית:",
+    "output": "m1 = a\nm2 = y",
+    "text2": "השלימו את התוכנית כך שתיצור את הפלט המבוקש:",
+    "codeLines": [
+      "public static [[1]] middle(String s) {",
+      "    return s.[[2]](s.length() [[3]] 2);",
+      "}",
+      "",
+      "public static void main(String [] args) {",
+      "    System.out.println(\"m1 = \" + middle(\"pirates\"));",
+      "    System.out.println(\"m2 = \" + middle(\"kayak\"));",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "char",
+          "String",
+          "int",
+          "void"
+        ],
+        "answer": "char"
+      },
+      {
+        "id": 2,
+        "options": [
+          "charAt",
+          "substring",
+          "indexOf",
+          "length"
+        ],
+        "answer": "charAt"
+      },
+      {
+        "id": 3,
+        "options": [
+          "/",
+          "%",
+          "*",
+          "-"
+        ],
+        "answer": "/"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "במילה באורך אי-זוגי, חצי האורך בחילוק שלמים הוא בדיוק אינדקס התו האמצעי. השיטה מחזירה ‏char, ולכן מודפס התו ולא ערך ה-‏ASCII שלו."
+      },
+      {
+        "type": "code",
+        "text": "middle(\"pirates\")    // 7 / 2 = 3 -> charAt(3) = a\nmiddle(\"kayak\")      // 5 / 2 = 2 -> charAt(2) = y"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "להלן הפלט של התוכנית:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "איזה קלט יוצר את הפלט",
+    "text": "להלן פלט רצוי:",
+    "output": "el*v*n",
+    "text2": "באיזו קריאה יש להחליף את ההערה כדי לקבל את הפלט הזה?",
+    "code": "public static String f(String s) {\n    String t = s.substring(0, 1);\n    return t + s.substring(1).replace(s.charAt(0), '*');\n}\n\npublic static void main(String [] args) {\n    System.out.println( /* call */ );\n}",
+    "options": [
+      "f(\"eleven\")",
+      "f(\"eeleven\")",
+      "f(\"leven\")",
+      "f(\"elevens\")"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "התו הראשון נשמר כמו שהוא, ובשאר המחרוזת כל מופע שלו מוחלף בכוכבית. בתוכנית אמיתית עדיף לשיטה שם משמעותי."
+      },
+      {
+        "type": "code",
+        "text": "f(\"eleven\")     // e + l*v*n  -> el*v*n\nf(\"eeleven\")    // e + *l*v*n -> e*l*v*n\nf(\"leven\")      // no other l -> leven\nf(\"elevens\")    // el*v*ns"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "להלן פלט רצוי:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "איתור תקלה: אורך שלא עודכן",
+    "text": "עבור הקלט שבהערה, זה הפלט הרצוי:",
+    "output": "rest = range\nlast = e",
+    "text2": "אבל התוכנית נכשלת בזמן ריצה. איזו שורה, במקום השורה המסומנת, מתקנת אותה?",
+    "code": "// input line:  orange\npublic static void main(String [] args) {\n    Scanner scan = new Scanner(System.in);\n    String s = scan.next();\n    int len = s.length();\n    s = s.substring(1);\n    char last = s.charAt(len - 1);    // marked line\n    System.out.println(\"rest = \" + s);\n    System.out.println(\"last = \" + last);\n}",
+    "options": [
+      "char last = s.charAt(s.length() - 1);",
+      "char last = s.charAt(len);",
+      "char last = s.charAt(s.length());",
+      "char last = s.charAt(s.length() - 2);"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "המשתנה ‏len שמר את האורך המקורי, אבל אחרי ‏substring המחרוזת קצרה יותר. יש לחשב את האורך מחדש מהמחרוזת הנוכחית."
+      },
+      {
+        "type": "code",
+        "text": "len = 6;               // orange\ns = s.substring(1);    // range, length 5\ns.charAt(5)            // runtime error\ns.charAt(4)            // e"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "עבור הקלט שבהערה, זה הפלט הרצוי:"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "שיטה שמחזירה ראשי תיבות",
+    "text": "להלן הפלט של התוכנית:",
+    "output": "D.L.\nn.c.",
+    "text2": "השלימו את התוכנית כך שתתקמפל ותיצור את הפלט המבוקש:",
+    "codeLines": [
+      {
+        "before": "public class Names {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    public static ",
+        "blank": {
+          "options": [
+            "String",
+            "char",
+            "int",
+            "void"
+          ],
+          "answer": "String"
+        },
+        "after": " initials(String first, String last) {"
+      },
+      {
+        "before": "        return ",
+        "blank": {
+          "options": [
+            "first.charAt(0) + \".\" + last.charAt(0) + \".\";",
+            "first.charAt(0) + last.charAt(0) + \"..\";",
+            "first.charAt(1) + \".\" + last.charAt(1) + \".\";",
+            "\".\" + first.charAt(0) + \".\" + last.charAt(0);"
+          ],
+          "answer": "first.charAt(0) + \".\" + last.charAt(0) + \".\";"
+        },
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(initials(\"Dana\", \"Levi\"));",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(initials(\"noa\", \"cohen\"));",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "שרשור משמאל לימין: תו ועוד מחרוזת נותן מחרוזת. שני תווים צמודים בתחילת הביטוי מתחברים כמספרים, והתוצאה מחרוזת ולכן הסוג המוחזר ‏String."
+      },
+      {
+        "type": "code",
+        "text": "'D' + \".\" + 'L' + \".\"     // \"D.L.\"\n'D' + 'L' + \"..\"         // 68 + 76 = 144 -> \"144..\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "להלן הפלט של התוכנית:"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       הכנס כאן את שאלות הערבית — אותו מבנה בדיוק
+    ══════════════════════════════════════════════════════════════ */
+    const questionsAr = [
+  {
+    "type": "multichoice",
+    "topic": "طريقة ‏Math على قيمة عشوائية",
+    "text": "ما هي القيمة الصغرى وما هي القيمة الكبرى التي يمكن أن يحصل عليها المتغير ‏x؟",
+    "code": "public static void main(String [] args) {\n    Random rnd = new Random();\n    int x = Math.max(rnd.nextInt(10), 5);\n    System.out.println(x);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "min = 5\nmax = 9"
+      },
+      {
+        "type": "code",
+        "text": "min = 0\nmax = 9"
+      },
+      {
+        "type": "code",
+        "text": "min = 5\nmax = 10"
+      },
+      {
+        "type": "code",
+        "text": "min = 0\nmax = 5"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "القرعة تعطي من 0 إلى 9، و-‏max تستبدل كل قيمة أقل من 5 ب-5. لذلك القيمة الصغرى هي 5، والكبرى تبقى 9."
+      },
+      {
+        "type": "code",
+        "text": "rnd.nextInt(10)          // 0 ... 9\nMath.max(2, 5)           // 5\nMath.max(9, 5)           // 9"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هي القيمة الصغرى وما هي القيمة الكبرى التي يمكن أن يحصل عليها المتغير ‏x؟"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "حرف عشوائي",
+    "text": "أكمل البرنامج بحيث يقوم بتوليد وطباعة حرف كبير عشوائي بين A و Z. يجب أن تكون جميع الأحرف ممكنة:",
+    "codeLines": [
+      "import java.util.Random;",
+      "public class Letter {",
+      "    public static void main(String [] args) {",
+      "        Random rnd = new Random();",
+      "        char c = ([[1]]) ([[2]] + rnd.nextInt([[3]]));",
+      "        System.out.println(\"letter = \" + c);",
+      "    }",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "char",
+          "int",
+          "String",
+          "double"
+        ],
+        "answer": "char"
+      },
+      {
+        "id": 2,
+        "options": [
+          "'A'",
+          "\"A\"",
+          "'a'",
+          "'Z'"
+        ],
+        "answer": "'A'"
+      },
+      {
+        "id": 3,
+        "options": [
+          "'Z' - 'A' + 1",
+          "'Z' - 'A'",
+          "'Z' - 'A' + 2",
+          "'Z' + 'A'"
+        ],
+        "answer": "'Z' - 'A' + 1"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الفرق بين Z و A هو 25، ولذلك لإدراج Z أيضًا نضيف 1. جمع حرف ورقم يعطي رقمًا، لذلك نقوم بالتحويل مرة أخرى إلى char."
+      },
+      {
+        "type": "code",
+        "text": "'Z' - 'A' + 1          // 90 - 65 + 1 = 26\nrnd.nextInt(26)        // 0 ... 25\n(char) ('A' + 25)      // 'Z'\n(char) ('A' + 26)      // '['"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "أكمل البرنامج بحيث يقوم بتوليد وطباعة حرف كبير عشوائي بين A و Z. يجب أن تكون جميع الأحرف ممكنة:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "سحب عشوائي لقيمتين",
+    "text": "أي من المخرجات التالية لا يمكن الحصول عليها عند تشغيل البرنامج؟",
+    "code": "public static void main(String [] args) {\n    Random rnd = new Random();\n    int n = rnd.nextInt(20);\n    int a = n / 5 + 1;\n    int b = n % 5 + 1;\n    System.out.println(\"a = \" + a);\n    System.out.println(\"b = \" + b);\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a = 5\nb = 1"
+      },
+      {
+        "type": "code",
+        "text": "a = 1\nb = 5"
+      },
+      {
+        "type": "code",
+        "text": "a = 4\nb = 5"
+      },
+      {
+        "type": "code",
+        "text": "a = 2\nb = 3"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الرقم المسحوب هو من 0 إلى 19. القسمة على 5 تعطي 0 إلى 3، لذلك a هو من 1 إلى 4. الباقي يعطي 0 إلى 4، لذلك b هو من 1 إلى 5."
+      },
+      {
+        "type": "code",
+        "text": "n = 0     // a = 1, b = 1\nn = 19    // a = 4, b = 5\n// a = 5 needs n = 20 or more"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "أي من المخرجات التالية لا يمكن الحصول عليها عند تشغيل البرنامج؟"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "مدى متماثل ومسافة",
+    "text": "البرنامج يقوم بتوليد عدد صحيح ‏x بين ناقص 5 و5، بما في ذلك القيمتين، ويطبعها والمسافة بينها وبين 0. يجب أن تكون جميع القيم ممكنة. أكمل البرنامج:",
+    "codeLines": [
+      {
+        "before": "import java.util.Random;",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "public class Distance {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        Random rnd = new Random();",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        int x = rnd.nextInt(",
+        "blank": {
+          "options": [
+            "11) - 5;",
+            "11);",
+            "11) + 5;",
+            "10) - 5;",
+            "6) - 5;"
+          ],
+          "answer": "11) - 5;"
+        },
+        "after": ""
+      },
+      {
+        "before": "        int d = Math.",
+        "blank": {
+          "options": [
+            "abs(x);",
+            "max(x, 0);",
+            "min(x, 0);",
+            "sqrt(x);"
+          ],
+          "answer": "abs(x);"
+        },
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(\"x = \" + x);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(\"distance = \" + d);",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في المدى هناك 11 قيمة صحيحة. يتم توليد 0 إلى 10، وطرح 5 يحرك المدى ليبدأ من ناقص 5. المسافة من 0 هي القيمة المطلقة، و‏sqrt تعيد ‏double الذي لا يمكن وضعه في ‏int."
+      },
+      {
+        "type": "code",
+        "text": "rnd.nextInt(11)        // 0 ... 10\nrnd.nextInt(11) - 5    // -5 ... 5\nMath.abs(-3)           // 3\nMath.max(-3, 0)        // 0"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "البرنامج يقوم بتوليد عدد صحيح ‏x بين ناقص 5 و5، بما في ذلك القيمتين، ويطبعها والمسافة بينها وبين 0. يجب أن تكون جميع القيم ممكنة. أكمل البرنامج:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "استدعاء ‏API: ‏endsWith",
+    "text": "أمامكم مقطع من توثيق ‏API للدالة ‏endsWith في الفئة ‏String، وتحته برنامج يستخدمها. ما هو ناتج البرنامج؟",
+    "code": "public boolean endsWith(String suffix)\nTests if this string ends with the specified suffix.\n\npublic static String tag(String w) {\n    if (w.endsWith(\"ing\")) {\n        return \"verb\";\n    }\n    if (w.length() > 5) {\n        return \"long\";\n    }\n    return \"short\";\n}\n\npublic static void main(String [] args) {\n    System.out.println(\"a = \" + tag(\"reading\"));\n    System.out.println(\"b = \" + tag(\"pumpkin\"));\n    System.out.println(\"c = \" + tag(\"ring\"));\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "a = verb\nb = long\nc = verb"
+      },
+      {
+        "type": "code",
+        "text": "a = verb\nb = long\nc = short"
+      },
+      {
+        "type": "code",
+        "text": "a = verb\nb = short\nc = verb"
+      },
+      {
+        "type": "code",
+        "text": "a = long\nb = long\nc = verb"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "أمر ‏return ينهي الدالة، ولذلك الشرط الأول الذي يتحقق يحدد النتيجة. الكلمة ‏ring قصيرة، لكنها تنتهي بـ‏ing."
+      },
+      {
+        "type": "code",
+        "text": "tag(\"reading\")    // ends with ing  -> verb\ntag(\"pumpkin\")    // length 7 > 5  -> long\ntag(\"ring\")       // ends with ing  -> verb"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "أمامكم مقطع من توثيق ‏API للدالة ‏endsWith في الفئة ‏String، وتحته برنامج يستخدمها. ما هو ناتج البرنامج؟"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "تتبع: طول فردي",
+    "text": "ما هو ناتج البرنامج التالي؟",
+    "code": "public static void main(String [] args) {\n    String s = \"chocolate\";\n    int n = s.length();\n    String a = s.substring(n / 2);\n    String b = s.substring(0, n / 2);\n    s = a.replace('o', '0') + b.charAt(0);\n    System.out.println(\"s = \" + s);\n    System.out.println(\"len = \" + s.length());\n}",
+    "options": [
+      {
+        "type": "code",
+        "text": "s = 0latec\nlen = 6"
+      },
+      {
+        "type": "code",
+        "text": "s = latec\nlen = 5"
+      },
+      {
+        "type": "code",
+        "text": "s = 0latechoc\nlen = 9"
+      },
+      {
+        "type": "code",
+        "text": "s = 0late\nlen = 5"
+      }
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "قسمة صحيحة لـ 9 على 2 تعطي 4، لذلك النصف الثاني أطول ويبدأ بالحرف ‏o. وينضم إليه فقط الحرف الأول من النصف الأول."
+      },
+      {
+        "type": "code",
+        "text": "n / 2                     // 9 / 2 = 4\na = s.substring(4)        // olate\nb = s.substring(0, 4)     // choc\na.replace('o', '0')       // 0late\n... + b.charAt(0)         // 0latec"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "ما هو ناتج البرنامج التالي؟"
+      }
+    ]
+  },
+  {
+    "type": "gapselect",
+    "topic": "دالة تُرجع الحرف الأوسط",
+    "text": "إليك مخرجات البرنامج:",
+    "output": "m1 = a\nm2 = y",
+    "text2": "أكمل البرنامج ليُنتج المخرجات المطلوبة:",
+    "codeLines": [
+      "public static [[1]] middle(String s) {",
+      "    return s.[[2]](s.length() [[3]] 2);",
+      "}",
+      "",
+      "public static void main(String [] args) {",
+      "    System.out.println(\"m1 = \" + middle(\"pirates\"));",
+      "    System.out.println(\"m2 = \" + middle(\"kayak\"));",
+      "}"
+    ],
+    "gaps": [
+      {
+        "id": 1,
+        "options": [
+          "char",
+          "String",
+          "int",
+          "void"
+        ],
+        "answer": "char"
+      },
+      {
+        "id": 2,
+        "options": [
+          "charAt",
+          "substring",
+          "indexOf",
+          "length"
+        ],
+        "answer": "charAt"
+      },
+      {
+        "id": 3,
+        "options": [
+          "/",
+          "%",
+          "*",
+          "-"
+        ],
+        "answer": "/"
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "في كلمة ذات طول فردي، نصف الطول في القسمة الصحيحة هو بالضبط فهرس الحرف الأوسط. الدالة تُرجع ‏char، ولذلك يُطبع الحرف وليس قيمة ‏ASCII الخاصة به."
+      },
+      {
+        "type": "code",
+        "text": "middle(\"pirates\")    // 7 / 2 = 3 -> charAt(3) = a\nmiddle(\"kayak\")      // 5 / 2 = 2 -> charAt(2) = y"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "إليك مخرجات البرنامج:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "أي إدخال ينتج المخرجات",
+    "text": "فيما يلي المخرجات المطلوبة:",
+    "output": "el*v*n",
+    "text2": "في أي استدعاء يجب استبدال التعليق للحصول على هذه المخرجات؟",
+    "code": "public static String f(String s) {\n    String t = s.substring(0, 1);\n    return t + s.substring(1).replace(s.charAt(0), '*');\n}\n\npublic static void main(String [] args) {\n    System.out.println( /* call */ );\n}",
+    "options": [
+      "f(\"eleven\")",
+      "f(\"eeleven\")",
+      "f(\"leven\")",
+      "f(\"elevens\")"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الحرف الأول يبقى كما هو، وفي باقي السلسلة يتم استبدال كل ظهور له بنجمة. في برنامج حقيقي، من الأفضل إعطاء الدالة اسمًا ذا معنى."
+      },
+      {
+        "type": "code",
+        "text": "f(\"eleven\")     // e + l*v*n  -> el*v*n\nf(\"eeleven\")    // e + *l*v*n -> e*l*v*n\nf(\"leven\")      // no other l -> leven\nf(\"elevens\")    // el*v*ns"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "فيما يلي المخرجات المطلوبة:"
+      }
+    ]
+  },
+  {
+    "type": "multichoice",
+    "topic": "تحديد الخطأ: طول لم يتم تحديثه",
+    "text": "بالنسبة للمدخل في التعليق، هذا هو المخرج المطلوب:",
+    "output": "rest = range\nlast = e",
+    "text2": "لكن البرنامج يفشل أثناء التشغيل. أي سطر، بدلاً من السطر المحدد، يصلحه؟",
+    "code": "// input line:  orange\npublic static void main(String [] args) {\n    Scanner scan = new Scanner(System.in);\n    String s = scan.next();\n    int len = s.length();\n    s = s.substring(1);\n    char last = s.charAt(len - 1);    // marked line\n    System.out.println(\"rest = \" + s);\n    System.out.println(\"last = \" + last);\n}",
+    "options": [
+      "char last = s.charAt(s.length() - 1);",
+      "char last = s.charAt(len);",
+      "char last = s.charAt(s.length());",
+      "char last = s.charAt(s.length() - 2);"
+    ],
+    "answer": 0,
+    "explanation": [
+      {
+        "type": "he",
+        "text": "المتغير len احتفظ بالطول الأصلي، لكن بعد substring السلسلة أصبحت أقصر. يجب حساب الطول مرة أخرى من السلسلة الحالية."
+      },
+      {
+        "type": "code",
+        "text": "len = 6;               // orange\ns = s.substring(1);    // range, length 5\ns.charAt(5)            // runtime error\ns.charAt(4)            // e"
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "بالنسبة للمدخل في التعليق، هذا هو المخرج المطلوب:"
+      }
+    ]
+  },
+  {
+    "type": "cloze",
+    "topic": "دالة تُرجع الأحرف الأولى",
+    "text": "إليك ناتج البرنامج:",
+    "output": "D.L.\nn.c.",
+    "text2": "أكمل البرنامج بحيث يتم تجميعه وينتج النتيجة المطلوبة:",
+    "codeLines": [
+      {
+        "before": "public class Names {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    public static ",
+        "blank": {
+          "options": [
+            "String",
+            "char",
+            "int",
+            "void"
+          ],
+          "answer": "String"
+        },
+        "after": " initials(String first, String last) {"
+      },
+      {
+        "before": "        return ",
+        "blank": {
+          "options": [
+            "first.charAt(0) + \".\" + last.charAt(0) + \".\";",
+            "first.charAt(0) + last.charAt(0) + \"..\";",
+            "first.charAt(1) + \".\" + last.charAt(1) + \".\";",
+            "\".\" + first.charAt(0) + \".\" + last.charAt(0);"
+          ],
+          "answer": "first.charAt(0) + \".\" + last.charAt(0) + \".\";"
+        },
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    public static void main(String [] args) {",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(initials(\"Dana\", \"Levi\"));",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "        System.out.println(initials(\"noa\", \"cohen\"));",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "    }",
+        "blank": null,
+        "after": ""
+      },
+      {
+        "before": "}",
+        "blank": null,
+        "after": ""
+      }
+    ],
+    "explanation": [
+      {
+        "type": "he",
+        "text": "الربط من اليسار إلى اليمين: حرف زائد سلسلة يعطي سلسلة. يتم دمج حرفين متجاورين في بداية التعبير كأرقام، والنتيجة سلسلة ولذلك النوع المرجع هو String."
+      },
+      {
+        "type": "code",
+        "text": "'D' + \".\" + 'L' + \".\"     // \"D.L.\"\n'D' + 'L' + \"..\"         // 68 + 76 = 144 -> \"144..\""
+      }
+    ],
+    "textParts": [
+      {
+        "type": "he",
+        "text": "إليك ناتج البرنامج:"
+      }
+    ]
+  }
+];
+
+    /* ══════════════════════════════════════════════════════════════
+       לוגיקה — אין צורך לשנות כלום מכאן והלאה
+    ══════════════════════════════════════════════════════════════ */
+
+    const ui = {
+      he: {
+        next: (c, t) => c === t - 1 ? 'סיום וראה ציון' : 'לשאלה הבאה',
+        scoreLabel: s => s >= 8 ? 'מצוין!' : s >= 6 ? 'טוב מאוד!' : s >= 4 ? 'לא רע, כדאי לחזור על החומר' : 'כדאי לחזור על החומר',
+        restart: 'התחל מחדש',
+        home: 'חזור לתפריט',
+        qOf: (c, t) => `שאלה ${c} מתוך ${t}`,
+        check: 'בדוק תשובות',
+        mustAnswer: 'יש לבחור תשובה בכל התיבות'
+      },
+      ar: {
+        next: (c, t) => c === t - 1 ? 'إنهاء وعرض النتيجة' : 'السؤال التالي',
+        scoreLabel: s => s >= 8 ? 'ممتاز!' : s >= 6 ? 'جيد جداً!' : s >= 4 ? 'لا بأس، يُنصح بمراجعة المادة' : 'يُنصح بمراجعة المادة',
+        restart: 'ابدأ من جديد',
+        home: 'العودة للقائمة',
+        qOf: (c, t) => `سؤال ${c} من ${t}`,
+        check: 'تحقق من الإجابات',
+        mustAnswer: 'يجب اختيار إجابة في كل الخانات'
+      }
+    };
+
+    /* ── עזרים ── */
+
+    function escHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function shuffleArr(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /* ── הכנת שאלות: סדר קבוע, ערבוב אפשרויות בלבד ── */
+
+    function prepMultichoice(q) {
+      const idxs = shuffleArr(q.options.map((_, i) => i));
+      return {
+        ...q,
+        options: idxs.map(i => q.options[i]),
+        answer:  idxs.indexOf(q.answer)
+      };
+    }
+
+    function prepGapselect(q) {
+      return {
+        ...q,
+        gaps: q.gaps.map(g => ({ ...g, options: shuffleArr(g.options) }))
+      };
+    }
+
+    function prepCloze(q) {
+      return {
+        ...q,
+        codeLines: q.codeLines.map(line =>
+          line.blank
+            ? { ...line, blank: { ...line.blank, options: shuffleArr(line.blank.options) } }
+            : line
+        )
+      };
+    }
+
+    function prepareQuiz(questions) {
+      return questions.map(q => {
+        if (q.type === 'gapselect') return prepGapselect(q);
+        if (q.type === 'cloze')     return prepCloze(q);
+        // ברירת מחדל: multichoice (גם שאלות ישנות ללא שדה type)
+        if (q.options) return prepMultichoice(q);
+        return q;
+      });
+    }
+
+    /* ── מצב ── */
+
+    const quiz  = { he: [], ar: [] };
+    const state = { he: { current: 0, score: 0 }, ar: { current: 0, score: 0 } };
+
+    function startQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      document.getElementById('screen-home').style.display = 'none';
+      document.getElementById(`screen-${lang}`).style.display = 'block';
+      render(lang);
+    }
+
+    function goHome() {
+      document.getElementById('screen-he').style.display = 'none';
+      document.getElementById('screen-ar').style.display = 'none';
+      document.getElementById('screen-home').style.display = 'flex';
+    }
+
+    function restartQuiz(lang) {
+      const src = lang === 'he' ? questionsHe : questionsAr;
+      quiz[lang] = prepareQuiz(src);
+      state[lang] = { current: 0, score: 0 };
+      render(lang);
+    }
+
+    function nextQ(lang) { state[lang].current++; render(lang); }
+
+    /* ── בניית טקסטים ── */
+
+    function buildText(text) {
+      if (!text) return '';
+      return String(text).split('\n').map(line =>
+        `<span class="q-text-line">${escHtml(line)}</span>`
+      ).join('');
+    }
+
+    function buildExplanation(lines) {
+      return (lines || []).map(l =>
+        l.type === 'code'
+          ? `<span class="exp-code">${escHtml(l.text)}</span>`
+          : `<span class="exp-line">${escHtml(l.text)}</span>`
+      ).join('');
+    }
+
+    function buildOption(o) {
+      // אפשרות מסוג קוד — תומכת בירידות שורה ורווחים
+      if (typeof o === 'object' && o !== null && o.type === 'code') {
+        return `<span class="opt-code">${escHtml(o.text).replace(/\n/g, '<br>')}</span>`;
+      }
+      const text = typeof o === 'string' ? o : String(o);
+      const clean = text.replace(/\u200f/g, '').trim();
+      // עברית או ערבית — RTL
+      const isRtl = /^[\u0590-\u05FF\u0600-\u06FF\uFB1D-\uFB4F]/.test(clean);
+      if (isRtl) {
+        return `<span class="opt-text-he">${escHtml(text)}</span>`;
+      }
+      // קוד / אנגלית — LTR
+      return `<span class="opt-code" style="background:none;padding:0;">${escHtml(text)}</span>`;
+    }
+
+    /* ── רינדור ראשי ── */
+
+    function render(lang) {
+      const questions = quiz[lang];
+      const s = state[lang], t = ui[lang], total = questions.length;
+      const app = document.getElementById(`app-${lang}`);
+
+      if (s.current >= total) {
+        app.innerHTML = `<div class="score-box">
+          <div class="score-num">${s.score}/${total}</div>
+          <div class="score-label">${t.scoreLabel(s.score)}</div>
+          <div class="score-actions">
+            <button class="restart-btn" onclick="restartQuiz('${lang}')">${t.restart}</button>
+            <button class="home-return-btn" onclick="goHome()">${t.home}</button>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const q   = questions[s.current];
+      const pct = (s.current / total * 100).toFixed(0);
+
+      let bodyHTML = '';
+      if      (q.type === 'gapselect') bodyHTML = renderGapselect(q, lang);
+      else if (q.type === 'cloze')     bodyHTML = renderCloze(q, lang);
+      else                             bodyHTML = renderMultichoice(q, lang);
+
+      const outputBlock = q.output
+        ? `<div class="output-block">${escHtml(q.output)}</div>`
+        : '';
+      const text2Block = q.text2
+        ? `<div class="q-text">${buildText(q.text2)}</div>`
+        : '';
+
+      app.innerHTML = `
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+        <div class="q-card">
+          <div class="q-meta">
+            <span class="q-num-badge">${t.qOf(s.current + 1, total)}</span>
+            <span class="q-topic">${escHtml(q.topic || '')}</span>
+          </div>
+          <div class="q-text">${buildText(q.text)}</div>
+          ${outputBlock}
+          ${text2Block}
+          ${bodyHTML}
+          <div class="explanation" id="exp-${lang}">${buildExplanation(q.explanation)}</div>
+          <button class="next-btn" id="nxt-${lang}" onclick="nextQ('${lang}')">${t.next(s.current, total)}</button>
+        </div>`;
+    }
+
+    function showExplanation(lang, correct) {
+      document.getElementById(`exp-${lang}`).classList.add('show');
+      document.getElementById(`nxt-${lang}`).classList.add('show');
+      if (correct) state[lang].score++;
+    }
+
+    /* ── multichoice ── */
+
+    function renderMultichoice(q, lang) {
+      const letters = lang === 'he' ? ['א', 'ב', 'ג', 'ד', 'ה'] : ['أ', 'ب', 'ج', 'د', 'هـ'];
+      const codeBlock = q.code
+        ? `<div class="code-block">${escHtml(q.code)}</div>`
+        : '';
+      const opts = q.options.map((o, i) =>
+        `<button class="opt" onclick="chooseOpt('${lang}',${i})">
+           <span class="opt-letter">${letters[i]}.</span>${buildOption(o)}
+         </button>`
+      ).join('');
+      return `${codeBlock}<div class="options" id="opts-${lang}">${opts}</div>`;
+    }
+
+    function chooseOpt(lang, idx) {
+      const q    = quiz[lang][state[lang].current];
+      const opts = document.querySelectorAll(`#opts-${lang} .opt`);
+      opts.forEach(o => o.classList.add('disabled'));
+      const correct = (idx === q.answer);
+      opts[idx].classList.add(correct ? 'correct' : 'wrong');
+      if (!correct) opts[q.answer].classList.add('correct');
+      showExplanation(lang, correct);
+    }
+
+    /* ── gapselect ── */
+
+    function renderGapselect(q, lang) {
+      const gapMap = {};
+      q.gaps.forEach(g => { gapMap[g.id] = g; });
+
+      const lines = q.codeLines.map(line => {
+        const replaced = escHtml(line).replace(/\[\[(\d+)\]\]/g, (_, id) => {
+          const gap = gapMap[parseInt(id)];
+          const opts = ['<option value="" selected disabled>?</option>']
+            .concat(gap.options.map(o => `<option value="${escHtml(o)}">${escHtml(o)}</option>`))
+            .join('');
+          return `<select class="gap-select" id="gap-${lang}-${id}">${opts}</select>`;
+        });
+        return `<span class="code-line">${replaced}</span>`;
+      }).join('');
+
+      return `
+        <div class="gap-code-block">${lines}</div>
+        <button class="gap-check-btn" id="gap-check-${lang}" onclick="checkGaps('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkGaps(lang) {
+      const q = quiz[lang][state[lang].current];
+      const unanswered = q.gaps.some(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      q.gaps.forEach(gap => {
+        const sel = document.getElementById(`gap-${lang}-${gap.id}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === gap.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`gap-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+    /* ── cloze ── */
+
+    function renderCloze(q, lang) {
+      const lines = q.codeLines.map((line, li) => {
+        if (!line.blank) {
+          return `<span class="cloze-line">${escHtml(line.before)}${escHtml(line.after)}</span>`;
+        }
+        const id = `cloze-${lang}-${li}`;
+        const opts = ['<option value="" selected disabled>?</option>']
+          .concat(line.blank.options.map(o =>
+            `<option value="${escHtml(o)}">${escHtml(o)}</option>`
+          )).join('');
+        return `<span class="cloze-line">${escHtml(line.before)}<select class="cloze-select" id="${id}">${opts}</select>${escHtml(line.after)}</span>`;
+      }).join('');
+
+      return `
+        <div class="cloze-block">${lines}</div>
+        <button class="gap-check-btn" id="cloze-check-${lang}" onclick="checkCloze('${lang}')">${ui[lang].check}</button>`;
+    }
+
+    function checkCloze(lang) {
+      const q = quiz[lang][state[lang].current];
+      const blanks = q.codeLines
+        .map((line, li) => ({ line, li }))
+        .filter(x => x.line.blank);
+
+      const unanswered = blanks.some(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        return sel && sel.value === '';
+      });
+      if (unanswered) { alert(ui[lang].mustAnswer); return; }
+
+      let allCorrect = true;
+      blanks.forEach(x => {
+        const sel = document.getElementById(`cloze-${lang}-${x.li}`);
+        if (!sel) return;
+        sel.disabled = true;
+        if (sel.value === x.line.blank.answer) {
+          sel.classList.add('correct-gap');
+        } else {
+          sel.classList.add('wrong-gap');
+          allCorrect = false;
+        }
+      });
+      document.getElementById(`cloze-check-${lang}`).disabled = true;
+      showExplanation(lang, allCorrect);
+    }
+
+  </script>
+</body>
+
+</html>
