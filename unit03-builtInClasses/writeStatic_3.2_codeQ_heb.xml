@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+<!-- WriteStatic01_Triangle.java -->
+<question type="description">
+    <name>
+      <text>Q1 – static methods – triangle sides</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – שיטות סטטיות – צלעות של משולש</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean isTriangle(int a, int b, int c)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת שלושה אורכים, ומחזירה <code dir="ltr">true</code> אם אפשר לבנות מהם משולש, ו-<code dir="ltr">false</code> אחרת. אפשר לבנות משולש כאשר כל צלע קצרה מסכום שתי הצלעות האחרות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">isTriangle(3, 4, 5) ==> true
+isTriangle(2, 10, 3) ==> false
+isTriangle(1, 2, 3) ==> false</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic01_Triangle.java" download="WriteStatic01_Triangle.java" style="text-decoration: underline;">WriteStatic01_Triangle.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic01_Triangle.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgVHJpYW5nbGUKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBpc1RyaWFuZ2xlKGludCBhLCBpbnQgYiwgaW50IGMpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgdGhyZWUgbGVuZ3RocyBhbmQgcmV0dXJucyB0cnVlIGlmIGEgdHJpYW5nbGUgY2FuIGJlCiAqIGJ1aWx0IGZyb20gdGhlbSwgYW5kIGZhbHNlIG90aGVyd2lzZS4gQSB0cmlhbmdsZSBjYW4gYmUgYnVpbHQgd2hlbiBlYWNoCiAqIHNpZGUgaXMgc2hvcnRlciB0aGFuIHRoZSBzdW0gb2YgdGhlIHR3byBvdGhlciBzaWRlcy4KICoKICogRXhhbXBsZXM6CiAqICAgaXNUcmlhbmdsZSgzLCA0LCA1KSA9PT4gdHJ1ZQogKiAgIGlzVHJpYW5nbGUoMiwgMTAsIDMpID09PiBmYWxzZQogKiAgIGlzVHJpYW5nbGUoMSwgMiwgMykgPT0+IGZhbHNlCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwMV9UcmlhbmdsZSB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBpc1RyaWFuZ2xlKGludCBhLCBpbnQgYiwgaW50IGMpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc1RyaWFuZ2xlKDMsIDQsIDUpID09PiB0cnVlICAgIEFjdHVhbDogIiArIGlzVHJpYW5nbGUoMywgNCwgNSkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNUcmlhbmdsZSgzLCA0LCA1KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNUcmlhbmdsZSgyLCAxMCwgMykgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIGlzVHJpYW5nbGUoMiwgMTAsIDMpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoMiwgMTAsIDMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNUcmlhbmdsZSgxLCAyLCAzKSA9PT4gZmFsc2UgICAgQWN0dWFsOiAiICsgaXNUcmlhbmdsZSgxLCAyLCAzKQogICAgICAgICAgICArICIgICAgIiArIChpc1RyaWFuZ2xlKDEsIDIsIDMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNUcmlhbmdsZSg3LCA3LCA3KSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBpc1RyaWFuZ2xlKDcsIDcsIDcpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoNywgNywgNykgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzVHJpYW5nbGUoMTAsIDIsIDkpID09PiB0cnVlICAgIEFjdHVhbDogIiArIGlzVHJpYW5nbGUoMTAsIDIsIDkpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoMTAsIDIsIDkpID09IHRydWUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc1RyaWFuZ2xlKDUsIDEsIDMpID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc1RyaWFuZ2xlKDUsIDEsIDMpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoNSwgMSwgMykgPT0gZmFsc2UgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic02_RoundTen.java -->
+<question type="description">
+    <name>
+      <text>Q2 – static methods – round to ten</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – שיטות סטטיות – עיגול לעשרות</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int roundToTen(int num)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מספר שלם חיובי ומחזירה אותו מעוגל לעשרת הקרובה. מספר שספרת האחדות שלו 5 מעוגל כלפי מעלה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">roundToTen(47) ==> 50
+roundToTen(43) ==> 40
+roundToTen(45) ==> 50</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic02_RoundTen.java" download="WriteStatic02_RoundTen.java" style="text-decoration: underline;">WriteStatic02_RoundTen.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic02_RoundTen.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUm91bmQgVGVuCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGludCByb3VuZFRvVGVuKGludCBudW0pCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgYSBwb3NpdGl2ZSB3aG9sZSBudW1iZXIgYW5kIHJldHVybnMgaXQgcm91bmRlZCB0byB0aGUKICogbmVhcmVzdCB0ZW4uIEEgbnVtYmVyIHdob3NlIHVuaXRzIGRpZ2l0IGlzIDUgaXMgcm91bmRlZCB1cC4KICoKICogRXhhbXBsZXM6CiAqICAgcm91bmRUb1Rlbig0NykgPT0+IDUwCiAqICAgcm91bmRUb1Rlbig0MykgPT0+IDQwCiAqICAgcm91bmRUb1Rlbig0NSkgPT0+IDUwCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwMl9Sb3VuZFRlbiB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgaW50IHJvdW5kVG9UZW4oaW50IG51bSkgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gMDsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0NykgPT0+IDUwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDcpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDcpID09IDUwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0MykgPT0+IDQwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDMpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDMpID09IDQwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0NSkgPT0+IDUwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDUpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDUpID09IDUwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0MCkgPT0+IDQwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDApCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDApID09IDQwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig1KSA9PT4gMTAgICAgQWN0dWFsOiAiICsgcm91bmRUb1Rlbig1KQogICAgICAgICAgICArICIgICAgIiArIChyb3VuZFRvVGVuKDUpID09IDEwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig5OTUpID09PiAxMDAwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oOTk1KQogICAgICAgICAgICArICIgICAgIiArIChyb3VuZFRvVGVuKDk5NSkgPT0gMTAwMCA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInJvdW5kVG9UZW4oOTk0KSA9PT4gOTkwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oOTk0KQogICAgICAgICAgICArICIgICAgIiArIChyb3VuZFRvVGVuKDk5NCkgPT0gOTkwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic03_DaysInMonth.java -->
+<question type="description">
+    <name>
+      <text>Q3 – static methods – days in month</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – שיטות סטטיות – ימים בחודש</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int daysInMonth(int month)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מספר של חודש, מ-1 עד 12, ומחזירה את מספר הימים בחודש הזה בשנה רגילה, שאינה מעוברת.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">daysInMonth(1) ==> 31
+daysInMonth(2) ==> 28
+daysInMonth(4) ==> 30</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic03_DaysInMonth.java" download="WriteStatic03_DaysInMonth.java" style="text-decoration: underline;">WriteStatic03_DaysInMonth.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic03_DaysInMonth.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgRGF5cyBJbiBNb250aAogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBpbnQgZGF5c0luTW9udGgoaW50IG1vbnRoKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIHRoZSBudW1iZXIgb2YgYSBtb250aCwgZnJvbSAxIHRvIDEyLCBhbmQgcmV0dXJucyB0aGUKICogbnVtYmVyIG9mIGRheXMgaW4gdGhhdCBtb250aCBpbiBhIHJlZ3VsYXIgKG5vbiBsZWFwKSB5ZWFyLgogKgogKiBFeGFtcGxlczoKICogICBkYXlzSW5Nb250aCgxKSA9PT4gMzEKICogICBkYXlzSW5Nb250aCgyKSA9PT4gMjgKICogICBkYXlzSW5Nb250aCg0KSA9PT4gMzAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzAzX0RheXNJbk1vbnRoIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBpbnQgZGF5c0luTW9udGgoaW50IG1vbnRoKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAwOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgxKSA9PT4gMzEgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoMSkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoMSkgPT0gMzEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgyKSA9PT4gMjggICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoMikKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoMikgPT0gMjggPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg0KSA9PT4gMzAgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoNCkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoNCkgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg2KSA9PT4gMzAgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoNikKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoNikgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg4KSA9PT4gMzEgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoOCkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoOCkgPT0gMzEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg5KSA9PT4gMzAgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoOSkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoOSkgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgxMSkgPT0+IDMwICAgIEFjdHVhbDogIiArIGRheXNJbk1vbnRoKDExKQogICAgICAgICAgICArICIgICAgIiArIChkYXlzSW5Nb250aCgxMSkgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgxMikgPT0+IDMxICAgIEFjdHVhbDogIiArIGRheXNJbk1vbnRoKDEyKQogICAgICAgICAgICArICIgICAgIiArIChkYXlzSW5Nb250aCgxMikgPT0gMzEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic04_Buses.java -->
+<question type="description">
+    <name>
+      <text>Q4 – static methods – buses</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – שיטות סטטיות – אוטובוסים לטיול</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int buses(int students, int capacity)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מספר תלמידים ואת מספר המקומות באוטובוס, ומחזירה כמה אוטובוסים דרושים כדי להסיע את כל התלמידים.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+כתבו גם תוכנית ראשית הקולטת את מספר התלמידים בשתי שכבות ואת מספר המקומות באוטובוס. כל שכבה נוסעת באוטובוסים משלה. התוכנית מדפיסה כמה אוטובוסים דרושים לכל שכבה וכמה בסך הכול. השתמשו בשיטה שכתבתם.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">120
+95
+50</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Students in grade 10: 120
+Students in grade 11: 95
+Seats in a bus: 50
+Buses for grade 10: 3
+Buses for grade 11: 2
+Total buses: 5</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">100
+51
+50</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Students in grade 10: 100
+Students in grade 11: 51
+Seats in a bus: 50
+Buses for grade 10: 2
+Buses for grade 11: 2
+Total buses: 4</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic04_Buses.java" download="WriteStatic04_Buses.java" style="text-decoration: underline;">WriteStatic04_Buses.java</a></strong> לסביבת העבודה, השלימו את השיטה, כתבו את התוכנית הראשית והריצו אותה.
+</p>]]></text>
+      <file name="WriteStatic04_Buses.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQnVzZXMKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgaW50IGJ1c2VzKGludCBzdHVkZW50cywgaW50IGNhcGFjaXR5KQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIGEgbnVtYmVyIG9mIHN0dWRlbnRzIGFuZCB0aGUgbnVtYmVyIG9mIHNlYXRzIGluIGEgYnVzLAogKiBhbmQgcmV0dXJucyBob3cgbWFueSBidXNlcyBhcmUgbmVlZGVkIHRvIHRha2UgYWxsIHRoZSBzdHVkZW50cy4KICoKICogQWxzbyB3cml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBudW1iZXIgb2Ygc3R1ZGVudHMgaW4gdHdvIGdyYWRlcwogKiBhbmQgdGhlIG51bWJlciBvZiBzZWF0cyBpbiBhIGJ1cy4gRWFjaCBncmFkZSB0cmF2ZWxzIGluIGl0cyBvd24gYnVzZXMuCiAqIFRoZSBwcm9ncmFtIHByaW50cyBob3cgbWFueSBidXNlcyBlYWNoIGdyYWRlIG5lZWRzIGFuZCBob3cgbWFueSBpbiB0b3RhbC4KICogVXNlIHRoZSBtZXRob2QgeW91IHdyb3RlLgogKgogKiBJbnB1dDoKICogICAxMjAKICogICA5NQogKiAgIDUwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBTdHVkZW50cyBpbiBncmFkZSAxMDogMTIwCiAqICAgU3R1ZGVudHMgaW4gZ3JhZGUgMTE6IDk1CiAqICAgU2VhdHMgaW4gYSBidXM6IDUwCiAqICAgQnVzZXMgZm9yIGdyYWRlIDEwOiAzCiAqICAgQnVzZXMgZm9yIGdyYWRlIDExOiAyCiAqICAgVG90YWwgYnVzZXM6IDUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEwMAogKiAgIDUxCiAqICAgNTAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFN0dWRlbnRzIGluIGdyYWRlIDEwOiAxMDAKICogICBTdHVkZW50cyBpbiBncmFkZSAxMTogNTEKICogICBTZWF0cyBpbiBhIGJ1czogNTAKICogICBCdXNlcyBmb3IgZ3JhZGUgMTA6IDIKICogICBCdXNlcyBmb3IgZ3JhZGUgMTE6IDIKICogICBUb3RhbCBidXNlczogNAogKi8KcHVibGljIGNsYXNzIFdyaXRlU3RhdGljMDRfQnVzZXMgewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGludCBidXNlcyhpbnQgc3R1ZGVudHMsIGludCBjYXBhY2l0eSkgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gMDsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFdyaXRlIHRoZSBtYWluIHByb2dyYW0gYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo=</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic05_Season.java -->
+<question type="description">
+    <name>
+      <text>Q5 – static methods – season</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – שיטות סטטיות – עונות השנה</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String season(int month)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מספר של חודש, מ-1 עד 12, ומחזירה את שם העונה שהחודש שייך לה:
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>דצמבר, ינואר ופברואר – <code dir="ltr">Winter</code></li>
+<li>מרץ, אפריל ומאי – <code dir="ltr">Spring</code></li>
+<li>יוני, יולי ואוגוסט – <code dir="ltr">Summer</code></li>
+<li>ספטמבר, אוקטובר ונובמבר – <code dir="ltr">Autumn</code></li>
+</ul>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">season(1) ==> "Winter"
+season(4) ==> "Spring"
+season(12) ==> "Winter"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic05_Season.java" download="WriteStatic05_Season.java" style="text-decoration: underline;">WriteStatic05_Season.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic05_Season.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgU2Vhc29uCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIFN0cmluZyBzZWFzb24oaW50IG1vbnRoKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIHRoZSBudW1iZXIgb2YgYSBtb250aCwgZnJvbSAxIHRvIDEyLCBhbmQgcmV0dXJucyB0aGUKICogbmFtZSBvZiB0aGUgc2Vhc29uIHRoZSBtb250aCBiZWxvbmdzIHRvOgogKiAgIERlY2VtYmVyLCBKYW51YXJ5LCBGZWJydWFyeSAgIC0gV2ludGVyCiAqICAgTWFyY2gsIEFwcmlsLCBNYXkgICAgICAgICAgICAgLSBTcHJpbmcKICogICBKdW5lLCBKdWx5LCBBdWd1c3QgICAgICAgICAgICAtIFN1bW1lcgogKiAgIFNlcHRlbWJlciwgT2N0b2JlciwgTm92ZW1iZXIgIC0gQXV0dW1uCiAqCiAqIEV4YW1wbGVzOgogKiAgIHNlYXNvbigxKSA9PT4gIldpbnRlciIKICogICBzZWFzb24oNCkgPT0+ICJTcHJpbmciCiAqICAgc2Vhc29uKDEyKSA9PT4gIldpbnRlciIKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzA1X1NlYXNvbiB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIHNlYXNvbihpbnQgbW9udGgpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuICIiOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJzZWFzb24oMSkgPT0+IFwiV2ludGVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDEpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNlYXNvbigxKS5lcXVhbHMoIldpbnRlciIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2Vhc29uKDQpID09PiBcIlNwcmluZ1wiICAgIEFjdHVhbDogIiArIHNlYXNvbig0KQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oNCkuZXF1YWxzKCJTcHJpbmciKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNlYXNvbigxMikgPT0+IFwiV2ludGVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDEyKQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oMTIpLmVxdWFscygiV2ludGVyIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJzZWFzb24oMikgPT0+IFwiV2ludGVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNlYXNvbigyKS5lcXVhbHMoIldpbnRlciIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2Vhc29uKDMpID09PiBcIlNwcmluZ1wiICAgIEFjdHVhbDogIiArIHNlYXNvbigzKQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oMykuZXF1YWxzKCJTcHJpbmciKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNlYXNvbig2KSA9PT4gXCJTdW1tZXJcIiAgICBBY3R1YWw6ICIgKyBzZWFzb24oNikKICAgICAgICAgICAgKyAiICAgICIgKyAoc2Vhc29uKDYpLmVxdWFscygiU3VtbWVyIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJzZWFzb24oOCkgPT0+IFwiU3VtbWVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDgpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNlYXNvbig4KS5lcXVhbHMoIlN1bW1lciIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2Vhc29uKDkpID09PiBcIkF1dHVtblwiICAgIEFjdHVhbDogIiArIHNlYXNvbig5KQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oOSkuZXF1YWxzKCJBdXR1bW4iKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNlYXNvbigxMSkgPT0+IFwiQXV0dW1uXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDExKQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oMTEpLmVxdWFscygiQXV0dW1uIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic06_Middle.java -->
+<question type="description">
+    <name>
+      <text>Q6 – static methods – middle number</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – שיטות סטטיות – המספר האמצעי</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int middle(int a, int b, int c)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת שלושה מספרים שלמים, בסדר כלשהו, ומחזירה את המספר האמצעי – זה שנמצא באמצע כשמסדרים את שלושת המספרים מהקטן לגדול.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">middle(7, 2, 5) ==> 5
+middle(10, 30, 20) ==> 20
+middle(4, 4, 9) ==> 4</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic06_Middle.java" download="WriteStatic06_Middle.java" style="text-decoration: underline;">WriteStatic06_Middle.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic06_Middle.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTWlkZGxlCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGludCBtaWRkbGUoaW50IGEsIGludCBiLCBpbnQgYykKICoKICogVGhlIG1ldGhvZCByZWNlaXZlcyB0aHJlZSB3aG9sZSBudW1iZXJzLCBpbiBhbnkgb3JkZXIsIGFuZCByZXR1cm5zIHRoZQogKiBtaWRkbGUgbnVtYmVyIC0gdGhlIG9uZSBpbiB0aGUgbWlkZGxlIHdoZW4gdGhlIHRocmVlIG51bWJlcnMgYXJlIHNvcnRlZAogKiBmcm9tIHRoZSBzbWFsbGVzdCB0byB0aGUgbGFyZ2VzdC4KICoKICogRXhhbXBsZXM6CiAqICAgbWlkZGxlKDcsIDIsIDUpID09PiA1CiAqICAgbWlkZGxlKDEwLCAzMCwgMjApID09PiAyMAogKiAgIG1pZGRsZSg0LCA0LCA5KSA9PT4gNAogKi8KcHVibGljIGNsYXNzIFdyaXRlU3RhdGljMDZfTWlkZGxlIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBpbnQgbWlkZGxlKGludCBhLCBpbnQgYiwgaW50IGMpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBUZXN0cyAtIGRvIG5vdCBjaGFuZ2UKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIm1pZGRsZSg3LCAyLCA1KSA9PT4gNSAgICBBY3R1YWw6ICIgKyBtaWRkbGUoNywgMiwgNSkKICAgICAgICAgICAgKyAiICAgICIgKyAobWlkZGxlKDcsIDIsIDUpID09IDUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtaWRkbGUoMTAsIDMwLCAyMCkgPT0+IDIwICAgIEFjdHVhbDogIiArIG1pZGRsZSgxMCwgMzAsIDIwKQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoMTAsIDMwLCAyMCkgPT0gMjAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtaWRkbGUoNCwgNCwgOSkgPT0+IDQgICAgQWN0dWFsOiAiICsgbWlkZGxlKDQsIDQsIDkpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1pZGRsZSg0LCA0LCA5KSA9PSA0ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibWlkZGxlKDksIDEsIDMpID09PiAzICAgIEFjdHVhbDogIiArIG1pZGRsZSg5LCAxLCAzKQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoOSwgMSwgMykgPT0gMyA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIm1pZGRsZSgtMywgOCwgMikgPT0+IDIgICAgQWN0dWFsOiAiICsgbWlkZGxlKC0zLCA4LCAyKQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoLTMsIDgsIDIpID09IDIgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtaWRkbGUoNSwgOCwgOCkgPT0+IDggICAgQWN0dWFsOiAiICsgbWlkZGxlKDUsIDgsIDgpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1pZGRsZSg1LCA4LCA4KSA9PSA4ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibWlkZGxlKDYsIDYsIDYpID09PiA2ICAgIEFjdHVhbDogIiArIG1pZGRsZSg2LCA2LCA2KQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoNiwgNiwgNikgPT0gNiA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgIH0KfQo=</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic07_Parking.java -->
+<question type="description">
+    <name>
+      <text>Q7 – static methods – parking fee</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – שיטות סטטיות – דמי חניה</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int parkingFee(int minutes)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת את משך החניה בדקות, ומחזירה את התשלום בשקלים לפי הכללים הבאים:
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>השעה הראשונה, או חלק ממנה – 10 שקלים</li>
+<li>כל חצי שעה נוספת, גם אם לא הסתיימה – עוד 6 שקלים</li>
+<li>התשלום לעולם אינו עולה על 50 שקלים</li>
+</ul>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">parkingFee(45) ==> 10
+parkingFee(61) ==> 16
+parkingFee(130) ==> 28
+parkingFee(600) ==> 50</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic07_Parking.java" download="WriteStatic07_Parking.java" style="text-decoration: underline;">WriteStatic07_Parking.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic07_Parking.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUGFya2luZwogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBpbnQgcGFya2luZ0ZlZShpbnQgbWludXRlcykKICoKICogVGhlIG1ldGhvZCByZWNlaXZlcyB0aGUgcGFya2luZyB0aW1lIGluIG1pbnV0ZXMsIGFuZCByZXR1cm5zIHRoZSBmZWUgaW4KICogc2hla2VscyBieSB0aGVzZSBydWxlczoKICogICB0aGUgZmlyc3QgaG91ciwgb3IgcGFydCBvZiBpdCAgICAgICAgICAgIC0gMTAgc2hla2VscwogKiAgIGVhY2ggZXh0cmEgaGFsZiBob3VyLCBldmVuIGlmIG5vdCBlbmRlZCAgLSA2IG1vcmUgc2hla2VscwogKiAgIHRoZSBmZWUgaXMgbmV2ZXIgbW9yZSB0aGFuIDUwIHNoZWtlbHMKICoKICogRXhhbXBsZXM6CiAqICAgcGFya2luZ0ZlZSg0NSkgPT0+IDEwCiAqICAgcGFya2luZ0ZlZSg2MSkgPT0+IDE2CiAqICAgcGFya2luZ0ZlZSgxMzApID09PiAyOAogKiAgIHBhcmtpbmdGZWUoNjAwKSA9PT4gNTAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzA3X1BhcmtpbmcgewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGludCBwYXJraW5nRmVlKGludCBtaW51dGVzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAwOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDQ1KSA9PT4gMTAgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg0NSkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg0NSkgPT0gMTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDYxKSA9PT4gMTYgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg2MSkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg2MSkgPT0gMTYgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDEzMCkgPT0+IDI4ICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoMTMwKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDEzMCkgPT0gMjggPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDYwMCkgPT0+IDUwICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoNjAwKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDYwMCkgPT0gNTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDYwKSA9PT4gMTAgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg2MCkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg2MCkgPT0gMTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDkwKSA9PT4gMTYgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg5MCkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg5MCkgPT0gMTYgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDkxKSA9PT4gMjIgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg5MSkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg5MSkgPT0gMjIgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDI0MCkgPT0+IDQ2ICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoMjQwKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDI0MCkgPT0gNDYgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDI0MSkgPT0+IDUwICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoMjQxKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDI0MSkgPT0gNTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic08_FormatTime.java -->
+<question type="description">
+    <name>
+      <text>Q8 – static methods – clock format</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – שיטות סטטיות – זמן בתבנית שעון</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String formatTime(int seconds)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מספר שניות ומחזירה מחרוזת של הזמן בתבנית שעון: שעות, דקות ושניות מופרדות בנקודתיים, וכל אחת מהן בשתי ספרות.<br>אפשר להניח שמספר השניות הוא בתוך יממה אחת: אינו שלילי וקטן ממספר השניות ביממה שלמה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">formatTime(3725) ==> "01:02:05"
+formatTime(45) ==> "00:00:45"
+formatTime(45296) ==> "12:34:56"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic08_FormatTime.java" download="WriteStatic08_FormatTime.java" style="text-decoration: underline;">WriteStatic08_FormatTime.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic08_FormatTime.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgRm9ybWF0IFRpbWUKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIGZvcm1hdFRpbWUoaW50IHNlY29uZHMpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgYSBudW1iZXIgb2Ygc2Vjb25kcyBhbmQgcmV0dXJucyBhIHN0cmluZyBvZiB0aGUgdGltZSBpbgogKiBjbG9jayBmb3JtYXQ6IGhvdXJzLCBtaW51dGVzIGFuZCBzZWNvbmRzIHNlcGFyYXRlZCBieSBjb2xvbnMsIGVhY2ggb2YgdGhlbQogKiB3aXRoIHR3byBkaWdpdHMuCiAqIFlvdSBtYXkgYXNzdW1lIHRoYXQgdGhlIG51bWJlciBvZiBzZWNvbmRzIGlzIHdpdGhpbiBvbmUgZGF5OiBpdCBpcyBub3QKICogbmVnYXRpdmUgYW5kIGl0IGlzIGxlc3MgdGhhbiB0aGUgbnVtYmVyIG9mIHNlY29uZHMgaW4gYSB3aG9sZSBkYXkuCiAqCiAqIEV4YW1wbGVzOgogKiAgIGZvcm1hdFRpbWUoMzcyNSkgPT0+ICIwMTowMjowNSIKICogICBmb3JtYXRUaW1lKDQ1KSA9PT4gIjAwOjAwOjQ1IgogKiAgIGZvcm1hdFRpbWUoNDUyOTYpID09PiAiMTI6MzQ6NTYiCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwOF9Gb3JtYXRUaW1lIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBTdHJpbmcgZm9ybWF0VGltZShpbnQgc2Vjb25kcykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gIiI7CiAgICB9CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBUZXN0cyAtIGRvIG5vdCBjaGFuZ2UKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImZvcm1hdFRpbWUoMzcyNSkgPT0+IFwiMDE6MDI6MDVcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDM3MjUpCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoMzcyNSkuZXF1YWxzKCIwMTowMjowNSIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZm9ybWF0VGltZSg0NSkgPT0+IFwiMDA6MDA6NDVcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDQ1KQogICAgICAgICAgICArICIgICAgIiArIChmb3JtYXRUaW1lKDQ1KS5lcXVhbHMoIjAwOjAwOjQ1IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJmb3JtYXRUaW1lKDQ1Mjk2KSA9PT4gXCIxMjozNDo1NlwiICAgIEFjdHVhbDogIiArIGZvcm1hdFRpbWUoNDUyOTYpCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoNDUyOTYpLmVxdWFscygiMTI6MzQ6NTYiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImZvcm1hdFRpbWUoMzYwMCkgPT0+IFwiMDE6MDA6MDBcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDM2MDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoMzYwMCkuZXF1YWxzKCIwMTowMDowMCIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZm9ybWF0VGltZSg2MDApID09PiBcIjAwOjEwOjAwXCIgICAgQWN0dWFsOiAiICsgZm9ybWF0VGltZSg2MDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoNjAwKS5lcXVhbHMoIjAwOjEwOjAwIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJmb3JtYXRUaW1lKDg2Mzk5KSA9PT4gXCIyMzo1OTo1OVwiICAgIEFjdHVhbDogIiArIGZvcm1hdFRpbWUoODYzOTkpCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoODYzOTkpLmVxdWFscygiMjM6NTk6NTkiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImZvcm1hdFRpbWUoMCkgPT0+IFwiMDA6MDA6MDBcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoMCkuZXF1YWxzKCIwMDowMDowMCIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic09_TrianglePoints.java -->
+<question type="description">
+    <name>
+      <text>Q9 – static methods – triangle perimeter</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – שיטות סטטיות – היקף משולש במישור</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static double distance(double x1, double y1, double x2, double y2)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת את השיעורים של שתי נקודות במישור, ומחזירה את המרחק ביניהן לפי הנוסחה:
+</p>
+
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">d = √((x2 - x1)² + (y2 - y1)²)</pre>
+
+<p dir="rtl" style="text-align: right;">
+כתבו גם תוכנית ראשית הקולטת את השיעורים של שלושת הקודקודים <code dir="ltr">A</code>, <code dir="ltr">B</code> ו-<code dir="ltr">C</code> של משולש. השיעורים הם מספרים שלמים, ואת שני השיעורים של כל קודקוד מקלידים באותה שורה. התוכנית מדפיסה את שלושת הקודקודים בכתיב המקובל, את אורכי שלוש הצלעות ואת היקף המשולש, כמו בפלט הנדרש. חשבו כל צלע בזימון של השיטה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">0 0
+3 0
+3 4</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Point A (x y): 0 0
+Point B (x y): 3 0
+Point C (x y): 3 4
+Triangle: A(0, 0), B(3, 0), C(3, 4)
+AB = 3.0
+BC = 4.0
+CA = 5.0
+Perimeter = 12.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">1 1
+7 1
+1 9</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Point A (x y): 1 1
+Point B (x y): 7 1
+Point C (x y): 1 9
+Triangle: A(1, 1), B(7, 1), C(1, 9)
+AB = 6.0
+BC = 10.0
+CA = 8.0
+Perimeter = 24.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-2 -1
+1 3
+-2 3</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Point A (x y): -2 -1
+Point B (x y): 1 3
+Point C (x y): -2 3
+Triangle: A(-2, -1), B(1, 3), C(-2, 3)
+AB = 5.0
+BC = 3.0
+CA = 4.0
+Perimeter = 12.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic09_TrianglePoints.java" download="WriteStatic09_TrianglePoints.java" style="text-decoration: underline;">WriteStatic09_TrianglePoints.java</a></strong> לסביבת העבודה, השלימו את השיטה, כתבו את התוכנית הראשית והריצו אותה.
+</p>]]></text>
+      <file name="WriteStatic09_TrianglePoints.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgVHJpYW5nbGUgUG9pbnRzCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGRvdWJsZSBkaXN0YW5jZShkb3VibGUgeDEsIGRvdWJsZSB5MSwgZG91YmxlIHgyLCBkb3VibGUgeTIpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgdGhlIGNvb3JkaW5hdGVzIG9mIHR3byBwb2ludHMgYW5kIHJldHVybnMgdGhlIGRpc3RhbmNlCiAqIGJldHdlZW4gdGhlbToKICogICBkID0gc3FydCgoeDIgLSB4MSkqKHgyIC0geDEpICsgKHkyIC0geTEpKih5MiAtIHkxKSkKICoKICogQWxzbyB3cml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBjb29yZGluYXRlcyBvZiB0aGUgdGhyZWUgdmVydGljZXMKICogQSwgQiBhbmQgQyBvZiBhIHRyaWFuZ2xlLiBUaGUgY29vcmRpbmF0ZXMgYXJlIHdob2xlIG51bWJlcnMsIGFuZCB0aGUgdHdvCiAqIGNvb3JkaW5hdGVzIG9mIGVhY2ggdmVydGV4IGFyZSB0eXBlZCBpbiB0aGUgc2FtZSBsaW5lLiBUaGUgcHJvZ3JhbSBwcmludHMKICogdGhlIHRocmVlIHZlcnRpY2VzIGluIHRoZSB1c3VhbCBub3RhdGlvbiwgdGhlIGxlbmd0aHMgb2YgdGhlIHRocmVlIHNpZGVzIGFuZAogKiB0aGUgcGVyaW1ldGVyIG9mIHRoZSB0cmlhbmdsZSwgYXMgaW4gdGhlIGV4cGVjdGVkIG91dHB1dC4KICogQ2FsY3VsYXRlIGVhY2ggc2lkZSBieSBjYWxsaW5nIHRoZSBtZXRob2QuCiAqCiAqIElucHV0OgogKiAgIDAgMAogKiAgIDMgMAogKiAgIDMgNAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgUG9pbnQgQSAoeCB5KTogMCAwCiAqICAgUG9pbnQgQiAoeCB5KTogMyAwCiAqICAgUG9pbnQgQyAoeCB5KTogMyA0CiAqICAgVHJpYW5nbGU6IEEoMCwgMCksIEIoMywgMCksIEMoMywgNCkKICogICBBQiA9IDMuMAogKiAgIEJDID0gNC4wCiAqICAgQ0EgPSA1LjAKICogICBQZXJpbWV0ZXIgPSAxMi4wCiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICAxIDEKICogICA3IDEKICogICAxIDkKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFBvaW50IEEgKHggeSk6IDEgMQogKiAgIFBvaW50IEIgKHggeSk6IDcgMQogKiAgIFBvaW50IEMgKHggeSk6IDEgOQogKiAgIFRyaWFuZ2xlOiBBKDEsIDEpLCBCKDcsIDEpLCBDKDEsIDkpCiAqICAgQUIgPSA2LjAKICogICBCQyA9IDEwLjAKICogICBDQSA9IDguMAogKiAgIFBlcmltZXRlciA9IDI0LjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIC0yIC0xCiAqICAgMSAzCiAqICAgLTIgMwogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgUG9pbnQgQSAoeCB5KTogLTIgLTEKICogICBQb2ludCBCICh4IHkpOiAxIDMKICogICBQb2ludCBDICh4IHkpOiAtMiAzCiAqICAgVHJpYW5nbGU6IEEoLTIsIC0xKSwgQigxLCAzKSwgQygtMiwgMykKICogICBBQiA9IDUuMAogKiAgIEJDID0gMy4wCiAqICAgQ0EgPSA0LjAKICogICBQZXJpbWV0ZXIgPSAxMi4wCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwOV9UcmlhbmdsZVBvaW50cyB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgZG91YmxlIGRpc3RhbmNlKGRvdWJsZSB4MSwgZG91YmxlIHkxLCBkb3VibGUgeDIsIGRvdWJsZSB5MikgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gMC4wOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gV3JpdGUgdGhlIG1haW4gcHJvZ3JhbSBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic10_LeapYear.java -->
+<question type="description">
+    <name>
+      <text>Q10 – static methods – leap year</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – שיטות סטטיות – שנה מעוברת</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean isLeap(int year)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת שנה ומחזירה <code dir="ltr">true</code> אם זו שנה מעוברת בלוח הלועזי, ו-<code dir="ltr">false</code> אחרת.<br>שנה מעוברת היא שנה שמתחלקת ב-4 אך לא ב-100, אלא אם כן היא מתחלקת גם ב-400. למשל, 2000 היא שנה מעוברת ו-1900 אינה מעוברת.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">isLeap(2028) ==> true
+isLeap(2026) ==> false
+isLeap(2100) ==> false
+isLeap(2000) ==> true</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic10_LeapYear.java" download="WriteStatic10_LeapYear.java" style="text-decoration: underline;">WriteStatic10_LeapYear.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic10_LeapYear.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTGVhcCBZZWFyCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGJvb2xlYW4gaXNMZWFwKGludCB5ZWFyKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIGEgeWVhciBhbmQgcmV0dXJucyB0cnVlIGlmIGl0IGlzIGEgbGVhcCB5ZWFyIGluIHRoZQogKiBHcmVnb3JpYW4gY2FsZW5kYXIsIGFuZCBmYWxzZSBvdGhlcndpc2UuCiAqIEEgbGVhcCB5ZWFyIGlzIGRpdmlzaWJsZSBieSA0IGJ1dCBub3QgYnkgMTAwLCB1bmxlc3MgaXQgaXMgYWxzbyBkaXZpc2libGUgYnkKICogNDAwLiBGb3IgZXhhbXBsZSwgMjAwMCBpcyBhIGxlYXAgeWVhciBhbmQgMTkwMCBpcyBub3QuCiAqCiAqIEV4YW1wbGVzOgogKiAgIGlzTGVhcCgyMDI4KSA9PT4gdHJ1ZQogKiAgIGlzTGVhcCgyMDI2KSA9PT4gZmFsc2UKICogICBpc0xlYXAoMjEwMCkgPT0+IGZhbHNlCiAqICAgaXNMZWFwKDIwMDApID09PiB0cnVlCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMxMF9MZWFwWWVhciB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBpc0xlYXAoaW50IHllYXIpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc0xlYXAoMjAyOCkgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgaXNMZWFwKDIwMjgpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzTGVhcCgyMDI4KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIwMjYpID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjAyNikKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDIwMjYpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIxMDApID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjEwMCkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDIxMDApID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIwMDApID09PiB0cnVlICAgIEFjdHVhbDogIiArIGlzTGVhcCgyMDAwKQogICAgICAgICAgICArICIgICAgIiArIChpc0xlYXAoMjAwMCkgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzTGVhcCgxOTAwKSA9PT4gZmFsc2UgICAgQWN0dWFsOiAiICsgaXNMZWFwKDE5MDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzTGVhcCgxOTAwKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzTGVhcCgyNDAwKSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjQwMCkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDI0MDApID09IHRydWUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc0xlYXAoMTk5NikgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgaXNMZWFwKDE5OTYpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzTGVhcCgxOTk2KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIwMjMpID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjAyMykKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDIwMjMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic11_Palindrome.java -->
+<question type="description">
+    <name>
+      <text>Q11 – static methods – palindrome</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 11 – שיטות סטטיות – מספר פלינדרום</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שתי שיטות סטטיות:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">private static int reverse(int num)
+public static boolean isPalindrome(int num)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">reverse</code> מקבלת מספר תלת-ספרתי ומחזירה את המספר שספרותיו בסדר הפוך. זו שיטת עזר, ולכן היא פרטית – <code dir="ltr">private</code>: אפשר לזמן אותה רק מתוך המחלקה שבה היא כתובה.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">isPalindrome</code> מקבלת מספר תלת-ספרתי ומחזירה <code dir="ltr">true</code> אם הוא פלינדרום – נקרא אותו דבר משמאל לימין ומימין לשמאל – ו-<code dir="ltr">false</code> אחרת. השתמשו בשיטה <code dir="ltr">reverse</code> כדי לכתוב את השיטה <code dir="ltr">isPalindrome</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">reverse(123) ==> 321
+reverse(450) ==> 54
+isPalindrome(727) ==> true
+isPalindrome(723) ==> false</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic11_Palindrome.java" download="WriteStatic11_Palindrome.java" style="text-decoration: underline;">WriteStatic11_Palindrome.java</a></strong> לסביבת העבודה, השלימו את השיטות והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic11_Palindrome.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUGFsaW5kcm9tZQogKgogKiBXcml0ZSB0d28gc3RhdGljIG1ldGhvZHM6CiAqICAgcHJpdmF0ZSBzdGF0aWMgaW50IHJldmVyc2UoaW50IG51bSkKICogICBwdWJsaWMgc3RhdGljIGJvb2xlYW4gaXNQYWxpbmRyb21lKGludCBudW0pCiAqCiAqIFRoZSBtZXRob2QgcmV2ZXJzZSByZWNlaXZlcyBhIHRocmVlIGRpZ2l0IG51bWJlciBhbmQgcmV0dXJucyB0aGUgbnVtYmVyCiAqIHdpdGggaXRzIGRpZ2l0cyBpbiByZXZlcnNlIG9yZGVyLiBJdCBpcyBhIGhlbHBlciBtZXRob2QsIHNvIGl0IGlzIHByaXZhdGU6CiAqIGl0IGNhbiBiZSBjYWxsZWQgb25seSBmcm9tIGluc2lkZSB0aGUgY2xhc3Mgd2hlcmUgaXQgaXMgd3JpdHRlbi4KICogVGhlIG1ldGhvZCBpc1BhbGluZHJvbWUgcmVjZWl2ZXMgYSB0aHJlZSBkaWdpdCBudW1iZXIgYW5kIHJldHVybnMgdHJ1ZSBpZgogKiBpdCBpcyBhIHBhbGluZHJvbWUgLSBpdCByZWFkcyB0aGUgc2FtZSBmcm9tIGxlZnQgdG8gcmlnaHQgYW5kIGZyb20gcmlnaHQKICogdG8gbGVmdCAtIGFuZCBmYWxzZSBvdGhlcndpc2UuCiAqIFVzZSB0aGUgbWV0aG9kIHJldmVyc2UgdG8gd3JpdGUgdGhlIG1ldGhvZCBpc1BhbGluZHJvbWUuCiAqCiAqIEV4YW1wbGVzOgogKiAgIHJldmVyc2UoMTIzKSA9PT4gMzIxCiAqICAgcmV2ZXJzZSg0NTApID09PiA1NAogKiAgIGlzUGFsaW5kcm9tZSg3MjcpID09PiB0cnVlCiAqICAgaXNQYWxpbmRyb21lKDcyMykgPT0+IGZhbHNlCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMxMV9QYWxpbmRyb21lIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2RzIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHByaXZhdGUgc3RhdGljIGludCByZXZlcnNlKGludCBudW0pIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgcHVibGljIHN0YXRpYyBib29sZWFuIGlzUGFsaW5kcm9tZShpbnQgbnVtKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicmV2ZXJzZSgxMjMpID09PiAzMjEgICAgQWN0dWFsOiAiICsgcmV2ZXJzZSgxMjMpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJldmVyc2UoMTIzKSA9PSAzMjEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyZXZlcnNlKDQ1MCkgPT0+IDU0ICAgIEFjdHVhbDogIiArIHJldmVyc2UoNDUwKQogICAgICAgICAgICArICIgICAgIiArIChyZXZlcnNlKDQ1MCkgPT0gNTQgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc1BhbGluZHJvbWUoNzI3KSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBpc1BhbGluZHJvbWUoNzI3KQogICAgICAgICAgICArICIgICAgIiArIChpc1BhbGluZHJvbWUoNzI3KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNQYWxpbmRyb21lKDcyMykgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIGlzUGFsaW5kcm9tZSg3MjMpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzUGFsaW5kcm9tZSg3MjMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicmV2ZXJzZSg3MDcpID09PiA3MDcgICAgQWN0dWFsOiAiICsgcmV2ZXJzZSg3MDcpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJldmVyc2UoNzA3KSA9PSA3MDcgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyZXZlcnNlKDEwMCkgPT0+IDEgICAgQWN0dWFsOiAiICsgcmV2ZXJzZSgxMDApCiAgICAgICAgICAgICsgIiAgICAiICsgKHJldmVyc2UoMTAwKSA9PSAxID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNQYWxpbmRyb21lKDk5OSkgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgaXNQYWxpbmRyb21lKDk5OSkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNQYWxpbmRyb21lKDk5OSkgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzUGFsaW5kcm9tZSgxMDApID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc1BhbGluZHJvbWUoMTAwKQogICAgICAgICAgICArICIgICAgIiArIChpc1BhbGluZHJvbWUoMTAwKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzUGFsaW5kcm9tZSgxMTApID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc1BhbGluZHJvbWUoMTEwKQogICAgICAgICAgICArICIgICAgIiArIChpc1BhbGluZHJvbWUoMTEwKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgIH0KfQo=</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic12_MonthDays.java -->
+<question type="description">
+    <name>
+      <text>Q12 – static methods – days in month and year</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 12 – שיטות סטטיות – ימים בחודש של שנה מסוימת</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שתי שיטות סטטיות:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean isLeap(int year)
+public static int daysInMonth(int month, int year)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">isLeap</code> מקבלת שנה ומחזירה <code dir="ltr">true</code> אם זו שנה מעוברת בלוח הלועזי, ו-<code dir="ltr">false</code> אחרת.<br>שנה מעוברת היא שנה שמתחלקת ב-4 אך לא ב-100, אלא אם כן היא מתחלקת גם ב-400. למשל, 2000 היא שנה מעוברת ו-1900 אינה מעוברת.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">daysInMonth</code> מקבלת מספר של חודש, מ-1 עד 12, ושנה, ומחזירה את מספר הימים בחודש הזה. בפברואר יש 29 ימים בשנה מעוברת ו-28 ימים בשנה רגילה. השיטה <code dir="ltr">daysInMonth</code> צריכה לזמן את השיטה <code dir="ltr">isLeap</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+כתבו גם תוכנית ראשית הקולטת מספר של חודש ושנה, ומדפיסה אם השנה מעוברת ואת מספר הימים בחודש. השתמשו בשתי השיטות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2
+2024</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Month: 2
+Year: 2024
+Leap year: true
+Days: 29</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2
+1900</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Month: 2
+Year: 1900
+Leap year: false
+Days: 28</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">9
+2000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Month: 9
+Year: 2000
+Leap year: true
+Days: 30</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic12_MonthDays.java" download="WriteStatic12_MonthDays.java" style="text-decoration: underline;">WriteStatic12_MonthDays.java</a></strong> לסביבת העבודה, השלימו את השיטות, כתבו את התוכנית הראשית והריצו אותה.
+</p>]]></text>
+      <file name="WriteStatic12_MonthDays.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTW9udGggRGF5cwogKgogKiBXcml0ZSB0d28gc3RhdGljIG1ldGhvZHM6CiAqICAgcHVibGljIHN0YXRpYyBib29sZWFuIGlzTGVhcChpbnQgeWVhcikKICogICBwdWJsaWMgc3RhdGljIGludCBkYXlzSW5Nb250aChpbnQgbW9udGgsIGludCB5ZWFyKQogKgogKiBUaGUgbWV0aG9kIGlzTGVhcCByZWNlaXZlcyBhIHllYXIgYW5kIHJldHVybnMgdHJ1ZSBpZiBpdCBpcyBhIGxlYXAgeWVhciBpbgogKiB0aGUgR3JlZ29yaWFuIGNhbGVuZGFyLCBhbmQgZmFsc2Ugb3RoZXJ3aXNlLgogKiBBIGxlYXAgeWVhciBpcyBkaXZpc2libGUgYnkgNCBidXQgbm90IGJ5IDEwMCwgdW5sZXNzIGl0IGlzIGFsc28gZGl2aXNpYmxlIGJ5CiAqIDQwMC4gRm9yIGV4YW1wbGUsIDIwMDAgaXMgYSBsZWFwIHllYXIgYW5kIDE5MDAgaXMgbm90LgogKiBUaGUgbWV0aG9kIGRheXNJbk1vbnRoIHJlY2VpdmVzIHRoZSBudW1iZXIgb2YgYSBtb250aCwgZnJvbSAxIHRvIDEyLCBhbmQgYQogKiB5ZWFyLCBhbmQgcmV0dXJucyB0aGUgbnVtYmVyIG9mIGRheXMgaW4gdGhhdCBtb250aC4gRmVicnVhcnkgaGFzIDI5IGRheXMKICogaW4gYSBsZWFwIHllYXIgYW5kIDI4IGRheXMgaW4gYSByZWd1bGFyIHllYXIuCiAqIFRoZSBtZXRob2QgZGF5c0luTW9udGggbXVzdCBjYWxsIHRoZSBtZXRob2QgaXNMZWFwLgogKgogKiBBbHNvIHdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIG51bWJlciBvZiBhIG1vbnRoIGFuZCBhIHllYXIsIGFuZAogKiBwcmludHMgd2hldGhlciB0aGUgeWVhciBpcyBhIGxlYXAgeWVhciBhbmQgdGhlIG51bWJlciBvZiBkYXlzIGluIHRoZSBtb250aC4KICogVXNlIGJvdGggbWV0aG9kcy4KICoKICogSW5wdXQ6CiAqICAgMgogKiAgIDIwMjQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIE1vbnRoOiAyCiAqICAgWWVhcjogMjAyNAogKiAgIExlYXAgeWVhcjogdHJ1ZQogKiAgIERheXM6IDI5CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICAyCiAqICAgMTkwMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgTW9udGg6IDIKICogICBZZWFyOiAxOTAwCiAqICAgTGVhcCB5ZWFyOiBmYWxzZQogKiAgIERheXM6IDI4CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA5CiAqICAgMjAwMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgTW9udGg6IDkKICogICBZZWFyOiAyMDAwCiAqICAgTGVhcCB5ZWFyOiB0cnVlCiAqICAgRGF5czogMzAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzEyX01vbnRoRGF5cyB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kcyBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGJvb2xlYW4gaXNMZWFwKGludCB5ZWFyKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0KCiAgICBwdWJsaWMgc3RhdGljIGludCBkYXlzSW5Nb250aChpbnQgbW9udGgsIGludCB5ZWFyKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAwOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gV3JpdGUgdGhlIG1haW4gcHJvZ3JhbSBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic13_Quiz.java -->
+<question type="description">
+    <name>
+      <text>Q13 – static methods – multiplication quiz</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 13 – שיטות סטטיות – בוחן בלוח הכפל</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean ask(int a, int b)</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>חלק א׳ – השיטה</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת שני מספרים שלמים ומציגה למשתמש את תרגיל הכפל שלהם. השיטה קולטת את התשובה של המשתמש, מדפיסה אם היא נכונה, ומחזירה <code dir="ltr">true</code> אם התשובה נכונה ו-<code dir="ltr">false</code> אחרת. הקליטה נעשית בתוך השיטה.
+</p>
+
+<p dir="rtl" style="text-align: right;">הזימון <code dir="ltr">ask(7, 8)</code>, כשהמשתמש מקליד 56, מדפיס את השורות הבאות ומחזיר <code dir="ltr">true</code>:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 56
+Correct</pre>
+
+<p dir="rtl" style="text-align: right;">אותו זימון, כשהמשתמש מקליד 54, מדפיס את השורות הבאות ומחזיר <code dir="ltr">false</code>:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 54
+Wrong, the answer is 56</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>חלק ב׳ – התוכנית הראשית</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית שמזמנת את השיטה שלוש פעמים, בסדר הזה:
+</p>
+
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">ask(7, 8)
+ask(6, 9)
+ask(12, 12)</pre>
+
+<p dir="rtl" style="text-align: right;">
+בכל זימון המשתמש מקליד את התשובה שלו לתרגיל. בסוף התוכנית מדפיסה כמה תשובות נכונות היו.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">56
+54
+144</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 56
+Correct
+6 x 9 = 54
+Correct
+12 x 12 = 144
+Correct
+Score: 3 out of 3</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">56
+45
+124</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 56
+Correct
+6 x 9 = 45
+Wrong, the answer is 54
+12 x 12 = 124
+Wrong, the answer is 144
+Score: 1 out of 3</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic13_Quiz.java" download="WriteStatic13_Quiz.java" style="text-decoration: underline;">WriteStatic13_Quiz.java</a></strong> לסביבת העבודה, השלימו את השיטה, כתבו את התוכנית הראשית והריצו אותה.
+</p>]]></text>
+      <file name="WriteStatic13_Quiz.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUXVpegogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBib29sZWFuIGFzayhpbnQgYSwgaW50IGIpCiAqCiAqIFBhcnQgMSAtIHRoZSBtZXRob2QKICogVGhlIG1ldGhvZCByZWNlaXZlcyB0d28gd2hvbGUgbnVtYmVycyBhbmQgc2hvd3MgdGhlIHVzZXIgdGhlaXIKICogbXVsdGlwbGljYXRpb24gZXhlcmNpc2UuIFRoZSBtZXRob2QgcmVhZHMgdGhlIHVzZXIncyBhbnN3ZXIsIHByaW50cyB3aGV0aGVyCiAqIGl0IGlzIGNvcnJlY3QsIGFuZCByZXR1cm5zIHRydWUgaWYgdGhlIGFuc3dlciBpcyBjb3JyZWN0IGFuZCBmYWxzZSBvdGhlcndpc2UuCiAqIFRoZSBpbnB1dCBpcyByZWFkIGluc2lkZSB0aGUgbWV0aG9kLgogKgogKiBUaGUgY2FsbCBhc2soNywgOCksIHdoZW4gdGhlIHVzZXIgdHlwZXMgNTYsIHByaW50cyBhbmQgcmV0dXJucyB0cnVlOgogKiAgIDcgeCA4ID0gNTYKICogICBDb3JyZWN0CiAqCiAqIFRoZSBzYW1lIGNhbGwsIHdoZW4gdGhlIHVzZXIgdHlwZXMgNTQsIHByaW50cyBhbmQgcmV0dXJucyBmYWxzZToKICogICA3IHggOCA9IDU0CiAqICAgV3JvbmcsIHRoZSBhbnN3ZXIgaXMgNTYKICoKICogUGFydCAyIC0gdGhlIG1haW4gcHJvZ3JhbQogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGxzIHRoZSBtZXRob2QgdGhyZWUgdGltZXMsIGluIHRoaXMgb3JkZXI6CiAqICAgYXNrKDcsIDgpCiAqICAgYXNrKDYsIDkpCiAqICAgYXNrKDEyLCAxMikKICogSW4gZWFjaCBjYWxsIHRoZSB1c2VyIHR5cGVzIGhpcyBhbnN3ZXIgdG8gdGhlIGV4ZXJjaXNlLiBBdCB0aGUgZW5kIHRoZQogKiBwcm9ncmFtIHByaW50cyBob3cgbWFueSBhbnN3ZXJzIHdlcmUgY29ycmVjdC4KICoKICogSW5wdXQ6CiAqICAgNTYKICogICA1NAogKiAgIDE0NAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgNyB4IDggPSA1NgogKiAgIENvcnJlY3QKICogICA2IHggOSA9IDU0CiAqICAgQ29ycmVjdAogKiAgIDEyIHggMTIgPSAxNDQKICogICBDb3JyZWN0CiAqICAgU2NvcmU6IDMgb3V0IG9mIDMKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDU2CiAqICAgNDUKICogICAxMjQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIDcgeCA4ID0gNTYKICogICBDb3JyZWN0CiAqICAgNiB4IDkgPSA0NQogKiAgIFdyb25nLCB0aGUgYW5zd2VyIGlzIDU0CiAqICAgMTIgeCAxMiA9IDEyNAogKiAgIFdyb25nLCB0aGUgYW5zd2VyIGlzIDE0NAogKiAgIFNjb3JlOiAxIG91dCBvZiAzCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMxM19RdWl6IHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBib29sZWFuIGFzayhpbnQgYSwgaW50IGIpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gV3JpdGUgdGhlIG1haW4gcHJvZ3JhbSBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- WriteStatic14_RockPaperScissors.java -->
+<question type="description">
+    <name>
+      <text>Q14 – static methods – rock paper scissors</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 14 – שיטות סטטיות – אבן, נייר ומספריים</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שתי שיטות סטטיות:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean beats(char a, char b)
+public static int winner(char p1, char p2)</pre>
+
+<p dir="rtl" style="text-align: right;">
+במשחק אבן, נייר ומספריים כל שחקן בוחר תו: <code dir="ltr">'R'</code> לאבן, <code dir="ltr">'P'</code> לנייר או <code dir="ltr">'S'</code> למספריים. אבן מנצחת מספריים, מספריים מנצחים נייר, ונייר מנצח אבן.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">beats</code> מחזירה <code dir="ltr">true</code> אם הבחירה <code dir="ltr">a</code> מנצחת את הבחירה <code dir="ltr">b</code>, ו-<code dir="ltr">false</code> אחרת.<br>השיטה <code dir="ltr">winner</code> מחזירה 1 אם השחקן הראשון ניצח, 2 אם השחקן השני ניצח, ו-0 בתיקו. השיטה <code dir="ltr">winner</code> צריכה לזמן את השיטה <code dir="ltr">beats</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">beats('R', 'S') ==> true
+beats('S', 'R') ==> false
+winner('P', 'R') ==> 1
+winner('R', 'P') ==> 2
+winner('S', 'S') ==> 0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/WriteStatic14_RockPaperScissors.java" download="WriteStatic14_RockPaperScissors.java" style="text-decoration: underline;">WriteStatic14_RockPaperScissors.java</a></strong> לסביבת העבודה, השלימו את השיטות והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="WriteStatic14_RockPaperScissors.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUm9jayBQYXBlciBTY2lzc29ycwogKgogKiBXcml0ZSB0d28gc3RhdGljIG1ldGhvZHM6CiAqICAgcHVibGljIHN0YXRpYyBib29sZWFuIGJlYXRzKGNoYXIgYSwgY2hhciBiKQogKiAgIHB1YmxpYyBzdGF0aWMgaW50IHdpbm5lcihjaGFyIHAxLCBjaGFyIHAyKQogKgogKiBJbiB0aGUgZ2FtZSByb2NrIHBhcGVyIHNjaXNzb3JzIGVhY2ggcGxheWVyIGNob29zZXMgYSBjaGFyOiAnUicgZm9yIHJvY2ssCiAqICdQJyBmb3IgcGFwZXIgb3IgJ1MnIGZvciBzY2lzc29ycy4gUm9jayBiZWF0cyBzY2lzc29ycywgc2Npc3NvcnMgYmVhdCBwYXBlciwKICogYW5kIHBhcGVyIGJlYXRzIHJvY2suCiAqIFRoZSBtZXRob2QgYmVhdHMgcmV0dXJucyB0cnVlIGlmIHRoZSBjaG9pY2UgYSBiZWF0cyB0aGUgY2hvaWNlIGIsIGFuZCBmYWxzZQogKiBvdGhlcndpc2UuCiAqIFRoZSBtZXRob2Qgd2lubmVyIHJldHVybnMgMSBpZiB0aGUgZmlyc3QgcGxheWVyIHdvbiwgMiBpZiB0aGUgc2Vjb25kIHBsYXllcgogKiB3b24sIGFuZCAwIGZvciBhIHRpZS4gVGhlIG1ldGhvZCB3aW5uZXIgbXVzdCBjYWxsIHRoZSBtZXRob2QgYmVhdHMuCiAqCiAqIEV4YW1wbGVzOgogKiAgIGJlYXRzKCdSJywgJ1MnKSA9PT4gdHJ1ZQogKiAgIGJlYXRzKCdTJywgJ1InKSA9PT4gZmFsc2UKICogICB3aW5uZXIoJ1AnLCAnUicpID09PiAxCiAqICAgd2lubmVyKCdSJywgJ1AnKSA9PT4gMgogKiAgIHdpbm5lcignUycsICdTJykgPT0+IDAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzE0X1JvY2tQYXBlclNjaXNzb3JzIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2RzIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBiZWF0cyhjaGFyIGEsIGNoYXIgYikgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gZmFsc2U7CiAgICB9CgogICAgcHVibGljIHN0YXRpYyBpbnQgd2lubmVyKGNoYXIgcDEsIGNoYXIgcDIpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBUZXN0cyAtIGRvIG5vdCBjaGFuZ2UKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImJlYXRzKCdSJywgJ1MnKSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBiZWF0cygnUicsICdTJykKICAgICAgICAgICAgKyAiICAgICIgKyAoYmVhdHMoJ1InLCAnUycpID09IHRydWUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJiZWF0cygnUycsICdSJykgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIGJlYXRzKCdTJywgJ1InKQogICAgICAgICAgICArICIgICAgIiArIChiZWF0cygnUycsICdSJykgPT0gZmFsc2UgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJ3aW5uZXIoJ1AnLCAnUicpID09PiAxICAgIEFjdHVhbDogIiArIHdpbm5lcignUCcsICdSJykKICAgICAgICAgICAgKyAiICAgICIgKyAod2lubmVyKCdQJywgJ1InKSA9PSAxID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigid2lubmVyKCdSJywgJ1AnKSA9PT4gMiAgICBBY3R1YWw6ICIgKyB3aW5uZXIoJ1InLCAnUCcpCiAgICAgICAgICAgICsgIiAgICAiICsgKHdpbm5lcignUicsICdQJykgPT0gMiA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIndpbm5lcignUycsICdTJykgPT0+IDAgICAgQWN0dWFsOiAiICsgd2lubmVyKCdTJywgJ1MnKQogICAgICAgICAgICArICIgICAgIiArICh3aW5uZXIoJ1MnLCAnUycpID09IDAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJiZWF0cygnUycsICdQJykgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgYmVhdHMoJ1MnLCAnUCcpCiAgICAgICAgICAgICsgIiAgICAiICsgKGJlYXRzKCdTJywgJ1AnKSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiYmVhdHMoJ1AnLCAnUicpID09PiB0cnVlICAgIEFjdHVhbDogIiArIGJlYXRzKCdQJywgJ1InKQogICAgICAgICAgICArICIgICAgIiArIChiZWF0cygnUCcsICdSJykgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImJlYXRzKCdQJywgJ1AnKSA9PT4gZmFsc2UgICAgQWN0dWFsOiAiICsgYmVhdHMoJ1AnLCAnUCcpCiAgICAgICAgICAgICsgIiAgICAiICsgKGJlYXRzKCdQJywgJ1AnKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIndpbm5lcignUycsICdQJykgPT0+IDEgICAgQWN0dWFsOiAiICsgd2lubmVyKCdTJywgJ1AnKQogICAgICAgICAgICArICIgICAgIiArICh3aW5uZXIoJ1MnLCAnUCcpID09IDEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJ3aW5uZXIoJ1MnLCAnUicpID09PiAyICAgIEFjdHVhbDogIiArIHdpbm5lcignUycsICdSJykKICAgICAgICAgICAgKyAiICAgICIgKyAod2lubmVyKCdTJywgJ1InKSA9PSAyID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+</quiz>

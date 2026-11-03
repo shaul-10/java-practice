@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+<!-- UseObject01_Longer.java -->
+<question type="description">
+    <name>
+      <text>Q1 – object methods – longer word</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – שיטות של אובייקט – המילה הארוכה</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String longer(String a, String b)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת שתי מילים ומחזירה את הארוכה מביניהן. אם אורכן שווה, השיטה מחזירה את המילה הראשונה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">longer("pen", "pencil") ==> "pencil"
+longer("bicycle", "car") ==> "bicycle"
+longer("table", "chair") ==> "table"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject01_Longer.java" download="UseObject01_Longer.java" style="text-decoration: underline;">UseObject01_Longer.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject01_Longer.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgTG9uZ2VyCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIFN0cmluZyBsb25nZXIoU3RyaW5nIGEsIFN0cmluZyBiKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIHR3byB3b3JkcyBhbmQgcmV0dXJucyB0aGUgbG9uZ2VyIG9uZS4gSWYgdGhleSBoYXZlIHRoZQogKiBzYW1lIGxlbmd0aCwgdGhlIG1ldGhvZCByZXR1cm5zIHRoZSBmaXJzdCB3b3JkLgogKgogKiBFeGFtcGxlczoKICogICBsb25nZXIoInBlbiIsICJwZW5jaWwiKSA9PT4gInBlbmNpbCIKICogICBsb25nZXIoImJpY3ljbGUiLCAiY2FyIikgPT0+ICJiaWN5Y2xlIgogKiAgIGxvbmdlcigidGFibGUiLCAiY2hhaXIiKSA9PT4gInRhYmxlIgogKi8KcHVibGljIGNsYXNzIFVzZU9iamVjdDAxX0xvbmdlciB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIGxvbmdlcihTdHJpbmcgYSwgU3RyaW5nIGIpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuICIiOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJsb25nZXIoXCJwZW5cIiwgXCJwZW5jaWxcIikgPT0+IFwicGVuY2lsXCIgICAgQWN0dWFsOiAiICsgbG9uZ2VyKCJwZW4iLCAicGVuY2lsIikKICAgICAgICAgICAgKyAiICAgICIgKyAobG9uZ2VyKCJwZW4iLCAicGVuY2lsIikuZXF1YWxzKCJwZW5jaWwiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImxvbmdlcihcImJpY3ljbGVcIiwgXCJjYXJcIikgPT0+IFwiYmljeWNsZVwiICAgIEFjdHVhbDogIiArIGxvbmdlcigiYmljeWNsZSIsICJjYXIiKQogICAgICAgICAgICArICIgICAgIiArIChsb25nZXIoImJpY3ljbGUiLCAiY2FyIikuZXF1YWxzKCJiaWN5Y2xlIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJsb25nZXIoXCJ0YWJsZVwiLCBcImNoYWlyXCIpID09PiBcInRhYmxlXCIgICAgQWN0dWFsOiAiICsgbG9uZ2VyKCJ0YWJsZSIsICJjaGFpciIpCiAgICAgICAgICAgICsgIiAgICAiICsgKGxvbmdlcigidGFibGUiLCAiY2hhaXIiKS5lcXVhbHMoInRhYmxlIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJsb25nZXIoXCJzdW5cIiwgXCJtb29uXCIpID09PiBcIm1vb25cIiAgICBBY3R1YWw6ICIgKyBsb25nZXIoInN1biIsICJtb29uIikKICAgICAgICAgICAgKyAiICAgICIgKyAobG9uZ2VyKCJzdW4iLCAibW9vbiIpLmVxdWFscygibW9vbiIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibG9uZ2VyKFwiY2F0XCIsIFwiZG9nXCIpID09PiBcImNhdFwiICAgIEFjdHVhbDogIiArIGxvbmdlcigiY2F0IiwgImRvZyIpCiAgICAgICAgICAgICsgIiAgICAiICsgKGxvbmdlcigiY2F0IiwgImRvZyIpLmVxdWFscygiY2F0IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJsb25nZXIoXCJ4XCIsIFwieHlcIikgPT0+IFwieHlcIiAgICBBY3R1YWw6ICIgKyBsb25nZXIoIngiLCAieHkiKQogICAgICAgICAgICArICIgICAgIiArIChsb25nZXIoIngiLCAieHkiKS5lcXVhbHMoInh5IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject02_SameEnds.java -->
+<question type="description">
+    <name>
+      <text>Q2 – object methods – same ends</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – שיטות של אובייקט – התו הראשון והתו האחרון</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean sameEnds(String word)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מילה ומחזירה <code dir="ltr">true</code> אם התו הראשון שלה שווה לתו האחרון, ו-<code dir="ltr">false</code> אחרת. אות גדולה ואות קטנה הן תווים שונים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">sameEnds("window") ==> true
+sameEnds("pencil") ==> false
+sameEnds("Anna") ==> false
+sameEnds("a") ==> true</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject02_SameEnds.java" download="UseObject02_SameEnds.java" style="text-decoration: underline;">UseObject02_SameEnds.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject02_SameEnds.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgU2FtZSBFbmRzCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGJvb2xlYW4gc2FtZUVuZHMoU3RyaW5nIHdvcmQpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgYSB3b3JkIGFuZCByZXR1cm5zIHRydWUgaWYgaXRzIGZpcnN0IGNoYXIgaXMgZXF1YWwgdG8KICogaXRzIGxhc3QgY2hhciwgYW5kIGZhbHNlIG90aGVyd2lzZS4gQW4gdXBwZXIgY2FzZSBsZXR0ZXIgYW5kIGEgbG93ZXIgY2FzZQogKiBsZXR0ZXIgYXJlIGRpZmZlcmVudCBjaGFycy4KICoKICogRXhhbXBsZXM6CiAqICAgc2FtZUVuZHMoIndpbmRvdyIpID09PiB0cnVlCiAqICAgc2FtZUVuZHMoInBlbmNpbCIpID09PiBmYWxzZQogKiAgIHNhbWVFbmRzKCJBbm5hIikgPT0+IGZhbHNlCiAqICAgc2FtZUVuZHMoImEiKSA9PT4gdHJ1ZQogKi8KcHVibGljIGNsYXNzIFVzZU9iamVjdDAyX1NhbWVFbmRzIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBib29sZWFuIHNhbWVFbmRzKFN0cmluZyB3b3JkKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2FtZUVuZHMoXCJ3aW5kb3dcIikgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgc2FtZUVuZHMoIndpbmRvdyIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNhbWVFbmRzKCJ3aW5kb3ciKSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2FtZUVuZHMoXCJwZW5jaWxcIikgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIHNhbWVFbmRzKCJwZW5jaWwiKQogICAgICAgICAgICArICIgICAgIiArIChzYW1lRW5kcygicGVuY2lsIikgPT0gZmFsc2UgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJzYW1lRW5kcyhcIkFubmFcIikgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIHNhbWVFbmRzKCJBbm5hIikKICAgICAgICAgICAgKyAiICAgICIgKyAoc2FtZUVuZHMoIkFubmEiKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNhbWVFbmRzKFwiYVwiKSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBzYW1lRW5kcygiYSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNhbWVFbmRzKCJhIikgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNhbWVFbmRzKFwibGV2ZWxcIikgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgc2FtZUVuZHMoImxldmVsIikKICAgICAgICAgICAgKyAiICAgICIgKyAoc2FtZUVuZHMoImxldmVsIikgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNhbWVFbmRzKFwibm9vblwiKSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBzYW1lRW5kcygibm9vbiIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNhbWVFbmRzKCJub29uIikgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNhbWVFbmRzKFwiYWJjXCIpID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBzYW1lRW5kcygiYWJjIikKICAgICAgICAgICAgKyAiICAgICIgKyAoc2FtZUVuZHMoImFiYyIpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject03_Lotto.java -->
+<question type="description">
+    <name>
+      <text>Q3 – object methods – lotto number</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – שיטות של אובייקט – מספר בלוטו</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int lottoNumber()</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מגרילה מספר שלם מ-1 עד 37, כולל שניהם, ומחזירה אותו. ההגרלה נעשית בתוך השיטה.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+המספר המוגרל משתנה מזימון לזימון, ולכן הטסטר מזמן את השיטה כמה פעמים ובודק שכל מספר נמצא בטווח.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">lottoNumber() ==> between 1 and 37</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject03_Lotto.java" download="UseObject03_Lotto.java" style="text-decoration: underline;">UseObject03_Lotto.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject03_Lotto.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5SYW5kb207CgovKioKICogRXhlcmNpc2U6IE9iamVjdCBNZXRob2RzIOKAkyBMb3R0bwogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBpbnQgbG90dG9OdW1iZXIoKQogKgogKiBUaGUgbWV0aG9kIGRyYXdzIGEgd2hvbGUgbnVtYmVyIGZyb20gMSB0byAzNywgYm90aCBpbmNsdWRlZCwgYW5kIHJldHVybnMgaXQuCiAqIFRoZSBkcmF3aW5nIGlzIGRvbmUgaW5zaWRlIHRoZSBtZXRob2QuCiAqIFRoZSBudW1iZXIgY2hhbmdlcyBmcm9tIGNhbGwgdG8gY2FsbCwgc28gdGhlIHRlc3RlciBjYWxscyB0aGUgbWV0aG9kIGEgZmV3CiAqIHRpbWVzIGFuZCBjaGVja3MgdGhhdCBldmVyeSBudW1iZXIgaXMgaW4gdGhlIHJhbmdlLgogKgogKiBFeGFtcGxlczoKICogICBsb3R0b051bWJlcigpID09PiBiZXR3ZWVuIDEgYW5kIDM3CiAqLwpwdWJsaWMgY2xhc3MgVXNlT2JqZWN0MDNfTG90dG8gewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGludCBsb3R0b051bWJlcigpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBUZXN0cyAtIGRvIG5vdCBjaGFuZ2UKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICBpbnQgbnVtMSA9IGxvdHRvTnVtYmVyKCk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJsb3R0b051bWJlcigpID09PiBiZXR3ZWVuIDEgYW5kIDM3ICAgIEFjdHVhbDogIiArIG51bTEKICAgICAgICAgICAgKyAiICAgICIgKyAobnVtMSA+PSAxICYmIG51bTEgPD0gMzcgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgaW50IG51bTIgPSBsb3R0b051bWJlcigpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibG90dG9OdW1iZXIoKSA9PT4gYmV0d2VlbiAxIGFuZCAzNyAgICBBY3R1YWw6ICIgKyBudW0yCiAgICAgICAgICAgICsgIiAgICAiICsgKG51bTIgPj0gMSAmJiBudW0yIDw9IDM3ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIGludCBudW0zID0gbG90dG9OdW1iZXIoKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImxvdHRvTnVtYmVyKCkgPT0+IGJldHdlZW4gMSBhbmQgMzcgICAgQWN0dWFsOiAiICsgbnVtMwogICAgICAgICAgICArICIgICAgIiArIChudW0zID49IDEgJiYgbnVtMyA8PSAzNyA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBpbnQgbnVtNCA9IGxvdHRvTnVtYmVyKCk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJsb3R0b051bWJlcigpID09PiBiZXR3ZWVuIDEgYW5kIDM3ICAgIEFjdHVhbDogIiArIG51bTQKICAgICAgICAgICAgKyAiICAgICIgKyAobnVtNCA+PSAxICYmIG51bTQgPD0gMzcgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgaW50IG51bTUgPSBsb3R0b051bWJlcigpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibG90dG9OdW1iZXIoKSA9PT4gYmV0d2VlbiAxIGFuZCAzNyAgICBBY3R1YWw6ICIgKyBudW01CiAgICAgICAgICAgICsgIiAgICAiICsgKG51bTUgPj0gMSAmJiBudW01IDw9IDM3ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject04_FormatDate.java -->
+<question type="description">
+    <name>
+      <text>Q4 – object methods – date format</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – שיטות של אובייקט – תבנית של תאריך</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String formatDate(String date)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת תאריך במחרוזת בתבנית <code dir="ltr">YYYY-MM-DD</code> ומחזירה אותו בתבנית <code dir="ltr">DD/MM/YYYY</code>. אפשר להניח שהמחרוזת בנויה תמיד בדיוק בתבנית הזו.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">formatDate("2026-11-03") ==> "03/11/2026"
+formatDate("1999-07-25") ==> "25/07/1999"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject04_FormatDate.java" download="UseObject04_FormatDate.java" style="text-decoration: underline;">UseObject04_FormatDate.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject04_FormatDate.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgRm9ybWF0IERhdGUKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIGZvcm1hdERhdGUoU3RyaW5nIGRhdGUpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgYSBkYXRlIGluIGEgc3RyaW5nIGluIHRoZSBmb3JtYXQgWVlZWS1NTS1ERCBhbmQgcmV0dXJucwogKiBpdCBpbiB0aGUgZm9ybWF0IEREL01NL1lZWVkuIFlvdSBtYXkgYXNzdW1lIHRoYXQgdGhlIHN0cmluZyBpcyBhbHdheXMgYnVpbHQKICogZXhhY3RseSBpbiB0aGlzIGZvcm1hdC4KICoKICogRXhhbXBsZXM6CiAqICAgZm9ybWF0RGF0ZSgiMjAyNi0xMS0wMyIpID09PiAiMDMvMTEvMjAyNiIKICogICBmb3JtYXREYXRlKCIxOTk5LTA3LTI1IikgPT0+ICIyNS8wNy8xOTk5IgogKi8KcHVibGljIGNsYXNzIFVzZU9iamVjdDA0X0Zvcm1hdERhdGUgewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIFN0cmluZyBmb3JtYXREYXRlKFN0cmluZyBkYXRlKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAiIjsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZm9ybWF0RGF0ZShcIjIwMjYtMTEtMDNcIikgPT0+IFwiMDMvMTEvMjAyNlwiICAgIEFjdHVhbDogIiArIGZvcm1hdERhdGUoIjIwMjYtMTEtMDMiKQogICAgICAgICAgICArICIgICAgIiArIChmb3JtYXREYXRlKCIyMDI2LTExLTAzIikuZXF1YWxzKCIwMy8xMS8yMDI2IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJmb3JtYXREYXRlKFwiMTk5OS0wNy0yNVwiKSA9PT4gXCIyNS8wNy8xOTk5XCIgICAgQWN0dWFsOiAiICsgZm9ybWF0RGF0ZSgiMTk5OS0wNy0yNSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdERhdGUoIjE5OTktMDctMjUiKS5lcXVhbHMoIjI1LzA3LzE5OTkiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImZvcm1hdERhdGUoXCIyMDAwLTAxLTAxXCIpID09PiBcIjAxLzAxLzIwMDBcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXREYXRlKCIyMDAwLTAxLTAxIikKICAgICAgICAgICAgKyAiICAgICIgKyAoZm9ybWF0RGF0ZSgiMjAwMC0wMS0wMSIpLmVxdWFscygiMDEvMDEvMjAwMCIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZm9ybWF0RGF0ZShcIjIwMjQtMTItMzFcIikgPT0+IFwiMzEvMTIvMjAyNFwiICAgIEFjdHVhbDogIiArIGZvcm1hdERhdGUoIjIwMjQtMTItMzEiKQogICAgICAgICAgICArICIgICAgIiArIChmb3JtYXREYXRlKCIyMDI0LTEyLTMxIikuZXF1YWxzKCIzMS8xMi8yMDI0IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject05_Capitalize.java -->
+<question type="description">
+    <name>
+      <text>Q5 – object methods – capital letter</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – שיטות של אובייקט – אות גדולה בתחילת מילה</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String capitalize(String word)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מילה באותיות לטיניות ומחזירה אותה כשהאות הראשונה גדולה וכל שאר האותיות קטנות. אפשר להניח שהמילה אינה ריקה.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השתמשו בשיטות <code dir="ltr">toUpperCase</code> ו-<code dir="ltr">toLowerCase</code> של המחלקה <code dir="ltr">String</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>מתוך התיעוד:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public String toUpperCase()
+Converts all of the characters in this String to upper case.
+Returns:
+the String, converted to uppercase
+
+public String toLowerCase()
+Converts all of the characters in this String to lower case.
+Returns:
+the String, converted to lowercase</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">capitalize("dana") ==> "Dana"
+capitalize("mOSHE") ==> "Moshe"
+capitalize("x") ==> "X"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject05_Capitalize.java" download="UseObject05_Capitalize.java" style="text-decoration: underline;">UseObject05_Capitalize.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject05_Capitalize.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgQ2FwaXRhbGl6ZQogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBTdHJpbmcgY2FwaXRhbGl6ZShTdHJpbmcgd29yZCkKICoKICogVGhlIG1ldGhvZCByZWNlaXZlcyBhIHdvcmQgaW4gTGF0aW4gbGV0dGVycyBhbmQgcmV0dXJucyBpdCB3aXRoIHRoZSBmaXJzdAogKiBsZXR0ZXIgaW4gdXBwZXIgY2FzZSBhbmQgYWxsIHRoZSBvdGhlciBsZXR0ZXJzIGluIGxvd2VyIGNhc2UuCiAqIFlvdSBtYXkgYXNzdW1lIHRoYXQgdGhlIHdvcmQgaXMgbm90IGVtcHR5LgogKiBVc2UgdGhlIG1ldGhvZHMgdG9VcHBlckNhc2UgYW5kIHRvTG93ZXJDYXNlIG9mIHRoZSBjbGFzcyBTdHJpbmcuCiAqCiAqIERvY3VtZW50YXRpb246CiAqICAgcHVibGljIFN0cmluZyB0b1VwcGVyQ2FzZSgpCiAqICAgQ29udmVydHMgYWxsIG9mIHRoZSBjaGFyYWN0ZXJzIGluIHRoaXMgU3RyaW5nIHRvIHVwcGVyIGNhc2UuCiAqICAgUmV0dXJuczoKICogICB0aGUgU3RyaW5nLCBjb252ZXJ0ZWQgdG8gdXBwZXJjYXNlCiAqCiAqICAgcHVibGljIFN0cmluZyB0b0xvd2VyQ2FzZSgpCiAqICAgQ29udmVydHMgYWxsIG9mIHRoZSBjaGFyYWN0ZXJzIGluIHRoaXMgU3RyaW5nIHRvIGxvd2VyIGNhc2UuCiAqICAgUmV0dXJuczoKICogICB0aGUgU3RyaW5nLCBjb252ZXJ0ZWQgdG8gbG93ZXJjYXNlCiAqCiAqIEV4YW1wbGVzOgogKiAgIGNhcGl0YWxpemUoImRhbmEiKSA9PT4gIkRhbmEiCiAqICAgY2FwaXRhbGl6ZSgibU9TSEUiKSA9PT4gIk1vc2hlIgogKiAgIGNhcGl0YWxpemUoIngiKSA9PT4gIlgiCiAqLwpwdWJsaWMgY2xhc3MgVXNlT2JqZWN0MDVfQ2FwaXRhbGl6ZSB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIGNhcGl0YWxpemUoU3RyaW5nIHdvcmQpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuICIiOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJjYXBpdGFsaXplKFwiZGFuYVwiKSA9PT4gXCJEYW5hXCIgICAgQWN0dWFsOiAiICsgY2FwaXRhbGl6ZSgiZGFuYSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKGNhcGl0YWxpemUoImRhbmEiKS5lcXVhbHMoIkRhbmEiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImNhcGl0YWxpemUoXCJtT1NIRVwiKSA9PT4gXCJNb3NoZVwiICAgIEFjdHVhbDogIiArIGNhcGl0YWxpemUoIm1PU0hFIikKICAgICAgICAgICAgKyAiICAgICIgKyAoY2FwaXRhbGl6ZSgibU9TSEUiKS5lcXVhbHMoIk1vc2hlIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJjYXBpdGFsaXplKFwieFwiKSA9PT4gXCJYXCIgICAgQWN0dWFsOiAiICsgY2FwaXRhbGl6ZSgieCIpCiAgICAgICAgICAgICsgIiAgICAiICsgKGNhcGl0YWxpemUoIngiKS5lcXVhbHMoIlgiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImNhcGl0YWxpemUoXCJJU1JBRUxcIikgPT0+IFwiSXNyYWVsXCIgICAgQWN0dWFsOiAiICsgY2FwaXRhbGl6ZSgiSVNSQUVMIikKICAgICAgICAgICAgKyAiICAgICIgKyAoY2FwaXRhbGl6ZSgiSVNSQUVMIikuZXF1YWxzKCJJc3JhZWwiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImNhcGl0YWxpemUoXCJlTGlcIikgPT0+IFwiRWxpXCIgICAgQWN0dWFsOiAiICsgY2FwaXRhbGl6ZSgiZUxpIikKICAgICAgICAgICAgKyAiICAgICIgKyAoY2FwaXRhbGl6ZSgiZUxpIikuZXF1YWxzKCJFbGkiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImNhcGl0YWxpemUoXCJBYlwiKSA9PT4gXCJBYlwiICAgIEFjdHVhbDogIiArIGNhcGl0YWxpemUoIkFiIikKICAgICAgICAgICAgKyAiICAgICIgKyAoY2FwaXRhbGl6ZSgiQWIiKS5lcXVhbHMoIkFiIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject06_SplitWord.java -->
+<question type="description">
+    <name>
+      <text>Q6 – object methods – dash in the middle</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – שיטות של אובייקט – מקף באמצע המילה</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String splitWord(String word)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מילה ומחזירה אותה עם מקף באמצע, בין החצי הראשון לחצי השני. אם אורך המילה אי-זוגי, החצי הראשון קצר בתו אחד מהחצי השני.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">splitWord("football") ==> "foot-ball"
+splitWord("apple") ==> "ap-ple"
+splitWord("a") ==> "-a"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject06_SplitWord.java" download="UseObject06_SplitWord.java" style="text-decoration: underline;">UseObject06_SplitWord.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject06_SplitWord.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgU3BsaXQgV29yZAogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBTdHJpbmcgc3BsaXRXb3JkKFN0cmluZyB3b3JkKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIGEgd29yZCBhbmQgcmV0dXJucyBpdCB3aXRoIGEgZGFzaCBpbiB0aGUgbWlkZGxlLCBiZXR3ZWVuCiAqIHRoZSBmaXJzdCBoYWxmIGFuZCB0aGUgc2Vjb25kIGhhbGYuIElmIHRoZSBsZW5ndGggb2YgdGhlIHdvcmQgaXMgb2RkLCB0aGUKICogZmlyc3QgaGFsZiBpcyBvbmUgY2hhciBzaG9ydGVyIHRoYW4gdGhlIHNlY29uZCBoYWxmLgogKgogKiBFeGFtcGxlczoKICogICBzcGxpdFdvcmQoImZvb3RiYWxsIikgPT0+ICJmb290LWJhbGwiCiAqICAgc3BsaXRXb3JkKCJhcHBsZSIpID09PiAiYXAtcGxlIgogKiAgIHNwbGl0V29yZCgiYSIpID09PiAiLWEiCiAqLwpwdWJsaWMgY2xhc3MgVXNlT2JqZWN0MDZfU3BsaXRXb3JkIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBTdHJpbmcgc3BsaXRXb3JkKFN0cmluZyB3b3JkKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAiIjsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic3BsaXRXb3JkKFwiZm9vdGJhbGxcIikgPT0+IFwiZm9vdC1iYWxsXCIgICAgQWN0dWFsOiAiICsgc3BsaXRXb3JkKCJmb290YmFsbCIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNwbGl0V29yZCgiZm9vdGJhbGwiKS5lcXVhbHMoImZvb3QtYmFsbCIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic3BsaXRXb3JkKFwiYXBwbGVcIikgPT0+IFwiYXAtcGxlXCIgICAgQWN0dWFsOiAiICsgc3BsaXRXb3JkKCJhcHBsZSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNwbGl0V29yZCgiYXBwbGUiKS5lcXVhbHMoImFwLXBsZSIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic3BsaXRXb3JkKFwiYVwiKSA9PT4gXCItYVwiICAgIEFjdHVhbDogIiArIHNwbGl0V29yZCgiYSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNwbGl0V29yZCgiYSIpLmVxdWFscygiLWEiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNwbGl0V29yZChcIm9rXCIpID09PiBcIm8ta1wiICAgIEFjdHVhbDogIiArIHNwbGl0V29yZCgib2siKQogICAgICAgICAgICArICIgICAgIiArIChzcGxpdFdvcmQoIm9rIikuZXF1YWxzKCJvLWsiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNwbGl0V29yZChcInN1bnNldFwiKSA9PT4gXCJzdW4tc2V0XCIgICAgQWN0dWFsOiAiICsgc3BsaXRXb3JkKCJzdW5zZXQiKQogICAgICAgICAgICArICIgICAgIiArIChzcGxpdFdvcmQoInN1bnNldCIpLmVxdWFscygic3VuLXNldCIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic3BsaXRXb3JkKFwicGl6emFcIikgPT0+IFwicGktenphXCIgICAgQWN0dWFsOiAiICsgc3BsaXRXb3JkKCJwaXp6YSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNwbGl0V29yZCgicGl6emEiKS5lcXVhbHMoInBpLXp6YSIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject07_Extension.java -->
+<question type="description">
+    <name>
+      <text>Q7 – object methods – file extension</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – שיטות של אובייקט – סיומת של קובץ</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String extension(String fileName)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת שם של קובץ ומחזירה את הסיומת שלו – החלק שאחרי הנקודה האחרונה בשם. אפשר להניח שיש בשם לפחות נקודה אחת.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השתמשו בשיטה <code dir="ltr">lastIndexOf</code> של המחלקה <code dir="ltr">String</code>. אפשר לשלוח לה תו, למשל <code dir="ltr">'.'</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>מתוך התיעוד:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public int lastIndexOf(int ch)
+Returns the index within this string of the last occurrence of
+the specified character, or -1 if the character does not occur.
+Parameters:
+ch - a character</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">extension("photo.jpg") ==> "jpg"
+extension("report.final.pdf") ==> "pdf"
+extension("song.mp3") ==> "mp3"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject07_Extension.java" download="UseObject07_Extension.java" style="text-decoration: underline;">UseObject07_Extension.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject07_Extension.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgRXh0ZW5zaW9uCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIFN0cmluZyBleHRlbnNpb24oU3RyaW5nIGZpbGVOYW1lKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIGEgZmlsZSBuYW1lIGFuZCByZXR1cm5zIGl0cyBleHRlbnNpb24gLSB0aGUgcGFydCBhZnRlcgogKiB0aGUgbGFzdCBkb3QgaW4gdGhlIG5hbWUuIFlvdSBtYXkgYXNzdW1lIHRoYXQgdGhlIG5hbWUgaGFzIGF0IGxlYXN0IG9uZSBkb3QuCiAqIFVzZSB0aGUgbWV0aG9kIGxhc3RJbmRleE9mIG9mIHRoZSBjbGFzcyBTdHJpbmcuIFlvdSBtYXkgc2VuZCBpdCBhIGNoYXIsCiAqIGZvciBleGFtcGxlICcuJy4KICoKICogRG9jdW1lbnRhdGlvbjoKICogICBwdWJsaWMgaW50IGxhc3RJbmRleE9mKGludCBjaCkKICogICBSZXR1cm5zIHRoZSBpbmRleCB3aXRoaW4gdGhpcyBzdHJpbmcgb2YgdGhlIGxhc3Qgb2NjdXJyZW5jZSBvZgogKiAgIHRoZSBzcGVjaWZpZWQgY2hhcmFjdGVyLCBvciAtMSBpZiB0aGUgY2hhcmFjdGVyIGRvZXMgbm90IG9jY3VyLgogKiAgIFBhcmFtZXRlcnM6CiAqICAgY2ggLSBhIGNoYXJhY3RlcgogKgogKiBFeGFtcGxlczoKICogICBleHRlbnNpb24oInBob3RvLmpwZyIpID09PiAianBnIgogKiAgIGV4dGVuc2lvbigicmVwb3J0LmZpbmFsLnBkZiIpID09PiAicGRmIgogKiAgIGV4dGVuc2lvbigic29uZy5tcDMiKSA9PT4gIm1wMyIKICovCnB1YmxpYyBjbGFzcyBVc2VPYmplY3QwN19FeHRlbnNpb24gewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIFN0cmluZyBleHRlbnNpb24oU3RyaW5nIGZpbGVOYW1lKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAiIjsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZXh0ZW5zaW9uKFwicGhvdG8uanBnXCIpID09PiBcImpwZ1wiICAgIEFjdHVhbDogIiArIGV4dGVuc2lvbigicGhvdG8uanBnIikKICAgICAgICAgICAgKyAiICAgICIgKyAoZXh0ZW5zaW9uKCJwaG90by5qcGciKS5lcXVhbHMoImpwZyIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZXh0ZW5zaW9uKFwicmVwb3J0LmZpbmFsLnBkZlwiKSA9PT4gXCJwZGZcIiAgICBBY3R1YWw6ICIgKyBleHRlbnNpb24oInJlcG9ydC5maW5hbC5wZGYiKQogICAgICAgICAgICArICIgICAgIiArIChleHRlbnNpb24oInJlcG9ydC5maW5hbC5wZGYiKS5lcXVhbHMoInBkZiIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZXh0ZW5zaW9uKFwic29uZy5tcDNcIikgPT0+IFwibXAzXCIgICAgQWN0dWFsOiAiICsgZXh0ZW5zaW9uKCJzb25nLm1wMyIpCiAgICAgICAgICAgICsgIiAgICAiICsgKGV4dGVuc2lvbigic29uZy5tcDMiKS5lcXVhbHMoIm1wMyIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZXh0ZW5zaW9uKFwiYS5iXCIpID09PiBcImJcIiAgICBBY3R1YWw6ICIgKyBleHRlbnNpb24oImEuYiIpCiAgICAgICAgICAgICsgIiAgICAiICsgKGV4dGVuc2lvbigiYS5iIikuZXF1YWxzKCJiIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJleHRlbnNpb24oXCJteS5ub3Rlcy52Mi50eHRcIikgPT0+IFwidHh0XCIgICAgQWN0dWFsOiAiICsgZXh0ZW5zaW9uKCJteS5ub3Rlcy52Mi50eHQiKQogICAgICAgICAgICArICIgICAgIiArIChleHRlbnNpb24oIm15Lm5vdGVzLnYyLnR4dCIpLmVxdWFscygidHh0IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject08_MaskPhone.java -->
+<question type="description">
+    <name>
+      <text>Q8 – object methods – hidden phone number</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – שיטות של אובייקט – מספר טלפון מוסתר</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String maskPhone(String phone)</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת מספר טלפון בן 10 ספרות, ומחזירה אותו כשהספרות הרביעית, החמישית והשישית מוחלפות בשלוש כוכביות, עם מקף לפני הכוכביות ואחריהן.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">maskPhone("0521234567") ==> "052-***-4567"
+maskPhone("0549876543") ==> "054-***-6543"</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject08_MaskPhone.java" download="UseObject08_MaskPhone.java" style="text-decoration: underline;">UseObject08_MaskPhone.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject08_MaskPhone.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgTWFzayBQaG9uZQogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBTdHJpbmcgbWFza1Bob25lKFN0cmluZyBwaG9uZSkKICoKICogVGhlIG1ldGhvZCByZWNlaXZlcyBhIHBob25lIG51bWJlciBvZiAxMCBkaWdpdHMsIGFuZCByZXR1cm5zIGl0IHdpdGggdGhlCiAqIGZvdXJ0aCwgZmlmdGggYW5kIHNpeHRoIGRpZ2l0cyByZXBsYWNlZCBieSB0aHJlZSBzdGFycywgd2l0aCBhIGRhc2ggYmVmb3JlCiAqIGFuZCBhZnRlciB0aGUgc3RhcnMuCiAqCiAqIEV4YW1wbGVzOgogKiAgIG1hc2tQaG9uZSgiMDUyMTIzNDU2NyIpID09PiAiMDUyLSoqKi00NTY3IgogKiAgIG1hc2tQaG9uZSgiMDU0OTg3NjU0MyIpID09PiAiMDU0LSoqKi02NTQzIgogKi8KcHVibGljIGNsYXNzIFVzZU9iamVjdDA4X01hc2tQaG9uZSB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIG1hc2tQaG9uZShTdHJpbmcgcGhvbmUpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuICIiOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtYXNrUGhvbmUoXCIwNTIxMjM0NTY3XCIpID09PiBcIjA1Mi0qKiotNDU2N1wiICAgIEFjdHVhbDogIiArIG1hc2tQaG9uZSgiMDUyMTIzNDU2NyIpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1hc2tQaG9uZSgiMDUyMTIzNDU2NyIpLmVxdWFscygiMDUyLSoqKi00NTY3IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtYXNrUGhvbmUoXCIwNTQ5ODc2NTQzXCIpID09PiBcIjA1NC0qKiotNjU0M1wiICAgIEFjdHVhbDogIiArIG1hc2tQaG9uZSgiMDU0OTg3NjU0MyIpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1hc2tQaG9uZSgiMDU0OTg3NjU0MyIpLmVxdWFscygiMDU0LSoqKi02NTQzIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtYXNrUGhvbmUoXCIwNTAwMDAwMDAwXCIpID09PiBcIjA1MC0qKiotMDAwMFwiICAgIEFjdHVhbDogIiArIG1hc2tQaG9uZSgiMDUwMDAwMDAwMCIpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1hc2tQaG9uZSgiMDUwMDAwMDAwMCIpLmVxdWFscygiMDUwLSoqKi0wMDAwIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtYXNrUGhvbmUoXCIwNzcxMTEyMjIyXCIpID09PiBcIjA3Ny0qKiotMjIyMlwiICAgIEFjdHVhbDogIiArIG1hc2tQaG9uZSgiMDc3MTExMjIyMiIpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1hc2tQaG9uZSgiMDc3MTExMjIyMiIpLmVxdWFscygiMDc3LSoqKi0yMjIyIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject09_RandomPin.java -->
+<question type="description">
+    <name>
+      <text>Q9 – object methods – random code</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – שיטות של אובייקט – קוד סודי אקראי</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String randomPin()</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מגרילה קוד סודי בן 4 ספרות ומחזירה אותו כמחרוזת. כל אחת מ-4 הספרות יכולה להיות כל ספרה מ-0 עד 9, גם הספרה הראשונה. ההגרלה נעשית בתוך השיטה.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+הקוד משתנה מזימון לזימון, ולכן הטסטר בודק רק שהמחרוזת בנויה מ-4 ספרות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">randomPin() ==> 4 digits</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject09_RandomPin.java" download="UseObject09_RandomPin.java" style="text-decoration: underline;">UseObject09_RandomPin.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject09_RandomPin.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5SYW5kb207CgovKioKICogRXhlcmNpc2U6IE9iamVjdCBNZXRob2RzIOKAkyBSYW5kb20gUGluCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIFN0cmluZyByYW5kb21QaW4oKQogKgogKiBUaGUgbWV0aG9kIGRyYXdzIGEgc2VjcmV0IGNvZGUgb2YgNCBkaWdpdHMgYW5kIHJldHVybnMgaXQgYXMgYSBzdHJpbmcuCiAqIEVhY2ggb2YgdGhlIDQgZGlnaXRzIGNhbiBiZSBhbnkgZGlnaXQgZnJvbSAwIHRvIDksIHRoZSBmaXJzdCBkaWdpdCB0b28uCiAqIFRoZSBkcmF3aW5nIGlzIGRvbmUgaW5zaWRlIHRoZSBtZXRob2QuCiAqIFRoZSBjb2RlIGNoYW5nZXMgZnJvbSBjYWxsIHRvIGNhbGwsIHNvIHRoZSB0ZXN0ZXIgb25seSBjaGVja3MgdGhhdCB0aGUKICogc3RyaW5nIGlzIG1hZGUgb2YgNCBkaWdpdHMuCiAqCiAqIEV4YW1wbGVzOgogKiAgIHJhbmRvbVBpbigpID09PiA0IGRpZ2l0cwogKi8KcHVibGljIGNsYXNzIFVzZU9iamVjdDA5X1JhbmRvbVBpbiB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIHJhbmRvbVBpbigpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuICIiOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3RyaW5nIHBpbjEgPSByYW5kb21QaW4oKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInJhbmRvbVBpbigpID09PiA0IGRpZ2l0cyAgICBBY3R1YWw6ICIgKyBwaW4xCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzUGluKHBpbjEpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN0cmluZyBwaW4yID0gcmFuZG9tUGluKCk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyYW5kb21QaW4oKSA9PT4gNCBkaWdpdHMgICAgQWN0dWFsOiAiICsgcGluMgogICAgICAgICAgICArICIgICAgIiArIChpc1BpbihwaW4yKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTdHJpbmcgcGluMyA9IHJhbmRvbVBpbigpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicmFuZG9tUGluKCkgPT0+IDQgZGlnaXRzICAgIEFjdHVhbDogIiArIHBpbjMKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNQaW4ocGluMykgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3RyaW5nIHBpbjQgPSByYW5kb21QaW4oKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInJhbmRvbVBpbigpID09PiA0IGRpZ2l0cyAgICBBY3R1YWw6ICIgKyBwaW40CiAgICAgICAgICAgICsgIiAgICAiICsgKGlzUGluKHBpbjQpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN0cmluZyBwaW41ID0gcmFuZG9tUGluKCk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyYW5kb21QaW4oKSA9PT4gNCBkaWdpdHMgICAgQWN0dWFsOiAiICsgcGluNQogICAgICAgICAgICArICIgICAgIiArIChpc1BpbihwaW41KSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgIH0KCiAgICBwcml2YXRlIHN0YXRpYyBib29sZWFuIGlzUGluKFN0cmluZyBwaW4pIHsKICAgICAgICByZXR1cm4gcGluLmxlbmd0aCgpID09IDQgJiYgaXNEaWdpdChwaW4uY2hhckF0KDApKSAmJiBpc0RpZ2l0KHBpbi5jaGFyQXQoMSkpCiAgICAgICAgICAgICYmIGlzRGlnaXQocGluLmNoYXJBdCgyKSkgJiYgaXNEaWdpdChwaW4uY2hhckF0KDMpKTsKICAgIH0KCiAgICBwcml2YXRlIHN0YXRpYyBib29sZWFuIGlzRGlnaXQoY2hhciBjaCkgewogICAgICAgIHJldHVybiBjaCA+PSAnMCcgJiYgY2ggPD0gJzknOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject10_Username.java -->
+<question type="description">
+    <name>
+      <text>Q10 – object methods – username</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – שיטות של אובייקט – שם משתמש</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String username(String first, String last, int year)</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>חלק א׳ – השיטה</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מקבלת שם פרטי, שם משפחה ושנת לידה, ומחזירה שם משתמש: האות הראשונה של השם הפרטי, שם המשפחה כולו ושתי הספרות האחרונות של השנה. כל האותיות בשם המשתמש קטנות.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השתמשו בשיטה <code dir="ltr">toLowerCase</code> של המחלקה <code dir="ltr">String</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>מתוך התיעוד:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public String toLowerCase()
+Converts all of the characters in this String to lower case.
+Returns:
+the String, converted to lowercase</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">username("Yossi", "Mizrahi", 2009) ==> "ymizrahi09"
+username("Rina", "Katz", 1998) ==> "rkatz98"
+username("Omer", "Biton", 2005) ==> "obiton05"</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>חלק ב׳ – התוכנית הראשית</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת שם פרטי, שם משפחה ושנת לידה, ומדפיסה את שם המשתמש. השתמשו בשיטה שכתבתם.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Shira
+Azulay
+2010</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">First name: Shira
+Last name: Azulay
+Year of birth: 2010
+Username: sazulay10</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Avi
+Golan
+2004</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">First name: Avi
+Last name: Golan
+Year of birth: 2004
+Username: agolan04</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject10_Username.java" download="UseObject10_Username.java" style="text-decoration: underline;">UseObject10_Username.java</a></strong> לסביבת העבודה, השלימו את השיטה, כתבו את התוכנית הראשית והריצו אותה.
+</p>]]></text>
+      <file name="UseObject10_Username.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgVXNlcm5hbWUKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIHVzZXJuYW1lKFN0cmluZyBmaXJzdCwgU3RyaW5nIGxhc3QsIGludCB5ZWFyKQogKgogKiBQYXJ0IDEgLSB0aGUgbWV0aG9kCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgYSBmaXJzdCBuYW1lLCBhIGxhc3QgbmFtZSBhbmQgYSB5ZWFyIG9mIGJpcnRoLCBhbmQKICogcmV0dXJucyBhIHVzZXJuYW1lOiB0aGUgZmlyc3QgbGV0dGVyIG9mIHRoZSBmaXJzdCBuYW1lLCB0aGUgd2hvbGUgbGFzdCBuYW1lCiAqIGFuZCB0aGUgbGFzdCB0d28gZGlnaXRzIG9mIHRoZSB5ZWFyLiBBbGwgdGhlIGxldHRlcnMgaW4gdGhlIHVzZXJuYW1lIGFyZQogKiBsb3dlciBjYXNlLgogKiBVc2UgdGhlIG1ldGhvZCB0b0xvd2VyQ2FzZSBvZiB0aGUgY2xhc3MgU3RyaW5nLgogKgogKiBEb2N1bWVudGF0aW9uOgogKiAgIHB1YmxpYyBTdHJpbmcgdG9Mb3dlckNhc2UoKQogKiAgIENvbnZlcnRzIGFsbCBvZiB0aGUgY2hhcmFjdGVycyBpbiB0aGlzIFN0cmluZyB0byBsb3dlciBjYXNlLgogKiAgIFJldHVybnM6CiAqICAgdGhlIFN0cmluZywgY29udmVydGVkIHRvIGxvd2VyY2FzZQogKgogKiBFeGFtcGxlczoKICogICB1c2VybmFtZSgiWW9zc2kiLCAiTWl6cmFoaSIsIDIwMDkpID09PiAieW1penJhaGkwOSIKICogICB1c2VybmFtZSgiUmluYSIsICJLYXR6IiwgMTk5OCkgPT0+ICJya2F0ejk4IgogKiAgIHVzZXJuYW1lKCJPbWVyIiwgIkJpdG9uIiwgMjAwNSkgPT0+ICJvYml0b24wNSIKICoKICogUGFydCAyIC0gdGhlIG1haW4gcHJvZ3JhbQogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIGEgZmlyc3QgbmFtZSwgYSBsYXN0IG5hbWUgYW5kIGEgeWVhciBvZgogKiBiaXJ0aCwgYW5kIHByaW50cyB0aGUgdXNlcm5hbWUuIFVzZSB0aGUgbWV0aG9kIHlvdSB3cm90ZS4KICoKICogSW5wdXQ6CiAqICAgU2hpcmEKICogICBBenVsYXkKICogICAyMDEwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBGaXJzdCBuYW1lOiBTaGlyYQogKiAgIExhc3QgbmFtZTogQXp1bGF5CiAqICAgWWVhciBvZiBiaXJ0aDogMjAxMAogKiAgIFVzZXJuYW1lOiBzYXp1bGF5MTAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIEF2aQogKiAgIEdvbGFuCiAqICAgMjAwNAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRmlyc3QgbmFtZTogQXZpCiAqICAgTGFzdCBuYW1lOiBHb2xhbgogKiAgIFllYXIgb2YgYmlydGg6IDIwMDQKICogICBVc2VybmFtZTogYWdvbGFuMDQKICovCnB1YmxpYyBjbGFzcyBVc2VPYmplY3QxMF9Vc2VybmFtZSB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIHVzZXJuYW1lKFN0cmluZyBmaXJzdCwgU3RyaW5nIGxhc3QsIGludCB5ZWFyKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAiIjsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFdyaXRlIHRoZSBtYWluIHByb2dyYW0gYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo=</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject11_TimeDiff.java -->
+<question type="description">
+    <name>
+      <text>Q11 – object methods – minutes between times</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 11 – שיטות של אובייקט – דקות בין שתי שעות</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שתי שיטות סטטיות:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">private static int toMinutes(String time)
+public static int minutesBetween(String start, String end)</pre>
+
+<p dir="rtl" style="text-align: right;">
+שעה נכתבת במחרוזת בתבנית <code dir="ltr">HH:MM</code>, תמיד עם שתי ספרות לשעות ושתי ספרות לדקות.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">toMinutes</code> מקבלת שעה ומחזירה כמה דקות עברו מחצות עד השעה הזו. זו שיטת עזר, ולכן היא פרטית – <code dir="ltr">private</code>: אפשר לזמן אותה רק מתוך המחלקה שבה היא כתובה.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">minutesBetween</code> מקבלת שעת התחלה ושעת סיום באותו יום, ומחזירה את מספר הדקות ביניהן. השתמשו בשיטה <code dir="ltr">toMinutes</code> כדי לכתוב את השיטה <code dir="ltr">minutesBetween</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+כדי להמיר מחרוזת של ספרות למספר, השתמשו בשיטה הסטטית <code dir="ltr">parseInt</code> של המחלקה <code dir="ltr">Integer</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>מתוך התיעוד:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int parseInt(String s)
+Parses the string argument as a signed decimal integer.
+Parameters:
+s - a String containing the int representation to be parsed</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">toMinutes("08:45") ==> 525
+toMinutes("23:59") ==> 1439
+minutesBetween("08:45", "10:15") ==> 90
+minutesBetween("09:00", "09:05") ==> 5</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject11_TimeDiff.java" download="UseObject11_TimeDiff.java" style="text-decoration: underline;">UseObject11_TimeDiff.java</a></strong> לסביבת העבודה, השלימו את השיטות והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject11_TimeDiff.java" path="/" encoding="base64">LyoqCiAqIEV4ZXJjaXNlOiBPYmplY3QgTWV0aG9kcyDigJMgVGltZSBEaWZmCiAqCiAqIFdyaXRlIHR3byBzdGF0aWMgbWV0aG9kczoKICogICBwcml2YXRlIHN0YXRpYyBpbnQgdG9NaW51dGVzKFN0cmluZyB0aW1lKQogKiAgIHB1YmxpYyBzdGF0aWMgaW50IG1pbnV0ZXNCZXR3ZWVuKFN0cmluZyBzdGFydCwgU3RyaW5nIGVuZCkKICoKICogQSB0aW1lIGlzIHdyaXR0ZW4gaW4gYSBzdHJpbmcgaW4gdGhlIGZvcm1hdCBISDpNTSwgYWx3YXlzIHdpdGggdHdvIGRpZ2l0cwogKiBmb3IgdGhlIGhvdXJzIGFuZCB0d28gZGlnaXRzIGZvciB0aGUgbWludXRlcy4KICogVGhlIG1ldGhvZCB0b01pbnV0ZXMgcmVjZWl2ZXMgYSB0aW1lIGFuZCByZXR1cm5zIGhvdyBtYW55IG1pbnV0ZXMgcGFzc2VkCiAqIGZyb20gbWlkbmlnaHQgdW50aWwgdGhhdCB0aW1lLiBJdCBpcyBhIGhlbHBlciBtZXRob2QsIHNvIGl0IGlzIHByaXZhdGU6CiAqIGl0IGNhbiBiZSBjYWxsZWQgb25seSBmcm9tIGluc2lkZSB0aGUgY2xhc3Mgd2hlcmUgaXQgaXMgd3JpdHRlbi4KICogVGhlIG1ldGhvZCBtaW51dGVzQmV0d2VlbiByZWNlaXZlcyBhIHN0YXJ0IHRpbWUgYW5kIGFuIGVuZCB0aW1lIG9uIHRoZSBzYW1lCiAqIGRheSwgYW5kIHJldHVybnMgdGhlIG51bWJlciBvZiBtaW51dGVzIGJldHdlZW4gdGhlbS4KICogVXNlIHRoZSBtZXRob2QgdG9NaW51dGVzIHRvIHdyaXRlIHRoZSBtZXRob2QgbWludXRlc0JldHdlZW4uCiAqIFRvIGNvbnZlcnQgYSBzdHJpbmcgb2YgZGlnaXRzIHRvIGEgbnVtYmVyLCB1c2UgdGhlIHN0YXRpYyBtZXRob2QgcGFyc2VJbnQKICogb2YgdGhlIGNsYXNzIEludGVnZXIuCiAqCiAqIERvY3VtZW50YXRpb246CiAqICAgcHVibGljIHN0YXRpYyBpbnQgcGFyc2VJbnQoU3RyaW5nIHMpCiAqICAgUGFyc2VzIHRoZSBzdHJpbmcgYXJndW1lbnQgYXMgYSBzaWduZWQgZGVjaW1hbCBpbnRlZ2VyLgogKiAgIFBhcmFtZXRlcnM6CiAqICAgcyAtIGEgU3RyaW5nIGNvbnRhaW5pbmcgdGhlIGludCByZXByZXNlbnRhdGlvbiB0byBiZSBwYXJzZWQKICoKICogRXhhbXBsZXM6CiAqICAgdG9NaW51dGVzKCIwODo0NSIpID09PiA1MjUKICogICB0b01pbnV0ZXMoIjIzOjU5IikgPT0+IDE0MzkKICogICBtaW51dGVzQmV0d2VlbigiMDg6NDUiLCAiMTA6MTUiKSA9PT4gOTAKICogICBtaW51dGVzQmV0d2VlbigiMDk6MDAiLCAiMDk6MDUiKSA9PT4gNQogKi8KcHVibGljIGNsYXNzIFVzZU9iamVjdDExX1RpbWVEaWZmIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2RzIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHByaXZhdGUgc3RhdGljIGludCB0b01pbnV0ZXMoU3RyaW5nIHRpbWUpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgcHVibGljIHN0YXRpYyBpbnQgbWludXRlc0JldHdlZW4oU3RyaW5nIHN0YXJ0LCBTdHJpbmcgZW5kKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAwOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJ0b01pbnV0ZXMoXCIwODo0NVwiKSA9PT4gNTI1ICAgIEFjdHVhbDogIiArIHRvTWludXRlcygiMDg6NDUiKQogICAgICAgICAgICArICIgICAgIiArICh0b01pbnV0ZXMoIjA4OjQ1IikgPT0gNTI1ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigidG9NaW51dGVzKFwiMjM6NTlcIikgPT0+IDE0MzkgICAgQWN0dWFsOiAiICsgdG9NaW51dGVzKCIyMzo1OSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHRvTWludXRlcygiMjM6NTkiKSA9PSAxNDM5ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibWludXRlc0JldHdlZW4oXCIwODo0NVwiLCBcIjEwOjE1XCIpID09PiA5MCAgICBBY3R1YWw6ICIgKyBtaW51dGVzQmV0d2VlbigiMDg6NDUiLCAiMTA6MTUiKQogICAgICAgICAgICArICIgICAgIiArIChtaW51dGVzQmV0d2VlbigiMDg6NDUiLCAiMTA6MTUiKSA9PSA5MCA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIm1pbnV0ZXNCZXR3ZWVuKFwiMDk6MDBcIiwgXCIwOTowNVwiKSA9PT4gNSAgICBBY3R1YWw6ICIgKyBtaW51dGVzQmV0d2VlbigiMDk6MDAiLCAiMDk6MDUiKQogICAgICAgICAgICArICIgICAgIiArIChtaW51dGVzQmV0d2VlbigiMDk6MDAiLCAiMDk6MDUiKSA9PSA1ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigidG9NaW51dGVzKFwiMTA6MDVcIikgPT0+IDYwNSAgICBBY3R1YWw6ICIgKyB0b01pbnV0ZXMoIjEwOjA1IikKICAgICAgICAgICAgKyAiICAgICIgKyAodG9NaW51dGVzKCIxMDowNSIpID09IDYwNSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInRvTWludXRlcyhcIjAwOjMwXCIpID09PiAzMCAgICBBY3R1YWw6ICIgKyB0b01pbnV0ZXMoIjAwOjMwIikKICAgICAgICAgICAgKyAiICAgICIgKyAodG9NaW51dGVzKCIwMDozMCIpID09IDMwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibWludXRlc0JldHdlZW4oXCIwNzo1MFwiLCBcIjE2OjEwXCIpID09PiA1MDAgICAgQWN0dWFsOiAiICsgbWludXRlc0JldHdlZW4oIjA3OjUwIiwgIjE2OjEwIikKICAgICAgICAgICAgKyAiICAgICIgKyAobWludXRlc0JldHdlZW4oIjA3OjUwIiwgIjE2OjEwIikgPT0gNTAwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibWludXRlc0JldHdlZW4oXCIwMDowMFwiLCBcIjIzOjU5XCIpID09PiAxNDM5ICAgIEFjdHVhbDogIiArIG1pbnV0ZXNCZXR3ZWVuKCIwMDowMCIsICIyMzo1OSIpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1pbnV0ZXNCZXR3ZWVuKCIwMDowMCIsICIyMzo1OSIpID09IDE0MzkgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject12_RandomPassword.java -->
+<question type="description">
+    <name>
+      <text>Q12 – object methods – random password</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 12 – שיטות של אובייקט – סיסמה אקראית</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שיטה סטטית:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String randomPassword()</pre>
+
+<p dir="rtl" style="text-align: right;">
+השיטה מגרילה סיסמה בת 4 תווים ומחזירה אותה. כל תו מוגרל בנפרד, וכל ערך שמותר במקומו יכול להתקבל. ההגרלה נעשית בתוך השיטה.
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>התו הראשון – אות גדולה, מ-<code dir="ltr">'A'</code> עד <code dir="ltr">'Z'</code></li>
+<li>התו השני – אות קטנה, מ-<code dir="ltr">'a'</code> עד <code dir="ltr">'z'</code></li>
+<li>התו השלישי והתו הרביעי – ספרות, מ-<code dir="ltr">'0'</code> עד <code dir="ltr">'9'</code></li>
+</ul>
+
+<p dir="rtl" style="text-align: right;">
+הסיסמה משתנה מזימון לזימון, ולכן הטסטר בודק רק את סוג התו בכל מקום.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">randomPassword() ==> upper, lower, digit, digit</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject12_RandomPassword.java" download="UseObject12_RandomPassword.java" style="text-decoration: underline;">UseObject12_RandomPassword.java</a></strong> לסביבת העבודה, השלימו את השיטה והריצו את התוכנית הראשית.
+</p>]]></text>
+      <file name="UseObject12_RandomPassword.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5SYW5kb207CgovKioKICogRXhlcmNpc2U6IE9iamVjdCBNZXRob2RzIOKAkyBSYW5kb20gUGFzc3dvcmQKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIHJhbmRvbVBhc3N3b3JkKCkKICoKICogVGhlIG1ldGhvZCBkcmF3cyBhIHBhc3N3b3JkIG9mIDQgY2hhcnMgYW5kIHJldHVybnMgaXQuIEVhY2ggY2hhciBpcyBkcmF3bgogKiBzZXBhcmF0ZWx5LCBhbmQgZXZlcnkgdmFsdWUgYWxsb3dlZCBpbiBpdHMgcGxhY2UgY2FuIGJlIGRyYXduLgogKiBUaGUgZHJhd2luZyBpcyBkb25lIGluc2lkZSB0aGUgbWV0aG9kLgogKiAgIGZpcnN0IGNoYXIgICAgICAgICAgIC0gYW4gdXBwZXIgY2FzZSBsZXR0ZXIsIGZyb20gJ0EnIHRvICdaJwogKiAgIHNlY29uZCBjaGFyICAgICAgICAgIC0gYSBsb3dlciBjYXNlIGxldHRlciwgZnJvbSAnYScgdG8gJ3onCiAqICAgdGhpcmQgYW5kIGZvdXJ0aCAgICAgLSBkaWdpdHMsIGZyb20gJzAnIHRvICc5JwogKiBUaGUgcGFzc3dvcmQgY2hhbmdlcyBmcm9tIGNhbGwgdG8gY2FsbCwgc28gdGhlIHRlc3RlciBvbmx5IGNoZWNrcyB0aGUga2luZAogKiBvZiBjaGFyIGluIGVhY2ggcGxhY2UuCiAqCiAqIEV4YW1wbGVzOgogKiAgIHJhbmRvbVBhc3N3b3JkKCkgPT0+IHVwcGVyLCBsb3dlciwgZGlnaXQsIGRpZ2l0CiAqLwpwdWJsaWMgY2xhc3MgVXNlT2JqZWN0MTJfUmFuZG9tUGFzc3dvcmQgewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIFN0cmluZyByYW5kb21QYXNzd29yZCgpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuICIiOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3RyaW5nIHBzd2QxID0gcmFuZG9tUGFzc3dvcmQoKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInJhbmRvbVBhc3N3b3JkKCkgPT0+IHVwcGVyLCBsb3dlciwgZGlnaXQsIGRpZ2l0ICAgIEFjdHVhbDogIiArIHBzd2QxCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzUGFzc3dvcmQocHN3ZDEpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN0cmluZyBwc3dkMiA9IHJhbmRvbVBhc3N3b3JkKCk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyYW5kb21QYXNzd29yZCgpID09PiB1cHBlciwgbG93ZXIsIGRpZ2l0LCBkaWdpdCAgICBBY3R1YWw6ICIgKyBwc3dkMgogICAgICAgICAgICArICIgICAgIiArIChpc1Bhc3N3b3JkKHBzd2QyKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTdHJpbmcgcHN3ZDMgPSByYW5kb21QYXNzd29yZCgpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicmFuZG9tUGFzc3dvcmQoKSA9PT4gdXBwZXIsIGxvd2VyLCBkaWdpdCwgZGlnaXQgICAgQWN0dWFsOiAiICsgcHN3ZDMKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNQYXNzd29yZChwc3dkMykgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3RyaW5nIHBzd2Q0ID0gcmFuZG9tUGFzc3dvcmQoKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInJhbmRvbVBhc3N3b3JkKCkgPT0+IHVwcGVyLCBsb3dlciwgZGlnaXQsIGRpZ2l0ICAgIEFjdHVhbDogIiArIHBzd2Q0CiAgICAgICAgICAgICsgIiAgICAiICsgKGlzUGFzc3dvcmQocHN3ZDQpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN0cmluZyBwc3dkNSA9IHJhbmRvbVBhc3N3b3JkKCk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyYW5kb21QYXNzd29yZCgpID09PiB1cHBlciwgbG93ZXIsIGRpZ2l0LCBkaWdpdCAgICBBY3R1YWw6ICIgKyBwc3dkNQogICAgICAgICAgICArICIgICAgIiArIChpc1Bhc3N3b3JkKHBzd2Q1KSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgIH0KCiAgICBwcml2YXRlIHN0YXRpYyBib29sZWFuIGlzUGFzc3dvcmQoU3RyaW5nIHBzd2QpIHsKICAgICAgICByZXR1cm4gcHN3ZC5sZW5ndGgoKSA9PSA0CiAgICAgICAgICAgICYmIHBzd2QuY2hhckF0KDApID49ICdBJyAmJiBwc3dkLmNoYXJBdCgwKSA8PSAnWicKICAgICAgICAgICAgJiYgcHN3ZC5jaGFyQXQoMSkgPj0gJ2EnICYmIHBzd2QuY2hhckF0KDEpIDw9ICd6JwogICAgICAgICAgICAmJiBpc0RpZ2l0KHBzd2QuY2hhckF0KDIpKSAmJiBpc0RpZ2l0KHBzd2QuY2hhckF0KDMpKTsKICAgIH0KCiAgICBwcml2YXRlIHN0YXRpYyBib29sZWFuIGlzRGlnaXQoY2hhciBjaCkgewogICAgICAgIHJldHVybiBjaCA+PSAnMCcgJiYgY2ggPD0gJzknOwogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseObject13_HighCard.java -->
+<question type="description">
+    <name>
+      <text>Q13 – object methods – high card</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 13 – שיטות של אובייקט – הקלף הגבוה</h4>
+
+<p dir="rtl" style="text-align: right;">כתבו שתי שיטות סטטיות:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int drawCard()
+public static String cardName(int value)</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>חלק א׳ – השיטות</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">drawCard</code> מגרילה ערך של קלף, מ-1 עד 13, ומחזירה אותו. ההגרלה נעשית בתוך השיטה.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+השיטה <code dir="ltr">cardName</code> מקבלת ערך של קלף ומחזירה את השם שלו:
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>הערך 1 – <code dir="ltr">"A"</code></li>
+<li>הערך 11 – <code dir="ltr">"J"</code></li>
+<li>הערך 12 – <code dir="ltr">"Q"</code></li>
+<li>הערך 13 – <code dir="ltr">"K"</code></li>
+<li>כל ערך אחר – המספר עצמו, כמחרוזת</li>
+</ul>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">cardName(1) ==> "A"
+cardName(7) ==> "7"
+cardName(12) ==> "Q"
+drawCard() ==> between 1 and 13</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>חלק ב׳ – התוכנית הראשית</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית שמגרילה קלף לשחקן וקלף למחשב, ומדפיסה את שמות שני הקלפים ואת התוצאה. הקלף שהערך שלו גדול יותר מנצח. השתמשו בשתי השיטות.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>דוגמאות ריצה של התוכנית:</strong></p>
+<p dir="rtl" style="text-align: right;">הערכים המוגרלים משתנים מריצה לריצה. הנה שלוש ריצות לדוגמה:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your card: Q
+Computer card: 7
+You win</pre>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your card: 3
+Computer card: K
+Computer wins</pre>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your card: 10
+Computer card: 10
+Tie</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseObject13_HighCard.java" download="UseObject13_HighCard.java" style="text-decoration: underline;">UseObject13_HighCard.java</a></strong> לסביבת העבודה, השלימו את השיטות, כתבו את התוכנית הראשית והריצו אותה כמה פעמים.
+</p>]]></text>
+      <file name="UseObject13_HighCard.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5SYW5kb207CgovKioKICogRXhlcmNpc2U6IE9iamVjdCBNZXRob2RzIOKAkyBIaWdoIENhcmQKICoKICogV3JpdGUgdHdvIHN0YXRpYyBtZXRob2RzOgogKiAgIHB1YmxpYyBzdGF0aWMgaW50IGRyYXdDYXJkKCkKICogICBwdWJsaWMgc3RhdGljIFN0cmluZyBjYXJkTmFtZShpbnQgdmFsdWUpCiAqCiAqIFBhcnQgMSAtIHRoZSBtZXRob2RzCiAqIFRoZSBtZXRob2QgZHJhd0NhcmQgZHJhd3MgdGhlIHZhbHVlIG9mIGEgY2FyZCwgZnJvbSAxIHRvIDEzLCBhbmQgcmV0dXJucyBpdC4KICogVGhlIGRyYXdpbmcgaXMgZG9uZSBpbnNpZGUgdGhlIG1ldGhvZC4KICogVGhlIG1ldGhvZCBjYXJkTmFtZSByZWNlaXZlcyB0aGUgdmFsdWUgb2YgYSBjYXJkIGFuZCByZXR1cm5zIGl0cyBuYW1lOgogKiAgIDEgICAgICAgICAgICAtICJBIgogKiAgIDExLCAxMiwgMTMgICAtICJKIiwgIlEiLCAiSyIKICogICBvdGhlciB2YWx1ZSAgLSB0aGUgbnVtYmVyIGl0c2VsZiwgYXMgYSBzdHJpbmcKICoKICogRXhhbXBsZXM6CiAqICAgY2FyZE5hbWUoMSkgPT0+ICJBIgogKiAgIGNhcmROYW1lKDcpID09PiAiNyIKICogICBjYXJkTmFtZSgxMikgPT0+ICJRIgogKiAgIGRyYXdDYXJkKCkgPT0+IGJldHdlZW4gMSBhbmQgMTMKICoKICogUGFydCAyIC0gdGhlIG1haW4gcHJvZ3JhbQogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGRyYXdzIGEgY2FyZCBmb3IgdGhlIHBsYXllciBhbmQgYSBjYXJkIGZvciB0aGUKICogY29tcHV0ZXIsIGFuZCBwcmludHMgdGhlIG5hbWVzIG9mIHRoZSB0d28gY2FyZHMgYW5kIHRoZSByZXN1bHQuIFRoZSBjYXJkCiAqIHdpdGggdGhlIGdyZWF0ZXIgdmFsdWUgd2lucy4gVXNlIGJvdGggbWV0aG9kcy4KICoKICogRXhhbXBsZSBydW4gKHRoZSByYW5kb20gdmFsdWVzIGNoYW5nZSBmcm9tIHJ1biB0byBydW4pOgogKiAgIFlvdXIgY2FyZDogUQogKiAgIENvbXB1dGVyIGNhcmQ6IDcKICogICBZb3Ugd2luCiAqCiAqIEFub3RoZXIgZXhhbXBsZSBydW46CiAqICAgWW91ciBjYXJkOiAzCiAqICAgQ29tcHV0ZXIgY2FyZDogSwogKiAgIENvbXB1dGVyIHdpbnMKICoKICogQW5vdGhlciBleGFtcGxlIHJ1bjoKICogICBZb3VyIGNhcmQ6IDEwCiAqICAgQ29tcHV0ZXIgY2FyZDogMTAKICogICBUaWUKICovCnB1YmxpYyBjbGFzcyBVc2VPYmplY3QxM19IaWdoQ2FyZCB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kcyBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGludCBkcmF3Q2FyZCgpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgcHVibGljIHN0YXRpYyBTdHJpbmcgY2FyZE5hbWUoaW50IHZhbHVlKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAiIjsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFdyaXRlIHRoZSBtYWluIHByb2dyYW0gYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo=</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+</quiz>

@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+
+<!-- UseStatic01_SquareGarden.java -->
+<question type="description">
+    <name>
+      <text>Q1 – static methods – square garden</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 1 – שיטות סטטיות – גינה ריבועית</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת את שטחה של גינה ריבועית במטרים רבועים, ומדפיסה את אורך הצלע של הגינה ואת אורך הגדר הדרושה כדי להקיף אותה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">56.25</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter area: 56.25
+Side length: 7.5
+Fence length: 30.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">20.25</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter area: 20.25
+Side length: 4.5
+Fence length: 18.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic01_SquareGarden.java" download="UseStatic01_SquareGarden.java" style="text-decoration: underline;">UseStatic01_SquareGarden.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic01_SquareGarden.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgU3F1YXJlIEdhcmRlbgogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBhcmVhIG9mIGEgc3F1YXJlIGdhcmRlbiAoaW4gc3F1YXJlCiAqIG1ldGVycykgYW5kIHByaW50cyB0aGUgc2lkZSBsZW5ndGggb2YgdGhlIGdhcmRlbiBhbmQgdGhlIGxlbmd0aCBvZiB0aGUKICogZmVuY2UgbmVlZGVkIHRvIHN1cnJvdW5kIGl0LgogKgogKiBJbnB1dDoKICogICA1Ni4yNQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYXJlYTogNTYuMjUKICogICBTaWRlIGxlbmd0aDogNy41CiAqICAgRmVuY2UgbGVuZ3RoOiAzMC4wCiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICAyMC4yNQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYXJlYTogMjAuMjUKICogICBTaWRlIGxlbmd0aDogNC41CiAqICAgRmVuY2UgbGVuZ3RoOiAxOC4wCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDFfU3F1YXJlR2FyZGVuIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic02_CubeBox.java -->
+<question type="description">
+    <name>
+      <text>Q2 – static methods – cube box</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 2 – שיטות סטטיות – קופסה בצורת קובייה</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת את אורך המקצוע של קופסה בצורת קובייה, ומדפיסה את נפח הקופסה ואת שטח הפנים שלה – סכום השטחים של שש הפאות.<br>השתמשו בשיטה <code dir="ltr">Math.pow</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2.5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter edge: 2.5
+Volume: 15.625
+Surface area: 37.5</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">4</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter edge: 4
+Volume: 64.0
+Surface area: 96.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic02_CubeBox.java" download="UseStatic02_CubeBox.java" style="text-decoration: underline;">UseStatic02_CubeBox.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic02_CubeBox.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQ3ViZSBCb3gKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyB0aGUgZWRnZSBsZW5ndGggb2YgYSBjdWJlIHNoYXBlZCBib3ggYW5kCiAqIHByaW50cyB0aGUgdm9sdW1lIG9mIHRoZSBib3ggYW5kIGl0cyBzdXJmYWNlIGFyZWEgKHRoZSBzdW0gb2YgdGhlIGFyZWFzCiAqIG9mIGl0cyBzaXggZmFjZXMpLgogKiBVc2UgdGhlIG1ldGhvZCBNYXRoLnBvdy4KICoKICogSW5wdXQ6CiAqICAgMi41CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBFbnRlciBlZGdlOiAyLjUKICogICBWb2x1bWU6IDE1LjYyNQogKiAgIFN1cmZhY2UgYXJlYTogMzcuNQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgNAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgZWRnZTogNAogKiAgIFZvbHVtZTogNjQuMAogKiAgIFN1cmZhY2UgYXJlYTogOTYuMAogKi8KcHVibGljIGNsYXNzIFVzZVN0YXRpYzAyX0N1YmVCb3ggewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic03_Battery.java -->
+<question type="description">
+    <name>
+      <text>Q3 – static methods – battery level</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 3 – שיטות סטטיות – סוללה</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת שלושה נתונים על סוללה של טלפון: אחוז הטעינה הנוכחי, כמה אחוזים נוספו בטעינה, וכמה אחוזים נצרכו בשימוש שאחריה. התוכנית מדפיסה את אחוז הטעינה אחרי הטעינה ואחרי השימוש. אחוז הטעינה לעולם אינו עולה על 100 ואינו יורד מתחת לאפס.<br>אין להשתמש בתנאים – רק בשיטות של המחלקה <code dir="ltr">Math</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">70
+45
+20</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Battery level: 70
+Charge: 45
+Usage: 20
+After charging: 100
+After use: 80</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">30
+25
+70</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Battery level: 30
+Charge: 25
+Usage: 70
+After charging: 55
+After use: 0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic03_Battery.java" download="UseStatic03_Battery.java" style="text-decoration: underline;">UseStatic03_Battery.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic03_Battery.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQmF0dGVyeQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRocmVlIHZhbHVlcyBhYm91dCBhIHBob25lIGJhdHRlcnk6IHRoZQogKiBjdXJyZW50IGNoYXJnZSBsZXZlbCAoaW4gcGVyY2VudCksIGhvdyBtYW55IHBlcmNlbnQgd2VyZSBhZGRlZCB3aGlsZQogKiBjaGFyZ2luZywgYW5kIGhvdyBtYW55IHBlcmNlbnQgd2VyZSB1c2VkIGFmdGVyd2FyZHMuCiAqIFRoZSBwcm9ncmFtIHByaW50cyB0aGUgbGV2ZWwgYWZ0ZXIgY2hhcmdpbmcgYW5kIGFmdGVyIHVzZS4KICogVGhlIGxldmVsIGlzIG5ldmVyIGFib3ZlIDEwMCBhbmQgbmV2ZXIgYmVsb3cgMC4KICogRG8gbm90IHVzZSBjb25kaXRpb25zIC0gdXNlIG1ldGhvZHMgb2YgdGhlIGNsYXNzIE1hdGggb25seS4KICoKICogSW5wdXQ6CiAqICAgNzAKICogICA0NQogKiAgIDIwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBCYXR0ZXJ5IGxldmVsOiA3MAogKiAgIENoYXJnZTogNDUKICogICBVc2FnZTogMjAKICogICBBZnRlciBjaGFyZ2luZzogMTAwCiAqICAgQWZ0ZXIgdXNlOiA4MAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgMzAKICogICAyNQogKiAgIDcwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBCYXR0ZXJ5IGxldmVsOiAzMAogKiAgIENoYXJnZTogMjUKICogICBVc2FnZTogNzAKICogICBBZnRlciBjaGFyZ2luZzogNTUKICogICBBZnRlciB1c2U6IDAKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMwM19CYXR0ZXJ5IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic04_CirclePoint.java -->
+<question type="description">
+    <name>
+      <text>Q4 – static methods – point and circle</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 4 – שיטות סטטיות – נקודה ומעגל</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת את שיעורי הנקודה במישור ואת הרדיוס של מעגל שמרכזו בראשית הצירים. התוכנית מדפיסה את מרחק הנקודה ממרכז המעגל, ומודיעה אם הנקודה נמצאת בתוך המעגל, עליו או מחוצה לו.<br>המרחק מחושב כמו יתר במשולש ישר זווית, שניצביו הם שני השיעורים של הנקודה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">6
+8
+10</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">x = 6
+y = 8
+radius = 10
+distance = 10.0
+The point is on the circle</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-3
+4
+6</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">x = -3
+y = 4
+radius = 6
+distance = 5.0
+The point is inside the circle</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-9
+12
+10</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">x = -9
+y = 12
+radius = 10
+distance = 15.0
+The point is outside the circle</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic04_CirclePoint.java" download="UseStatic04_CirclePoint.java" style="text-decoration: underline;">UseStatic04_CirclePoint.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic04_CirclePoint.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQ2lyY2xlIFBvaW50CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIGNvb3JkaW5hdGVzIG9mIGEgcG9pbnQgYW5kIHRoZSByYWRpdXMKICogb2YgYSBjaXJjbGUgd2hvc2UgY2VudGVyIGlzIGF0IHRoZSBvcmlnaW4uCiAqIFRoZSBwcm9ncmFtIHByaW50cyB0aGUgZGlzdGFuY2Ugb2YgdGhlIHBvaW50IGZyb20gdGhlIGNlbnRlciwgYW5kIHRlbGxzCiAqIHdoZXRoZXIgdGhlIHBvaW50IGlzIGluc2lkZSB0aGUgY2lyY2xlLCBvbiBpdCwgb3Igb3V0c2lkZSBpdC4KICogVGhlIGRpc3RhbmNlIGlzIGNhbGN1bGF0ZWQgbGlrZSB0aGUgaHlwb3RlbnVzZSBvZiBhIHJpZ2h0IHRyaWFuZ2xlIHdob3NlCiAqIGxlZ3MgYXJlIHRoZSB0d28gY29vcmRpbmF0ZXMgb2YgdGhlIHBvaW50LgogKgogKiBJbnB1dDoKICogICA2CiAqICAgOAogKiAgIDEwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICB4ID0gNgogKiAgIHkgPSA4CiAqICAgcmFkaXVzID0gMTAKICogICBkaXN0YW5jZSA9IDEwLjAKICogICBUaGUgcG9pbnQgaXMgb24gdGhlIGNpcmNsZQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgLTMKICogICA0CiAqICAgNgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgeCA9IC0zCiAqICAgeSA9IDQKICogICByYWRpdXMgPSA2CiAqICAgZGlzdGFuY2UgPSA1LjAKICogICBUaGUgcG9pbnQgaXMgaW5zaWRlIHRoZSBjaXJjbGUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIC05CiAqICAgMTIKICogICAxMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgeCA9IC05CiAqICAgeSA9IDEyCiAqICAgcmFkaXVzID0gMTAKICogICBkaXN0YW5jZSA9IDE1LjAKICogICBUaGUgcG9pbnQgaXMgb3V0c2lkZSB0aGUgY2lyY2xlCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDRfQ2lyY2xlUG9pbnQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic05_Investment.java -->
+<question type="description">
+    <name>
+      <text>Q5 – static methods – investment</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 5 – שיטות סטטיות – רווח מהשקעה</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית לחישוב רווח מהשקעה בריבית דריבית. התוכנית קולטת את סכום ההשקעה, את אחוז הריבית השנתית ואת מספר השנים, ומדפיסה את שווי ההשקעה בסוף התקופה ואת הרווח.<br>השווי בסוף התקופה הוא הסכום כפול (1 ועוד אחוז הריבית חלקי 100) בחזקת מספר השנים.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+את השווי ואת הרווח יש להדפיס באגורות שלמות, כלומר לעגל כלפי מטה לשתי ספרות אחרי הנקודה. רמז: כפלו ב-100, עגלו כלפי מטה וחלקו ב-100. קצצו כל אחד מהערכים בנפרד.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">10000
+4
+10</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Amount: 10000
+Interest rate (%): 4
+Years: 10
+Value: 14802.44
+Profit: 4802.44</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">50000
+4
+5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Amount: 50000
+Interest rate (%): 4
+Years: 5
+Value: 60832.64
+Profit: 10832.64</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic05_Investment.java" download="UseStatic05_Investment.java" style="text-decoration: underline;">UseStatic05_Investment.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic05_Investment.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgSW52ZXN0bWVudAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGN1bGF0ZXMgdGhlIHByb2ZpdCBvZiBhbiBpbnZlc3RtZW50IHdpdGgKICogY29tcG91bmQgaW50ZXJlc3QuIFRoZSBwcm9ncmFtIHJlYWRzIHRoZSBhbW91bnQsIHRoZSB5ZWFybHkgaW50ZXJlc3QKICogcmF0ZSAoaW4gcGVyY2VudCkgYW5kIHRoZSBudW1iZXIgb2YgeWVhcnMsIGFuZCBwcmludHMgdGhlIHZhbHVlIG9mIHRoZQogKiBpbnZlc3RtZW50IGF0IHRoZSBlbmQgYW5kIHRoZSBwcm9maXQuCiAqIFZhbHVlIGF0IHRoZSBlbmQgPSBhbW91bnQgKiAoMSArIHJhdGUgLyAxMDApIHRvIHRoZSBwb3dlciBvZiB5ZWFycy4KICogUHJpbnQgdGhlIHZhbHVlIGFuZCB0aGUgcHJvZml0IGluIHdob2xlIGFnb3JvdCAtIHJvdW5kIGRvd24gdG8gdHdvCiAqIGRpZ2l0cyBhZnRlciB0aGUgcG9pbnQuIEhpbnQ6IG11bHRpcGx5IGJ5IDEwMCwgcm91bmQgZG93biBhbmQgZGl2aWRlCiAqIGJ5IDEwMC4gQ3V0IGVhY2ggb2YgdGhlIHZhbHVlcyBzZXBhcmF0ZWx5LgogKgogKiBJbnB1dDoKICogICAxMDAwMAogKiAgIDQKICogICAxMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgQW1vdW50OiAxMDAwMAogKiAgIEludGVyZXN0IHJhdGUgKCUpOiA0CiAqICAgWWVhcnM6IDEwCiAqICAgVmFsdWU6IDE0ODAyLjQ0CiAqICAgUHJvZml0OiA0ODAyLjQ0CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA1MDAwMAogKiAgIDQKICogICA1CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBBbW91bnQ6IDUwMDAwCiAqICAgSW50ZXJlc3QgcmF0ZSAoJSk6IDQKICogICBZZWFyczogNQogKiAgIFZhbHVlOiA2MDgzMi42NAogKiAgIFByb2ZpdDogMTA4MzIuNjQKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMwNV9JbnZlc3RtZW50IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic06_HotCold.java -->
+<question type="description">
+    <name>
+      <text>Q6 – static methods – hot or cold</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 6 – שיטות סטטיות – חם או קר</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית למשחק ניחוש. המספר הסודי 47 שמור במשתנה בתוכנית. התוכנית קולטת ניחוש, מדפיסה את המרחק בין הניחוש לבין המספר הסודי, ואחריו הודעה לפי המרחק:
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>מרחק אפס – <code dir="ltr">Exact!</code></li>
+<li>מרחק של עד 5 – <code dir="ltr">Hot</code></li>
+<li>מרחק של עד 15 – <code dir="ltr">Warm</code></li>
+<li>מרחק גדול יותר – <code dir="ltr">Cold</code></li>
+</ul>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">50</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your guess: 50
+distance = 3
+Hot</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">35</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your guess: 35
+distance = 12
+Warm</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">80</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your guess: 80
+distance = 33
+Cold</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic06_HotCold.java" download="UseStatic06_HotCold.java" style="text-decoration: underline;">UseStatic06_HotCold.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic06_HotCold.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgSG90IENvbGQKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gZm9yIGEgZ3Vlc3NpbmcgZ2FtZS4gVGhlIHNlY3JldCBudW1iZXIgNDcgaXMgc3RvcmVkCiAqIGluIGEgdmFyaWFibGUgaW4gdGhlIHByb2dyYW0uIFRoZSBwcm9ncmFtIHJlYWRzIGEgZ3Vlc3MsIHByaW50cyB0aGUKICogZGlzdGFuY2UgYmV0d2VlbiB0aGUgZ3Vlc3MgYW5kIHRoZSBzZWNyZXQgbnVtYmVyLCBhbmQgdGhlbiBhIG1lc3NhZ2U6CiAqICAgZGlzdGFuY2UgMCAgICAgICAgICAtIEV4YWN0IQogKiAgIGRpc3RhbmNlIHVwIHRvIDUgICAgLSBIb3QKICogICBkaXN0YW5jZSB1cCB0byAxNSAgIC0gV2FybQogKiAgIGxhcmdlciBkaXN0YW5jZSAgICAgLSBDb2xkCiAqCiAqIElucHV0OgogKiAgIDUwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBZb3VyIGd1ZXNzOiA1MAogKiAgIGRpc3RhbmNlID0gMwogKiAgIEhvdAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgMzUKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFlvdXIgZ3Vlc3M6IDM1CiAqICAgZGlzdGFuY2UgPSAxMgogKiAgIFdhcm0KICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDgwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBZb3VyIGd1ZXNzOiA4MAogKiAgIGRpc3RhbmNlID0gMzMKICogICBDb2xkCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDZfSG90Q29sZCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo=</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic07_Ladder.java -->
+<question type="description">
+    <name>
+      <text>Q7 – static methods – ladder</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 7 – שיטות סטטיות – סולם</h4>
+
+<p dir="rtl" style="text-align: right;">
+סולם נשען על קיר. כתבו תוכנית ראשית הקולטת את אורך הסולם, את המרחק של רגלי הסולם מהקיר ואת גובה החלון. התוכנית מדפיסה את הגובה שאליו מגיע ראש הסולם, ומודיעה אם הסולם מגיע לחלון.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">6.5
+2.5
+5.5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Ladder length: 6.5
+Distance from wall: 2.5
+Window height: 5.5
+Height: 6.0
+The ladder reaches the window</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">5
+3
+5.5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Ladder length: 5
+Distance from wall: 3
+Window height: 5.5
+Height: 4.0
+The ladder does not reach the window</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic07_Ladder.java" download="UseStatic07_Ladder.java" style="text-decoration: underline;">UseStatic07_Ladder.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic07_Ladder.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTGFkZGVyCiAqCiAqIEEgbGFkZGVyIGxlYW5zIGFnYWluc3QgYSB3YWxsLiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBsZW5ndGgKICogb2YgdGhlIGxhZGRlciwgdGhlIGRpc3RhbmNlIG9mIHRoZSBsYWRkZXIncyBmb290IGZyb20gdGhlIHdhbGwsIGFuZCB0aGUKICogaGVpZ2h0IG9mIGEgd2luZG93LiBUaGUgcHJvZ3JhbSBwcmludHMgdGhlIGhlaWdodCB0aGF0IHRoZSB0b3Agb2YgdGhlCiAqIGxhZGRlciByZWFjaGVzLCBhbmQgdGVsbHMgd2hldGhlciB0aGUgbGFkZGVyIHJlYWNoZXMgdGhlIHdpbmRvdy4KICoKICogSW5wdXQ6CiAqICAgNi41CiAqICAgMi41CiAqICAgNS41CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBMYWRkZXIgbGVuZ3RoOiA2LjUKICogICBEaXN0YW5jZSBmcm9tIHdhbGw6IDIuNQogKiAgIFdpbmRvdyBoZWlnaHQ6IDUuNQogKiAgIEhlaWdodDogNi4wCiAqICAgVGhlIGxhZGRlciByZWFjaGVzIHRoZSB3aW5kb3cKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDUKICogICAzCiAqICAgNS41CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBMYWRkZXIgbGVuZ3RoOiA1CiAqICAgRGlzdGFuY2UgZnJvbSB3YWxsOiAzCiAqICAgV2luZG93IGhlaWdodDogNS41CiAqICAgSGVpZ2h0OiA0LjAKICogICBUaGUgbGFkZGVyIGRvZXMgbm90IHJlYWNoIHRoZSB3aW5kb3cKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMwN19MYWRkZXIgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic08_MathMenu.java -->
+<question type="description">
+    <name>
+      <text>Q8 – static methods – math menu</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 8 – שיטות סטטיות – מחשבון פעולות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מספר ממשי ואת שם הפעולה לביצוע עליו: <code dir="ltr">sqrt</code> לשורש ריבועי, <code dir="ltr">square</code> להעלאה בריבוע או <code dir="ltr">abs</code> לערך מוחלט. התוכנית מדפיסה את התוצאה, ועבור שם פעולה אחר היא מדפיסה הודעה מתאימה.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2.25
+sqrt</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter number: 2.25
+Action (sqrt/square/abs): sqrt
+result = 1.5</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-6.5
+square</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter number: -6.5
+Action (sqrt/square/abs): square
+result = 42.25</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">9
+cube</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter number: 9
+Action (sqrt/square/abs): cube
+Unknown action</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic08_MathMenu.java" download="UseStatic08_MathMenu.java" style="text-decoration: underline;">UseStatic08_MathMenu.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic08_MathMenu.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTWF0aCBNZW51CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgYSByZWFsIG51bWJlciBhbmQgdGhlIG5hbWUgb2YgYW4gYWN0aW9uOgogKiBzcXJ0IGZvciBzcXVhcmUgcm9vdCwgc3F1YXJlIGZvciByYWlzaW5nIHRvIHRoZSBwb3dlciBvZiAyLCBvciBhYnMgZm9yCiAqIHRoZSBhYnNvbHV0ZSB2YWx1ZS4gVGhlIHByb2dyYW0gcHJpbnRzIHRoZSByZXN1bHQuIEZvciBhbnkgb3RoZXIgYWN0aW9uCiAqIG5hbWUgaXQgcHJpbnRzIGEgc3VpdGFibGUgbWVzc2FnZS4KICoKICogSW5wdXQ6CiAqICAgMi4yNQogKiAgIHNxcnQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEVudGVyIG51bWJlcjogMi4yNQogKiAgIEFjdGlvbiAoc3FydC9zcXVhcmUvYWJzKTogc3FydAogKiAgIHJlc3VsdCA9IDEuNQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgLTYuNQogKiAgIHNxdWFyZQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgbnVtYmVyOiAtNi41CiAqICAgQWN0aW9uIChzcXJ0L3NxdWFyZS9hYnMpOiBzcXVhcmUKICogICByZXN1bHQgPSA0Mi4yNQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgOQogKiAgIGN1YmUKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEVudGVyIG51bWJlcjogOQogKiAgIEFjdGlvbiAoc3FydC9zcXVhcmUvYWJzKTogY3ViZQogKiAgIFVua25vd24gYWN0aW9uCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDhfTWF0aE1lbnUgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic09_DigitsCount.java -->
+<question type="description">
+    <name>
+      <text>Q9 – static methods – number of digits</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 9 – שיטות סטטיות – מספר הספרות</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת מספר שלם חיובי ומדפיסה כמה ספרות יש בו ומהי הספרה הראשונה שלו (הספרה השמאלית).<br>השתמשו בשיטה <code dir="ltr">Math.log10</code>, שהתיעוד שלה מופיע כאן. הלוגריתם לפי בסיס 10 של מספר הוא החזקה שבה צריך להעלות את 10 כדי לקבל את המספר – למשל 3 עבור 1000.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>מתוך התיעוד:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static double log10(double a)
+Returns the base 10 logarithm of a double value.
+Parameters:
+a - a value</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7350</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive number: 7350
+Digits: 4
+First digit: 7</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">58</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive number: 58
+Digits: 2
+First digit: 5</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">100000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive number: 100000
+Digits: 6
+First digit: 1</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic09_DigitsCount.java" download="UseStatic09_DigitsCount.java" style="text-decoration: underline;">UseStatic09_DigitsCount.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic09_DigitsCount.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgRGlnaXRzIENvdW50CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgYSBwb3NpdGl2ZSB3aG9sZSBudW1iZXIgYW5kIHByaW50cyBob3cKICogbWFueSBkaWdpdHMgaXQgaGFzIGFuZCB3aGF0IGl0cyBmaXJzdCAobGVmdG1vc3QpIGRpZ2l0IGlzLgogKiBVc2UgdGhlIG1ldGhvZCBNYXRoLmxvZzEwLiBUaGUgYmFzZSAxMCBsb2dhcml0aG0gb2YgYSBudW1iZXIgaXMgdGhlCiAqIHBvd2VyIHRvIHdoaWNoIDEwIG11c3QgYmUgcmFpc2VkIHRvIGdldCB0aGUgbnVtYmVyIC0gZm9yIGV4YW1wbGUsCiAqIDMgZm9yIDEwMDAuCiAqCiAqIERvY3VtZW50YXRpb246CiAqICAgcHVibGljIHN0YXRpYyBkb3VibGUgbG9nMTAoZG91YmxlIGEpCiAqICAgUmV0dXJucyB0aGUgYmFzZSAxMCBsb2dhcml0aG0gb2YgYSBkb3VibGUgdmFsdWUuCiAqICAgUGFyYW1ldGVyczoKICogICBhIC0gYSB2YWx1ZQogKgogKiBJbnB1dDoKICogICA3MzUwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBFbnRlciBhIHBvc2l0aXZlIG51bWJlcjogNzM1MAogKiAgIERpZ2l0czogNAogKiAgIEZpcnN0IGRpZ2l0OiA3CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA1OAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYSBwb3NpdGl2ZSBudW1iZXI6IDU4CiAqICAgRGlnaXRzOiAyCiAqICAgRmlyc3QgZGlnaXQ6IDUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEwMDAwMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYSBwb3NpdGl2ZSBudW1iZXI6IDEwMDAwMAogKiAgIERpZ2l0czogNgogKiAgIEZpcnN0IGRpZ2l0OiAxCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDlfRGlnaXRzQ291bnQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic10_Quadratic.java -->
+<question type="description">
+    <name>
+      <text>Q10 – static methods – quadratic equation</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 10 – שיטות סטטיות – משוואה ריבועית</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת את שלושת המקדמים של משוואה ריבועית ומדפיסה את הפתרונות שלה. המקדם <code dir="ltr">a</code> שונה מאפס. לפי ערך הביטוי שמתחת לשורש, יש למשוואה שני פתרונות, פתרון אחד או שאין לה פתרון.
+</p>
+
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">ax² + bx + c = 0
+x = (-b ± √(b² - 4ac)) / (2a)</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2
+-14
+24</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">a = 2
+b = -14
+c = 24
+x1 = 4.0
+x2 = 3.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">1
+6
+9</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">a = 1
+b = 6
+c = 9
+x = -3.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">1
+2
+5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">a = 1
+b = 2
+c = 5
+No solutions</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic10_Quadratic.java" download="UseStatic10_Quadratic.java" style="text-decoration: underline;">UseStatic10_Quadratic.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic10_Quadratic.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUXVhZHJhdGljCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIHRocmVlIGNvZWZmaWNpZW50cyBvZiBhIHF1YWRyYXRpYwogKiBlcXVhdGlvbiBhbmQgcHJpbnRzIGl0cyBzb2x1dGlvbnMuIFRoZSBjb2VmZmljaWVudCBhIGlzIG5vdCB6ZXJvLgogKiBEZXBlbmRpbmcgb24gdGhlIHZhbHVlIHVuZGVyIHRoZSBzcXVhcmUgcm9vdCwgdGhlIGVxdWF0aW9uIGhhcyB0d28KICogc29sdXRpb25zLCBvbmUgc29sdXRpb24sIG9yIG5vIHNvbHV0aW9uLgogKiAgIGEqeCp4ICsgYip4ICsgYyA9IDAKICogICB4ID0gKC1iICsvLSBzcXJ0KGIqYiAtIDQqYSpjKSkgLyAoMiphKQogKgogKiBJbnB1dDoKICogICAyCiAqICAgLTE0CiAqICAgMjQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIGEgPSAyCiAqICAgYiA9IC0xNAogKiAgIGMgPSAyNAogKiAgIHgxID0gNC4wCiAqICAgeDIgPSAzLjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEKICogICA2CiAqICAgOQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgYSA9IDEKICogICBiID0gNgogKiAgIGMgPSA5CiAqICAgeCA9IC0zLjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEKICogICAyCiAqICAgNQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgYSA9IDEKICogICBiID0gMgogKiAgIGMgPSA1CiAqICAgTm8gc29sdXRpb25zCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMTBfUXVhZHJhdGljIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic11_TriangleType.java -->
+<question type="description">
+    <name>
+      <text>Q11 – static methods – triangle type</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 11 – שיטות סטטיות – סוג המשולש</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת את אורכי שלוש הצלעות של משולש, בסדר כלשהו, ומדפיסה את אורך הצלע הארוכה ואת סוג המשולש. משווים את ריבוע הצלע הארוכה לסכום הריבועים של שתי הצלעות האחרות: אם הם שווים – המשולש ישר זווית, אם ריבוע הצלע הארוכה קטן יותר – חד זווית, ואם הוא גדול יותר – קהה זווית.<br>את הצלע הארוכה ואת סכום הריבועים של שתי הצלעות האחרות יש למצוא בלי תנאים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">13
+5
+12</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">side 1: 13
+side 2: 5
+side 3: 12
+Longest side: 13
+Right triangle</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">6
+7
+8</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">side 1: 6
+side 2: 7
+side 3: 8
+Longest side: 8
+Acute triangle</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">4
+9
+6</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">side 1: 4
+side 2: 9
+side 3: 6
+Longest side: 9
+Obtuse triangle</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic11_TriangleType.java" download="UseStatic11_TriangleType.java" style="text-decoration: underline;">UseStatic11_TriangleType.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic11_TriangleType.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgVHJpYW5nbGUgVHlwZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBsZW5ndGhzIG9mIHRoZSB0aHJlZSBzaWRlcyBvZiBhCiAqIHRyaWFuZ2xlLCBpbiBhbnkgb3JkZXIsIGFuZCBwcmludHMgdGhlIGxlbmd0aCBvZiB0aGUgbG9uZ2VzdCBzaWRlIGFuZAogKiB0aGUgdHlwZSBvZiB0aGUgdHJpYW5nbGUuIENvbXBhcmUgdGhlIHNxdWFyZSBvZiB0aGUgbG9uZ2VzdCBzaWRlIHdpdGgKICogdGhlIHN1bSBvZiB0aGUgc3F1YXJlcyBvZiB0aGUgdHdvIG90aGVyIHNpZGVzOiBlcXVhbCAtIHJpZ2h0IHRyaWFuZ2xlLAogKiBzbWFsbGVyIC0gYWN1dGUgdHJpYW5nbGUsIGxhcmdlciAtIG9idHVzZSB0cmlhbmdsZS4KICogRmluZCB0aGUgbG9uZ2VzdCBzaWRlIGFuZCB0aGUgc3VtIG9mIHRoZSBzcXVhcmVzIG9mIHRoZSB0d28gb3RoZXIgc2lkZXMKICogd2l0aG91dCBjb25kaXRpb25zLgogKgogKiBJbnB1dDoKICogICAxMwogKiAgIDUKICogICAxMgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgc2lkZSAxOiAxMwogKiAgIHNpZGUgMjogNQogKiAgIHNpZGUgMzogMTIKICogICBMb25nZXN0IHNpZGU6IDEzCiAqICAgUmlnaHQgdHJpYW5nbGUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDYKICogICA3CiAqICAgOAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgc2lkZSAxOiA2CiAqICAgc2lkZSAyOiA3CiAqICAgc2lkZSAzOiA4CiAqICAgTG9uZ2VzdCBzaWRlOiA4CiAqICAgQWN1dGUgdHJpYW5nbGUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDQKICogICA5CiAqICAgNgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgc2lkZSAxOiA0CiAqICAgc2lkZSAyOiA5CiAqICAgc2lkZSAzOiA2CiAqICAgTG9uZ2VzdCBzaWRlOiA5CiAqICAgT2J0dXNlIHRyaWFuZ2xlCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMTFfVHJpYW5nbGVUeXBlIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic12_Bacteria.java -->
+<question type="description">
+    <name>
+      <text>Q12 – static methods – bacteria</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 12 – שיטות סטטיות – מושבת חיידקים</h4>
+
+<p dir="rtl" style="text-align: right;">
+מספר החיידקים במושבה מוכפל בכל שעה. כתבו תוכנית ראשית הקולטת את מספר החיידקים בהתחלה ואת מספר היעד, ומדפיסה כמה שעות שלמות יעברו עד שמספר החיידקים יגיע ליעד או יעבור אותו, וכמה חיידקים יהיו אז.<br>מספר השעות המדויק שווה ללוגריתם של היחס בין היעד לבין מספר החיידקים בהתחלה, חלקי הלוגריתם של 2. התיעוד של השיטות הדרושות מופיע כאן.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>מתוך התיעוד:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static double log(double a)
+Returns the natural logarithm (base e) of a double value.
+Parameters:
+a - a value
+
+public static double ceil(double a)
+Returns the smallest (closest to negative infinity) double value
+that is greater than or equal to the argument and is equal to
+a mathematical integer.
+Parameters:
+a - a value</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">300
+10000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Start: 300
+Target: 10000
+Hours: 6
+Bacteria: 19200</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">50
+1000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Start: 50
+Target: 1000
+Hours: 5
+Bacteria: 1600</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic12_Bacteria.java" download="UseStatic12_Bacteria.java" style="text-decoration: underline;">UseStatic12_Bacteria.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic12_Bacteria.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQmFjdGVyaWEKICoKICogVGhlIG51bWJlciBvZiBiYWN0ZXJpYSBpbiBhIGNvbG9ueSBkb3VibGVzIGV2ZXJ5IGhvdXIuIFdyaXRlIGEgbWFpbgogKiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIHN0YXJ0aW5nIG51bWJlciBvZiBiYWN0ZXJpYSBhbmQgYSB0YXJnZXQgbnVtYmVyLAogKiBhbmQgcHJpbnRzIGhvdyBtYW55IHdob2xlIGhvdXJzIHBhc3MgdW50aWwgdGhlIG51bWJlciBvZiBiYWN0ZXJpYQogKiByZWFjaGVzIHRoZSB0YXJnZXQgb3IgcGFzc2VzIGl0LCBhbmQgaG93IG1hbnkgYmFjdGVyaWEgdGhlcmUgYXJlIHRoZW4uCiAqIFRoZSBleGFjdCBudW1iZXIgb2YgaG91cnMgZXF1YWxzIHRoZSBsb2dhcml0aG0gb2YgdGhlIHJhdGlvIGJldHdlZW4gdGhlCiAqIHRhcmdldCBhbmQgdGhlIHN0YXJ0aW5nIG51bWJlciwgZGl2aWRlZCBieSB0aGUgbG9nYXJpdGhtIG9mIDIuCiAqCiAqIERvY3VtZW50YXRpb246CiAqICAgcHVibGljIHN0YXRpYyBkb3VibGUgbG9nKGRvdWJsZSBhKQogKiAgIFJldHVybnMgdGhlIG5hdHVyYWwgbG9nYXJpdGhtIChiYXNlIGUpIG9mIGEgZG91YmxlIHZhbHVlLgogKiAgIFBhcmFtZXRlcnM6CiAqICAgYSAtIGEgdmFsdWUKICoKICogICBwdWJsaWMgc3RhdGljIGRvdWJsZSBjZWlsKGRvdWJsZSBhKQogKiAgIFJldHVybnMgdGhlIHNtYWxsZXN0IChjbG9zZXN0IHRvIG5lZ2F0aXZlIGluZmluaXR5KSBkb3VibGUgdmFsdWUKICogICB0aGF0IGlzIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byB0aGUgYXJndW1lbnQgYW5kIGlzIGVxdWFsIHRvCiAqICAgYSBtYXRoZW1hdGljYWwgaW50ZWdlci4KICogICBQYXJhbWV0ZXJzOgogKiAgIGEgLSBhIHZhbHVlCiAqCiAqIElucHV0OgogKiAgIDMwMAogKiAgIDEwMDAwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBTdGFydDogMzAwCiAqICAgVGFyZ2V0OiAxMDAwMAogKiAgIEhvdXJzOiA2CiAqICAgQmFjdGVyaWE6IDE5MjAwCiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA1MAogKiAgIDEwMDAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFN0YXJ0OiA1MAogKiAgIFRhcmdldDogMTAwMAogKiAgIEhvdXJzOiA1CiAqICAgQmFjdGVyaWE6IDE2MDAKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMxMl9CYWN0ZXJpYSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo=</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+<!-- UseStatic13_ClockAngle.java -->
+<question type="description">
+    <name>
+      <text>Q13 – static methods – clock angle</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">שאלה 13 – שיטות סטטיות – הזווית בין מחוגי השעון</h4>
+
+<p dir="rtl" style="text-align: right;">
+כתבו תוכנית ראשית הקולטת שעה בין 1 ל-12 ומספר דקות, ומדפיסה את הזווית הקטנה מבין שתי הזוויות שבין מחוג השעות לבין מחוג הדקות. מחוג השעות זז 30 מעלות בכל שעה וחצי מעלה בכל דקה, ומחוג הדקות זז 6 מעלות בכל דקה.<br>אין להשתמש בתנאים.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>נתוני הקלט:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">3
+30</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה הראשונה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hour: 3
+Minutes: 30
+Angle: 75.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">9
+0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השנייה:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hour: 9
+Minutes: 0
+Angle: 90.0</pre>
+
+<p dir="rtl" style="text-align: right;">הריצו את התוכנית שוב עם נתוני הקלט הבאים:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">10
+20</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>הפלט הנדרש בריצה השלישית:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hour: 10
+Minutes: 20
+Angle: 170.0</pre>
+
+<p dir="rtl" style="text-align: right;">
+הורידו את המחלקה <strong><a href="@@PLUGINFILE@@/UseStatic13_ClockAngle.java" download="UseStatic13_ClockAngle.java" style="text-decoration: underline;">UseStatic13_ClockAngle.java</a></strong> לסביבת העבודה, כתבו את התוכנית והריצו אותה.
+</p>]]></text>
+      <file name="UseStatic13_ClockAngle.java" path="/" encoding="base64">aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQ2xvY2sgQW5nbGUKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBhbiBob3VyIGJldHdlZW4gMSBhbmQgMTIgYW5kIGEgbnVtYmVyIG9mCiAqIG1pbnV0ZXMsIGFuZCBwcmludHMgdGhlIHNtYWxsZXIgb2YgdGhlIHR3byBhbmdsZXMgYmV0d2VlbiB0aGUgaG91ciBoYW5kCiAqIGFuZCB0aGUgbWludXRlIGhhbmQuIFRoZSBob3VyIGhhbmQgbW92ZXMgMzAgZGVncmVlcyBldmVyeSBob3VyIGFuZCBoYWxmCiAqIGEgZGVncmVlIGV2ZXJ5IG1pbnV0ZS4gVGhlIG1pbnV0ZSBoYW5kIG1vdmVzIDYgZGVncmVlcyBldmVyeSBtaW51dGUuCiAqIERvIG5vdCB1c2UgY29uZGl0aW9ucy4KICoKICogSW5wdXQ6CiAqICAgMwogKiAgIDMwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBIb3VyOiAzCiAqICAgTWludXRlczogMzAKICogICBBbmdsZTogNzUuMAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgOQogKiAgIDAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEhvdXI6IDkKICogICBNaW51dGVzOiAwCiAqICAgQW5nbGU6IDkwLjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEwCiAqICAgMjAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEhvdXI6IDEwCiAqICAgTWludXRlczogMjAKICogICBBbmdsZTogMTcwLjAKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMxM19DbG9ja0FuZ2xlIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg==</file>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>0</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+  </question>
+
+</quiz>
