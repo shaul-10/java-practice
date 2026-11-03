@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين كتابة للوحدة 3.1</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    position: relative;
+    margin-top: 10px;
+    min-height: 2.2em;
+  }
+  .card-foot .code-details { width: 100%; }
+  .card-foot .code-details summary { padding-inline-end: 190px; }
+  .to-top {
+    position: absolute;
+    top: 0;
+    inset-inline-end: 0;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>تمارين كتابة للوحدة 3.1</h1>
+      <p>Java أ – مقدمة في علم الحاسوب  |  13 أسئلة بمستوى صعوبة متصاعد</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">العرض</span>
+      <button type="button" data-w="820">ضيّق</button>
+      <button type="button" data-w="980">متوسط</button>
+      <button type="button" data-w="1200">واسع</button>
+      <button type="button" data-w="100%">كامل</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">الكود</span>
+      <button type="button" data-theme="dark">داكن</button>
+      <button type="button" data-theme="light">فاتح</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>المحتويات</h2>
+    <div class="toc-grid">
+<a href="#q1">سؤال 1 – دوال ساكنة – حديقة مربعة</a>
+<a href="#q2">سؤال 2 – دوال ساكنة – صندوق على شكل مكعب</a>
+<a href="#q3">سؤال 3 – دوال ساكنة – بطارية</a>
+<a href="#q4">سؤال 4 – دوال ساكنة – نقطة ودائرة</a>
+<a href="#q5">سؤال 5 – دوال ساكنة – ربح من استثمار</a>
+<a href="#q6">سؤال 6 – دوال ساكنة – حار أم بارد</a>
+<a href="#q7">سؤال 7 – دوال ساكنة – سلم</a>
+<a href="#q8">سؤال 8 – دوال ساكنة – حاسبة العمليات</a>
+<a href="#q9">سؤال 9 &amp;ndash; دوال ساكنة &amp;ndash; عدد المنازل</a>
+<a href="#q10">سؤال 10 – دوال ساكنة – معادلة تربيعية</a>
+<a href="#q11">سؤال 11 &amp;ndash; دوال ساكنة &amp;ndash; نوع المثلث</a>
+<a href="#q12">سؤال 12 – دوال ساكنة – مستعمرة بكتيريا</a>
+<a href="#q13">سؤال 13 – دوال ساكنة – الزاوية بين عقارب الساعة</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">المستوى 1 – أساسي</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>سؤال 1 – دوال ساكنة – حديقة مربعة</h3>
+      <span class="q-en">Q1 – static methods – square garden</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 1 – دوال ساكنة – حديقة مربعة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل مساحة حديقة مربعة بالأمتار المربعة، ويطبع طول ضلع الحديقة وطول السياج المطلوب لإحاطتها.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">56.25</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter area: 56.25
+Side length: 7.5
+Fence length: 30.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">20.25</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter area: 20.25
+Side length: 4.5
+Fence length: 18.0</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-0" download="UseStatic01_SquareGarden.java" style="text-decoration: underline;">UseStatic01_SquareGarden.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Square Garden
+ *
+ * Write a main program that reads the area of a square garden (in square
+ * meters) and prints the side length of the garden and the length of the
+ * fence needed to surround it.
+ *
+ * Input:
+ *   56.25
+ *
+ * Expected output:
+ *   Enter area: 56.25
+ *   Side length: 7.5
+ *   Fence length: 30.0
+ *
+ * Run the program again with the input:
+ *   20.25
+ *
+ * Expected output:
+ *   Enter area: 20.25
+ *   Side length: 4.5
+ *   Fence length: 18.0
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic01_SquareGarden</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>سؤال 2 – دوال ساكنة – صندوق على شكل مكعب</h3>
+      <span class="q-en">Q2 – static methods – cube box</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 2 – دوال ساكنة – صندوق على شكل مكعب</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل طول ضلع صندوق على شكل مكعب، ويطبع حجم الصندوق ومساحة سطحه – مجموع مساحات الوجوه الستة.<br>استخدم الدالة <code dir="ltr">Math.pow</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2.5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter edge: 2.5
+Volume: 15.625
+Surface area: 37.5</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">4</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter edge: 4
+Volume: 64.0
+Surface area: 96.0</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+حمّل الفئة <strong><a href="#dl-1" download="UseStatic02_CubeBox.java" style="text-decoration: underline;">UseStatic02_CubeBox.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Cube Box
+ *
+ * Write a main program that reads the edge length of a cube shaped box and
+ * prints the volume of the box and its surface area (the sum of the areas
+ * of its six faces).
+ * Use the method Math.pow.
+ *
+ * Input:
+ *   2.5
+ *
+ * Expected output:
+ *   Enter edge: 2.5
+ *   Volume: 15.625
+ *   Surface area: 37.5
+ *
+ * Run the program again with the input:
+ *   4
+ *
+ * Expected output:
+ *   Enter edge: 4
+ *   Volume: 64.0
+ *   Surface area: 96.0
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic02_CubeBox</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>سؤال 3 – دوال ساكنة – بطارية</h3>
+      <span class="q-en">Q3 – static methods – battery level</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 3 – دوال ساكنة – بطارية</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل ثلاثة بيانات عن بطارية الهاتف: نسبة الشحن الحالية، كم نسبة تمت إضافتها أثناء الشحن، وكم نسبة استُهلكت أثناء الاستخدام بعدها. البرنامج يطبع نسبة الشحن بعد الشحن وبعد الاستخدام. نسبة الشحن لا تتجاوز أبداً 100 ولا تنخفض تحت الصفر.<br>لا تستخدم شروط – فقط دوال الفئة <code dir="ltr">Math</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>بيانات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">70
+45
+20</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Battery level: 70
+Charge: 45
+Usage: 20
+After charging: 100
+After use: 80</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع بيانات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">30
+25
+70</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Battery level: 30
+Charge: 25
+Usage: 70
+After charging: 55
+After use: 0</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-2" download="UseStatic03_Battery.java" style="text-decoration: underline;">UseStatic03_Battery.java</a></strong> لبيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Battery
+ *
+ * Write a main program that reads three values about a phone battery: the
+ * current charge level (in percent), how many percent were added while
+ * charging, and how many percent were used afterwards.
+ * The program prints the level after charging and after use.
+ * The level is never above 100 and never below 0.
+ * Do not use conditions - use methods of the class Math only.
+ *
+ * Input:
+ *   70
+ *   45
+ *   20
+ *
+ * Expected output:
+ *   Battery level: 70
+ *   Charge: 45
+ *   Usage: 20
+ *   After charging: 100
+ *   After use: 80
+ *
+ * Run the program again with the input:
+ *   30
+ *   25
+ *   70
+ *
+ * Expected output:
+ *   Battery level: 30
+ *   Charge: 25
+ *   Usage: 70
+ *   After charging: 55
+ *   After use: 0
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic03_Battery</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>سؤال 4 – دوال ساكنة – نقطة ودائرة</h3>
+      <span class="q-en">Q4 – static methods – point and circle</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 4 – دوال ساكنة – نقطة ودائرة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل إحداثيات النقطة في المستوى ونصف قطر دائرة مركزها في أصل المحاور. البرنامج يطبع المسافة بين النقطة ومركز الدائرة، ويعلن إذا كانت النقطة داخل الدائرة، عليها أو خارجها.<br>المسافة تُحسب كوتر في مثلث قائم الزاوية، وضلعاه هما الإحداثيان للنقطة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">6
+8
+10</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">x = 6
+y = 8
+radius = 10
+distance = 10.0
+The point is on the circle</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-3
+4
+6</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">x = -3
+y = 4
+radius = 6
+distance = 5.0
+The point is inside the circle</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-9
+12
+10</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">x = -9
+y = 12
+radius = 10
+distance = 15.0
+The point is outside the circle</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-3" download="UseStatic04_CirclePoint.java" style="text-decoration: underline;">UseStatic04_CirclePoint.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Circle Point
+ *
+ * Write a main program that reads the coordinates of a point and the radius
+ * of a circle whose center is at the origin.
+ * The program prints the distance of the point from the center, and tells
+ * whether the point is inside the circle, on it, or outside it.
+ * The distance is calculated like the hypotenuse of a right triangle whose
+ * legs are the two coordinates of the point.
+ *
+ * Input:
+ *   6
+ *   8
+ *   10
+ *
+ * Expected output:
+ *   x = 6
+ *   y = 8
+ *   radius = 10
+ *   distance = 10.0
+ *   The point is on the circle
+ *
+ * Run the program again with the input:
+ *   -3
+ *   4
+ *   6
+ *
+ * Expected output:
+ *   x = -3
+ *   y = 4
+ *   radius = 6
+ *   distance = 5.0
+ *   The point is inside the circle
+ *
+ * Run the program again with the input:
+ *   -9
+ *   12
+ *   10
+ *
+ * Expected output:
+ *   x = -9
+ *   y = 12
+ *   radius = 10
+ *   distance = 15.0
+ *   The point is outside the circle
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic04_CirclePoint</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">المستوى 2 – متوسط</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>سؤال 5 – دوال ساكنة – ربح من استثمار</h3>
+      <span class="q-en">Q5 – static methods – investment</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 5 – دوال ساكنة – ربح من استثمار</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي لحساب ربح من استثمار بفائدة مركبة. البرنامج يستقبل مجموع الاستثمار، نسبة مئوية للفائدة السنوية وعدد السنوات، ويطبع قيمة الاستثمار في نهاية الفترة والربح.<br>القيمة في نهاية الفترة هي المجموع مضروب في (1 زائد نسبة الفائدة مقسومة على 100) مرفوع لعدد السنوات.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+يجب طباعة القيمة والربح بآغورات كاملة، أي تقريب للأسفل لمنزلتين بعد النقطة العشرية. تلميح: اضرب في 100، قرّب للأسفل واقسم على 100. قص كل واحدة من القيم بشكل منفصل.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">10000
+4
+10</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Amount: 10000
+Interest rate (%): 4
+Years: 10
+Value: 14802.44
+Profit: 4802.44</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">50000
+4
+5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Amount: 50000
+Interest rate (%): 4
+Years: 5
+Value: 60832.64
+Profit: 10832.64</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-4" download="UseStatic05_Investment.java" style="text-decoration: underline;">UseStatic05_Investment.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Investment
+ *
+ * Write a main program that calculates the profit of an investment with
+ * compound interest. The program reads the amount, the yearly interest
+ * rate (in percent) and the number of years, and prints the value of the
+ * investment at the end and the profit.
+ * Value at the end = amount * (1 + rate / 100) to the power of years.
+ * Print the value and the profit in whole agorot - round down to two
+ * digits after the point. Hint: multiply by 100, round down and divide
+ * by 100. Cut each of the values separately.
+ *
+ * Input:
+ *   10000
+ *   4
+ *   10
+ *
+ * Expected output:
+ *   Amount: 10000
+ *   Interest rate (%): 4
+ *   Years: 10
+ *   Value: 14802.44
+ *   Profit: 4802.44
+ *
+ * Run the program again with the input:
+ *   50000
+ *   4
+ *   5
+ *
+ * Expected output:
+ *   Amount: 50000
+ *   Interest rate (%): 4
+ *   Years: 5
+ *   Value: 60832.64
+ *   Profit: 10832.64
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic05_Investment</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>سؤال 6 – دوال ساكنة – حار أم بارد</h3>
+      <span class="q-en">Q6 – static methods – hot or cold</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 6 – دوال ساكنة – حار أم بارد</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي للعبة تخمين. العدد السري 47 محفوظ في متغير في البرنامج. البرنامج يستقبل تخمين، يطبع المسافة بين التخمين وبين العدد السري، وبعدها رسالة حسب المسافة:
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>مسافة صفر – <code dir="ltr">Exact!</code></li>
+<li>مسافة حتى 5 – <code dir="ltr">Hot</code></li>
+<li>مسافة حتى 15 – <code dir="ltr">Warm</code></li>
+<li>مسافة أكبر – <code dir="ltr">Cold</code></li>
+</ul>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">50</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your guess: 50
+distance = 3
+Hot</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">35</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your guess: 35
+distance = 12
+Warm</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">80</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Your guess: 80
+distance = 33
+Cold</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+حمّل الفئة <strong><a href="#dl-5" download="UseStatic06_HotCold.java" style="text-decoration: underline;">UseStatic06_HotCold.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Hot Cold
+ *
+ * Write a main program for a guessing game. The secret number 47 is stored
+ * in a variable in the program. The program reads a guess, prints the
+ * distance between the guess and the secret number, and then a message:
+ *   distance 0          - Exact!
+ *   distance up to 5    - Hot
+ *   distance up to 15   - Warm
+ *   larger distance     - Cold
+ *
+ * Input:
+ *   50
+ *
+ * Expected output:
+ *   Your guess: 50
+ *   distance = 3
+ *   Hot
+ *
+ * Run the program again with the input:
+ *   35
+ *
+ * Expected output:
+ *   Your guess: 35
+ *   distance = 12
+ *   Warm
+ *
+ * Run the program again with the input:
+ *   80
+ *
+ * Expected output:
+ *   Your guess: 80
+ *   distance = 33
+ *   Cold
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic06_HotCold</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>سؤال 7 – دوال ساكنة – سلم</h3>
+      <span class="q-en">Q7 – static methods – ladder</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 7 – دوال ساكنة – سلم</h4>
+
+<p dir="rtl" style="text-align: right;">
+سلم يستند إلى جدار. اكتب البرنامج الرئيسي الذي يستقبل طول السلم، المسافة بين أرجل السلم والجدار وارتفاع النافذة. البرنامج يطبع الارتفاع الذي يصل إليه رأس السلم، ويعلن إذا كان السلم يصل إلى النافذة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">6.5
+2.5
+5.5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Ladder length: 6.5
+Distance from wall: 2.5
+Window height: 5.5
+Height: 6.0
+The ladder reaches the window</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">5
+3
+5.5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Ladder length: 5
+Distance from wall: 3
+Window height: 5.5
+Height: 4.0
+The ladder does not reach the window</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-6" download="UseStatic07_Ladder.java" style="text-decoration: underline;">UseStatic07_Ladder.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Ladder
+ *
+ * A ladder leans against a wall. Write a main program that reads the length
+ * of the ladder, the distance of the ladder's foot from the wall, and the
+ * height of a window. The program prints the height that the top of the
+ * ladder reaches, and tells whether the ladder reaches the window.
+ *
+ * Input:
+ *   6.5
+ *   2.5
+ *   5.5
+ *
+ * Expected output:
+ *   Ladder length: 6.5
+ *   Distance from wall: 2.5
+ *   Window height: 5.5
+ *   Height: 6.0
+ *   The ladder reaches the window
+ *
+ * Run the program again with the input:
+ *   5
+ *   3
+ *   5.5
+ *
+ * Expected output:
+ *   Ladder length: 5
+ *   Distance from wall: 3
+ *   Window height: 5.5
+ *   Height: 4.0
+ *   The ladder does not reach the window
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic07_Ladder</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>سؤال 8 – دوال ساكنة – حاسبة العمليات</h3>
+      <span class="q-en">Q8 – static methods – math menu</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 8 – دوال ساكنة – حاسبة العمليات</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل عدد حقيقي واسم العملية لتنفيذها عليه: <code dir="ltr">sqrt</code> للجذر التربيعي، <code dir="ltr">square</code> للرفع إلى القوة الثانية أو <code dir="ltr">abs</code> للقيمة المطلقة. البرنامج يطبع النتيجة، وبالنسبة لاسم عملية آخر يطبع رسالة مناسبة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2.25
+sqrt</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter number: 2.25
+Action (sqrt/square/abs): sqrt
+result = 1.5</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-6.5
+square</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter number: -6.5
+Action (sqrt/square/abs): square
+result = 42.25</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">9
+cube</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter number: 9
+Action (sqrt/square/abs): cube
+Unknown action</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-7" download="UseStatic08_MathMenu.java" style="text-decoration: underline;">UseStatic08_MathMenu.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Math Menu
+ *
+ * Write a main program that reads a real number and the name of an action:
+ * sqrt for square root, square for raising to the power of 2, or abs for
+ * the absolute value. The program prints the result. For any other action
+ * name it prints a suitable message.
+ *
+ * Input:
+ *   2.25
+ *   sqrt
+ *
+ * Expected output:
+ *   Enter number: 2.25
+ *   Action (sqrt/square/abs): sqrt
+ *   result = 1.5
+ *
+ * Run the program again with the input:
+ *   -6.5
+ *   square
+ *
+ * Expected output:
+ *   Enter number: -6.5
+ *   Action (sqrt/square/abs): square
+ *   result = 42.25
+ *
+ * Run the program again with the input:
+ *   9
+ *   cube
+ *
+ * Expected output:
+ *   Enter number: 9
+ *   Action (sqrt/square/abs): cube
+ *   Unknown action
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic08_MathMenu</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>سؤال 9 &amp;ndash; دوال ساكنة &amp;ndash; عدد المنازل</h3>
+      <span class="q-en">Q9 – static methods – number of digits</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 9 &ndash; دوال ساكنة &ndash; عدد المنازل</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل عدد صحيح موجب ويطبع كم منازل فيه وما هي المنزل الأولى له (المنزل اليسرى).<br>استخدم الدالة <code dir="ltr">Math.log10</code>، التوثيق الخاص بها يظهر هنا. اللوغاريتم حسب الأساس 10 لعدد هو القوة التي يجب رفع 10 إليها للحصول على العدد &ndash; مثلاً 3 من أجل 1000.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>من التوثيق:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static double log10(double a)
+Returns the base 10 logarithm of a double value.
+Parameters:
+a - a value</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7350</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive number: 7350
+Digits: 4
+First digit: 7</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">58</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive number: 58
+Digits: 2
+First digit: 5</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">100000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Enter a positive number: 100000
+Digits: 6
+First digit: 1</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-8" download="UseStatic09_DigitsCount.java" style="text-decoration: underline;">UseStatic09_DigitsCount.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Digits Count
+ *
+ * Write a main program that reads a positive whole number and prints how
+ * many digits it has and what its first (leftmost) digit is.
+ * Use the method Math.log10. The base 10 logarithm of a number is the
+ * power to which 10 must be raised to get the number - for example,
+ * 3 for 1000.
+ *
+ * Documentation:
+ *   public static double log10(double a)
+ *   Returns the base 10 logarithm of a double value.
+ *   Parameters:
+ *   a - a value
+ *
+ * Input:
+ *   7350
+ *
+ * Expected output:
+ *   Enter a positive number: 7350
+ *   Digits: 4
+ *   First digit: 7
+ *
+ * Run the program again with the input:
+ *   58
+ *
+ * Expected output:
+ *   Enter a positive number: 58
+ *   Digits: 2
+ *   First digit: 5
+ *
+ * Run the program again with the input:
+ *   100000
+ *
+ * Expected output:
+ *   Enter a positive number: 100000
+ *   Digits: 6
+ *   First digit: 1
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic09_DigitsCount</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">المستوى 3 – متقدّم</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>سؤال 10 – دوال ساكنة – معادلة تربيعية</h3>
+      <span class="q-en">Q10 – static methods – quadratic equation</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 10 – دوال ساكنة – معادلة تربيعية</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل الثلاث معاملات للمعادلة التربيعية ويطبع الحلول لها. المعامل <code dir="ltr">a</code> مختلف عن صفر. حسب قيمة التعبير تحت الجذر، للمعادلة حلان، حل واحد أو لا يوجد لها حل.
+</p>
+
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">ax² + bx + c = 0
+x = (-b ± √(b² - 4ac)) / (2a)</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2
+-14
+24</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">a = 2
+b = -14
+c = 24
+x1 = 4.0
+x2 = 3.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">1
+6
+9</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">a = 1
+b = 6
+c = 9
+x = -3.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">1
+2
+5</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">a = 1
+b = 2
+c = 5
+No solutions</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-9" download="UseStatic10_Quadratic.java" style="text-decoration: underline;">UseStatic10_Quadratic.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Quadratic
+ *
+ * Write a main program that reads the three coefficients of a quadratic
+ * equation and prints its solutions. The coefficient a is not zero.
+ * Depending on the value under the square root, the equation has two
+ * solutions, one solution, or no solution.
+ *   a*x*x + b*x + c = 0
+ *   x = (-b +/- sqrt(b*b - 4*a*c)) / (2*a)
+ *
+ * Input:
+ *   2
+ *   -14
+ *   24
+ *
+ * Expected output:
+ *   a = 2
+ *   b = -14
+ *   c = 24
+ *   x1 = 4.0
+ *   x2 = 3.0
+ *
+ * Run the program again with the input:
+ *   1
+ *   6
+ *   9
+ *
+ * Expected output:
+ *   a = 1
+ *   b = 6
+ *   c = 9
+ *   x = -3.0
+ *
+ * Run the program again with the input:
+ *   1
+ *   2
+ *   5
+ *
+ * Expected output:
+ *   a = 1
+ *   b = 2
+ *   c = 5
+ *   No solutions
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic10_Quadratic</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q11">
+  <div class="card-header">
+    <div class="q-badge">11</div>
+    <div class="card-titles">
+      <h3>سؤال 11 &amp;ndash; دوال ساكنة &amp;ndash; نوع المثلث</h3>
+      <span class="q-en">Q11 – static methods – triangle type</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 11 &ndash; دوال ساكنة &ndash; نوع المثلث</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل أطوال ثلاث أضلاع مثلث، بأي ترتيب، ويطبع طول الضلع الأطول ونوع المثلث. تتم مقارنة مربع الضلع الأطول مع مجموع مربعي الضلعين الآخرين: إذا كانا متساويين &ndash; المثلث قائم الزاوية، إذا كان مربع الضلع الأطول أصغر &ndash; حاد الزاوية، وإذا كان أكبر &ndash; منفرج الزاوية.<br>يجب إيجاد الضلع الأطول ومجموع مربعي الضلعين الآخرين بدون شروط.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">13
+5
+12</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">side 1: 13
+side 2: 5
+side 3: 12
+Longest side: 13
+Right triangle</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">6
+7
+8</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">side 1: 6
+side 2: 7
+side 3: 8
+Longest side: 8
+Acute triangle</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">4
+9
+6</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">side 1: 4
+side 2: 9
+side 3: 6
+Longest side: 9
+Obtuse triangle</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-10" download="UseStatic11_TriangleType.java" style="text-decoration: underline;">UseStatic11_TriangleType.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Triangle Type
+ *
+ * Write a main program that reads the lengths of the three sides of a
+ * triangle, in any order, and prints the length of the longest side and
+ * the type of the triangle. Compare the square of the longest side with
+ * the sum of the squares of the two other sides: equal - right triangle,
+ * smaller - acute triangle, larger - obtuse triangle.
+ * Find the longest side and the sum of the squares of the two other sides
+ * without conditions.
+ *
+ * Input:
+ *   13
+ *   5
+ *   12
+ *
+ * Expected output:
+ *   side 1: 13
+ *   side 2: 5
+ *   side 3: 12
+ *   Longest side: 13
+ *   Right triangle
+ *
+ * Run the program again with the input:
+ *   6
+ *   7
+ *   8
+ *
+ * Expected output:
+ *   side 1: 6
+ *   side 2: 7
+ *   side 3: 8
+ *   Longest side: 8
+ *   Acute triangle
+ *
+ * Run the program again with the input:
+ *   4
+ *   9
+ *   6
+ *
+ * Expected output:
+ *   side 1: 4
+ *   side 2: 9
+ *   side 3: 6
+ *   Longest side: 9
+ *   Obtuse triangle
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic11_TriangleType</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q12">
+  <div class="card-header">
+    <div class="q-badge">12</div>
+    <div class="card-titles">
+      <h3>سؤال 12 – دوال ساكنة – مستعمرة بكتيريا</h3>
+      <span class="q-en">Q12 – static methods – bacteria</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 12 – دوال ساكنة – مستعمرة بكتيريا</h4>
+
+<p dir="rtl" style="text-align: right;">
+عدد البكتيريا في المستعمرة يتضاعف كل ساعة. اكتب البرنامج الرئيسي الذي يستقبل عدد البكتيريا في البداية وعدد الهدف، ويطبع كم ساعة كاملة ستمر حتى يصل عدد البكتيريا إلى الهدف أو يتجاوزه، وكم سيكون عدد البكتيريا حينها.<br>عدد الساعات الدقيق يساوي لوغاريتم النسبة بين الهدف وبين عدد البكتيريا في البداية، مقسوم على اللوغاريتم لـ 2. التوثيق للدوال المطلوبة يظهر هنا.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>من التوثيق:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static double log(double a)
+Returns the natural logarithm (base e) of a double value.
+Parameters:
+a - a value
+
+public static double ceil(double a)
+Returns the smallest (closest to negative infinity) double value
+that is greater than or equal to the argument and is equal to
+a mathematical integer.
+Parameters:
+a - a value</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">300
+10000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Start: 300
+Target: 10000
+Hours: 6
+Bacteria: 19200</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">50
+1000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Start: 50
+Target: 1000
+Hours: 5
+Bacteria: 1600</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-11" download="UseStatic12_Bacteria.java" style="text-decoration: underline;">UseStatic12_Bacteria.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Bacteria
+ *
+ * The number of bacteria in a colony doubles every hour. Write a main
+ * program that reads the starting number of bacteria and a target number,
+ * and prints how many whole hours pass until the number of bacteria
+ * reaches the target or passes it, and how many bacteria there are then.
+ * The exact number of hours equals the logarithm of the ratio between the
+ * target and the starting number, divided by the logarithm of 2.
+ *
+ * Documentation:
+ *   public static double log(double a)
+ *   Returns the natural logarithm (base e) of a double value.
+ *   Parameters:
+ *   a - a value
+ *
+ *   public static double ceil(double a)
+ *   Returns the smallest (closest to negative infinity) double value
+ *   that is greater than or equal to the argument and is equal to
+ *   a mathematical integer.
+ *   Parameters:
+ *   a - a value
+ *
+ * Input:
+ *   300
+ *   10000
+ *
+ * Expected output:
+ *   Start: 300
+ *   Target: 10000
+ *   Hours: 6
+ *   Bacteria: 19200
+ *
+ * Run the program again with the input:
+ *   50
+ *   1000
+ *
+ * Expected output:
+ *   Start: 50
+ *   Target: 1000
+ *   Hours: 5
+ *   Bacteria: 1600
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic12_Bacteria</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q13">
+  <div class="card-header">
+    <div class="q-badge">13</div>
+    <div class="card-titles">
+      <h3>سؤال 13 – دوال ساكنة – الزاوية بين عقارب الساعة</h3>
+      <span class="q-en">Q13 – static methods – clock angle</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 13 – دوال ساكنة – الزاوية بين عقارب الساعة</h4>
+
+<p dir="rtl" style="text-align: right;">
+اكتب البرنامج الرئيسي الذي يستقبل ساعة بين 1 و-12 وعدد دقائق، ويطبع الزاوية الأصغر بين الزاويتين بين عقرب الساعات وعقرب الدقائق. عقرب الساعات يتحرك 30 درجة في كل ساعة ونصف درجة في كل دقيقة، وعقرب الدقائق يتحرك 6 درجات في كل دقيقة.<br>لا يجوز استخدام شروط.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">3
+30</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hour: 3
+Minutes: 30
+Angle: 75.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">9
+0</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hour: 9
+Minutes: 0
+Angle: 90.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">10
+20</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Hour: 10
+Minutes: 20
+Angle: 170.0</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-12" download="UseStatic13_ClockAngle.java" style="text-decoration: underline;">UseStatic13_ClockAngle.java</a></strong> إلى بيئة العمل، اكتب البرنامج وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Clock Angle
+ *
+ * Write a main program that reads an hour between 1 and 12 and a number of
+ * minutes, and prints the smaller of the two angles between the hour hand
+ * and the minute hand. The hour hand moves 30 degrees every hour and half
+ * a degree every minute. The minute hand moves 6 degrees every minute.
+ * Do not use conditions.
+ *
+ * Input:
+ *   3
+ *   30
+ *
+ * Expected output:
+ *   Hour: 3
+ *   Minutes: 30
+ *   Angle: 75.0
+ *
+ * Run the program again with the input:
+ *   9
+ *   0
+ *
+ * Expected output:
+ *   Hour: 9
+ *   Minutes: 0
+ *   Angle: 90.0
+ *
+ * Run the program again with the input:
+ *   10
+ *   20
+ *
+ * Expected output:
+ *   Hour: 10
+ *   Minutes: 20
+ *   Angle: 170.0
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">UseStatic13_ClockAngle</span> {
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>الملفات مضمّنة في الصفحة — التنزيل يعمل أيضًا بدون اتصال بالإنترنت</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"UseStatic01_SquareGarden.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgU3F1YXJlIEdhcmRlbgogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBhcmVhIG9mIGEgc3F1YXJlIGdhcmRlbiAoaW4gc3F1YXJlCiAqIG1ldGVycykgYW5kIHByaW50cyB0aGUgc2lkZSBsZW5ndGggb2YgdGhlIGdhcmRlbiBhbmQgdGhlIGxlbmd0aCBvZiB0aGUKICogZmVuY2UgbmVlZGVkIHRvIHN1cnJvdW5kIGl0LgogKgogKiBJbnB1dDoKICogICA1Ni4yNQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYXJlYTogNTYuMjUKICogICBTaWRlIGxlbmd0aDogNy41CiAqICAgRmVuY2UgbGVuZ3RoOiAzMC4wCiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICAyMC4yNQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYXJlYTogMjAuMjUKICogICBTaWRlIGxlbmd0aDogNC41CiAqICAgRmVuY2UgbGVuZ3RoOiAxOC4wCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDFfU3F1YXJlR2FyZGVuIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"UseStatic02_CubeBox.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQ3ViZSBCb3gKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyB0aGUgZWRnZSBsZW5ndGggb2YgYSBjdWJlIHNoYXBlZCBib3ggYW5kCiAqIHByaW50cyB0aGUgdm9sdW1lIG9mIHRoZSBib3ggYW5kIGl0cyBzdXJmYWNlIGFyZWEgKHRoZSBzdW0gb2YgdGhlIGFyZWFzCiAqIG9mIGl0cyBzaXggZmFjZXMpLgogKiBVc2UgdGhlIG1ldGhvZCBNYXRoLnBvdy4KICoKICogSW5wdXQ6CiAqICAgMi41CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBFbnRlciBlZGdlOiAyLjUKICogICBWb2x1bWU6IDE1LjYyNQogKiAgIFN1cmZhY2UgYXJlYTogMzcuNQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgNAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgZWRnZTogNAogKiAgIFZvbHVtZTogNjQuMAogKiAgIFN1cmZhY2UgYXJlYTogOTYuMAogKi8KcHVibGljIGNsYXNzIFVzZVN0YXRpYzAyX0N1YmVCb3ggewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"UseStatic03_Battery.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQmF0dGVyeQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRocmVlIHZhbHVlcyBhYm91dCBhIHBob25lIGJhdHRlcnk6IHRoZQogKiBjdXJyZW50IGNoYXJnZSBsZXZlbCAoaW4gcGVyY2VudCksIGhvdyBtYW55IHBlcmNlbnQgd2VyZSBhZGRlZCB3aGlsZQogKiBjaGFyZ2luZywgYW5kIGhvdyBtYW55IHBlcmNlbnQgd2VyZSB1c2VkIGFmdGVyd2FyZHMuCiAqIFRoZSBwcm9ncmFtIHByaW50cyB0aGUgbGV2ZWwgYWZ0ZXIgY2hhcmdpbmcgYW5kIGFmdGVyIHVzZS4KICogVGhlIGxldmVsIGlzIG5ldmVyIGFib3ZlIDEwMCBhbmQgbmV2ZXIgYmVsb3cgMC4KICogRG8gbm90IHVzZSBjb25kaXRpb25zIC0gdXNlIG1ldGhvZHMgb2YgdGhlIGNsYXNzIE1hdGggb25seS4KICoKICogSW5wdXQ6CiAqICAgNzAKICogICA0NQogKiAgIDIwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBCYXR0ZXJ5IGxldmVsOiA3MAogKiAgIENoYXJnZTogNDUKICogICBVc2FnZTogMjAKICogICBBZnRlciBjaGFyZ2luZzogMTAwCiAqICAgQWZ0ZXIgdXNlOiA4MAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgMzAKICogICAyNQogKiAgIDcwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBCYXR0ZXJ5IGxldmVsOiAzMAogKiAgIENoYXJnZTogMjUKICogICBVc2FnZTogNzAKICogICBBZnRlciBjaGFyZ2luZzogNTUKICogICBBZnRlciB1c2U6IDAKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMwM19CYXR0ZXJ5IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"UseStatic04_CirclePoint.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQ2lyY2xlIFBvaW50CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIGNvb3JkaW5hdGVzIG9mIGEgcG9pbnQgYW5kIHRoZSByYWRpdXMKICogb2YgYSBjaXJjbGUgd2hvc2UgY2VudGVyIGlzIGF0IHRoZSBvcmlnaW4uCiAqIFRoZSBwcm9ncmFtIHByaW50cyB0aGUgZGlzdGFuY2Ugb2YgdGhlIHBvaW50IGZyb20gdGhlIGNlbnRlciwgYW5kIHRlbGxzCiAqIHdoZXRoZXIgdGhlIHBvaW50IGlzIGluc2lkZSB0aGUgY2lyY2xlLCBvbiBpdCwgb3Igb3V0c2lkZSBpdC4KICogVGhlIGRpc3RhbmNlIGlzIGNhbGN1bGF0ZWQgbGlrZSB0aGUgaHlwb3RlbnVzZSBvZiBhIHJpZ2h0IHRyaWFuZ2xlIHdob3NlCiAqIGxlZ3MgYXJlIHRoZSB0d28gY29vcmRpbmF0ZXMgb2YgdGhlIHBvaW50LgogKgogKiBJbnB1dDoKICogICA2CiAqICAgOAogKiAgIDEwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICB4ID0gNgogKiAgIHkgPSA4CiAqICAgcmFkaXVzID0gMTAKICogICBkaXN0YW5jZSA9IDEwLjAKICogICBUaGUgcG9pbnQgaXMgb24gdGhlIGNpcmNsZQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgLTMKICogICA0CiAqICAgNgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgeCA9IC0zCiAqICAgeSA9IDQKICogICByYWRpdXMgPSA2CiAqICAgZGlzdGFuY2UgPSA1LjAKICogICBUaGUgcG9pbnQgaXMgaW5zaWRlIHRoZSBjaXJjbGUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIC05CiAqICAgMTIKICogICAxMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgeCA9IC05CiAqICAgeSA9IDEyCiAqICAgcmFkaXVzID0gMTAKICogICBkaXN0YW5jZSA9IDE1LjAKICogICBUaGUgcG9pbnQgaXMgb3V0c2lkZSB0aGUgY2lyY2xlCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDRfQ2lyY2xlUG9pbnQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"UseStatic05_Investment.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgSW52ZXN0bWVudAogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGN1bGF0ZXMgdGhlIHByb2ZpdCBvZiBhbiBpbnZlc3RtZW50IHdpdGgKICogY29tcG91bmQgaW50ZXJlc3QuIFRoZSBwcm9ncmFtIHJlYWRzIHRoZSBhbW91bnQsIHRoZSB5ZWFybHkgaW50ZXJlc3QKICogcmF0ZSAoaW4gcGVyY2VudCkgYW5kIHRoZSBudW1iZXIgb2YgeWVhcnMsIGFuZCBwcmludHMgdGhlIHZhbHVlIG9mIHRoZQogKiBpbnZlc3RtZW50IGF0IHRoZSBlbmQgYW5kIHRoZSBwcm9maXQuCiAqIFZhbHVlIGF0IHRoZSBlbmQgPSBhbW91bnQgKiAoMSArIHJhdGUgLyAxMDApIHRvIHRoZSBwb3dlciBvZiB5ZWFycy4KICogUHJpbnQgdGhlIHZhbHVlIGFuZCB0aGUgcHJvZml0IGluIHdob2xlIGFnb3JvdCAtIHJvdW5kIGRvd24gdG8gdHdvCiAqIGRpZ2l0cyBhZnRlciB0aGUgcG9pbnQuIEhpbnQ6IG11bHRpcGx5IGJ5IDEwMCwgcm91bmQgZG93biBhbmQgZGl2aWRlCiAqIGJ5IDEwMC4gQ3V0IGVhY2ggb2YgdGhlIHZhbHVlcyBzZXBhcmF0ZWx5LgogKgogKiBJbnB1dDoKICogICAxMDAwMAogKiAgIDQKICogICAxMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgQW1vdW50OiAxMDAwMAogKiAgIEludGVyZXN0IHJhdGUgKCUpOiA0CiAqICAgWWVhcnM6IDEwCiAqICAgVmFsdWU6IDE0ODAyLjQ0CiAqICAgUHJvZml0OiA0ODAyLjQ0CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA1MDAwMAogKiAgIDQKICogICA1CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBBbW91bnQ6IDUwMDAwCiAqICAgSW50ZXJlc3QgcmF0ZSAoJSk6IDQKICogICBZZWFyczogNQogKiAgIFZhbHVlOiA2MDgzMi42NAogKiAgIFByb2ZpdDogMTA4MzIuNjQKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMwNV9JbnZlc3RtZW50IHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"UseStatic06_HotCold.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgSG90IENvbGQKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gZm9yIGEgZ3Vlc3NpbmcgZ2FtZS4gVGhlIHNlY3JldCBudW1iZXIgNDcgaXMgc3RvcmVkCiAqIGluIGEgdmFyaWFibGUgaW4gdGhlIHByb2dyYW0uIFRoZSBwcm9ncmFtIHJlYWRzIGEgZ3Vlc3MsIHByaW50cyB0aGUKICogZGlzdGFuY2UgYmV0d2VlbiB0aGUgZ3Vlc3MgYW5kIHRoZSBzZWNyZXQgbnVtYmVyLCBhbmQgdGhlbiBhIG1lc3NhZ2U6CiAqICAgZGlzdGFuY2UgMCAgICAgICAgICAtIEV4YWN0IQogKiAgIGRpc3RhbmNlIHVwIHRvIDUgICAgLSBIb3QKICogICBkaXN0YW5jZSB1cCB0byAxNSAgIC0gV2FybQogKiAgIGxhcmdlciBkaXN0YW5jZSAgICAgLSBDb2xkCiAqCiAqIElucHV0OgogKiAgIDUwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBZb3VyIGd1ZXNzOiA1MAogKiAgIGRpc3RhbmNlID0gMwogKiAgIEhvdAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgMzUKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFlvdXIgZ3Vlc3M6IDM1CiAqICAgZGlzdGFuY2UgPSAxMgogKiAgIFdhcm0KICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDgwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBZb3VyIGd1ZXNzOiA4MAogKiAgIGRpc3RhbmNlID0gMzMKICogICBDb2xkCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDZfSG90Q29sZCB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"UseStatic07_Ladder.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTGFkZGVyCiAqCiAqIEEgbGFkZGVyIGxlYW5zIGFnYWluc3QgYSB3YWxsLiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBsZW5ndGgKICogb2YgdGhlIGxhZGRlciwgdGhlIGRpc3RhbmNlIG9mIHRoZSBsYWRkZXIncyBmb290IGZyb20gdGhlIHdhbGwsIGFuZCB0aGUKICogaGVpZ2h0IG9mIGEgd2luZG93LiBUaGUgcHJvZ3JhbSBwcmludHMgdGhlIGhlaWdodCB0aGF0IHRoZSB0b3Agb2YgdGhlCiAqIGxhZGRlciByZWFjaGVzLCBhbmQgdGVsbHMgd2hldGhlciB0aGUgbGFkZGVyIHJlYWNoZXMgdGhlIHdpbmRvdy4KICoKICogSW5wdXQ6CiAqICAgNi41CiAqICAgMi41CiAqICAgNS41CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBMYWRkZXIgbGVuZ3RoOiA2LjUKICogICBEaXN0YW5jZSBmcm9tIHdhbGw6IDIuNQogKiAgIFdpbmRvdyBoZWlnaHQ6IDUuNQogKiAgIEhlaWdodDogNi4wCiAqICAgVGhlIGxhZGRlciByZWFjaGVzIHRoZSB3aW5kb3cKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDUKICogICAzCiAqICAgNS41CiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBMYWRkZXIgbGVuZ3RoOiA1CiAqICAgRGlzdGFuY2UgZnJvbSB3YWxsOiAzCiAqICAgV2luZG93IGhlaWdodDogNS41CiAqICAgSGVpZ2h0OiA0LjAKICogICBUaGUgbGFkZGVyIGRvZXMgbm90IHJlYWNoIHRoZSB3aW5kb3cKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMwN19MYWRkZXIgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"UseStatic08_MathMenu.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTWF0aCBNZW51CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgYSByZWFsIG51bWJlciBhbmQgdGhlIG5hbWUgb2YgYW4gYWN0aW9uOgogKiBzcXJ0IGZvciBzcXVhcmUgcm9vdCwgc3F1YXJlIGZvciByYWlzaW5nIHRvIHRoZSBwb3dlciBvZiAyLCBvciBhYnMgZm9yCiAqIHRoZSBhYnNvbHV0ZSB2YWx1ZS4gVGhlIHByb2dyYW0gcHJpbnRzIHRoZSByZXN1bHQuIEZvciBhbnkgb3RoZXIgYWN0aW9uCiAqIG5hbWUgaXQgcHJpbnRzIGEgc3VpdGFibGUgbWVzc2FnZS4KICoKICogSW5wdXQ6CiAqICAgMi4yNQogKiAgIHNxcnQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEVudGVyIG51bWJlcjogMi4yNQogKiAgIEFjdGlvbiAoc3FydC9zcXVhcmUvYWJzKTogc3FydAogKiAgIHJlc3VsdCA9IDEuNQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgLTYuNQogKiAgIHNxdWFyZQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgbnVtYmVyOiAtNi41CiAqICAgQWN0aW9uIChzcXJ0L3NxdWFyZS9hYnMpOiBzcXVhcmUKICogICByZXN1bHQgPSA0Mi4yNQogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgOQogKiAgIGN1YmUKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEVudGVyIG51bWJlcjogOQogKiAgIEFjdGlvbiAoc3FydC9zcXVhcmUvYWJzKTogY3ViZQogKiAgIFVua25vd24gYWN0aW9uCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDhfTWF0aE1lbnUgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"UseStatic09_DigitsCount.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgRGlnaXRzIENvdW50CiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgYSBwb3NpdGl2ZSB3aG9sZSBudW1iZXIgYW5kIHByaW50cyBob3cKICogbWFueSBkaWdpdHMgaXQgaGFzIGFuZCB3aGF0IGl0cyBmaXJzdCAobGVmdG1vc3QpIGRpZ2l0IGlzLgogKiBVc2UgdGhlIG1ldGhvZCBNYXRoLmxvZzEwLiBUaGUgYmFzZSAxMCBsb2dhcml0aG0gb2YgYSBudW1iZXIgaXMgdGhlCiAqIHBvd2VyIHRvIHdoaWNoIDEwIG11c3QgYmUgcmFpc2VkIHRvIGdldCB0aGUgbnVtYmVyIC0gZm9yIGV4YW1wbGUsCiAqIDMgZm9yIDEwMDAuCiAqCiAqIERvY3VtZW50YXRpb246CiAqICAgcHVibGljIHN0YXRpYyBkb3VibGUgbG9nMTAoZG91YmxlIGEpCiAqICAgUmV0dXJucyB0aGUgYmFzZSAxMCBsb2dhcml0aG0gb2YgYSBkb3VibGUgdmFsdWUuCiAqICAgUGFyYW1ldGVyczoKICogICBhIC0gYSB2YWx1ZQogKgogKiBJbnB1dDoKICogICA3MzUwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBFbnRlciBhIHBvc2l0aXZlIG51bWJlcjogNzM1MAogKiAgIERpZ2l0czogNAogKiAgIEZpcnN0IGRpZ2l0OiA3CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA1OAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYSBwb3NpdGl2ZSBudW1iZXI6IDU4CiAqICAgRGlnaXRzOiAyCiAqICAgRmlyc3QgZGlnaXQ6IDUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEwMDAwMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgRW50ZXIgYSBwb3NpdGl2ZSBudW1iZXI6IDEwMDAwMAogKiAgIERpZ2l0czogNgogKiAgIEZpcnN0IGRpZ2l0OiAxCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMDlfRGlnaXRzQ291bnQgewoKICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBwcm9ncmFtIGhlcmUKCiAgICB9Cn0K"},{"n":"UseStatic10_Quadratic.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUXVhZHJhdGljCiAqCiAqIFdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIHRocmVlIGNvZWZmaWNpZW50cyBvZiBhIHF1YWRyYXRpYwogKiBlcXVhdGlvbiBhbmQgcHJpbnRzIGl0cyBzb2x1dGlvbnMuIFRoZSBjb2VmZmljaWVudCBhIGlzIG5vdCB6ZXJvLgogKiBEZXBlbmRpbmcgb24gdGhlIHZhbHVlIHVuZGVyIHRoZSBzcXVhcmUgcm9vdCwgdGhlIGVxdWF0aW9uIGhhcyB0d28KICogc29sdXRpb25zLCBvbmUgc29sdXRpb24sIG9yIG5vIHNvbHV0aW9uLgogKiAgIGEqeCp4ICsgYip4ICsgYyA9IDAKICogICB4ID0gKC1iICsvLSBzcXJ0KGIqYiAtIDQqYSpjKSkgLyAoMiphKQogKgogKiBJbnB1dDoKICogICAyCiAqICAgLTE0CiAqICAgMjQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIGEgPSAyCiAqICAgYiA9IC0xNAogKiAgIGMgPSAyNAogKiAgIHgxID0gNC4wCiAqICAgeDIgPSAzLjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEKICogICA2CiAqICAgOQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgYSA9IDEKICogICBiID0gNgogKiAgIGMgPSA5CiAqICAgeCA9IC0zLjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEKICogICAyCiAqICAgNQogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgYSA9IDEKICogICBiID0gMgogKiAgIGMgPSA1CiAqICAgTm8gc29sdXRpb25zCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMTBfUXVhZHJhdGljIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"UseStatic11_TriangleType.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgVHJpYW5nbGUgVHlwZQogKgogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBsZW5ndGhzIG9mIHRoZSB0aHJlZSBzaWRlcyBvZiBhCiAqIHRyaWFuZ2xlLCBpbiBhbnkgb3JkZXIsIGFuZCBwcmludHMgdGhlIGxlbmd0aCBvZiB0aGUgbG9uZ2VzdCBzaWRlIGFuZAogKiB0aGUgdHlwZSBvZiB0aGUgdHJpYW5nbGUuIENvbXBhcmUgdGhlIHNxdWFyZSBvZiB0aGUgbG9uZ2VzdCBzaWRlIHdpdGgKICogdGhlIHN1bSBvZiB0aGUgc3F1YXJlcyBvZiB0aGUgdHdvIG90aGVyIHNpZGVzOiBlcXVhbCAtIHJpZ2h0IHRyaWFuZ2xlLAogKiBzbWFsbGVyIC0gYWN1dGUgdHJpYW5nbGUsIGxhcmdlciAtIG9idHVzZSB0cmlhbmdsZS4KICogRmluZCB0aGUgbG9uZ2VzdCBzaWRlIGFuZCB0aGUgc3VtIG9mIHRoZSBzcXVhcmVzIG9mIHRoZSB0d28gb3RoZXIgc2lkZXMKICogd2l0aG91dCBjb25kaXRpb25zLgogKgogKiBJbnB1dDoKICogICAxMwogKiAgIDUKICogICAxMgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgc2lkZSAxOiAxMwogKiAgIHNpZGUgMjogNQogKiAgIHNpZGUgMzogMTIKICogICBMb25nZXN0IHNpZGU6IDEzCiAqICAgUmlnaHQgdHJpYW5nbGUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDYKICogICA3CiAqICAgOAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgc2lkZSAxOiA2CiAqICAgc2lkZSAyOiA3CiAqICAgc2lkZSAzOiA4CiAqICAgTG9uZ2VzdCBzaWRlOiA4CiAqICAgQWN1dGUgdHJpYW5nbGUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDQKICogICA5CiAqICAgNgogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgc2lkZSAxOiA0CiAqICAgc2lkZSAyOiA5CiAqICAgc2lkZSAzOiA2CiAqICAgTG9uZ2VzdCBzaWRlOiA5CiAqICAgT2J0dXNlIHRyaWFuZ2xlCiAqLwpwdWJsaWMgY2xhc3MgVXNlU3RhdGljMTFfVHJpYW5nbGVUeXBlIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"UseStatic12_Bacteria.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQmFjdGVyaWEKICoKICogVGhlIG51bWJlciBvZiBiYWN0ZXJpYSBpbiBhIGNvbG9ueSBkb3VibGVzIGV2ZXJ5IGhvdXIuIFdyaXRlIGEgbWFpbgogKiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIHN0YXJ0aW5nIG51bWJlciBvZiBiYWN0ZXJpYSBhbmQgYSB0YXJnZXQgbnVtYmVyLAogKiBhbmQgcHJpbnRzIGhvdyBtYW55IHdob2xlIGhvdXJzIHBhc3MgdW50aWwgdGhlIG51bWJlciBvZiBiYWN0ZXJpYQogKiByZWFjaGVzIHRoZSB0YXJnZXQgb3IgcGFzc2VzIGl0LCBhbmQgaG93IG1hbnkgYmFjdGVyaWEgdGhlcmUgYXJlIHRoZW4uCiAqIFRoZSBleGFjdCBudW1iZXIgb2YgaG91cnMgZXF1YWxzIHRoZSBsb2dhcml0aG0gb2YgdGhlIHJhdGlvIGJldHdlZW4gdGhlCiAqIHRhcmdldCBhbmQgdGhlIHN0YXJ0aW5nIG51bWJlciwgZGl2aWRlZCBieSB0aGUgbG9nYXJpdGhtIG9mIDIuCiAqCiAqIERvY3VtZW50YXRpb246CiAqICAgcHVibGljIHN0YXRpYyBkb3VibGUgbG9nKGRvdWJsZSBhKQogKiAgIFJldHVybnMgdGhlIG5hdHVyYWwgbG9nYXJpdGhtIChiYXNlIGUpIG9mIGEgZG91YmxlIHZhbHVlLgogKiAgIFBhcmFtZXRlcnM6CiAqICAgYSAtIGEgdmFsdWUKICoKICogICBwdWJsaWMgc3RhdGljIGRvdWJsZSBjZWlsKGRvdWJsZSBhKQogKiAgIFJldHVybnMgdGhlIHNtYWxsZXN0IChjbG9zZXN0IHRvIG5lZ2F0aXZlIGluZmluaXR5KSBkb3VibGUgdmFsdWUKICogICB0aGF0IGlzIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byB0aGUgYXJndW1lbnQgYW5kIGlzIGVxdWFsIHRvCiAqICAgYSBtYXRoZW1hdGljYWwgaW50ZWdlci4KICogICBQYXJhbWV0ZXJzOgogKiAgIGEgLSBhIHZhbHVlCiAqCiAqIElucHV0OgogKiAgIDMwMAogKiAgIDEwMDAwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBTdGFydDogMzAwCiAqICAgVGFyZ2V0OiAxMDAwMAogKiAgIEhvdXJzOiA2CiAqICAgQmFjdGVyaWE6IDE5MjAwCiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA1MAogKiAgIDEwMDAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFN0YXJ0OiA1MAogKiAgIFRhcmdldDogMTAwMAogKiAgIEhvdXJzOiA1CiAqICAgQmFjdGVyaWE6IDE2MDAKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMxMl9CYWN0ZXJpYSB7CgogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"UseStatic13_ClockAngle.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQ2xvY2sgQW5nbGUKICoKICogV3JpdGUgYSBtYWluIHByb2dyYW0gdGhhdCByZWFkcyBhbiBob3VyIGJldHdlZW4gMSBhbmQgMTIgYW5kIGEgbnVtYmVyIG9mCiAqIG1pbnV0ZXMsIGFuZCBwcmludHMgdGhlIHNtYWxsZXIgb2YgdGhlIHR3byBhbmdsZXMgYmV0d2VlbiB0aGUgaG91ciBoYW5kCiAqIGFuZCB0aGUgbWludXRlIGhhbmQuIFRoZSBob3VyIGhhbmQgbW92ZXMgMzAgZGVncmVlcyBldmVyeSBob3VyIGFuZCBoYWxmCiAqIGEgZGVncmVlIGV2ZXJ5IG1pbnV0ZS4gVGhlIG1pbnV0ZSBoYW5kIG1vdmVzIDYgZGVncmVlcyBldmVyeSBtaW51dGUuCiAqIERvIG5vdCB1c2UgY29uZGl0aW9ucy4KICoKICogSW5wdXQ6CiAqICAgMwogKiAgIDMwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBIb3VyOiAzCiAqICAgTWludXRlczogMzAKICogICBBbmdsZTogNzUuMAogKgogKiBSdW4gdGhlIHByb2dyYW0gYWdhaW4gd2l0aCB0aGUgaW5wdXQ6CiAqICAgOQogKiAgIDAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEhvdXI6IDkKICogICBNaW51dGVzOiAwCiAqICAgQW5nbGU6IDkwLjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEwCiAqICAgMjAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIEhvdXI6IDEwCiAqICAgTWludXRlczogMjAKICogICBBbmdsZTogMTcwLjAKICovCnB1YmxpYyBjbGFzcyBVc2VTdGF0aWMxM19DbG9ja0FuZ2xlIHsKCiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+  var PREVIEW = false;   // בתצוגה המקדימה של הכלי — ההגדרות שבלוח קובעות
+
+  function read() {
+    if (PREVIEW) return {};
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    if (PREVIEW) return;
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>

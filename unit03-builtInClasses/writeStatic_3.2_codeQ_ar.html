@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تمارين كتابة للوحدة 3.2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root { --page-max: 980px; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    direction: rtl;
+  }
+
+  .wrap {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .page-header {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 38px 0 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .page-header h1 { font-size: 2rem; margin-bottom: 6px; }
+  .page-header p  { font-size: 1rem; opacity: 0.85; }
+
+  .toc {
+    background: white;
+    margin: 28px 0 0;
+    border-radius: 10px;
+    padding: 24px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .toc h2 {
+    font-size: 1.1rem; color: #1F4E79; margin-bottom: 16px;
+    border-bottom: 2px solid #2E75B6; padding-bottom: 8px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 6px 24px;
+  }
+  .toc a {
+    color: #2E75B6; text-decoration: none;
+    font-size: 0.9rem; padding: 3px 0; display: block;
+  }
+  .toc a:hover { color: #1F4E79; text-decoration: underline; }
+
+  .level-divider {
+    margin: 36px 0 0;
+    padding: 10px 20px;
+    background: #2E75B6;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .question-card {
+    background: white;
+    margin: 16px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    border-top: 4px solid #2E75B6;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    background: #f7faff;
+    border-bottom: 1px solid #e8f0fb;
+  }
+  .q-badge {
+    background: #1F4E79; color: white;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .card-titles h3 { font-size: 1rem; color: #1F4E79; }
+  .card-titles .q-en {
+    font-size: 0.74rem; color: #7a8ba0;
+    direction: ltr; display: inline-block;
+  }
+
+  .card-body { padding: 20px 28px 24px; }
+
+  /* ניטרול הכותרות שבתוך גוף השאלה — הן מוצגות בראש הכרטיס */
+  .card-body > h3, .card-body > h4 { display: none; }
+  .card-body p  { font-size: 0.95rem; line-height: 1.7; margin-bottom: 10px; }
+  .card-body strong { color: #1a1a2e; }
+
+  .card-body pre {
+    background: #f4f6f8;
+    border: 1px solid #d8e4f0;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    margin: 10px 0 14px;
+    white-space: pre;
+  }
+
+  .card-body a { color: #2E75B6; font-weight: bold; }
+
+  .card-body .download-p {
+    background: #f0f7ff;
+    border-right: 4px solid #2E75B6;
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .card-foot {
+    position: relative;
+    margin-top: 10px;
+    min-height: 2.2em;
+  }
+  .card-foot .code-details { width: 100%; }
+  .card-foot .code-details summary { padding-inline-end: 190px; }
+  .to-top {
+    position: absolute;
+    top: 0;
+    inset-inline-end: 0;
+    font-size: 0.82rem;
+    font-weight: bold;
+    color: #2E75B6;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 6px 0;
+  }
+  .to-top:hover { text-decoration: underline; }
+
+  .code-details { margin-top: 0; }
+  .code-details summary {
+    cursor: pointer; color: #2E75B6; font-size: 0.88rem;
+    font-weight: bold; padding: 6px 0;
+  }
+  .code-details pre.java-src {
+    background: #1e1e2e; color: #cdd6f4; border-color: #313244;
+  }
+  body.code-light .code-details pre.java-src {
+    background: #fbfcfd; color: #24292f; border-color: #d8e4f0;
+  }
+
+  /* צביעת תחביר — רק בשלד הקוד, לא ב-JavaDoc ולא בבלוקי הפלט */
+  .java-src .j-kw   { color: #cba6f7; }
+  .java-src .j-type { color: #89b4fa; }
+  .java-src .j-str  { color: #a6e3a1; }
+  .java-src .j-num  { color: #fab387; }
+  .java-src .j-cm   { color: #7f849c; font-style: italic; }
+
+  body.code-light .java-src .j-kw   { color: #cf222e; }
+  body.code-light .java-src .j-type { color: #953800; }
+  body.code-light .java-src .j-str  { color: #0a3069; }
+  body.code-light .java-src .j-num  { color: #0550ae; }
+  body.code-light .java-src .j-cm   { color: #6e7781; font-style: italic; }
+
+  /* סרגל התאמה אישית */
+  .header-row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .view-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .view-controls .vc-label {
+    font-size: 0.74rem; opacity: 0.75; margin-left: 2px;
+  }
+  .view-controls button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 11px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-controls button:hover { background: rgba(255,255,255,0.18); }
+  .view-controls button.on {
+    background: rgba(255,255,255,0.26);
+    border-color: rgba(255,255,255,0.9);
+    font-weight: bold;
+  }
+  .view-controls button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .vc-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.35); margin: 0 6px; }
+
+  a:focus-visible { outline: 3px solid #1F4E79; outline-offset: 2px; }
+
+  footer { text-align: center; padding: 28px; color: #888; font-size: 0.85rem; }
+
+  @media print {
+    body { background: #fff; }
+    .view-controls, .to-top { display: none; }
+    .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .toc { break-after: page; }
+  }
+</style>
+</head>
+<body class="">
+
+<div class="page-header">
+  <div class="wrap header-row">
+    <div>
+      <h1>تمارين كتابة للوحدة 3.2</h1>
+      <p>Java أ – مقدمة في علم الحاسوب  |  14 أسئلة بمستوى صعوبة متصاعد</p>
+    </div>
+    <div class="view-controls">
+      <span class="vc-label">العرض</span>
+      <button type="button" data-w="820">ضيّق</button>
+      <button type="button" data-w="980">متوسط</button>
+      <button type="button" data-w="1200">واسع</button>
+      <button type="button" data-w="100%">كامل</button>
+      <span class="vc-sep"></span>
+      <span class="vc-label">الكود</span>
+      <button type="button" data-theme="dark">داكن</button>
+      <button type="button" data-theme="light">فاتح</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toc" id="top">
+    <h2>المحتويات</h2>
+    <div class="toc-grid">
+<a href="#q1">سؤال 1 – دوال ساكنة – أضلاع مثلث</a>
+<a href="#q2">سؤال 2 – دوال ساكنة – تقريب للعشرات</a>
+<a href="#q3">سؤال 3 – دوال ساكنة – أيام في الشهر</a>
+<a href="#q4">سؤال 4 – دوال ساكنة – حافلات للرحلة</a>
+<a href="#q5">سؤال 5 – دوال ساكنة – فصول السنة</a>
+<a href="#q6">سؤال 6 – دوال ساكنة – العدد الأوسط</a>
+<a href="#q7">سؤال 7 – دوال ساكنة – رسوم مواقف السيارات</a>
+<a href="#q8">سؤال 8 – دوال ساكنة – الوقت بصيغة ساعة</a>
+<a href="#q9">سؤال 9 – دوال ساكنة – محيط مثلث في المستوى</a>
+<a href="#q10">سؤال 10 – دوال ساكنة – سنة كبيسة</a>
+<a href="#q11">سؤال 11 – دوال ساكنة – عدد متناظر</a>
+<a href="#q12">سؤال 12 &amp;ndash; دوال ساكنة &amp;ndash; أيام في شهر من سنة معينة</a>
+<a href="#q13">سؤال 13 – دوال ساكنة – اختبار على جدول الضرب</a>
+<a href="#q14">سؤال 14 – دوال ساكنة – حجر، ورقة ومقص</a>
+    </div>
+  </div>
+
+<div class="level-divider" style="background:#27ae60;">المستوى 1 – أساسي</div>
+
+<div class="question-card" id="q1">
+  <div class="card-header">
+    <div class="q-badge">1</div>
+    <div class="card-titles">
+      <h3>سؤال 1 – دوال ساكنة – أضلاع مثلث</h3>
+      <span class="q-en">Q1 – static methods – triangle sides</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 1 – دوال ساكنة – أضلاع مثلث</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean isTriangle(int a, int b, int c)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل ثلاثة أطوال، وتعيد <code dir="ltr">true</code> إذا كان بالإمكان بناء مثلث منها، و-<code dir="ltr">false</code> وإلا. يمكن بناء مثلث عندما يكون كل ضلع أقصر من مجموع الضلعين الآخرين.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">isTriangle(3, 4, 5) ==> true
+isTriangle(2, 10, 3) ==> false
+isTriangle(1, 2, 3) ==> false</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+قوموا بتنزيل الفئة <strong><a href="#dl-0" download="WriteStatic01_Triangle.java" style="text-decoration: underline;">WriteStatic01_Triangle.java</a></strong> إلى بيئة العمل، أكملوا الدالة وشغلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Triangle
+ *
+ * Write a static method:
+ *   public static boolean isTriangle(int a, int b, int c)
+ *
+ * The method receives three lengths and returns true if a triangle can be
+ * built from them, and false otherwise. A triangle can be built when each
+ * side is shorter than the sum of the two other sides.
+ *
+ * Examples:
+ *   isTriangle(3, 4, 5) ==&gt; true
+ *   isTriangle(2, 10, 3) ==&gt; false
+ *   isTriangle(1, 2, 3) ==&gt; false
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic01_Triangle</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">boolean</span> isTriangle(<span class="j-kw">int</span> a, <span class="j-kw">int</span> b, <span class="j-kw">int</span> c) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-kw">false</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isTriangle(3, 4, 5) ==&gt; true    Actual: &quot;</span> + isTriangle(<span class="j-num">3</span>, <span class="j-num">4</span>, <span class="j-num">5</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isTriangle(<span class="j-num">3</span>, <span class="j-num">4</span>, <span class="j-num">5</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isTriangle(2, 10, 3) ==&gt; false    Actual: &quot;</span> + isTriangle(<span class="j-num">2</span>, <span class="j-num">10</span>, <span class="j-num">3</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isTriangle(<span class="j-num">2</span>, <span class="j-num">10</span>, <span class="j-num">3</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isTriangle(1, 2, 3) ==&gt; false    Actual: &quot;</span> + isTriangle(<span class="j-num">1</span>, <span class="j-num">2</span>, <span class="j-num">3</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isTriangle(<span class="j-num">1</span>, <span class="j-num">2</span>, <span class="j-num">3</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isTriangle(7, 7, 7) ==&gt; true    Actual: &quot;</span> + isTriangle(<span class="j-num">7</span>, <span class="j-num">7</span>, <span class="j-num">7</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isTriangle(<span class="j-num">7</span>, <span class="j-num">7</span>, <span class="j-num">7</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isTriangle(10, 2, 9) ==&gt; true    Actual: &quot;</span> + isTriangle(<span class="j-num">10</span>, <span class="j-num">2</span>, <span class="j-num">9</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isTriangle(<span class="j-num">10</span>, <span class="j-num">2</span>, <span class="j-num">9</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isTriangle(5, 1, 3) ==&gt; false    Actual: &quot;</span> + isTriangle(<span class="j-num">5</span>, <span class="j-num">1</span>, <span class="j-num">3</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isTriangle(<span class="j-num">5</span>, <span class="j-num">1</span>, <span class="j-num">3</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q2">
+  <div class="card-header">
+    <div class="q-badge">2</div>
+    <div class="card-titles">
+      <h3>سؤال 2 – دوال ساكنة – تقريب للعشرات</h3>
+      <span class="q-en">Q2 – static methods – round to ten</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 2 – دوال ساكنة – تقريب للعشرات</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int roundToTen(int num)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل عدد صحيح موجب وتعيده مقرباً لأقرب عشرة. عدد الذي رقم الآحاد فيه 5 يُقرب للأعلى.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">roundToTen(47) ==> 50
+roundToTen(43) ==> 40
+roundToTen(45) ==> 50</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الفئة <strong><a href="#dl-1" download="WriteStatic02_RoundTen.java" style="text-decoration: underline;">WriteStatic02_RoundTen.java</a></strong> لبيئة العمل، أكملوا الدالة وشغلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Round Ten
+ *
+ * Write a static method:
+ *   public static int roundToTen(int num)
+ *
+ * The method receives a positive whole number and returns it rounded to the
+ * nearest ten. A number whose units digit is 5 is rounded up.
+ *
+ * Examples:
+ *   roundToTen(47) ==&gt; 50
+ *   roundToTen(43) ==&gt; 40
+ *   roundToTen(45) ==&gt; 50
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic02_RoundTen</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">int</span> roundToTen(<span class="j-kw">int</span> num) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;roundToTen(47) ==&gt; 50    Actual: &quot;</span> + roundToTen(<span class="j-num">47</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (roundToTen(<span class="j-num">47</span>) == <span class="j-num">50</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;roundToTen(43) ==&gt; 40    Actual: &quot;</span> + roundToTen(<span class="j-num">43</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (roundToTen(<span class="j-num">43</span>) == <span class="j-num">40</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;roundToTen(45) ==&gt; 50    Actual: &quot;</span> + roundToTen(<span class="j-num">45</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (roundToTen(<span class="j-num">45</span>) == <span class="j-num">50</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;roundToTen(40) ==&gt; 40    Actual: &quot;</span> + roundToTen(<span class="j-num">40</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (roundToTen(<span class="j-num">40</span>) == <span class="j-num">40</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;roundToTen(5) ==&gt; 10    Actual: &quot;</span> + roundToTen(<span class="j-num">5</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (roundToTen(<span class="j-num">5</span>) == <span class="j-num">10</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;roundToTen(995) ==&gt; 1000    Actual: &quot;</span> + roundToTen(<span class="j-num">995</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (roundToTen(<span class="j-num">995</span>) == <span class="j-num">1000</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;roundToTen(994) ==&gt; 990    Actual: &quot;</span> + roundToTen(<span class="j-num">994</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (roundToTen(<span class="j-num">994</span>) == <span class="j-num">990</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q3">
+  <div class="card-header">
+    <div class="q-badge">3</div>
+    <div class="card-titles">
+      <h3>سؤال 3 – دوال ساكنة – أيام في الشهر</h3>
+      <span class="q-en">Q3 – static methods – days in month</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 3 – دوال ساكنة – أيام في الشهر</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int daysInMonth(int month)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل عدد لشهر، من 1 حتى 12، وتعيد عدد الأيام في هذا الشهر في سنة عادية، غير كبيسة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">daysInMonth(1) ==> 31
+daysInMonth(2) ==> 28
+daysInMonth(4) ==> 30</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+قوموا بتنزيل الفئة <strong><a href="#dl-2" download="WriteStatic03_DaysInMonth.java" style="text-decoration: underline;">WriteStatic03_DaysInMonth.java</a></strong> إلى بيئة العمل، أكملوا الدالة وشغلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Days In Month
+ *
+ * Write a static method:
+ *   public static int daysInMonth(int month)
+ *
+ * The method receives the number of a month, from 1 to 12, and returns the
+ * number of days in that month in a regular (non leap) year.
+ *
+ * Examples:
+ *   daysInMonth(1) ==&gt; 31
+ *   daysInMonth(2) ==&gt; 28
+ *   daysInMonth(4) ==&gt; 30
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic03_DaysInMonth</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">int</span> daysInMonth(<span class="j-kw">int</span> month) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(1) ==&gt; 31    Actual: &quot;</span> + daysInMonth(<span class="j-num">1</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">1</span>) == <span class="j-num">31</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(2) ==&gt; 28    Actual: &quot;</span> + daysInMonth(<span class="j-num">2</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">2</span>) == <span class="j-num">28</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(4) ==&gt; 30    Actual: &quot;</span> + daysInMonth(<span class="j-num">4</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">4</span>) == <span class="j-num">30</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(6) ==&gt; 30    Actual: &quot;</span> + daysInMonth(<span class="j-num">6</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">6</span>) == <span class="j-num">30</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(8) ==&gt; 31    Actual: &quot;</span> + daysInMonth(<span class="j-num">8</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">8</span>) == <span class="j-num">31</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(9) ==&gt; 30    Actual: &quot;</span> + daysInMonth(<span class="j-num">9</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">9</span>) == <span class="j-num">30</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(11) ==&gt; 30    Actual: &quot;</span> + daysInMonth(<span class="j-num">11</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">11</span>) == <span class="j-num">30</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;daysInMonth(12) ==&gt; 31    Actual: &quot;</span> + daysInMonth(<span class="j-num">12</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (daysInMonth(<span class="j-num">12</span>) == <span class="j-num">31</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q4">
+  <div class="card-header">
+    <div class="q-badge">4</div>
+    <div class="card-titles">
+      <h3>سؤال 4 – دوال ساكنة – حافلات للرحلة</h3>
+      <span class="q-en">Q4 – static methods – buses</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 4 – دوال ساكنة – حافلات للرحلة</h4>
+
+<p dir="rtl" style="text-align: right;">اكتب دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int buses(int students, int capacity)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل عدد الطلاب وعدد الأماكن في الحافلة، وتعيد كم حافلات مطلوبة لنقل جميع الطلاب.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+اكتب أيضا البرنامج الرئيسي الذي يستقبل عدد الطلاب في طبقتين وعدد الأماكن في الحافلة. كل طبقة تسافر في حافلاتها الخاصة. البرنامج يطبع كم حافلات مطلوبة لكل طبقة وكم بالمجموع الكلي. استخدم الدالة التي كتبتها.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">120
+95
+50</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Students in grade 10: 120
+Students in grade 11: 95
+Seats in a bus: 50
+Buses for grade 10: 3
+Buses for grade 11: 2
+Total buses: 5</pre>
+
+<p dir="rtl" style="text-align: right;">شغل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">100
+51
+50</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Students in grade 10: 100
+Students in grade 11: 51
+Seats in a bus: 50
+Buses for grade 10: 2
+Buses for grade 11: 2
+Total buses: 4</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+قم بتنزيل الفئة <strong><a href="#dl-3" download="WriteStatic04_Buses.java" style="text-decoration: underline;">WriteStatic04_Buses.java</a></strong> إلى بيئة العمل، أكمل الدالة، اكتب البرنامج الرئيسي وشغله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Buses
+ *
+ * Write a static method:
+ *   public static int buses(int students, int capacity)
+ *
+ * The method receives a number of students and the number of seats in a bus,
+ * and returns how many buses are needed to take all the students.
+ *
+ * Also write a main program that reads the number of students in two grades
+ * and the number of seats in a bus. Each grade travels in its own buses.
+ * The program prints how many buses each grade needs and how many in total.
+ * Use the method you wrote.
+ *
+ * Input:
+ *   120
+ *   95
+ *   50
+ *
+ * Expected output:
+ *   Students in grade 10: 120
+ *   Students in grade 11: 95
+ *   Seats in a bus: 50
+ *   Buses for grade 10: 3
+ *   Buses for grade 11: 2
+ *   Total buses: 5
+ *
+ * Run the program again with the input:
+ *   100
+ *   51
+ *   50
+ *
+ * Expected output:
+ *   Students in grade 10: 100
+ *   Students in grade 11: 51
+ *   Seats in a bus: 50
+ *   Buses for grade 10: 2
+ *   Buses for grade 11: 2
+ *   Total buses: 4
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic04_Buses</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">int</span> buses(<span class="j-kw">int</span> students, <span class="j-kw">int</span> capacity) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Write the main program below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q5">
+  <div class="card-header">
+    <div class="q-badge">5</div>
+    <div class="card-titles">
+      <h3>سؤال 5 – دوال ساكنة – فصول السنة</h3>
+      <span class="q-en">Q5 – static methods – season</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 5 – دوال ساكنة – فصول السنة</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String season(int month)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل عدد شهر، من 1 حتى 12، وتعيد اسم الفصل الذي ينتمي إليه الشهر:
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>ديسمبر، يناير وفبراير – <code dir="ltr">Winter</code></li>
+<li>مارس، أبريل ومايو – <code dir="ltr">Spring</code></li>
+<li>يونيو، يوليو وأغسطس – <code dir="ltr">Summer</code></li>
+<li>سبتمبر، أكتوبر ونوفمبر – <code dir="ltr">Autumn</code></li>
+</ul>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">season(1) ==> "Winter"
+season(4) ==> "Spring"
+season(12) ==> "Winter"</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+قوموا بتنزيل الفئة <strong><a href="#dl-4" download="WriteStatic05_Season.java" style="text-decoration: underline;">WriteStatic05_Season.java</a></strong> إلى بيئة العمل، أكملوا الدالة وشغلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Season
+ *
+ * Write a static method:
+ *   public static String season(int month)
+ *
+ * The method receives the number of a month, from 1 to 12, and returns the
+ * name of the season the month belongs to:
+ *   December, January, February   - Winter
+ *   March, April, May             - Spring
+ *   June, July, August            - Summer
+ *   September, October, November  - Autumn
+ *
+ * Examples:
+ *   season(1) ==&gt; &quot;Winter&quot;
+ *   season(4) ==&gt; &quot;Spring&quot;
+ *   season(12) ==&gt; &quot;Winter&quot;
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic05_Season</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-type">String</span> season(<span class="j-kw">int</span> month) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-str">&quot;&quot;</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(1) ==&gt; \&quot;</span>Winter\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">1</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">1</span>).equals(<span class="j-str">&quot;Winter&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(4) ==&gt; \&quot;</span>Spring\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">4</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">4</span>).equals(<span class="j-str">&quot;Spring&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(12) ==&gt; \&quot;</span>Winter\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">12</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">12</span>).equals(<span class="j-str">&quot;Winter&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(2) ==&gt; \&quot;</span>Winter\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">2</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">2</span>).equals(<span class="j-str">&quot;Winter&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(3) ==&gt; \&quot;</span>Spring\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">3</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">3</span>).equals(<span class="j-str">&quot;Spring&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(6) ==&gt; \&quot;</span>Summer\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">6</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">6</span>).equals(<span class="j-str">&quot;Summer&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(8) ==&gt; \&quot;</span>Summer\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">8</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">8</span>).equals(<span class="j-str">&quot;Summer&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(9) ==&gt; \&quot;</span>Autumn\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">9</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">9</span>).equals(<span class="j-str">&quot;Autumn&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;season(11) ==&gt; \&quot;</span>Autumn\<span class="j-str">&quot;    Actual: &quot;</span> + season(<span class="j-num">11</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (season(<span class="j-num">11</span>).equals(<span class="j-str">&quot;Autumn&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#e67e22;">المستوى 2 – متوسط</div>
+
+<div class="question-card" id="q6">
+  <div class="card-header">
+    <div class="q-badge">6</div>
+    <div class="card-titles">
+      <h3>سؤال 6 – دوال ساكنة – العدد الأوسط</h3>
+      <span class="q-en">Q6 – static methods – middle number</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 6 – دوال ساكنة – العدد الأوسط</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int middle(int a, int b, int c)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل ثلاثة أعداد صحيحة، بأي ترتيب، وتعيد العدد الأوسط – ذلك الذي يكون في الوسط عند ترتيب الأعداد الثلاثة من الأصغر إلى الأكبر.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">middle(7, 2, 5) ==> 5
+middle(10, 30, 20) ==> 20
+middle(4, 4, 9) ==> 4</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الفئة <strong><a href="#dl-5" download="WriteStatic06_Middle.java" style="text-decoration: underline;">WriteStatic06_Middle.java</a></strong> إلى بيئة العمل، أكملوا الدالة وشغّلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Middle
+ *
+ * Write a static method:
+ *   public static int middle(int a, int b, int c)
+ *
+ * The method receives three whole numbers, in any order, and returns the
+ * middle number - the one in the middle when the three numbers are sorted
+ * from the smallest to the largest.
+ *
+ * Examples:
+ *   middle(7, 2, 5) ==&gt; 5
+ *   middle(10, 30, 20) ==&gt; 20
+ *   middle(4, 4, 9) ==&gt; 4
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic06_Middle</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">int</span> middle(<span class="j-kw">int</span> a, <span class="j-kw">int</span> b, <span class="j-kw">int</span> c) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;middle(7, 2, 5) ==&gt; 5    Actual: &quot;</span> + middle(<span class="j-num">7</span>, <span class="j-num">2</span>, <span class="j-num">5</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (middle(<span class="j-num">7</span>, <span class="j-num">2</span>, <span class="j-num">5</span>) == <span class="j-num">5</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;middle(10, 30, 20) ==&gt; 20    Actual: &quot;</span> + middle(<span class="j-num">10</span>, <span class="j-num">30</span>, <span class="j-num">20</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (middle(<span class="j-num">10</span>, <span class="j-num">30</span>, <span class="j-num">20</span>) == <span class="j-num">20</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;middle(4, 4, 9) ==&gt; 4    Actual: &quot;</span> + middle(<span class="j-num">4</span>, <span class="j-num">4</span>, <span class="j-num">9</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (middle(<span class="j-num">4</span>, <span class="j-num">4</span>, <span class="j-num">9</span>) == <span class="j-num">4</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;middle(9, 1, 3) ==&gt; 3    Actual: &quot;</span> + middle(<span class="j-num">9</span>, <span class="j-num">1</span>, <span class="j-num">3</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (middle(<span class="j-num">9</span>, <span class="j-num">1</span>, <span class="j-num">3</span>) == <span class="j-num">3</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;middle(-3, 8, 2) ==&gt; 2    Actual: &quot;</span> + middle(-<span class="j-num">3</span>, <span class="j-num">8</span>, <span class="j-num">2</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (middle(-<span class="j-num">3</span>, <span class="j-num">8</span>, <span class="j-num">2</span>) == <span class="j-num">2</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;middle(5, 8, 8) ==&gt; 8    Actual: &quot;</span> + middle(<span class="j-num">5</span>, <span class="j-num">8</span>, <span class="j-num">8</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (middle(<span class="j-num">5</span>, <span class="j-num">8</span>, <span class="j-num">8</span>) == <span class="j-num">8</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;middle(6, 6, 6) ==&gt; 6    Actual: &quot;</span> + middle(<span class="j-num">6</span>, <span class="j-num">6</span>, <span class="j-num">6</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (middle(<span class="j-num">6</span>, <span class="j-num">6</span>, <span class="j-num">6</span>) == <span class="j-num">6</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q7">
+  <div class="card-header">
+    <div class="q-badge">7</div>
+    <div class="card-titles">
+      <h3>سؤال 7 – دوال ساكنة – رسوم مواقف السيارات</h3>
+      <span class="q-en">Q7 – static methods – parking fee</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 7 – دوال ساكنة – رسوم مواقف السيارات</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static int parkingFee(int minutes)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل مدة الوقوف بالدقائق، وتعيد المبلغ بالشيكل حسب القواعد التالية:
+</p>
+
+<ul dir="rtl" style="text-align: right;">
+<li>الساعة الأولى، أو جزء منها – 10 شيكل</li>
+<li>كل نصف ساعة إضافية، حتى لو لم تكتمل – 6 شيكل إضافية</li>
+<li>المبلغ لا يتجاوز أبداً 50 شيكل</li>
+</ul>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">parkingFee(45) ==> 10
+parkingFee(61) ==> 16
+parkingFee(130) ==> 28
+parkingFee(600) ==> 50</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الفئة <strong><a href="#dl-6" download="WriteStatic07_Parking.java" style="text-decoration: underline;">WriteStatic07_Parking.java</a></strong> إلى بيئة العمل، أكملوا الدالة وشغّلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Parking
+ *
+ * Write a static method:
+ *   public static int parkingFee(int minutes)
+ *
+ * The method receives the parking time in minutes, and returns the fee in
+ * shekels by these rules:
+ *   the first hour, or part of it            - 10 shekels
+ *   each extra half hour, even if not ended  - 6 more shekels
+ *   the fee is never more than 50 shekels
+ *
+ * Examples:
+ *   parkingFee(45) ==&gt; 10
+ *   parkingFee(61) ==&gt; 16
+ *   parkingFee(130) ==&gt; 28
+ *   parkingFee(600) ==&gt; 50
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic07_Parking</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">int</span> parkingFee(<span class="j-kw">int</span> minutes) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(45) ==&gt; 10    Actual: &quot;</span> + parkingFee(<span class="j-num">45</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">45</span>) == <span class="j-num">10</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(61) ==&gt; 16    Actual: &quot;</span> + parkingFee(<span class="j-num">61</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">61</span>) == <span class="j-num">16</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(130) ==&gt; 28    Actual: &quot;</span> + parkingFee(<span class="j-num">130</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">130</span>) == <span class="j-num">28</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(600) ==&gt; 50    Actual: &quot;</span> + parkingFee(<span class="j-num">600</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">600</span>) == <span class="j-num">50</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(60) ==&gt; 10    Actual: &quot;</span> + parkingFee(<span class="j-num">60</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">60</span>) == <span class="j-num">10</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(90) ==&gt; 16    Actual: &quot;</span> + parkingFee(<span class="j-num">90</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">90</span>) == <span class="j-num">16</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(91) ==&gt; 22    Actual: &quot;</span> + parkingFee(<span class="j-num">91</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">91</span>) == <span class="j-num">22</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(240) ==&gt; 46    Actual: &quot;</span> + parkingFee(<span class="j-num">240</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">240</span>) == <span class="j-num">46</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;parkingFee(241) ==&gt; 50    Actual: &quot;</span> + parkingFee(<span class="j-num">241</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (parkingFee(<span class="j-num">241</span>) == <span class="j-num">50</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q8">
+  <div class="card-header">
+    <div class="q-badge">8</div>
+    <div class="card-titles">
+      <h3>سؤال 8 – دوال ساكنة – الوقت بصيغة ساعة</h3>
+      <span class="q-en">Q8 – static methods – clock format</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 8 – دوال ساكنة – الوقت بصيغة ساعة</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static String formatTime(int seconds)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل عدد ثواني وتعيد نص للوقت بصيغة ساعة: ساعات، دقائق وثواني مفصولات بنقطتين، وكل واحدة منهن بمنزلتين.<br>يمكن الافتراض أن عدد الثواني هو ضمن يوم واحد: غير سلبي وأقل من عدد الثواني في يوم كامل.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">formatTime(3725) ==> "01:02:05"
+formatTime(45) ==> "00:00:45"
+formatTime(45296) ==> "12:34:56"</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الفئة <strong><a href="#dl-7" download="WriteStatic08_FormatTime.java" style="text-decoration: underline;">WriteStatic08_FormatTime.java</a></strong> إلى بيئة العمل، أكملوا الدالة وشغّلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Format Time
+ *
+ * Write a static method:
+ *   public static String formatTime(int seconds)
+ *
+ * The method receives a number of seconds and returns a string of the time in
+ * clock format: hours, minutes and seconds separated by colons, each of them
+ * with two digits.
+ * You may assume that the number of seconds is within one day: it is not
+ * negative and it is less than the number of seconds in a whole day.
+ *
+ * Examples:
+ *   formatTime(3725) ==&gt; &quot;01:02:05&quot;
+ *   formatTime(45) ==&gt; &quot;00:00:45&quot;
+ *   formatTime(45296) ==&gt; &quot;12:34:56&quot;
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic08_FormatTime</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-type">String</span> formatTime(<span class="j-kw">int</span> seconds) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-str">&quot;&quot;</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;formatTime(3725) ==&gt; \&quot;</span><span class="j-num">01</span>:<span class="j-num">02</span>:<span class="j-num">05</span>\<span class="j-str">&quot;    Actual: &quot;</span> + formatTime(<span class="j-num">3725</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (formatTime(<span class="j-num">3725</span>).equals(<span class="j-str">&quot;01:02:05&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;formatTime(45) ==&gt; \&quot;</span><span class="j-num">00</span>:<span class="j-num">00</span>:<span class="j-num">45</span>\<span class="j-str">&quot;    Actual: &quot;</span> + formatTime(<span class="j-num">45</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (formatTime(<span class="j-num">45</span>).equals(<span class="j-str">&quot;00:00:45&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;formatTime(45296) ==&gt; \&quot;</span><span class="j-num">12</span>:<span class="j-num">34</span>:<span class="j-num">56</span>\<span class="j-str">&quot;    Actual: &quot;</span> + formatTime(<span class="j-num">45296</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (formatTime(<span class="j-num">45296</span>).equals(<span class="j-str">&quot;12:34:56&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;formatTime(3600) ==&gt; \&quot;</span><span class="j-num">01</span>:<span class="j-num">00</span>:<span class="j-num">00</span>\<span class="j-str">&quot;    Actual: &quot;</span> + formatTime(<span class="j-num">3600</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (formatTime(<span class="j-num">3600</span>).equals(<span class="j-str">&quot;01:00:00&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;formatTime(600) ==&gt; \&quot;</span><span class="j-num">00</span>:<span class="j-num">10</span>:<span class="j-num">00</span>\<span class="j-str">&quot;    Actual: &quot;</span> + formatTime(<span class="j-num">600</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (formatTime(<span class="j-num">600</span>).equals(<span class="j-str">&quot;00:10:00&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;formatTime(86399) ==&gt; \&quot;</span><span class="j-num">23</span>:<span class="j-num">59</span>:<span class="j-num">59</span>\<span class="j-str">&quot;    Actual: &quot;</span> + formatTime(<span class="j-num">86399</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (formatTime(<span class="j-num">86399</span>).equals(<span class="j-str">&quot;23:59:59&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;formatTime(0) ==&gt; \&quot;</span><span class="j-num">00</span>:<span class="j-num">00</span>:<span class="j-num">00</span>\<span class="j-str">&quot;    Actual: &quot;</span> + formatTime(<span class="j-num">0</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (formatTime(<span class="j-num">0</span>).equals(<span class="j-str">&quot;00:00:00&quot;</span>) ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q9">
+  <div class="card-header">
+    <div class="q-badge">9</div>
+    <div class="card-titles">
+      <h3>سؤال 9 – دوال ساكنة – محيط مثلث في المستوى</h3>
+      <span class="q-en">Q9 – static methods – triangle perimeter</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 9 – دوال ساكنة – محيط مثلث في المستوى</h4>
+
+<p dir="rtl" style="text-align: right;">اكتب دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static double distance(double x1, double y1, double x2, double y2)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل الإحداثيات لنقطتين في المستوى، وتعيد المسافة بينهما حسب الصيغة:
+</p>
+
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">d = √((x2 - x1)² + (y2 - y1)²)</pre>
+
+<p dir="rtl" style="text-align: right;">
+اكتب أيضا البرنامج الرئيسي الذي يستقبل الإحداثيات لرؤوس المثلث الثلاثة <code dir="ltr">A</code>, <code dir="ltr">B</code> و-<code dir="ltr">C</code> للمثلث. الإحداثيات هي أعداد صحيحة، ويتم إدخال الإحداثيين لكل رأس في نفس السطر. البرنامج يطبع الرؤوس الثلاثة بالصيغة المتعارف عليها، أطوال الأضلاع الثلاثة ومحيط المثلث، كما في المخرجات المطلوبة. احسب كل ضلع باستدعاء الدالة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">0 0
+3 0
+3 4</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Point A (x y): 0 0
+Point B (x y): 3 0
+Point C (x y): 3 4
+Triangle: A(0, 0), B(3, 0), C(3, 4)
+AB = 3.0
+BC = 4.0
+CA = 5.0
+Perimeter = 12.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">1 1
+7 1
+1 9</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Point A (x y): 1 1
+Point B (x y): 7 1
+Point C (x y): 1 9
+Triangle: A(1, 1), B(7, 1), C(1, 9)
+AB = 6.0
+BC = 10.0
+CA = 8.0
+Perimeter = 24.0</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">-2 -1
+1 3
+-2 3</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Point A (x y): -2 -1
+Point B (x y): 1 3
+Point C (x y): -2 3
+Triangle: A(-2, -1), B(1, 3), C(-2, 3)
+AB = 5.0
+BC = 3.0
+CA = 4.0
+Perimeter = 12.0</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-8" download="WriteStatic09_TrianglePoints.java" style="text-decoration: underline;">WriteStatic09_TrianglePoints.java</a></strong> إلى بيئة العمل، أكمل الدالة، اكتب البرنامج الرئيسي وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Triangle Points
+ *
+ * Write a static method:
+ *   public static double distance(double x1, double y1, double x2, double y2)
+ *
+ * The method receives the coordinates of two points and returns the distance
+ * between them:
+ *   d = sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1))
+ *
+ * Also write a main program that reads the coordinates of the three vertices
+ * A, B and C of a triangle. The coordinates are whole numbers, and the two
+ * coordinates of each vertex are typed in the same line. The program prints
+ * the three vertices in the usual notation, the lengths of the three sides and
+ * the perimeter of the triangle, as in the expected output.
+ * Calculate each side by calling the method.
+ *
+ * Input:
+ *   0 0
+ *   3 0
+ *   3 4
+ *
+ * Expected output:
+ *   Point A (x y): 0 0
+ *   Point B (x y): 3 0
+ *   Point C (x y): 3 4
+ *   Triangle: A(0, 0), B(3, 0), C(3, 4)
+ *   AB = 3.0
+ *   BC = 4.0
+ *   CA = 5.0
+ *   Perimeter = 12.0
+ *
+ * Run the program again with the input:
+ *   1 1
+ *   7 1
+ *   1 9
+ *
+ * Expected output:
+ *   Point A (x y): 1 1
+ *   Point B (x y): 7 1
+ *   Point C (x y): 1 9
+ *   Triangle: A(1, 1), B(7, 1), C(1, 9)
+ *   AB = 6.0
+ *   BC = 10.0
+ *   CA = 8.0
+ *   Perimeter = 24.0
+ *
+ * Run the program again with the input:
+ *   -2 -1
+ *   1 3
+ *   -2 3
+ *
+ * Expected output:
+ *   Point A (x y): -2 -1
+ *   Point B (x y): 1 3
+ *   Point C (x y): -2 3
+ *   Triangle: A(-2, -1), B(1, 3), C(-2, 3)
+ *   AB = 5.0
+ *   BC = 3.0
+ *   CA = 4.0
+ *   Perimeter = 12.0
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic09_TrianglePoints</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">double</span> distance(<span class="j-kw">double</span> x1, <span class="j-kw">double</span> y1, <span class="j-kw">double</span> x2, <span class="j-kw">double</span> y2) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0.0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Write the main program below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="level-divider" style="background:#c0392b;">المستوى 3 – متقدّم</div>
+
+<div class="question-card" id="q10">
+  <div class="card-header">
+    <div class="q-badge">10</div>
+    <div class="card-titles">
+      <h3>سؤال 10 – دوال ساكنة – سنة كبيسة</h3>
+      <span class="q-en">Q10 – static methods – leap year</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 10 – دوال ساكنة – سنة كبيسة</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean isLeap(int year)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل سنة وتعيد <code dir="ltr">true</code> إذا كانت هذه سنة كبيسة في التقويم الميلادي، و-<code dir="ltr">false</code> وإلا.<br>سنة كبيسة هي سنة تقبل القسمة على 4 ولكن لا تقبل القسمة على 100، إلا إذا كانت تقبل القسمة أيضاً على 400. على سبيل المثال، 2000 هي سنة كبيسة و-1900 ليست كبيسة.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">isLeap(2028) ==> true
+isLeap(2026) ==> false
+isLeap(2100) ==> false
+isLeap(2000) ==> true</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+قوموا بتنزيل الفئة <strong><a href="#dl-9" download="WriteStatic10_LeapYear.java" style="text-decoration: underline;">WriteStatic10_LeapYear.java</a></strong> إلى بيئة العمل، أكملوا الدالة وشغلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Leap Year
+ *
+ * Write a static method:
+ *   public static boolean isLeap(int year)
+ *
+ * The method receives a year and returns true if it is a leap year in the
+ * Gregorian calendar, and false otherwise.
+ * A leap year is divisible by 4 but not by 100, unless it is also divisible by
+ * 400. For example, 2000 is a leap year and 1900 is not.
+ *
+ * Examples:
+ *   isLeap(2028) ==&gt; true
+ *   isLeap(2026) ==&gt; false
+ *   isLeap(2100) ==&gt; false
+ *   isLeap(2000) ==&gt; true
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic10_LeapYear</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">boolean</span> isLeap(<span class="j-kw">int</span> year) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-kw">false</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(2028) ==&gt; true    Actual: &quot;</span> + isLeap(<span class="j-num">2028</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">2028</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(2026) ==&gt; false    Actual: &quot;</span> + isLeap(<span class="j-num">2026</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">2026</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(2100) ==&gt; false    Actual: &quot;</span> + isLeap(<span class="j-num">2100</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">2100</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(2000) ==&gt; true    Actual: &quot;</span> + isLeap(<span class="j-num">2000</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">2000</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(1900) ==&gt; false    Actual: &quot;</span> + isLeap(<span class="j-num">1900</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">1900</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(2400) ==&gt; true    Actual: &quot;</span> + isLeap(<span class="j-num">2400</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">2400</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(1996) ==&gt; true    Actual: &quot;</span> + isLeap(<span class="j-num">1996</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">1996</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isLeap(2023) ==&gt; false    Actual: &quot;</span> + isLeap(<span class="j-num">2023</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isLeap(<span class="j-num">2023</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q11">
+  <div class="card-header">
+    <div class="q-badge">11</div>
+    <div class="card-titles">
+      <h3>سؤال 11 – دوال ساكنة – عدد متناظر</h3>
+      <span class="q-en">Q11 – static methods – palindrome</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 11 – دوال ساكنة – عدد متناظر</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالتين ساكنتين:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">private static int reverse(int num)
+public static boolean isPalindrome(int num)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة <code dir="ltr">reverse</code> تستقبل عدد ثلاثي المنازل وتعيد العدد الذي منازله بترتيب معكوس. هذه دالة مساعدة، ولذلك هي خاصة – <code dir="ltr">private</code>: يمكن استدعاؤها فقط من داخل الفئة التي كتبت فيها.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+الدالة <code dir="ltr">isPalindrome</code> تستقبل عدد ثلاثي المنازل وتعيد <code dir="ltr">true</code> إذا كان متناظر – يُقرأ بنفس الطريقة من اليسار لليمين ومن اليمين لليسار – و<code dir="ltr">false</code> وإلا. استخدموا الدالة <code dir="ltr">reverse</code> لكتابة الدالة <code dir="ltr">isPalindrome</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">reverse(123) ==> 321
+reverse(450) ==> 54
+isPalindrome(727) ==> true
+isPalindrome(723) ==> false</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّلوا الفئة <strong><a href="#dl-10" download="WriteStatic11_Palindrome.java" style="text-decoration: underline;">WriteStatic11_Palindrome.java</a></strong> إلى بيئة العمل، أكملوا الدوال وشغّلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Palindrome
+ *
+ * Write two static methods:
+ *   private static int reverse(int num)
+ *   public static boolean isPalindrome(int num)
+ *
+ * The method reverse receives a three digit number and returns the number
+ * with its digits in reverse order. It is a helper method, so it is private:
+ * it can be called only from inside the class where it is written.
+ * The method isPalindrome receives a three digit number and returns true if
+ * it is a palindrome - it reads the same from left to right and from right
+ * to left - and false otherwise.
+ * Use the method reverse to write the method isPalindrome.
+ *
+ * Examples:
+ *   reverse(123) ==&gt; 321
+ *   reverse(450) ==&gt; 54
+ *   isPalindrome(727) ==&gt; true
+ *   isPalindrome(723) ==&gt; false
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic11_Palindrome</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the methods below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">private</span> <span class="j-kw">static</span> <span class="j-kw">int</span> reverse(<span class="j-kw">int</span> num) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">boolean</span> isPalindrome(<span class="j-kw">int</span> num) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-kw">false</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;reverse(123) ==&gt; 321    Actual: &quot;</span> + reverse(<span class="j-num">123</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (reverse(<span class="j-num">123</span>) == <span class="j-num">321</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;reverse(450) ==&gt; 54    Actual: &quot;</span> + reverse(<span class="j-num">450</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (reverse(<span class="j-num">450</span>) == <span class="j-num">54</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isPalindrome(727) ==&gt; true    Actual: &quot;</span> + isPalindrome(<span class="j-num">727</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isPalindrome(<span class="j-num">727</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isPalindrome(723) ==&gt; false    Actual: &quot;</span> + isPalindrome(<span class="j-num">723</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isPalindrome(<span class="j-num">723</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;reverse(707) ==&gt; 707    Actual: &quot;</span> + reverse(<span class="j-num">707</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (reverse(<span class="j-num">707</span>) == <span class="j-num">707</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;reverse(100) ==&gt; 1    Actual: &quot;</span> + reverse(<span class="j-num">100</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (reverse(<span class="j-num">100</span>) == <span class="j-num">1</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isPalindrome(999) ==&gt; true    Actual: &quot;</span> + isPalindrome(<span class="j-num">999</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isPalindrome(<span class="j-num">999</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isPalindrome(100) ==&gt; false    Actual: &quot;</span> + isPalindrome(<span class="j-num">100</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isPalindrome(<span class="j-num">100</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;isPalindrome(110) ==&gt; false    Actual: &quot;</span> + isPalindrome(<span class="j-num">110</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (isPalindrome(<span class="j-num">110</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q12">
+  <div class="card-header">
+    <div class="q-badge">12</div>
+    <div class="card-titles">
+      <h3>سؤال 12 &amp;ndash; دوال ساكنة &amp;ndash; أيام في شهر من سنة معينة</h3>
+      <span class="q-en">Q12 – static methods – days in month and year</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 12 &ndash; دوال ساكنة &ndash; أيام في شهر من سنة معينة</h4>
+
+<p dir="rtl" style="text-align: right;">اكتب دالتين ساكنتين:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean isLeap(int year)
+public static int daysInMonth(int month, int year)</pre>
+
+<p dir="rtl" style="text-align: right;">
+الدالة <code dir="ltr">isLeap</code> تستقبل سنة وتعيد <code dir="ltr">true</code> إذا كانت هذه سنة كبيسة في التقويم الميلادي، و-<code dir="ltr">false</code> وإلا.<br>سنة كبيسة هي سنة تقبل القسمة على 4 ولكن ليس على 100، إلا إذا كانت تقبل القسمة أيضاً على 400. على سبيل المثال، 2000 هي سنة كبيسة و-1900 ليست كبيسة.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+الدالة <code dir="ltr">daysInMonth</code> تستقبل عدد لشهر، من 1 حتى 12، وسنة، وتعيد عدد الأيام في هذا الشهر. في شباط يوجد 29 يوماً في سنة كبيسة و-28 يوماً في سنة عادية. الدالة <code dir="ltr">daysInMonth</code> يجب أن تستدعي الدالة <code dir="ltr">isLeap</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+اكتب أيضاً البرنامج الرئيسي الذي يستقبل عدد لشهر وسنة، ويطبع إذا كانت السنة كبيسة وعدد الأيام في الشهر. استخدم الدالتين.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2
+2024</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Month: 2
+Year: 2024
+Leap year: true
+Days: 29</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">2
+1900</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Month: 2
+Year: 1900
+Leap year: false
+Days: 28</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">9
+2000</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثالث:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">Month: 9
+Year: 2000
+Leap year: true
+Days: 30</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-11" download="WriteStatic12_MonthDays.java" style="text-decoration: underline;">WriteStatic12_MonthDays.java</a></strong> إلى بيئة العمل، أكمل الدوال، اكتب البرنامج الرئيسي وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Month Days
+ *
+ * Write two static methods:
+ *   public static boolean isLeap(int year)
+ *   public static int daysInMonth(int month, int year)
+ *
+ * The method isLeap receives a year and returns true if it is a leap year in
+ * the Gregorian calendar, and false otherwise.
+ * A leap year is divisible by 4 but not by 100, unless it is also divisible by
+ * 400. For example, 2000 is a leap year and 1900 is not.
+ * The method daysInMonth receives the number of a month, from 1 to 12, and a
+ * year, and returns the number of days in that month. February has 29 days
+ * in a leap year and 28 days in a regular year.
+ * The method daysInMonth must call the method isLeap.
+ *
+ * Also write a main program that reads the number of a month and a year, and
+ * prints whether the year is a leap year and the number of days in the month.
+ * Use both methods.
+ *
+ * Input:
+ *   2
+ *   2024
+ *
+ * Expected output:
+ *   Month: 2
+ *   Year: 2024
+ *   Leap year: true
+ *   Days: 29
+ *
+ * Run the program again with the input:
+ *   2
+ *   1900
+ *
+ * Expected output:
+ *   Month: 2
+ *   Year: 1900
+ *   Leap year: false
+ *   Days: 28
+ *
+ * Run the program again with the input:
+ *   9
+ *   2000
+ *
+ * Expected output:
+ *   Month: 9
+ *   Year: 2000
+ *   Leap year: true
+ *   Days: 30
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic12_MonthDays</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the methods below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">boolean</span> isLeap(<span class="j-kw">int</span> year) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-kw">false</span>;
+    }
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">int</span> daysInMonth(<span class="j-kw">int</span> month, <span class="j-kw">int</span> year) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Write the main program below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q13">
+  <div class="card-header">
+    <div class="q-badge">13</div>
+    <div class="card-titles">
+      <h3>سؤال 13 – دوال ساكنة – اختبار على جدول الضرب</h3>
+      <span class="q-en">Q13 – static methods – multiplication quiz</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 13 – دوال ساكنة – اختبار على جدول الضرب</h4>
+
+<p dir="rtl" style="text-align: right;">اكتب دالة ساكنة:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean ask(int a, int b)</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>الجزء أ – الدالة</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+الدالة تستقبل عددين صحيحين وتعرض للمستخدم تمرين الضرب بينهما. الدالة تستقبل الإجابة من المستخدم، تطبع إذا كانت صحيحة، وتعيد <code dir="ltr">true</code> إذا كانت الإجابة صحيحة و-<code dir="ltr">false</code> وإلا. الاستقبال يتم داخل الدالة.
+</p>
+
+<p dir="rtl" style="text-align: right;">الاستدعاء <code dir="ltr">ask(7, 8)</code>، عندما المستخدم يدخل 56، تطبع الأسطر التالية وتعيد <code dir="ltr">true</code>:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 56
+Correct</pre>
+
+<p dir="rtl" style="text-align: right;">نفس الاستدعاء، عندما المستخدم يدخل 54، تطبع الأسطر التالية وتعيد <code dir="ltr">false</code>:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 54
+Wrong, the answer is 56</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>الجزء ب – البرنامج الرئيسي</strong></p>
+
+<p dir="rtl" style="text-align: right;">
+اكتب برنامج رئيسي يستدعي الدالة ثلاث مرات، بهذا الترتيب:
+</p>
+
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">ask(7, 8)
+ask(6, 9)
+ask(12, 12)</pre>
+
+<p dir="rtl" style="text-align: right;">
+في كل استدعاء المستخدم يدخل إجابته للتمرين. في نهاية البرنامج تطبع كم عدد الإجابات الصحيحة كانت.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>معطيات المدخلات:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">56
+54
+144</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الأول:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 56
+Correct
+6 x 9 = 54
+Correct
+12 x 12 = 144
+Correct
+Score: 3 out of 3</pre>
+
+<p dir="rtl" style="text-align: right;">شغّل البرنامج مرة أخرى مع معطيات المدخلات التالية:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">56
+45
+124</pre>
+
+<p dir="rtl" style="text-align: right;"><strong>المخرجات المطلوبة في التشغيل الثاني:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">7 x 8 = 56
+Correct
+6 x 9 = 45
+Wrong, the answer is 54
+12 x 12 = 124
+Wrong, the answer is 144
+Score: 1 out of 3</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+نزّل الفئة <strong><a href="#dl-12" download="WriteStatic13_Quiz.java" style="text-decoration: underline;">WriteStatic13_Quiz.java</a></strong> إلى بيئة العمل، أكمل الدالة، اكتب البرنامج الرئيسي وشغّله.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src"><span class="j-kw">import</span> java.util.<span class="j-type">Scanner</span>;
+
+<span class="j-cm">/**
+ * Exercise: Static Methods – Quiz
+ *
+ * Write a static method:
+ *   public static boolean ask(int a, int b)
+ *
+ * Part 1 - the method
+ * The method receives two whole numbers and shows the user their
+ * multiplication exercise. The method reads the user's answer, prints whether
+ * it is correct, and returns true if the answer is correct and false otherwise.
+ * The input is read inside the method.
+ *
+ * The call ask(7, 8), when the user types 56, prints and returns true:
+ *   7 x 8 = 56
+ *   Correct
+ *
+ * The same call, when the user types 54, prints and returns false:
+ *   7 x 8 = 54
+ *   Wrong, the answer is 56
+ *
+ * Part 2 - the main program
+ * Write a main program that calls the method three times, in this order:
+ *   ask(7, 8)
+ *   ask(6, 9)
+ *   ask(12, 12)
+ * In each call the user types his answer to the exercise. At the end the
+ * program prints how many answers were correct.
+ *
+ * Input:
+ *   56
+ *   54
+ *   144
+ *
+ * Expected output:
+ *   7 x 8 = 56
+ *   Correct
+ *   6 x 9 = 54
+ *   Correct
+ *   12 x 12 = 144
+ *   Correct
+ *   Score: 3 out of 3
+ *
+ * Run the program again with the input:
+ *   56
+ *   45
+ *   124
+ *
+ * Expected output:
+ *   7 x 8 = 56
+ *   Correct
+ *   6 x 9 = 45
+ *   Wrong, the answer is 54
+ *   12 x 12 = 124
+ *   Wrong, the answer is 144
+ *   Score: 1 out of 3
+ */</span>
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic13_Quiz</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the method below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">boolean</span> ask(<span class="j-kw">int</span> a, <span class="j-kw">int</span> b) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-kw">false</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Write the main program below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-cm">// TODO: write your program here</span>
+
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+<div class="question-card" id="q14">
+  <div class="card-header">
+    <div class="q-badge">14</div>
+    <div class="card-titles">
+      <h3>سؤال 14 – دوال ساكنة – حجر، ورقة ومقص</h3>
+      <span class="q-en">Q14 – static methods – rock paper scissors</span>
+    </div>
+  </div>
+  <div class="card-body">
+<h3 dir="rtl"><img src="https://www.freeiconspng.com/uploads/bluej-icon-png-0.png" alt="BlueJ" width="50" height="50" class="img-responsive atto_image_button_text-bottom"></h3>
+
+<h4 dir="rtl" style="text-align: right;">سؤال 14 – دوال ساكنة – حجر، ورقة ومقص</h4>
+
+<p dir="rtl" style="text-align: right;">اكتبوا دالتين ساكنتين:</p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">public static boolean beats(char a, char b)
+public static int winner(char p1, char p2)</pre>
+
+<p dir="rtl" style="text-align: right;">
+في لعبة حجر، ورقة ومقص كل لاعب يختار رمز: <code dir="ltr">'R'</code> للحجر، <code dir="ltr">'P'</code> للورقة أو <code dir="ltr">'S'</code> للمقص. الحجر يهزم المقص، المقص يهزم الورقة، والورقة تهزم الحجر.
+</p>
+
+<p dir="rtl" style="text-align: right;">
+الدالة <code dir="ltr">beats</code> تعيد <code dir="ltr">true</code> إذا كان الاختيار <code dir="ltr">a</code> يهزم الاختيار <code dir="ltr">b</code>، و-<code dir="ltr">false</code> وإلا.<br>الدالة <code dir="ltr">winner</code> تعيد 1 إذا فاز اللاعب الأول، 2 إذا فاز اللاعب الثاني، و-0 في حالة تعادل. الدالة <code dir="ltr">winner</code> يجب أن تستدعي الدالة <code dir="ltr">beats</code>.
+</p>
+
+<p dir="rtl" style="text-align: right;"><strong>أمثلة تشغيل:</strong></p>
+<pre style="text-align: left; direction: ltr; background:#f4f4f4; padding:8px; border-radius:4px;">beats('R', 'S') ==> true
+beats('S', 'R') ==> false
+winner('P', 'R') ==> 1
+winner('R', 'P') ==> 2
+winner('S', 'S') ==> 0</pre>
+
+<p class="download-p" dir="rtl" style="text-align: right;">
+قوموا بتنزيل الفئة <strong><a href="#dl-13" download="WriteStatic14_RockPaperScissors.java" style="text-decoration: underline;">WriteStatic14_RockPaperScissors.java</a></strong> إلى بيئة العمل، أكملوا الدوال وشغلوا البرنامج الرئيسي.
+</p>
+    <div class="card-foot">
+      <details class="code-details">
+        <summary>عرض هيكل الكود</summary>
+        <pre class="java-src">/**
+ * Exercise: Static Methods – Rock Paper Scissors
+ *
+ * Write two static methods:
+ *   public static boolean beats(char a, char b)
+ *   public static int winner(char p1, char p2)
+ *
+ * In the game rock paper scissors each player chooses a char: 'R' for rock,
+ * 'P' for paper or 'S' for scissors. Rock beats scissors, scissors beat paper,
+ * and paper beats rock.
+ * The method beats returns true if the choice a beats the choice b, and false
+ * otherwise.
+ * The method winner returns 1 if the first player won, 2 if the second player
+ * won, and 0 for a tie. The method winner must call the method beats.
+ *
+ * Examples:
+ *   beats('R', 'S') ==&gt; true
+ *   beats('S', 'R') ==&gt; false
+ *   winner('P', 'R') ==&gt; 1
+ *   winner('R', 'P') ==&gt; 2
+ *   winner('S', 'S') ==&gt; 0
+ */
+<span class="j-kw">public</span> <span class="j-kw">class</span> <span class="j-type">WriteStatic14_RockPaperScissors</span> {
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Complete the methods below</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">boolean</span> beats(<span class="j-kw">char</span> a, <span class="j-kw">char</span> b) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-kw">false</span>;
+    }
+
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">int</span> winner(<span class="j-kw">char</span> p1, <span class="j-kw">char</span> p2) {
+        <span class="j-cm">// TODO: write your method here</span>
+        <span class="j-kw">return</span> <span class="j-num">0</span>;
+    }
+
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-cm">// Tests - do not change</span>
+    <span class="j-cm">// ============================================================</span>
+    <span class="j-kw">public</span> <span class="j-kw">static</span> <span class="j-kw">void</span> main(<span class="j-type">String</span> [] args) {
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;beats('R', 'S') ==&gt; true    Actual: &quot;</span> + beats(<span class="j-str">'R'</span>, <span class="j-str">'S'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (beats(<span class="j-str">'R'</span>, <span class="j-str">'S'</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;beats('S', 'R') ==&gt; false    Actual: &quot;</span> + beats(<span class="j-str">'S'</span>, <span class="j-str">'R'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (beats(<span class="j-str">'S'</span>, <span class="j-str">'R'</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;winner('P', 'R') ==&gt; 1    Actual: &quot;</span> + winner(<span class="j-str">'P'</span>, <span class="j-str">'R'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (winner(<span class="j-str">'P'</span>, <span class="j-str">'R'</span>) == <span class="j-num">1</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;winner('R', 'P') ==&gt; 2    Actual: &quot;</span> + winner(<span class="j-str">'R'</span>, <span class="j-str">'P'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (winner(<span class="j-str">'R'</span>, <span class="j-str">'P'</span>) == <span class="j-num">2</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;winner('S', 'S') ==&gt; 0    Actual: &quot;</span> + winner(<span class="j-str">'S'</span>, <span class="j-str">'S'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (winner(<span class="j-str">'S'</span>, <span class="j-str">'S'</span>) == <span class="j-num">0</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;beats('S', 'P') ==&gt; true    Actual: &quot;</span> + beats(<span class="j-str">'S'</span>, <span class="j-str">'P'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (beats(<span class="j-str">'S'</span>, <span class="j-str">'P'</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;beats('P', 'R') ==&gt; true    Actual: &quot;</span> + beats(<span class="j-str">'P'</span>, <span class="j-str">'R'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (beats(<span class="j-str">'P'</span>, <span class="j-str">'R'</span>) == <span class="j-kw">true</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;beats('P', 'P') ==&gt; false    Actual: &quot;</span> + beats(<span class="j-str">'P'</span>, <span class="j-str">'P'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (beats(<span class="j-str">'P'</span>, <span class="j-str">'P'</span>) == <span class="j-kw">false</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;winner('S', 'P') ==&gt; 1    Actual: &quot;</span> + winner(<span class="j-str">'S'</span>, <span class="j-str">'P'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (winner(<span class="j-str">'S'</span>, <span class="j-str">'P'</span>) == <span class="j-num">1</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+        <span class="j-type">System</span>.out.println(<span class="j-str">&quot;winner('S', 'R') ==&gt; 2    Actual: &quot;</span> + winner(<span class="j-str">'S'</span>, <span class="j-str">'R'</span>)
+            + <span class="j-str">&quot;    &quot;</span> + (winner(<span class="j-str">'S'</span>, <span class="j-str">'R'</span>) == <span class="j-num">2</span> ? <span class="j-str">&quot;V PASS&quot;</span> : <span class="j-str">&quot;X FAIL&quot;</span>));
+    }
+}
+</pre>
+      </details>
+      <a class="to-top" href="#top">↑ العودة إلى المحتويات</a>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>الملفات مضمّنة في الصفحة — التنزيل يعمل أيضًا بدون اتصال بالإنترنت</footer>
+
+<script id="embedded-files" type="application/json">[{"n":"WriteStatic01_Triangle.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgVHJpYW5nbGUKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBpc1RyaWFuZ2xlKGludCBhLCBpbnQgYiwgaW50IGMpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgdGhyZWUgbGVuZ3RocyBhbmQgcmV0dXJucyB0cnVlIGlmIGEgdHJpYW5nbGUgY2FuIGJlCiAqIGJ1aWx0IGZyb20gdGhlbSwgYW5kIGZhbHNlIG90aGVyd2lzZS4gQSB0cmlhbmdsZSBjYW4gYmUgYnVpbHQgd2hlbiBlYWNoCiAqIHNpZGUgaXMgc2hvcnRlciB0aGFuIHRoZSBzdW0gb2YgdGhlIHR3byBvdGhlciBzaWRlcy4KICoKICogRXhhbXBsZXM6CiAqICAgaXNUcmlhbmdsZSgzLCA0LCA1KSA9PT4gdHJ1ZQogKiAgIGlzVHJpYW5nbGUoMiwgMTAsIDMpID09PiBmYWxzZQogKiAgIGlzVHJpYW5nbGUoMSwgMiwgMykgPT0+IGZhbHNlCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwMV9UcmlhbmdsZSB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBpc1RyaWFuZ2xlKGludCBhLCBpbnQgYiwgaW50IGMpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc1RyaWFuZ2xlKDMsIDQsIDUpID09PiB0cnVlICAgIEFjdHVhbDogIiArIGlzVHJpYW5nbGUoMywgNCwgNSkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNUcmlhbmdsZSgzLCA0LCA1KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNUcmlhbmdsZSgyLCAxMCwgMykgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIGlzVHJpYW5nbGUoMiwgMTAsIDMpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoMiwgMTAsIDMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNUcmlhbmdsZSgxLCAyLCAzKSA9PT4gZmFsc2UgICAgQWN0dWFsOiAiICsgaXNUcmlhbmdsZSgxLCAyLCAzKQogICAgICAgICAgICArICIgICAgIiArIChpc1RyaWFuZ2xlKDEsIDIsIDMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNUcmlhbmdsZSg3LCA3LCA3KSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBpc1RyaWFuZ2xlKDcsIDcsIDcpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoNywgNywgNykgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzVHJpYW5nbGUoMTAsIDIsIDkpID09PiB0cnVlICAgIEFjdHVhbDogIiArIGlzVHJpYW5nbGUoMTAsIDIsIDkpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoMTAsIDIsIDkpID09IHRydWUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc1RyaWFuZ2xlKDUsIDEsIDMpID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc1RyaWFuZ2xlKDUsIDEsIDMpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzVHJpYW5nbGUoNSwgMSwgMykgPT0gZmFsc2UgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K"},{"n":"WriteStatic02_RoundTen.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUm91bmQgVGVuCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGludCByb3VuZFRvVGVuKGludCBudW0pCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgYSBwb3NpdGl2ZSB3aG9sZSBudW1iZXIgYW5kIHJldHVybnMgaXQgcm91bmRlZCB0byB0aGUKICogbmVhcmVzdCB0ZW4uIEEgbnVtYmVyIHdob3NlIHVuaXRzIGRpZ2l0IGlzIDUgaXMgcm91bmRlZCB1cC4KICoKICogRXhhbXBsZXM6CiAqICAgcm91bmRUb1Rlbig0NykgPT0+IDUwCiAqICAgcm91bmRUb1Rlbig0MykgPT0+IDQwCiAqICAgcm91bmRUb1Rlbig0NSkgPT0+IDUwCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwMl9Sb3VuZFRlbiB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgaW50IHJvdW5kVG9UZW4oaW50IG51bSkgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gMDsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0NykgPT0+IDUwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDcpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDcpID09IDUwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0MykgPT0+IDQwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDMpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDMpID09IDQwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0NSkgPT0+IDUwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDUpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDUpID09IDUwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig0MCkgPT0+IDQwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oNDApCiAgICAgICAgICAgICsgIiAgICAiICsgKHJvdW5kVG9UZW4oNDApID09IDQwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig1KSA9PT4gMTAgICAgQWN0dWFsOiAiICsgcm91bmRUb1Rlbig1KQogICAgICAgICAgICArICIgICAgIiArIChyb3VuZFRvVGVuKDUpID09IDEwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicm91bmRUb1Rlbig5OTUpID09PiAxMDAwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oOTk1KQogICAgICAgICAgICArICIgICAgIiArIChyb3VuZFRvVGVuKDk5NSkgPT0gMTAwMCA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInJvdW5kVG9UZW4oOTk0KSA9PT4gOTkwICAgIEFjdHVhbDogIiArIHJvdW5kVG9UZW4oOTk0KQogICAgICAgICAgICArICIgICAgIiArIChyb3VuZFRvVGVuKDk5NCkgPT0gOTkwID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg=="},{"n":"WriteStatic03_DaysInMonth.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgRGF5cyBJbiBNb250aAogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBpbnQgZGF5c0luTW9udGgoaW50IG1vbnRoKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIHRoZSBudW1iZXIgb2YgYSBtb250aCwgZnJvbSAxIHRvIDEyLCBhbmQgcmV0dXJucyB0aGUKICogbnVtYmVyIG9mIGRheXMgaW4gdGhhdCBtb250aCBpbiBhIHJlZ3VsYXIgKG5vbiBsZWFwKSB5ZWFyLgogKgogKiBFeGFtcGxlczoKICogICBkYXlzSW5Nb250aCgxKSA9PT4gMzEKICogICBkYXlzSW5Nb250aCgyKSA9PT4gMjgKICogICBkYXlzSW5Nb250aCg0KSA9PT4gMzAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzAzX0RheXNJbk1vbnRoIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBpbnQgZGF5c0luTW9udGgoaW50IG1vbnRoKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAwOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgxKSA9PT4gMzEgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoMSkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoMSkgPT0gMzEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgyKSA9PT4gMjggICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoMikKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoMikgPT0gMjggPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg0KSA9PT4gMzAgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoNCkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoNCkgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg2KSA9PT4gMzAgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoNikKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoNikgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg4KSA9PT4gMzEgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoOCkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoOCkgPT0gMzEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCg5KSA9PT4gMzAgICAgQWN0dWFsOiAiICsgZGF5c0luTW9udGgoOSkKICAgICAgICAgICAgKyAiICAgICIgKyAoZGF5c0luTW9udGgoOSkgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgxMSkgPT0+IDMwICAgIEFjdHVhbDogIiArIGRheXNJbk1vbnRoKDExKQogICAgICAgICAgICArICIgICAgIiArIChkYXlzSW5Nb250aCgxMSkgPT0gMzAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJkYXlzSW5Nb250aCgxMikgPT0+IDMxICAgIEFjdHVhbDogIiArIGRheXNJbk1vbnRoKDEyKQogICAgICAgICAgICArICIgICAgIiArIChkYXlzSW5Nb250aCgxMikgPT0gMzEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K"},{"n":"WriteStatic04_Buses.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgQnVzZXMKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgaW50IGJ1c2VzKGludCBzdHVkZW50cywgaW50IGNhcGFjaXR5KQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIGEgbnVtYmVyIG9mIHN0dWRlbnRzIGFuZCB0aGUgbnVtYmVyIG9mIHNlYXRzIGluIGEgYnVzLAogKiBhbmQgcmV0dXJucyBob3cgbWFueSBidXNlcyBhcmUgbmVlZGVkIHRvIHRha2UgYWxsIHRoZSBzdHVkZW50cy4KICoKICogQWxzbyB3cml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBudW1iZXIgb2Ygc3R1ZGVudHMgaW4gdHdvIGdyYWRlcwogKiBhbmQgdGhlIG51bWJlciBvZiBzZWF0cyBpbiBhIGJ1cy4gRWFjaCBncmFkZSB0cmF2ZWxzIGluIGl0cyBvd24gYnVzZXMuCiAqIFRoZSBwcm9ncmFtIHByaW50cyBob3cgbWFueSBidXNlcyBlYWNoIGdyYWRlIG5lZWRzIGFuZCBob3cgbWFueSBpbiB0b3RhbC4KICogVXNlIHRoZSBtZXRob2QgeW91IHdyb3RlLgogKgogKiBJbnB1dDoKICogICAxMjAKICogICA5NQogKiAgIDUwCiAqCiAqIEV4cGVjdGVkIG91dHB1dDoKICogICBTdHVkZW50cyBpbiBncmFkZSAxMDogMTIwCiAqICAgU3R1ZGVudHMgaW4gZ3JhZGUgMTE6IDk1CiAqICAgU2VhdHMgaW4gYSBidXM6IDUwCiAqICAgQnVzZXMgZm9yIGdyYWRlIDEwOiAzCiAqICAgQnVzZXMgZm9yIGdyYWRlIDExOiAyCiAqICAgVG90YWwgYnVzZXM6IDUKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDEwMAogKiAgIDUxCiAqICAgNTAKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFN0dWRlbnRzIGluIGdyYWRlIDEwOiAxMDAKICogICBTdHVkZW50cyBpbiBncmFkZSAxMTogNTEKICogICBTZWF0cyBpbiBhIGJ1czogNTAKICogICBCdXNlcyBmb3IgZ3JhZGUgMTA6IDIKICogICBCdXNlcyBmb3IgZ3JhZGUgMTE6IDIKICogICBUb3RhbCBidXNlczogNAogKi8KcHVibGljIGNsYXNzIFdyaXRlU3RhdGljMDRfQnVzZXMgewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGludCBidXNlcyhpbnQgc3R1ZGVudHMsIGludCBjYXBhY2l0eSkgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gMDsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFdyaXRlIHRoZSBtYWluIHByb2dyYW0gYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIHByb2dyYW0gaGVyZQoKICAgIH0KfQo="},{"n":"WriteStatic05_Season.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgU2Vhc29uCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIFN0cmluZyBzZWFzb24oaW50IG1vbnRoKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIHRoZSBudW1iZXIgb2YgYSBtb250aCwgZnJvbSAxIHRvIDEyLCBhbmQgcmV0dXJucyB0aGUKICogbmFtZSBvZiB0aGUgc2Vhc29uIHRoZSBtb250aCBiZWxvbmdzIHRvOgogKiAgIERlY2VtYmVyLCBKYW51YXJ5LCBGZWJydWFyeSAgIC0gV2ludGVyCiAqICAgTWFyY2gsIEFwcmlsLCBNYXkgICAgICAgICAgICAgLSBTcHJpbmcKICogICBKdW5lLCBKdWx5LCBBdWd1c3QgICAgICAgICAgICAtIFN1bW1lcgogKiAgIFNlcHRlbWJlciwgT2N0b2JlciwgTm92ZW1iZXIgIC0gQXV0dW1uCiAqCiAqIEV4YW1wbGVzOgogKiAgIHNlYXNvbigxKSA9PT4gIldpbnRlciIKICogICBzZWFzb24oNCkgPT0+ICJTcHJpbmciCiAqICAgc2Vhc29uKDEyKSA9PT4gIldpbnRlciIKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzA1X1NlYXNvbiB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIHNlYXNvbihpbnQgbW9udGgpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuICIiOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJzZWFzb24oMSkgPT0+IFwiV2ludGVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDEpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNlYXNvbigxKS5lcXVhbHMoIldpbnRlciIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2Vhc29uKDQpID09PiBcIlNwcmluZ1wiICAgIEFjdHVhbDogIiArIHNlYXNvbig0KQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oNCkuZXF1YWxzKCJTcHJpbmciKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNlYXNvbigxMikgPT0+IFwiV2ludGVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDEyKQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oMTIpLmVxdWFscygiV2ludGVyIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJzZWFzb24oMikgPT0+IFwiV2ludGVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDIpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNlYXNvbigyKS5lcXVhbHMoIldpbnRlciIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2Vhc29uKDMpID09PiBcIlNwcmluZ1wiICAgIEFjdHVhbDogIiArIHNlYXNvbigzKQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oMykuZXF1YWxzKCJTcHJpbmciKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNlYXNvbig2KSA9PT4gXCJTdW1tZXJcIiAgICBBY3R1YWw6ICIgKyBzZWFzb24oNikKICAgICAgICAgICAgKyAiICAgICIgKyAoc2Vhc29uKDYpLmVxdWFscygiU3VtbWVyIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJzZWFzb24oOCkgPT0+IFwiU3VtbWVyXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDgpCiAgICAgICAgICAgICsgIiAgICAiICsgKHNlYXNvbig4KS5lcXVhbHMoIlN1bW1lciIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigic2Vhc29uKDkpID09PiBcIkF1dHVtblwiICAgIEFjdHVhbDogIiArIHNlYXNvbig5KQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oOSkuZXF1YWxzKCJBdXR1bW4iKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oInNlYXNvbigxMSkgPT0+IFwiQXV0dW1uXCIgICAgQWN0dWFsOiAiICsgc2Vhc29uKDExKQogICAgICAgICAgICArICIgICAgIiArIChzZWFzb24oMTEpLmVxdWFscygiQXV0dW1uIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K"},{"n":"WriteStatic06_Middle.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTWlkZGxlCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGludCBtaWRkbGUoaW50IGEsIGludCBiLCBpbnQgYykKICoKICogVGhlIG1ldGhvZCByZWNlaXZlcyB0aHJlZSB3aG9sZSBudW1iZXJzLCBpbiBhbnkgb3JkZXIsIGFuZCByZXR1cm5zIHRoZQogKiBtaWRkbGUgbnVtYmVyIC0gdGhlIG9uZSBpbiB0aGUgbWlkZGxlIHdoZW4gdGhlIHRocmVlIG51bWJlcnMgYXJlIHNvcnRlZAogKiBmcm9tIHRoZSBzbWFsbGVzdCB0byB0aGUgbGFyZ2VzdC4KICoKICogRXhhbXBsZXM6CiAqICAgbWlkZGxlKDcsIDIsIDUpID09PiA1CiAqICAgbWlkZGxlKDEwLCAzMCwgMjApID09PiAyMAogKiAgIG1pZGRsZSg0LCA0LCA5KSA9PT4gNAogKi8KcHVibGljIGNsYXNzIFdyaXRlU3RhdGljMDZfTWlkZGxlIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBpbnQgbWlkZGxlKGludCBhLCBpbnQgYiwgaW50IGMpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBUZXN0cyAtIGRvIG5vdCBjaGFuZ2UKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIm1pZGRsZSg3LCAyLCA1KSA9PT4gNSAgICBBY3R1YWw6ICIgKyBtaWRkbGUoNywgMiwgNSkKICAgICAgICAgICAgKyAiICAgICIgKyAobWlkZGxlKDcsIDIsIDUpID09IDUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtaWRkbGUoMTAsIDMwLCAyMCkgPT0+IDIwICAgIEFjdHVhbDogIiArIG1pZGRsZSgxMCwgMzAsIDIwKQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoMTAsIDMwLCAyMCkgPT0gMjAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtaWRkbGUoNCwgNCwgOSkgPT0+IDQgICAgQWN0dWFsOiAiICsgbWlkZGxlKDQsIDQsIDkpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1pZGRsZSg0LCA0LCA5KSA9PSA0ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibWlkZGxlKDksIDEsIDMpID09PiAzICAgIEFjdHVhbDogIiArIG1pZGRsZSg5LCAxLCAzKQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoOSwgMSwgMykgPT0gMyA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIm1pZGRsZSgtMywgOCwgMikgPT0+IDIgICAgQWN0dWFsOiAiICsgbWlkZGxlKC0zLCA4LCAyKQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoLTMsIDgsIDIpID09IDIgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJtaWRkbGUoNSwgOCwgOCkgPT0+IDggICAgQWN0dWFsOiAiICsgbWlkZGxlKDUsIDgsIDgpCiAgICAgICAgICAgICsgIiAgICAiICsgKG1pZGRsZSg1LCA4LCA4KSA9PSA4ID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigibWlkZGxlKDYsIDYsIDYpID09PiA2ICAgIEFjdHVhbDogIiArIG1pZGRsZSg2LCA2LCA2KQogICAgICAgICAgICArICIgICAgIiArIChtaWRkbGUoNiwgNiwgNikgPT0gNiA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgIH0KfQo="},{"n":"WriteStatic07_Parking.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUGFya2luZwogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBpbnQgcGFya2luZ0ZlZShpbnQgbWludXRlcykKICoKICogVGhlIG1ldGhvZCByZWNlaXZlcyB0aGUgcGFya2luZyB0aW1lIGluIG1pbnV0ZXMsIGFuZCByZXR1cm5zIHRoZSBmZWUgaW4KICogc2hla2VscyBieSB0aGVzZSBydWxlczoKICogICB0aGUgZmlyc3QgaG91ciwgb3IgcGFydCBvZiBpdCAgICAgICAgICAgIC0gMTAgc2hla2VscwogKiAgIGVhY2ggZXh0cmEgaGFsZiBob3VyLCBldmVuIGlmIG5vdCBlbmRlZCAgLSA2IG1vcmUgc2hla2VscwogKiAgIHRoZSBmZWUgaXMgbmV2ZXIgbW9yZSB0aGFuIDUwIHNoZWtlbHMKICoKICogRXhhbXBsZXM6CiAqICAgcGFya2luZ0ZlZSg0NSkgPT0+IDEwCiAqICAgcGFya2luZ0ZlZSg2MSkgPT0+IDE2CiAqICAgcGFya2luZ0ZlZSgxMzApID09PiAyOAogKiAgIHBhcmtpbmdGZWUoNjAwKSA9PT4gNTAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzA3X1BhcmtpbmcgewoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gQ29tcGxldGUgdGhlIG1ldGhvZCBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGludCBwYXJraW5nRmVlKGludCBtaW51dGVzKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAwOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDQ1KSA9PT4gMTAgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg0NSkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg0NSkgPT0gMTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDYxKSA9PT4gMTYgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg2MSkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg2MSkgPT0gMTYgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDEzMCkgPT0+IDI4ICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoMTMwKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDEzMCkgPT0gMjggPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDYwMCkgPT0+IDUwICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoNjAwKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDYwMCkgPT0gNTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDYwKSA9PT4gMTAgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg2MCkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg2MCkgPT0gMTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDkwKSA9PT4gMTYgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg5MCkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg5MCkgPT0gMTYgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDkxKSA9PT4gMjIgICAgQWN0dWFsOiAiICsgcGFya2luZ0ZlZSg5MSkKICAgICAgICAgICAgKyAiICAgICIgKyAocGFya2luZ0ZlZSg5MSkgPT0gMjIgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDI0MCkgPT0+IDQ2ICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoMjQwKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDI0MCkgPT0gNDYgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJwYXJraW5nRmVlKDI0MSkgPT0+IDUwICAgIEFjdHVhbDogIiArIHBhcmtpbmdGZWUoMjQxKQogICAgICAgICAgICArICIgICAgIiArIChwYXJraW5nRmVlKDI0MSkgPT0gNTAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICB9Cn0K"},{"n":"WriteStatic08_FormatTime.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgRm9ybWF0IFRpbWUKICoKICogV3JpdGUgYSBzdGF0aWMgbWV0aG9kOgogKiAgIHB1YmxpYyBzdGF0aWMgU3RyaW5nIGZvcm1hdFRpbWUoaW50IHNlY29uZHMpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgYSBudW1iZXIgb2Ygc2Vjb25kcyBhbmQgcmV0dXJucyBhIHN0cmluZyBvZiB0aGUgdGltZSBpbgogKiBjbG9jayBmb3JtYXQ6IGhvdXJzLCBtaW51dGVzIGFuZCBzZWNvbmRzIHNlcGFyYXRlZCBieSBjb2xvbnMsIGVhY2ggb2YgdGhlbQogKiB3aXRoIHR3byBkaWdpdHMuCiAqIFlvdSBtYXkgYXNzdW1lIHRoYXQgdGhlIG51bWJlciBvZiBzZWNvbmRzIGlzIHdpdGhpbiBvbmUgZGF5OiBpdCBpcyBub3QKICogbmVnYXRpdmUgYW5kIGl0IGlzIGxlc3MgdGhhbiB0aGUgbnVtYmVyIG9mIHNlY29uZHMgaW4gYSB3aG9sZSBkYXkuCiAqCiAqIEV4YW1wbGVzOgogKiAgIGZvcm1hdFRpbWUoMzcyNSkgPT0+ICIwMTowMjowNSIKICogICBmb3JtYXRUaW1lKDQ1KSA9PT4gIjAwOjAwOjQ1IgogKiAgIGZvcm1hdFRpbWUoNDUyOTYpID09PiAiMTI6MzQ6NTYiCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwOF9Gb3JtYXRUaW1lIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBTdHJpbmcgZm9ybWF0VGltZShpbnQgc2Vjb25kcykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gIiI7CiAgICB9CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBUZXN0cyAtIGRvIG5vdCBjaGFuZ2UKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImZvcm1hdFRpbWUoMzcyNSkgPT0+IFwiMDE6MDI6MDVcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDM3MjUpCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoMzcyNSkuZXF1YWxzKCIwMTowMjowNSIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZm9ybWF0VGltZSg0NSkgPT0+IFwiMDA6MDA6NDVcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDQ1KQogICAgICAgICAgICArICIgICAgIiArIChmb3JtYXRUaW1lKDQ1KS5lcXVhbHMoIjAwOjAwOjQ1IikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJmb3JtYXRUaW1lKDQ1Mjk2KSA9PT4gXCIxMjozNDo1NlwiICAgIEFjdHVhbDogIiArIGZvcm1hdFRpbWUoNDUyOTYpCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoNDUyOTYpLmVxdWFscygiMTI6MzQ6NTYiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImZvcm1hdFRpbWUoMzYwMCkgPT0+IFwiMDE6MDA6MDBcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDM2MDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoMzYwMCkuZXF1YWxzKCIwMTowMDowMCIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiZm9ybWF0VGltZSg2MDApID09PiBcIjAwOjEwOjAwXCIgICAgQWN0dWFsOiAiICsgZm9ybWF0VGltZSg2MDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoNjAwKS5lcXVhbHMoIjAwOjEwOjAwIikgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJmb3JtYXRUaW1lKDg2Mzk5KSA9PT4gXCIyMzo1OTo1OVwiICAgIEFjdHVhbDogIiArIGZvcm1hdFRpbWUoODYzOTkpCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoODYzOTkpLmVxdWFscygiMjM6NTk6NTkiKSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImZvcm1hdFRpbWUoMCkgPT0+IFwiMDA6MDA6MDBcIiAgICBBY3R1YWw6ICIgKyBmb3JtYXRUaW1lKDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGZvcm1hdFRpbWUoMCkuZXF1YWxzKCIwMDowMDowMCIpID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg=="},{"n":"WriteStatic09_TrianglePoints.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgVHJpYW5nbGUgUG9pbnRzCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGRvdWJsZSBkaXN0YW5jZShkb3VibGUgeDEsIGRvdWJsZSB5MSwgZG91YmxlIHgyLCBkb3VibGUgeTIpCiAqCiAqIFRoZSBtZXRob2QgcmVjZWl2ZXMgdGhlIGNvb3JkaW5hdGVzIG9mIHR3byBwb2ludHMgYW5kIHJldHVybnMgdGhlIGRpc3RhbmNlCiAqIGJldHdlZW4gdGhlbToKICogICBkID0gc3FydCgoeDIgLSB4MSkqKHgyIC0geDEpICsgKHkyIC0geTEpKih5MiAtIHkxKSkKICoKICogQWxzbyB3cml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IHJlYWRzIHRoZSBjb29yZGluYXRlcyBvZiB0aGUgdGhyZWUgdmVydGljZXMKICogQSwgQiBhbmQgQyBvZiBhIHRyaWFuZ2xlLiBUaGUgY29vcmRpbmF0ZXMgYXJlIHdob2xlIG51bWJlcnMsIGFuZCB0aGUgdHdvCiAqIGNvb3JkaW5hdGVzIG9mIGVhY2ggdmVydGV4IGFyZSB0eXBlZCBpbiB0aGUgc2FtZSBsaW5lLiBUaGUgcHJvZ3JhbSBwcmludHMKICogdGhlIHRocmVlIHZlcnRpY2VzIGluIHRoZSB1c3VhbCBub3RhdGlvbiwgdGhlIGxlbmd0aHMgb2YgdGhlIHRocmVlIHNpZGVzIGFuZAogKiB0aGUgcGVyaW1ldGVyIG9mIHRoZSB0cmlhbmdsZSwgYXMgaW4gdGhlIGV4cGVjdGVkIG91dHB1dC4KICogQ2FsY3VsYXRlIGVhY2ggc2lkZSBieSBjYWxsaW5nIHRoZSBtZXRob2QuCiAqCiAqIElucHV0OgogKiAgIDAgMAogKiAgIDMgMAogKiAgIDMgNAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgUG9pbnQgQSAoeCB5KTogMCAwCiAqICAgUG9pbnQgQiAoeCB5KTogMyAwCiAqICAgUG9pbnQgQyAoeCB5KTogMyA0CiAqICAgVHJpYW5nbGU6IEEoMCwgMCksIEIoMywgMCksIEMoMywgNCkKICogICBBQiA9IDMuMAogKiAgIEJDID0gNC4wCiAqICAgQ0EgPSA1LjAKICogICBQZXJpbWV0ZXIgPSAxMi4wCiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICAxIDEKICogICA3IDEKICogICAxIDkKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIFBvaW50IEEgKHggeSk6IDEgMQogKiAgIFBvaW50IEIgKHggeSk6IDcgMQogKiAgIFBvaW50IEMgKHggeSk6IDEgOQogKiAgIFRyaWFuZ2xlOiBBKDEsIDEpLCBCKDcsIDEpLCBDKDEsIDkpCiAqICAgQUIgPSA2LjAKICogICBCQyA9IDEwLjAKICogICBDQSA9IDguMAogKiAgIFBlcmltZXRlciA9IDI0LjAKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIC0yIC0xCiAqICAgMSAzCiAqICAgLTIgMwogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgUG9pbnQgQSAoeCB5KTogLTIgLTEKICogICBQb2ludCBCICh4IHkpOiAxIDMKICogICBQb2ludCBDICh4IHkpOiAtMiAzCiAqICAgVHJpYW5nbGU6IEEoLTIsIC0xKSwgQigxLCAzKSwgQygtMiwgMykKICogICBBQiA9IDUuMAogKiAgIEJDID0gMy4wCiAqICAgQ0EgPSA0LjAKICogICBQZXJpbWV0ZXIgPSAxMi4wCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMwOV9UcmlhbmdsZVBvaW50cyB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgZG91YmxlIGRpc3RhbmNlKGRvdWJsZSB4MSwgZG91YmxlIHkxLCBkb3VibGUgeDIsIGRvdWJsZSB5MikgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gMC4wOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gV3JpdGUgdGhlIG1haW4gcHJvZ3JhbSBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"WriteStatic10_LeapYear.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTGVhcCBZZWFyCiAqCiAqIFdyaXRlIGEgc3RhdGljIG1ldGhvZDoKICogICBwdWJsaWMgc3RhdGljIGJvb2xlYW4gaXNMZWFwKGludCB5ZWFyKQogKgogKiBUaGUgbWV0aG9kIHJlY2VpdmVzIGEgeWVhciBhbmQgcmV0dXJucyB0cnVlIGlmIGl0IGlzIGEgbGVhcCB5ZWFyIGluIHRoZQogKiBHcmVnb3JpYW4gY2FsZW5kYXIsIGFuZCBmYWxzZSBvdGhlcndpc2UuCiAqIEEgbGVhcCB5ZWFyIGlzIGRpdmlzaWJsZSBieSA0IGJ1dCBub3QgYnkgMTAwLCB1bmxlc3MgaXQgaXMgYWxzbyBkaXZpc2libGUgYnkKICogNDAwLiBGb3IgZXhhbXBsZSwgMjAwMCBpcyBhIGxlYXAgeWVhciBhbmQgMTkwMCBpcyBub3QuCiAqCiAqIEV4YW1wbGVzOgogKiAgIGlzTGVhcCgyMDI4KSA9PT4gdHJ1ZQogKiAgIGlzTGVhcCgyMDI2KSA9PT4gZmFsc2UKICogICBpc0xlYXAoMjEwMCkgPT0+IGZhbHNlCiAqICAgaXNMZWFwKDIwMDApID09PiB0cnVlCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMxMF9MZWFwWWVhciB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBpc0xlYXAoaW50IHllYXIpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gVGVzdHMgLSBkbyBub3QgY2hhbmdlCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZyBbXSBhcmdzKSB7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc0xlYXAoMjAyOCkgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgaXNMZWFwKDIwMjgpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzTGVhcCgyMDI4KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIwMjYpID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjAyNikKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDIwMjYpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIxMDApID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjEwMCkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDIxMDApID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIwMDApID09PiB0cnVlICAgIEFjdHVhbDogIiArIGlzTGVhcCgyMDAwKQogICAgICAgICAgICArICIgICAgIiArIChpc0xlYXAoMjAwMCkgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzTGVhcCgxOTAwKSA9PT4gZmFsc2UgICAgQWN0dWFsOiAiICsgaXNMZWFwKDE5MDApCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzTGVhcCgxOTAwKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzTGVhcCgyNDAwKSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjQwMCkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDI0MDApID09IHRydWUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc0xlYXAoMTk5NikgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgaXNMZWFwKDE5OTYpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzTGVhcCgxOTk2KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNMZWFwKDIwMjMpID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc0xlYXAoMjAyMykKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNMZWFwKDIwMjMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg=="},{"n":"WriteStatic11_Palindrome.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUGFsaW5kcm9tZQogKgogKiBXcml0ZSB0d28gc3RhdGljIG1ldGhvZHM6CiAqICAgcHJpdmF0ZSBzdGF0aWMgaW50IHJldmVyc2UoaW50IG51bSkKICogICBwdWJsaWMgc3RhdGljIGJvb2xlYW4gaXNQYWxpbmRyb21lKGludCBudW0pCiAqCiAqIFRoZSBtZXRob2QgcmV2ZXJzZSByZWNlaXZlcyBhIHRocmVlIGRpZ2l0IG51bWJlciBhbmQgcmV0dXJucyB0aGUgbnVtYmVyCiAqIHdpdGggaXRzIGRpZ2l0cyBpbiByZXZlcnNlIG9yZGVyLiBJdCBpcyBhIGhlbHBlciBtZXRob2QsIHNvIGl0IGlzIHByaXZhdGU6CiAqIGl0IGNhbiBiZSBjYWxsZWQgb25seSBmcm9tIGluc2lkZSB0aGUgY2xhc3Mgd2hlcmUgaXQgaXMgd3JpdHRlbi4KICogVGhlIG1ldGhvZCBpc1BhbGluZHJvbWUgcmVjZWl2ZXMgYSB0aHJlZSBkaWdpdCBudW1iZXIgYW5kIHJldHVybnMgdHJ1ZSBpZgogKiBpdCBpcyBhIHBhbGluZHJvbWUgLSBpdCByZWFkcyB0aGUgc2FtZSBmcm9tIGxlZnQgdG8gcmlnaHQgYW5kIGZyb20gcmlnaHQKICogdG8gbGVmdCAtIGFuZCBmYWxzZSBvdGhlcndpc2UuCiAqIFVzZSB0aGUgbWV0aG9kIHJldmVyc2UgdG8gd3JpdGUgdGhlIG1ldGhvZCBpc1BhbGluZHJvbWUuCiAqCiAqIEV4YW1wbGVzOgogKiAgIHJldmVyc2UoMTIzKSA9PT4gMzIxCiAqICAgcmV2ZXJzZSg0NTApID09PiA1NAogKiAgIGlzUGFsaW5kcm9tZSg3MjcpID09PiB0cnVlCiAqICAgaXNQYWxpbmRyb21lKDcyMykgPT0+IGZhbHNlCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMxMV9QYWxpbmRyb21lIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2RzIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHByaXZhdGUgc3RhdGljIGludCByZXZlcnNlKGludCBudW0pIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgcHVibGljIHN0YXRpYyBib29sZWFuIGlzUGFsaW5kcm9tZShpbnQgbnVtKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0KCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIFRlc3RzIC0gZG8gbm90IGNoYW5nZQogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicmV2ZXJzZSgxMjMpID09PiAzMjEgICAgQWN0dWFsOiAiICsgcmV2ZXJzZSgxMjMpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJldmVyc2UoMTIzKSA9PSAzMjEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyZXZlcnNlKDQ1MCkgPT0+IDU0ICAgIEFjdHVhbDogIiArIHJldmVyc2UoNDUwKQogICAgICAgICAgICArICIgICAgIiArIChyZXZlcnNlKDQ1MCkgPT0gNTQgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJpc1BhbGluZHJvbWUoNzI3KSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBpc1BhbGluZHJvbWUoNzI3KQogICAgICAgICAgICArICIgICAgIiArIChpc1BhbGluZHJvbWUoNzI3KSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNQYWxpbmRyb21lKDcyMykgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIGlzUGFsaW5kcm9tZSg3MjMpCiAgICAgICAgICAgICsgIiAgICAiICsgKGlzUGFsaW5kcm9tZSg3MjMpID09IGZhbHNlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigicmV2ZXJzZSg3MDcpID09PiA3MDcgICAgQWN0dWFsOiAiICsgcmV2ZXJzZSg3MDcpCiAgICAgICAgICAgICsgIiAgICAiICsgKHJldmVyc2UoNzA3KSA9PSA3MDcgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJyZXZlcnNlKDEwMCkgPT0+IDEgICAgQWN0dWFsOiAiICsgcmV2ZXJzZSgxMDApCiAgICAgICAgICAgICsgIiAgICAiICsgKHJldmVyc2UoMTAwKSA9PSAxID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiaXNQYWxpbmRyb21lKDk5OSkgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgaXNQYWxpbmRyb21lKDk5OSkKICAgICAgICAgICAgKyAiICAgICIgKyAoaXNQYWxpbmRyb21lKDk5OSkgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzUGFsaW5kcm9tZSgxMDApID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc1BhbGluZHJvbWUoMTAwKQogICAgICAgICAgICArICIgICAgIiArIChpc1BhbGluZHJvbWUoMTAwKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImlzUGFsaW5kcm9tZSgxMTApID09PiBmYWxzZSAgICBBY3R1YWw6ICIgKyBpc1BhbGluZHJvbWUoMTEwKQogICAgICAgICAgICArICIgICAgIiArIChpc1BhbGluZHJvbWUoMTEwKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgIH0KfQo="},{"n":"WriteStatic12_MonthDays.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgTW9udGggRGF5cwogKgogKiBXcml0ZSB0d28gc3RhdGljIG1ldGhvZHM6CiAqICAgcHVibGljIHN0YXRpYyBib29sZWFuIGlzTGVhcChpbnQgeWVhcikKICogICBwdWJsaWMgc3RhdGljIGludCBkYXlzSW5Nb250aChpbnQgbW9udGgsIGludCB5ZWFyKQogKgogKiBUaGUgbWV0aG9kIGlzTGVhcCByZWNlaXZlcyBhIHllYXIgYW5kIHJldHVybnMgdHJ1ZSBpZiBpdCBpcyBhIGxlYXAgeWVhciBpbgogKiB0aGUgR3JlZ29yaWFuIGNhbGVuZGFyLCBhbmQgZmFsc2Ugb3RoZXJ3aXNlLgogKiBBIGxlYXAgeWVhciBpcyBkaXZpc2libGUgYnkgNCBidXQgbm90IGJ5IDEwMCwgdW5sZXNzIGl0IGlzIGFsc28gZGl2aXNpYmxlIGJ5CiAqIDQwMC4gRm9yIGV4YW1wbGUsIDIwMDAgaXMgYSBsZWFwIHllYXIgYW5kIDE5MDAgaXMgbm90LgogKiBUaGUgbWV0aG9kIGRheXNJbk1vbnRoIHJlY2VpdmVzIHRoZSBudW1iZXIgb2YgYSBtb250aCwgZnJvbSAxIHRvIDEyLCBhbmQgYQogKiB5ZWFyLCBhbmQgcmV0dXJucyB0aGUgbnVtYmVyIG9mIGRheXMgaW4gdGhhdCBtb250aC4gRmVicnVhcnkgaGFzIDI5IGRheXMKICogaW4gYSBsZWFwIHllYXIgYW5kIDI4IGRheXMgaW4gYSByZWd1bGFyIHllYXIuCiAqIFRoZSBtZXRob2QgZGF5c0luTW9udGggbXVzdCBjYWxsIHRoZSBtZXRob2QgaXNMZWFwLgogKgogKiBBbHNvIHdyaXRlIGEgbWFpbiBwcm9ncmFtIHRoYXQgcmVhZHMgdGhlIG51bWJlciBvZiBhIG1vbnRoIGFuZCBhIHllYXIsIGFuZAogKiBwcmludHMgd2hldGhlciB0aGUgeWVhciBpcyBhIGxlYXAgeWVhciBhbmQgdGhlIG51bWJlciBvZiBkYXlzIGluIHRoZSBtb250aC4KICogVXNlIGJvdGggbWV0aG9kcy4KICoKICogSW5wdXQ6CiAqICAgMgogKiAgIDIwMjQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIE1vbnRoOiAyCiAqICAgWWVhcjogMjAyNAogKiAgIExlYXAgeWVhcjogdHJ1ZQogKiAgIERheXM6IDI5CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICAyCiAqICAgMTkwMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgTW9udGg6IDIKICogICBZZWFyOiAxOTAwCiAqICAgTGVhcCB5ZWFyOiBmYWxzZQogKiAgIERheXM6IDI4CiAqCiAqIFJ1biB0aGUgcHJvZ3JhbSBhZ2FpbiB3aXRoIHRoZSBpbnB1dDoKICogICA5CiAqICAgMjAwMAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgTW9udGg6IDkKICogICBZZWFyOiAyMDAwCiAqICAgTGVhcCB5ZWFyOiB0cnVlCiAqICAgRGF5czogMzAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzEyX01vbnRoRGF5cyB7CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBDb21wbGV0ZSB0aGUgbWV0aG9kcyBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIGJvb2xlYW4gaXNMZWFwKGludCB5ZWFyKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiBmYWxzZTsKICAgIH0KCiAgICBwdWJsaWMgc3RhdGljIGludCBkYXlzSW5Nb250aChpbnQgbW9udGgsIGludCB5ZWFyKSB7CiAgICAgICAgLy8gVE9ETzogd3JpdGUgeW91ciBtZXRob2QgaGVyZQogICAgICAgIHJldHVybiAwOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gV3JpdGUgdGhlIG1haW4gcHJvZ3JhbSBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"WriteStatic13_Quiz.java","b":"aW1wb3J0IGphdmEudXRpbC5TY2FubmVyOwoKLyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUXVpegogKgogKiBXcml0ZSBhIHN0YXRpYyBtZXRob2Q6CiAqICAgcHVibGljIHN0YXRpYyBib29sZWFuIGFzayhpbnQgYSwgaW50IGIpCiAqCiAqIFBhcnQgMSAtIHRoZSBtZXRob2QKICogVGhlIG1ldGhvZCByZWNlaXZlcyB0d28gd2hvbGUgbnVtYmVycyBhbmQgc2hvd3MgdGhlIHVzZXIgdGhlaXIKICogbXVsdGlwbGljYXRpb24gZXhlcmNpc2UuIFRoZSBtZXRob2QgcmVhZHMgdGhlIHVzZXIncyBhbnN3ZXIsIHByaW50cyB3aGV0aGVyCiAqIGl0IGlzIGNvcnJlY3QsIGFuZCByZXR1cm5zIHRydWUgaWYgdGhlIGFuc3dlciBpcyBjb3JyZWN0IGFuZCBmYWxzZSBvdGhlcndpc2UuCiAqIFRoZSBpbnB1dCBpcyByZWFkIGluc2lkZSB0aGUgbWV0aG9kLgogKgogKiBUaGUgY2FsbCBhc2soNywgOCksIHdoZW4gdGhlIHVzZXIgdHlwZXMgNTYsIHByaW50cyBhbmQgcmV0dXJucyB0cnVlOgogKiAgIDcgeCA4ID0gNTYKICogICBDb3JyZWN0CiAqCiAqIFRoZSBzYW1lIGNhbGwsIHdoZW4gdGhlIHVzZXIgdHlwZXMgNTQsIHByaW50cyBhbmQgcmV0dXJucyBmYWxzZToKICogICA3IHggOCA9IDU0CiAqICAgV3JvbmcsIHRoZSBhbnN3ZXIgaXMgNTYKICoKICogUGFydCAyIC0gdGhlIG1haW4gcHJvZ3JhbQogKiBXcml0ZSBhIG1haW4gcHJvZ3JhbSB0aGF0IGNhbGxzIHRoZSBtZXRob2QgdGhyZWUgdGltZXMsIGluIHRoaXMgb3JkZXI6CiAqICAgYXNrKDcsIDgpCiAqICAgYXNrKDYsIDkpCiAqICAgYXNrKDEyLCAxMikKICogSW4gZWFjaCBjYWxsIHRoZSB1c2VyIHR5cGVzIGhpcyBhbnN3ZXIgdG8gdGhlIGV4ZXJjaXNlLiBBdCB0aGUgZW5kIHRoZQogKiBwcm9ncmFtIHByaW50cyBob3cgbWFueSBhbnN3ZXJzIHdlcmUgY29ycmVjdC4KICoKICogSW5wdXQ6CiAqICAgNTYKICogICA1NAogKiAgIDE0NAogKgogKiBFeHBlY3RlZCBvdXRwdXQ6CiAqICAgNyB4IDggPSA1NgogKiAgIENvcnJlY3QKICogICA2IHggOSA9IDU0CiAqICAgQ29ycmVjdAogKiAgIDEyIHggMTIgPSAxNDQKICogICBDb3JyZWN0CiAqICAgU2NvcmU6IDMgb3V0IG9mIDMKICoKICogUnVuIHRoZSBwcm9ncmFtIGFnYWluIHdpdGggdGhlIGlucHV0OgogKiAgIDU2CiAqICAgNDUKICogICAxMjQKICoKICogRXhwZWN0ZWQgb3V0cHV0OgogKiAgIDcgeCA4ID0gNTYKICogICBDb3JyZWN0CiAqICAgNiB4IDkgPSA0NQogKiAgIFdyb25nLCB0aGUgYW5zd2VyIGlzIDU0CiAqICAgMTIgeCAxMiA9IDEyNAogKiAgIFdyb25nLCB0aGUgYW5zd2VyIGlzIDE0NAogKiAgIFNjb3JlOiAxIG91dCBvZiAzCiAqLwpwdWJsaWMgY2xhc3MgV3JpdGVTdGF0aWMxM19RdWl6IHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2QgYmVsb3cKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyBib29sZWFuIGFzayhpbnQgYSwgaW50IGIpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIGZhbHNlOwogICAgfQoKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgLy8gV3JpdGUgdGhlIG1haW4gcHJvZ3JhbSBiZWxvdwogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICBwdWJsaWMgc3RhdGljIHZvaWQgbWFpbihTdHJpbmcgW10gYXJncykgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgcHJvZ3JhbSBoZXJlCgogICAgfQp9Cg=="},{"n":"WriteStatic14_RockPaperScissors.java","b":"LyoqCiAqIEV4ZXJjaXNlOiBTdGF0aWMgTWV0aG9kcyDigJMgUm9jayBQYXBlciBTY2lzc29ycwogKgogKiBXcml0ZSB0d28gc3RhdGljIG1ldGhvZHM6CiAqICAgcHVibGljIHN0YXRpYyBib29sZWFuIGJlYXRzKGNoYXIgYSwgY2hhciBiKQogKiAgIHB1YmxpYyBzdGF0aWMgaW50IHdpbm5lcihjaGFyIHAxLCBjaGFyIHAyKQogKgogKiBJbiB0aGUgZ2FtZSByb2NrIHBhcGVyIHNjaXNzb3JzIGVhY2ggcGxheWVyIGNob29zZXMgYSBjaGFyOiAnUicgZm9yIHJvY2ssCiAqICdQJyBmb3IgcGFwZXIgb3IgJ1MnIGZvciBzY2lzc29ycy4gUm9jayBiZWF0cyBzY2lzc29ycywgc2Npc3NvcnMgYmVhdCBwYXBlciwKICogYW5kIHBhcGVyIGJlYXRzIHJvY2suCiAqIFRoZSBtZXRob2QgYmVhdHMgcmV0dXJucyB0cnVlIGlmIHRoZSBjaG9pY2UgYSBiZWF0cyB0aGUgY2hvaWNlIGIsIGFuZCBmYWxzZQogKiBvdGhlcndpc2UuCiAqIFRoZSBtZXRob2Qgd2lubmVyIHJldHVybnMgMSBpZiB0aGUgZmlyc3QgcGxheWVyIHdvbiwgMiBpZiB0aGUgc2Vjb25kIHBsYXllcgogKiB3b24sIGFuZCAwIGZvciBhIHRpZS4gVGhlIG1ldGhvZCB3aW5uZXIgbXVzdCBjYWxsIHRoZSBtZXRob2QgYmVhdHMuCiAqCiAqIEV4YW1wbGVzOgogKiAgIGJlYXRzKCdSJywgJ1MnKSA9PT4gdHJ1ZQogKiAgIGJlYXRzKCdTJywgJ1InKSA9PT4gZmFsc2UKICogICB3aW5uZXIoJ1AnLCAnUicpID09PiAxCiAqICAgd2lubmVyKCdSJywgJ1AnKSA9PT4gMgogKiAgIHdpbm5lcignUycsICdTJykgPT0+IDAKICovCnB1YmxpYyBjbGFzcyBXcml0ZVN0YXRpYzE0X1JvY2tQYXBlclNjaXNzb3JzIHsKCiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIC8vIENvbXBsZXRlIHRoZSBtZXRob2RzIGJlbG93CiAgICAvLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgIHB1YmxpYyBzdGF0aWMgYm9vbGVhbiBiZWF0cyhjaGFyIGEsIGNoYXIgYikgewogICAgICAgIC8vIFRPRE86IHdyaXRlIHlvdXIgbWV0aG9kIGhlcmUKICAgICAgICByZXR1cm4gZmFsc2U7CiAgICB9CgogICAgcHVibGljIHN0YXRpYyBpbnQgd2lubmVyKGNoYXIgcDEsIGNoYXIgcDIpIHsKICAgICAgICAvLyBUT0RPOiB3cml0ZSB5b3VyIG1ldGhvZCBoZXJlCiAgICAgICAgcmV0dXJuIDA7CiAgICB9CgogICAgLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAvLyBUZXN0cyAtIGRvIG5vdCBjaGFuZ2UKICAgIC8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgcHVibGljIHN0YXRpYyB2b2lkIG1haW4oU3RyaW5nIFtdIGFyZ3MpIHsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImJlYXRzKCdSJywgJ1MnKSA9PT4gdHJ1ZSAgICBBY3R1YWw6ICIgKyBiZWF0cygnUicsICdTJykKICAgICAgICAgICAgKyAiICAgICIgKyAoYmVhdHMoJ1InLCAnUycpID09IHRydWUgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJiZWF0cygnUycsICdSJykgPT0+IGZhbHNlICAgIEFjdHVhbDogIiArIGJlYXRzKCdTJywgJ1InKQogICAgICAgICAgICArICIgICAgIiArIChiZWF0cygnUycsICdSJykgPT0gZmFsc2UgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJ3aW5uZXIoJ1AnLCAnUicpID09PiAxICAgIEFjdHVhbDogIiArIHdpbm5lcignUCcsICdSJykKICAgICAgICAgICAgKyAiICAgICIgKyAod2lubmVyKCdQJywgJ1InKSA9PSAxID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigid2lubmVyKCdSJywgJ1AnKSA9PT4gMiAgICBBY3R1YWw6ICIgKyB3aW5uZXIoJ1InLCAnUCcpCiAgICAgICAgICAgICsgIiAgICAiICsgKHdpbm5lcignUicsICdQJykgPT0gMiA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIndpbm5lcignUycsICdTJykgPT0+IDAgICAgQWN0dWFsOiAiICsgd2lubmVyKCdTJywgJ1MnKQogICAgICAgICAgICArICIgICAgIiArICh3aW5uZXIoJ1MnLCAnUycpID09IDAgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJiZWF0cygnUycsICdQJykgPT0+IHRydWUgICAgQWN0dWFsOiAiICsgYmVhdHMoJ1MnLCAnUCcpCiAgICAgICAgICAgICsgIiAgICAiICsgKGJlYXRzKCdTJywgJ1AnKSA9PSB0cnVlID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgICAgIFN5c3RlbS5vdXQucHJpbnRsbigiYmVhdHMoJ1AnLCAnUicpID09PiB0cnVlICAgIEFjdHVhbDogIiArIGJlYXRzKCdQJywgJ1InKQogICAgICAgICAgICArICIgICAgIiArIChiZWF0cygnUCcsICdSJykgPT0gdHJ1ZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oImJlYXRzKCdQJywgJ1AnKSA9PT4gZmFsc2UgICAgQWN0dWFsOiAiICsgYmVhdHMoJ1AnLCAnUCcpCiAgICAgICAgICAgICsgIiAgICAiICsgKGJlYXRzKCdQJywgJ1AnKSA9PSBmYWxzZSA/ICJWIFBBU1MiIDogIlggRkFJTCIpKTsKICAgICAgICBTeXN0ZW0ub3V0LnByaW50bG4oIndpbm5lcignUycsICdQJykgPT0+IDEgICAgQWN0dWFsOiAiICsgd2lubmVyKCdTJywgJ1AnKQogICAgICAgICAgICArICIgICAgIiArICh3aW5uZXIoJ1MnLCAnUCcpID09IDEgPyAiViBQQVNTIiA6ICJYIEZBSUwiKSk7CiAgICAgICAgU3lzdGVtLm91dC5wcmludGxuKCJ3aW5uZXIoJ1MnLCAnUicpID09PiAyICAgIEFjdHVhbDogIiArIHdpbm5lcignUycsICdSJykKICAgICAgICAgICAgKyAiICAgICIgKyAod2lubmVyKCdTJywgJ1InKSA9PSAyID8gIlYgUEFTUyIgOiAiWCBGQUlMIikpOwogICAgfQp9Cg=="}]</script>
+<script>
+(function () {
+  var files = JSON.parse(document.getElementById('embedded-files').textContent);
+  files.forEach(function (f, i) {
+    if (!f.b) return;
+    var bin = atob(f.b.replace(/\s+/g, ''));
+    var bytes = new Uint8Array(bin.length);
+    for (var k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+    var url = URL.createObjectURL(new Blob([bytes], { type: 'text/plain;charset=utf-8' }));
+    document.querySelectorAll('a[href="#dl-' + i + '"]').forEach(function (a) {
+      a.href = url;
+      if (!a.getAttribute('download')) a.setAttribute('download', f.n);
+    });
+  });
+})();
+
+/* סרגל התאמה אישית — רוחב עמוד וערכת צבעים לקוד */
+(function () {
+  var KEY = 'javaExercisesViewPrefs';
+  var DEFAULT_WIDTH = '980';
+  var DEFAULT_LIGHT = false;
+  var PREVIEW = false;   // בתצוגה המקדימה של הכלי — ההגדרות שבלוח קובעות
+
+  function read() {
+    if (PREVIEW) return {};
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  }
+  function save(p) {
+    if (PREVIEW) return;
+    try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* לא זמין — לא נורא */ }
+  }
+
+  var prefs = read();
+  var width = prefs.width || DEFAULT_WIDTH;
+  var light = typeof prefs.light === 'boolean' ? prefs.light : DEFAULT_LIGHT;
+
+  var widthBtns = document.querySelectorAll('.view-controls button[data-w]');
+  var themeBtns = document.querySelectorAll('.view-controls button[data-theme]');
+
+  function applyWidth(w) {
+    width = w;
+    document.documentElement.style.setProperty('--page-max', w === '100%' ? '100%' : w + 'px');
+    widthBtns.forEach(function (b) { b.classList.toggle('on', b.dataset.w === w); });
+  }
+  function applyTheme(isLight) {
+    light = isLight;
+    document.body.classList.toggle('code-light', isLight);
+    themeBtns.forEach(function (b) {
+      var active = (b.dataset.theme === 'light') === isLight;
+      b.classList.toggle('on', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  widthBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyWidth(b.dataset.w);
+      save({ width: width, light: light });
+    });
+  });
+  themeBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyTheme(b.dataset.theme === 'light');
+      save({ width: width, light: light });
+    });
+  });
+
+  applyWidth(width);
+  applyTheme(light);
+})();
+</script>
+</body>
+</html>
